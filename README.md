@@ -1,8 +1,7 @@
 # Talk to the City (TttC)
 
-<img width="400" alt="image" src="https://github.com/AIObjectives/tttc-light/assets/3934784/002103fa-9ba0-43e5-98e5-a43dfb6d34da">
-<img width="300" alt="image" src="https://github.com/AIObjectives/tttc-light/assets/3934784/81a2ffd7-a054-4de9-b5c5-2e4d59cc4ea3">
-
+<img width="400" alt="image" src="https://github.com/AIObjectives/talk-to-the-city-reports/assets/3934784/57cc6367-0808-40f0-980a-540530ff0866">
+<img width="400" alt="image" src="https://github.com/AIObjectives/talk-to-the-city-reports/assets/3934784/aaf45844-5a19-41c8-8943-78866db9f666">
 
 ## Overview
 
