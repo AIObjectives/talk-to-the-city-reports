@@ -78,7 +78,7 @@ You can then run the pipeline as follows:
 
 ```
 cd pipeline
-export OPEN_AI_KEY = sk-...
+export OPENAI_API_KEY = sk-...
 python main.py configs/my-project.json
 ```
 
