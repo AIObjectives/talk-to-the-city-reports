@@ -28,7 +28,7 @@
       "steps": ["embedding"]
     },
     "options": {
-      "clusters": 30
+      "clusters": 8
     }
   },
   {
