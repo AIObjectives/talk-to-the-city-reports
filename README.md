@@ -15,15 +15,15 @@ TttC is an AI pipeline which takes a csv file of comments and generates html rep
 TttC is able to ingest different types of data and produce reports in different languages.
 For example:
 
-- [tttc.dev/recursive](https://tttc.dev/recursive) is a report generated using data collected by the Po.lis tool. The input included votes and the maps let you filter arguments by level of consensus.
-- [tttc.dev/genai](https://tttc.dev/genai) is a report which can be read either in English or Mandarin. The data came from a public consultation conducted in Taiwan.
-- [tttc.dev/heal-michigan](https://tttc.dev/heal-michigan) - is a report generated using Video transcripts (and providing links to the source videos).
+- [tttc.dev/recursive](https://tttc.dev/recursive) is a report generated using data collected by the Pol.is tool. The input included votes and the maps let you filter arguments by level of consensus.
+- [tttc.dev/genai](https://tttc.dev/genai) is a report which can be read either in English or Mandarin. The data came from a public consultation about generative AI conducted in Taiwan.
+- [tttc.dev/heal-michigan](https://tttc.dev/heal-michigan) is a report generated using video transcripts and links to the source videos, from an activist community in Michigan.
 
-TttC is developed by the AOI, an non-profit research organization focused on AI alignment.
+TttC is developed by the [AI Objectives Institute](http://aiobjectives.org), an non-profit research organization focused on AI alignment.
 
 ## AI safety disclaimer
 
-TttC is a research project aiming to explore the potential of generative AI to support public deliberation. LLMs are known to be biased and to produce unreliable results. We are actively working on ways to mitigate these issues but can not provide any guarantee at this stage. We do not recommend relying on the results of this pipeline to make any important decision.
+TttC is a research project aiming to explore the potential of generative AI to support public deliberation. LLMs are known to be biased and to produce unreliable results. We are actively working on ways to mitigate these issues but can not provide any guarantee at this stage. We do not recommend relying on the results of this pipeline alone to make impactful decisions without first verifying the results.
 
 ## How to generate reports
 
