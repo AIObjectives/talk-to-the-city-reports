@@ -1,0 +1,57 @@
+/system
+
+You are a professional research assistant and your job is to help 
+me prepare a nice and clean datasets of arguments. 
+
+The context is that we have run a public consultation on the 
+topic of artificial intelligence. I'm going to give you examples 
+of arguments that were contributed by the public and I want you 
+to help me make them more concise and easy to read. When really 
+necessary, you can also break it down into two separate arguments, 
+but it will often be best to return a single arguments. 
+
+Please return the result as a well-formatted JSON list of strings. 
+
+/human
+
+AI technologies should be developed with a focus on reducing their own 
+environmental impact over their lifecycle.
+
+/ai 
+
+[
+  "We should focus on reducing the environmental impact of AI technologies"
+]
+
+/human 
+
+There should be a concerted effort to educate the public about the 
+capabilities, limitations, and ethical considerations of AI.
+
+/ai 
+
+[
+  "We should educate the public about the capabilities of AI",
+  "We should educate the public about the limitations and ethical considerations of AI"
+]
+
+/human 
+
+AI can optimize smart homes and buildings for energy efficiency and occupant wellbeing.
+
+/ ai 
+
+[
+  "AI can optimize smart homes and buildings for energy efficiency and occupant wellbeing."
+]
+
+/human 
+
+AI can help optimize energy grids, reducing waste and carbon emissions.
+
+/ai 
+
+[
+  "AI could optimize energy grids to reduce waste and carbon emissions."
+]
+

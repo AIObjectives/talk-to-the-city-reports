@@ -1,0 +1,13 @@
+.vscode
+venv
+.DS_Store
+__pycache__/
+
+pipeline/inputs/*
+!pipeline/inputs/example.csv
+
+pipeline/outputs/*
+pipeline/jobs/*
+!pipeline/jobs/example.json
+
+
