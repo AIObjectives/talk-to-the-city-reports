@@ -27,6 +27,8 @@ TttC is a research project aiming to explore the potential of generative AI to s
 
 ## How to generate reports
 
+### Dependencies 
+
 This repository will allow you to generate TttC reports on your machine.
 
 For this you will need:
@@ -51,7 +53,22 @@ cd next-app
 npm install
 ```
 
-You can then copy your data in the pipeline input folder, after making sure that the necessary columns `comment-id` and `comment-body` are present.
+### Using the provided example
+
+This repo comes with some example data and config. 
+The easiest way to test that the pipeline is working fine on you machine is to run: 
+
+```
+cd pipeline
+export OPENAI_API_KEY = sk-...
+python main.py configs/example.json
+```
+
+This will use the data from `pipeline/inputs/example.csv` and produce a report under `pipeline/outputs/example/report`. 
+
+### Using your own data 
+
+You can copy your data in the pipeline input folder, after making sure that the necessary columns `comment-id` and `comment-body` are present.
 
 ```
 cp ../my-data.csv pipeline/inputs/my-data.csv
