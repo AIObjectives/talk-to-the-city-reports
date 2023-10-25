@@ -94,17 +94,20 @@ You can then run the pipeline as follows:
 
 ```
 cd pipeline
-export OPENAI_API_KEY = sk-...
+export OPENAI_API_KEY=sk-...
 python main.py configs/my-project.json
 ```
 
-The generated report can be found under `pipeline/outputs/my-project/report` and opened locally using an http server:
+### Viewing the report
+
+The generated report can be found under `pipeline/outputs/my-project/report` and opened locally using an http server run from the project's top level directory:
 
 ```
 npm install -g http-server
 http-server -p 8080
 open http://localhost:8080/pipeline/outputs/my-project/report/
 ```
+Replace "my-project" above with "example" to view the example report.
 
 You can then deploy your report using any static hosting service (e.g. Vercel).
 
