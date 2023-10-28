@@ -63,8 +63,9 @@ const Tooltip = ({ point, dimensions, expanded, zoom, fullScreen, translator }: 
       <ThumbDown className='w-4 inline-block ml-3' />  {point.disagrees}
     </div>
     }
+    <VideoLink {...point} showVideo={false}  showThumbnail={!expanded} />
     {expanded ? <div>
-      <VideoLink {...point} />
+      <VideoLink {...point} showVideo={true} showThumbnail={false} />
       <div className='text-sm opacity-80 mt-2'>
         <span className='font-semibold'>{t(point.video ? "Transcript" : "Original comment")}:</span>
         "{point.comment.length > 100 && !showMoreComment ?
