@@ -12,7 +12,7 @@ const Appendix = ({ config, translator }: Props) => {
   const steps = ['extraction', 'embedding', 'clustering', 'labelling', 'takeaways', 'overview']
   return <div id="appendix">
     <hr className="h-px my-8 bg-gray-600 border-0 dark:bg-gray-700"></hr>
-    <h2 className='text-3xl font-bold my-4 border-t-black'>{t("Appendix")}</h2>
+    <h2 className='text-3xl my-4 border-t-black'>{t("Appendix")}</h2>
     <div className='text-left mt-8'>
       {t("This report was generated using an AI pipeline that consists of the following steps")}:
       <div className="text-left list-outside list-disc ml-6 mt-4">

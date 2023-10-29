@@ -17,7 +17,7 @@ const Section = ({ name, target, small }: { name: string, target: string, small?
 
 const Outline = ({ clusters, translator }: Props) => {
   const { t } = translator
-  return <div className='hidden xl:block fixed left-0 top-0 h-full text-left mt-8 opacity-40 hover:opacity-100 leading-10 transition-all'>
+  return <div className='hidden xl:block fixed left-0 top-0 h-full text-left mt-8 leading-10'>
     <div className="text-left list-outside list-disc ml-2 mt-4">
       <Section name={t("Introduction")!} target="introduction" />
       <Section name={t("Clusters")!} target="clusters" />

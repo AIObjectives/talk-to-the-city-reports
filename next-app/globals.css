@@ -20,3 +20,60 @@ html,
 body {
   overscroll-behavior: none;
 }
+
+
+/* Colleen scratchpad
+ * TODO(colleemn) move to tailwind in components after checking styles
+ */
+
+/* tailwind overrides */
+.text-xl {
+  font-size: 1.25rem !important
+}
+
+.text-3xl {
+    font-size: 2rem;
+    line-height: 2.75rem;
+}
+
+
+/* outline */
+.hidden.fixed.left-0.top-0.h-full.text-left.mt-8.leading-10 {
+    background-color: rgb(243 244 246);
+    padding-right: 1rem;
+    padding-left: 0.5rem;
+    line-height: 40px !important;
+}
+
+/* header */
+.fixed.top-0.w-full.h-7.z-10.leading-7 {
+    height: 40px !important;
+    background-color: hsl(222 59% 39% / 1) !important;
+    line-height: 40px !important;
+}
+
+.flex.justify-between {
+    padding: 0 .5rem;
+}
+
+.text-white.mx-2 {
+    margin-top: auto;
+    margin-bottom: auto;
+    line-height: 40px !important;
+}
+
+img.w-5.inline-block.leading-5.shadow-white {
+    padding-bottom: 0;
+}
+
+/* report */
+button.my-2.underline {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-decoration: none;
+    background-color: #eee;
+    padding: 0.5rem 0.75rem;
+    border-radius: 2px;
+}
+
