@@ -11,7 +11,7 @@ const Header = (props: HeaderProps) => {
   const { t, languages, langIndex, setLangIndex } = props.translator
   const { hasTranslations } = useInferredFeatures(props)
 
-  return <div className='fixed top-0 w-full h-7 bg-gradient-to-r from-blue-900 to-white z-10 leading-7'>
+  return <div className='fixed top-0 w-full px-2 bg-blue-900 z-10 leading-10'>
     <div className="flex justify-between">
       <div className="text-white mx-2">
         Talk to the City
@@ -23,7 +23,7 @@ const Header = (props: HeaderProps) => {
           key={lang.name}
           onClick={() => setLangIndex(i)}
         >
-          <img className="w-5 inline-block leading-5 pb-[4px] hover:shadow-2xl shadow-white"
+          <img className="w-5 inline-block leading-5 hover:shadow-2xl shadow-white"
             src={`https://purecatamphetamine.github.io/country-flag-icons/3x2/${lang.flag}.svg`} alt="" />
           {/* {t(lang.name)} */}
         </button>)}

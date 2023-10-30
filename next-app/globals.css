@@ -38,35 +38,13 @@ body {
 
 
 /* outline */
-.hidden.fixed.left-0.top-0.h-full.text-left.mt-8.leading-10 {
+.fixed.left-0.top-0.h-full.text-left.mt-8.leading-10 {
     background-color: rgb(243 244 246);
     padding-right: 1rem;
     padding-left: 0.5rem;
-    line-height: 40px !important;
 }
 
-/* header */
-.fixed.top-0.w-full.h-7.z-10.leading-7 {
-    height: 40px !important;
-    background-color: hsl(222 59% 39% / 1) !important;
-    line-height: 40px !important;
-}
-
-.flex.justify-between {
-    padding: 0 .5rem;
-}
-
-.text-white.mx-2 {
-    margin-top: auto;
-    margin-bottom: auto;
-    line-height: 40px !important;
-}
-
-img.w-5.inline-block.leading-5.shadow-white {
-    padding-bottom: 0;
-}
-
-/* report */
+/* full-screen map buttons */
 button.my-2.underline {
     display: block;
     margin-left: auto;

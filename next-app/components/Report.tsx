@@ -39,7 +39,7 @@ function Report(props: ReportProps) {
     <Header {...props} translator={translator} />
     <div className='max-w-3xl m-auto py-8 px-5'
       style={{ display: openMap ? 'none' : 'block' }}>
-      <h2 className='text-xl my-3 font-light'>{t(config.name)}</h2>
+      <h2 className='text-xl my-3 font-light'>{t("Project") + ": " + t(config.name)}</h2>
       <h1 className='text-3xl my-3 mb-6'>{t(config.question)}</h1>
 
       <div id="introduction" className='my-4'>
