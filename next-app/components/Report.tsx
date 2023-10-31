@@ -35,65 +35,67 @@ function Report(props: ReportProps) {
     }} fullScreen onlyCluster={openMap !== 'main' ? openMap : undefined} />
   }
   return <div className='mt-9'>
-    <Outline clusters={clusters} translator={translator} />
     <Header {...props} translator={translator} />
-    <div className='max-w-3xl m-auto py-8 px-5'
-      style={{ display: openMap ? 'none' : 'block' }}>
-      <h2 className='text-xl my-3 font-light'>{t("Project") + ": " + t(config.name)}</h2>
-      <h1 className='text-3xl my-3 mb-6'>{t(config.question)}</h1>
+    <div className="flex">
+      <Outline clusters={clusters} translator={translator} />
+      <div className='max-w-3xl m-auto py-8 px-8'
+        style={{ display: openMap ? 'none' : 'block' }}>
+        <h2 className='text-xl my-3 font-light'>{t("Project") + ": " + t(config.name)}</h2>
+        <h1 className='text-3xl my-3 mb-6'>{t(config.question)}</h1>
 
-      <div id="introduction" className='my-4'>
-        {config.intro &&
-          <div className='max-w-3xl m-auto mb-10 text-justify italic' dangerouslySetInnerHTML={{
-            __html: converter.makeHtml(t(config.intro)!)
-          }} />}
-        <div id="big-map" className="mb-10">
-          <Map {...props} translator={translator} color={color} width={450} height={450} />
-          <button className="my-2 underline"
-            onClick={() => {
-              if (isTouchDevice()) {
-                alert('Our interactive maps are not yet available on touch devices. Please try again from a desktop computer.')
-              } else {
-                scroll.current = window.scrollY
-                setOpenMap("main")
-              }
-            }}>
-            {t("Open full-screen map")}</button>
-        </div>
-        <div id="overview" className='text-xl font-semibold my-3'>{t("Overview")}:</div>
-        <div>{t(overview)}</div>
-      </div>
-      <div id="clusters">
-        {clusters.sort((c1, c2) => c2.arguments.length - c1.arguments.length)
-          .map((cluster) => <div key={cluster.cluster_id} id={`cluster-${cluster.cluster_id}`}>
-            <h2 className="text-2xl font-semibold my-1 mt-12"
-              style={{ color: color(cluster.cluster_id) }}>{t(cluster.cluster)}</h2>
-            <div className="opacity-50 mb-4">({cluster.arguments.length} {t("arguments")},&nbsp;
-              {Math.round(100 * cluster.arguments.length / totalArgs)}% {t("of total")})</div>
-            <div className='text-lg font-semibold my-3 mt-5'>{t("Cluster analysis")}</div>
-            <div>{t(cluster.takeaways)}</div>
-            <div className='my-4'>
-              <Map  {...props} translator={translator} color={color} width={350} height={350} onlyCluster={t(cluster.cluster_id)} />
-              <button className="my-2 underline" onClick={() => {
+        <div id="introduction" className='my-4'>
+          {config.intro &&
+            <div className='max-w-3xl m-auto mb-10 text-justify italic' dangerouslySetInnerHTML={{
+              __html: converter.makeHtml(t(config.intro)!)
+            }} />}
+          <div id="big-map" className="mb-10">
+            <Map {...props} translator={translator} color={color} width={450} height={450} />
+            <button className="block my-2 mx-auto bg-gray-100 py-2 px-3 rounded-sm"
+              onClick={() => {
                 if (isTouchDevice()) {
                   alert('Our interactive maps are not yet available on touch devices. Please try again from a desktop computer.')
                 } else {
                   scroll.current = window.scrollY
-                  setOpenMap(cluster.cluster_id)
+                  setOpenMap("main")
                 }
-              }}>{t("Open full-screen map")}</button>
-            </div>
-            <div className='text-lg font-semibold my-6'>{t("Representative comments")}</div>
-            <ul className='list-outside list-disc ml-6 '>
-              {cluster.arguments
-                .sort((a, b) => b.p - a.p)
-                .slice(0, 5).map((arg, i) =>
-                  <li key={i} className='italic'>{t(arg.argument)}</li>
-                )}
-            </ul>
-          </div>)}
+              }}>
+              {t("Open full-screen map")}</button>
+          </div>
+          <div id="overview" className='text-xl font-semibold my-3'>{t("Overview")}:</div>
+          <div>{t(overview)}</div>
+        </div>
+        <div id="clusters">
+          {clusters.sort((c1, c2) => c2.arguments.length - c1.arguments.length)
+            .map((cluster) => <div key={cluster.cluster_id} id={`cluster-${cluster.cluster_id}`}>
+              <h2 className="text-2xl font-semibold my-1 mt-12"
+                style={{ color: color(cluster.cluster_id) }}>{t(cluster.cluster)}</h2>
+              <div className="opacity-50 mb-4">({cluster.arguments.length} {t("arguments")},&nbsp;
+                {Math.round(100 * cluster.arguments.length / totalArgs)}% {t("of total")})</div>
+              <div className='text-lg font-semibold my-3 mt-5'>{t("Cluster analysis")}</div>
+              <div>{t(cluster.takeaways)}</div>
+              <div className='my-4'>
+                <Map  {...props} translator={translator} color={color} width={350} height={350} onlyCluster={t(cluster.cluster_id)} />
+                <button className="block my-2 mx-auto bg-gray-100 py-2 px-3 rounded-sm" onClick={() => {
+                  if (isTouchDevice()) {
+                    alert('Our interactive maps are not yet available on touch devices. Please try again from a desktop computer.')
+                  } else {
+                    scroll.current = window.scrollY
+                    setOpenMap(cluster.cluster_id)
+                  }
+                }}>{t("Open full-screen map")}</button>
+              </div>
+              <div className='text-lg font-semibold my-6'>{t("Representative comments")}</div>
+              <ul className='list-outside list-disc ml-6 '>
+                {cluster.arguments
+                  .sort((a, b) => b.p - a.p)
+                  .slice(0, 5).map((arg, i) =>
+                    <li key={i} className='italic'>{t(arg.argument)}</li>
+                  )}
+              </ul>
+            </div>)}
+        </div>
+        <Appendix config={config} translator={translator} />
       </div>
-      <Appendix config={config} translator={translator} />
     </div>
   </div>
 }

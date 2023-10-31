@@ -8,7 +8,7 @@ type Props = {
 
 const Section = ({ name, target, small }: { name: string, target: string, small?: boolean }) => {
   let className = "opacity-60 hover:opacity-100 cursor-pointer"
-  if (small) className += " text-xs ml-2  max-w-xs  line-clamp-1 leading-6"
+  if (small) className += " text-xs ml-2 max-w-xs  line-clamp-1 leading-6"
   return <h2 className={className} onClick={() => {
     const elem = document.getElementById(target)!
     window.scrollTo({ top: elem.offsetTop - 50, behavior: 'smooth' })
@@ -17,8 +17,9 @@ const Section = ({ name, target, small }: { name: string, target: string, small?
 
 const Outline = ({ clusters, translator }: Props) => {
   const { t } = translator
-  return <div className='hidden xl:block fixed left-0 top-0 h-full text-left mt-8 leading-10'>
-    <div className="text-left list-outside list-disc ml-2 mt-4">
+  return <div className='hidden lg:block sticky left-0 top-10 pr-4 pl-4 text-left
+                         leading-10 bg-gray-100 h-[calc(100vh-2.5rem)]'>
+    <div className="text-left list-outside list-disc mt-4">
       <Section name={t("Introduction")!} target="introduction" />
       <Section name={t("Clusters")!} target="clusters" />
       {clusters.map((cluster, i) => <Section small key={i} name={t(cluster.cluster)!}
