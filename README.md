@@ -21,6 +21,8 @@ For example:
 
 TttC is developed by the [AI Objectives Institute](http://aiobjectives.org), an non-profit research organization focused on AI alignment.
 
+For more context, see also our blog post: [an open-source AI tool to scale deliberation](https://ai.objectives.institute/blog/talk-to-the-city-an-open-source-ai-tool-to-scale-deliberation).  
+
 ## AI safety disclaimer
 
 TttC is a research project aiming to explore the potential of generative AI to support public deliberation. LLMs are known to be biased and to produce unreliable results. We are actively working on ways to mitigate these issues but can not provide any guarantee at this stage. We do not recommend relying on the results of this pipeline alone to make impactful decisions without first verifying the results.
