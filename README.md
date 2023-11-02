@@ -15,13 +15,13 @@ TttC is an AI pipeline which takes a csv file of comments and generates html rep
 TttC is able to ingest different types of data and produce reports in different languages.
 For example:
 
-- [tttc.dev/recursive](https://tttc.dev/recursive) is a report generated using data collected by the Pol.is tool. The input included votes and the maps let you filter arguments by level of consensus.
-- [tttc.dev/genai](https://tttc.dev/genai) is a report which can be read either in English or Mandarin. The data came from a public consultation about generative AI conducted in Taiwan by the Collective Intelligence Project. 
-- [tttc.dev/heal-michigan](https://tttc.dev/heal-michigan) is a report generated using video transcripts and links to the source videos, from an activist community in Michigan.
+- [Recursive Public](https://tttc.dev/recursive) is a report generated using data collected by the Pol.is tool. The input included votes and the maps let you filter arguments by level of consensus.
+- [GenAI Taiwan](https://tttc.dev/genai) is a report which can be read either in English or Mandarin. The data came from a public consultation about generative AI conducted in Taiwan by the Collective Intelligence Project.
+- [Heal Michigan](https://tttc.dev/heal-michigan-7/) is a report generated using video transcripts and links to the source videos, from an activist community in Michigan.
 
 TttC is developed by the [AI Objectives Institute](http://aiobjectives.org), an non-profit research organization focused on AI alignment.
 
-For more context, see also our blog post: [an open-source AI tool to scale deliberation](https://ai.objectives.institute/blog/talk-to-the-city-an-open-source-ai-tool-to-scale-deliberation).  
+For more context, see also our blog post: [an open-source AI tool to scale deliberation](https://ai.objectives.institute/blog/talk-to-the-city-an-open-source-ai-tool-to-scale-deliberation).
 
 ## AI safety disclaimer
 
@@ -29,7 +29,7 @@ TttC is a research project aiming to explore the potential of generative AI to s
 
 ## How to generate reports
 
-### Dependencies 
+### Dependencies
 
 This repository will allow you to generate TttC reports on your machine.
 
@@ -55,20 +55,23 @@ cd next-app
 npm install
 ```
 
-### Using the provided example
+### Using a provided example
 
-This repo comes with some example data and config. 
-The easiest way to test that the pipeline is working fine on you machine is to run: 
+This repo comes with two examples of datasets and config files, including one called `example-polis` (using Polis data).
+
+The easiest way to test that the pipeline is working fine on you machine is to run:
 
 ```
 cd pipeline
 export OPENAI_API_KEY = sk-...
-python main.py configs/example.json
+python main.py configs/example-polis.json
 ```
 
-This will use the data from `pipeline/inputs/example.csv` and produce a report under `pipeline/outputs/example/report`. 
+This will use the data from `pipeline/inputs/example-polis.csv` and produce a report under `pipeline/outputs/example-polis/report`.
 
-### Using your own data 
+Note that we also provide another example called `example-video` (using video transcripts), which is a better choice to test video-related features.
+
+### Using your own data
 
 You can copy your data in the pipeline input folder, after making sure that the necessary columns `comment-id` and `comment-body` are present.
 
@@ -100,7 +103,7 @@ export OPENAI_API_KEY=sk-...
 python main.py configs/my-project.json
 ```
 
-### Viewing the report
+## Viewing the generate report
 
 The generated report can be found under `pipeline/outputs/my-project/report` and opened locally using an http server run from the project's top level directory:
 
@@ -109,6 +112,7 @@ npm install -g http-server
 http-server -p 8080
 open http://localhost:8080/pipeline/outputs/my-project/report/
 ```
+
 Replace "my-project" above with "example" to view the example report.
 
 You can then deploy your report using any static hosting service (e.g. Vercel).
@@ -116,6 +120,8 @@ You can then deploy your report using any static hosting service (e.g. Vercel).
 (!) Note that the html file is loading assets using relative paths. You can deploy your report anywhere (on any path/route) but you might need to include a trailing slash at the end of you urls to make sure that relative paths are resolved correctly.
 
 ## Supported columns in the csv
+
+Below is the list of required and optional columns supported by the pipeline for the input csv file:
 
 ```
 {
@@ -127,12 +133,14 @@ You can then deploy your report using any static hosting service (e.g. Vercel).
 'agree'?: number // number of upvotes
 'disagree?': number // number of downvotes
 'video?': string // link to a video
-'imterview?': string // name of interviewee
+'interview?': string // name of interviewee
 'timestamp?': string // timestamp in the video
 }
 ```
 
 ## List of config parameters
+
+Below is the list of parameters supported in the config files:
 
 ```
 {
@@ -180,9 +188,11 @@ visualization: {
 
 ## Generated outputs
 
+After running the full pipeline successfully, you should find the following files:
+
 ```
 outputs
-└── example
+└── my-project
     ├── args.csv // extracted arguments
     ├── clusters.csv // clusters of arguments
     ├── embeddings.pkl // embeddings

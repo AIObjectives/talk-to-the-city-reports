@@ -1,7 +1,7 @@
 {
   "name": "Recursive Public, Agenda Setting",
   "question": "What should be top of the agenda as humanity develops and deploys artificial intelligence?",
-  "input": "example",
+  "input": "example-polis",
   "model": "gpt-3.5-turbo",
   "extraction": {
     "workers": 3,

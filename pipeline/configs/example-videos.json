@@ -1,0 +1,35 @@
+{
+  "name": "Heal Michigan",
+  "question": "What challenges are you and the community facing?",
+  "input": "example-videos",
+  "model": "gpt-4",
+  "extraction": {
+    "workers": 3,
+    "prompt_file": "example-videos"
+  },
+  "clustering": {
+    "clusters": 7
+  },
+  "visualization": {
+    "replacements": [
+      { "replace": "ex-offender", "by": "returning citizen" },
+      { "replace": "ex-convict", "by": "returning citizen" },
+      { "replace": "ex-offender", "by": "returning citizen" },
+      { "replace": "ex-prisoner", "by": "returning citizen" },
+      { "replace": "ex-felon", "by": "returning citizen" },
+      { "replace": "ex-inmate", "by": "returning citizen" },
+      { "replace": " urban", "by": " low income" },
+      { "replace": "offenders", "by": "incarcerated individuals" },
+      { "replace": "convicts", "by": "incarcerated individuals" },
+      { "replace": "prisoners", "by": "incarcerated individuals" },
+      { "replace": " felons", "by": " incarcerated individuals" },
+      { "replace": "inmates", "by": "incarcerated individuals" },
+      { "replace": "offender", "by": "incarcerated person" },
+      { "replace": "convict", "by": "incarcerated person" },
+      { "replace": "prisoner", "by": "incarcerated person" },
+      { "replace": " felon", "by": " incarcerated person" },
+      { "replace": "inmate", "by": "incarcerated person" }
+    ]
+  },
+  "intro": "This AI-generated report is based on a collection of video interviews about challenges faced by individuals in Michigan, many of whom are formerly incarcerated individuals (referred to below as “returning citizens”). Twelve interviews were conducted in Summer 2023 during a collaboration between the [AI Objectives Institute](https://aiobjectives.org/) and [Silent Cry](https://www.silentcryinc.org/)."
+}
