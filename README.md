@@ -55,6 +55,8 @@ cd next-app
 npm install
 ```
 
+You may also need to [install git lfs](https://docs.github.com/en/repositories/working-with-files/managing-large-files/installing-git-large-file-storage) to use the provided examples of csv files.
+
 ### Using a provided example
 
 This repo comes with two examples of datasets and config files, including one called `example-polis` (using Polis data).
