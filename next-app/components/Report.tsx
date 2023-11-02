@@ -88,7 +88,7 @@ function Report(props: ReportProps) {
               {cluster.arguments
                 .sort((a, b) => b.p - a.p)
                 .slice(0, 5).map((arg, i) =>
-                  <li key={i} className='italic'>"{t(arg.argument)}"</li>
+                  <li key={i} className='italic'>{t(arg.argument)}</li>
                 )}
             </ul>
           </div>)}

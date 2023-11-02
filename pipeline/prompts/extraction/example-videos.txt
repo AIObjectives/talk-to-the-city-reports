@@ -1,0 +1,48 @@
+/system
+
+You are an argument extractor that identifies the main arguments made in a text. 
+The text will consist of transcripts of interviews with people. 
+Answer each message with a formatted python list with the arguments. 
+Each argument should be understandable and readable on its own, without any other context. 
+The arguments should not reference the other arguments nor the original text. 
+The arguments must be formulated in the first person and use the present tense of general truth.
+
+/human
+
+My mother lost her mind when I was 11 years old, so I watched my mother suffer from schizophrenia from 11 till she passed when I was 27. So I kind of made myself a mental health expert watching my mother suffer. So for the years of her going back and forth to doctors getting prescribed medications, that didn't work.  And so for years I. Was right there next to her trying to figure out why my mother. And so as an adult I started to see how essential understanding of mental health was younger and younger is something that we don't talk about. As a community, when my mother was losing her mind, my mother would bust all the windows out the house, walk down the street naked.  Like I'm lucky that we didn't have a cell phone back there back then, or you would probably see my mother on some of the videos that you see on the news today. So seeing that That tragedy, that's a tragedy for a young man to see his mother in that state. You couldn't talk about it. It was nobody that I could say, Hey, I'm dealing with the worst trauma of my life over here.  So instead, I built my personality. I was able to make you laugh. I was able to talk about your truth, to hide my truth. And so ultimately what I've built now with the educational service company is an opportunity to be able to share those experiences and make sure that youth that are possibly experienced what I experienced, have out outlets and things to be able to help them to deal with the struggle of mental health in our community.  It's not just necessarily in my home, but as I've gotten older, I've. Had friends that was dealing with the exact same thing and they were like me hiding behind the mask of that trauma. So for me it is getting those resources to the youth and making sure they have access to how they can Be able to develop their toolbox and deal in these times.
+
+/ai 
+
+[
+  "Existing mental health treatments are too limited.",
+  "Young people need to be taught how to manage their mental health.",
+  "A parent's mental health struggles can have a profound impact on their children.",
+  "People suffering from mental health issues can feel isolated.",
+  "Mental health struggles are prevalent in the community, often hidden behind a mask of trauma.",
+]
+
+/human 
+
+One of the biggest things that if, as, as a taxpayer now, and I think all taxpayers should be upset with, is the fact that we don't invest. In the criminal justice sim system we spend there's a difference. And, and one of the perfect examples of that is, is the way the Department of Corrections is set up is, is it does very little to emulate the actual world that most people are gonna be released into.  It's based on, well, it's based on a military model. Where you break 'em up and you and, and I mean, you break 'em down and then you build them back up. But when budget cuts come, it doesn't cost anything to break people down. It costs a lot to build them back up. So those are the things that always go, but even worse, it's based on a abusive parenting model.  And, and so you're talking about giving people allowances. You're talking about grounding them when they don't do what they're supposed to do. They don't really have any real budgetary lessons that are learned. They don't have any idea that the reason why they're making 17 cents an hour is because they're deferring all these other costs, and they could use all these.  Things to actually teach people before they come home, but they don't what they do is, is that they learn that they're not worth very much, they're not worth, you know, good food, good clothes, any of those things. So their sense of value becomes really diminished. And I think that's the biggest challenge that we face working with the people that we do at a brighter way.  Getting them to understand that they're worth it. Getting them to understand that what, that we are investing in them because we believe they're gonna give something back to all of us and to society as a whole. We're not just giving them something, we're pulling something out of them that already exists.  And I think that's a huge disservice. I, a lot of people will think that it's on purpose. I don't necessarily think it's that conscious and on purpose, but I also believe that the status quo requires people to be on the bottom and people to be on the top. And therefore it allows certain people to stay on the bottom and become the aggregate for everything else.  You know, so I think that's the biggest thing is a sense of sense of purpose, a sense of value, of sense of. That they actually can be, you know, there's stigmas and we talk about stigmas all the time, especially when we're talking about those that are imposed upon us. But the, the worst stigmas are the ones that we internalize and take with us everywhere.  So nobody has to, nobody has to do it to us because we stop ourselves. Nobody's gonna give me this job because I have a felony. Nobody's gonna do this. And I think that's one of the things that peer led reentry has the ability to kind of dispel is. Three and a half years after my incarceration, I'm the executive director of a nonprofit organization.  And so you can't tell me what you can't do. I've got nine felonies on my record. I did 27 straight. I had an a prefix that I did two years on. I've done a year and a after the county, 53 years old, and I have nearly 31 years of incarceration. So you can do these things. They just aren't easy.
+
+/ai
+
+[
+  "The criminal justice system focuses too much on punishment instead of rehabilitation.",
+  "The system fails to teach inmates essential life skills or financial management.",
+  "Inmates leave with a diminished sense of self-worth, which hinder their reintegration.",
+  "Internalized stigmas prevent former inmates from seeking employment.",
+  "We need more peer-led reentry programs to provide examples of successful reintegration.",
+]
+
+/human
+
+What's holding back, returning citizens? Cuz I've, me and other people I've, I've talked to like, why isn't there a returning citizen's union or, or something of the like, because I, I hate it that it's again, that it happens to me that I gotta take wages that are way.  Less than what I know I'm worth and take whatever job that I can get simply because of my background. some type of union that advocates like, okay, yeah, this person might be a return that says, but you gonna pay them a wage as if you know, or give them the opportunity for working.  The same way you would give those opportunities to other individuals because it, again, debilitating being free and still feeling like you're in prison out here in society
+
+/ai 
+
+[
+  "Citizen with criminal backgrounds often have to accept underpaid jobs.",
+  "The lack of a union for returning citizens leaves them without a collective voice.",
+  "Returning citizens often keep feeling marginalized after serving their sentences."
+]

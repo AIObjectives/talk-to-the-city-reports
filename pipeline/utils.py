@@ -94,8 +94,11 @@ def decide_what_to_run(config, previous):
             [x for x in previous_jobs if x['step'] == step['step']]) > 0
         if config.get('force', False):
             reason = 'forced with -f'
+        elif config.get('only', None) != None and config['only'] != stepname:
+            run = False
+            reason = 'forced another step with -o'
         elif config.get('only') == stepname:
-            reason = 'forced with -o'
+            reason = 'forced this step with -o'
         elif not found_prev:
             reason = 'not trace of previous run'
         elif not os.path.exists(f"outputs/{config['output_dir']}/{step['filename']}"):
