@@ -71,7 +71,7 @@ python main.py configs/example-polis.json
 
 This will use the data from `pipeline/inputs/example-polis.csv` and produce a report under `pipeline/outputs/example-polis/report`.
 
-Note that we also provide another example called `example-video` (using video transcripts), which is a better choice to test video-related features.
+We also provide another example called `example-video` which may be helpful to test video-related features.
 
 ### Using your own data
 
@@ -105,7 +105,7 @@ export OPENAI_API_KEY=sk-...
 python main.py configs/my-project.json
 ```
 
-## Viewing the generate report
+## Viewing the generated report
 
 The generated report can be found under `pipeline/outputs/my-project/report` and opened locally using an http server run from the project's top level directory:
 
