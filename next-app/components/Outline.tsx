@@ -8,7 +8,7 @@ type Props = {
 
 const Section = ({ name, target, small }: { name: string, target: string, small?: boolean }) => {
   let className = "opacity-60 hover:opacity-100 cursor-pointer"
-  if (small) className += " text-xs ml-2 max-w-xs  line-clamp-1 leading-6"
+  if (small) className += " text-xs ml-2 max-w-xs line-clamp-1 leading-6"
   return <h2 className={className} onClick={() => {
     const elem = document.getElementById(target)!
     window.scrollTo({ top: elem.offsetTop - 50, behavior: 'smooth' })
