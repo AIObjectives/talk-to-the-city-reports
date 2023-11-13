@@ -69,7 +69,7 @@ function Report(props: ReportProps) {
             .map((cluster) => <div key={cluster.cluster_id} id={`cluster-${cluster.cluster_id}`}>
               <h2 className="text-2xl font-semibold my-1 mt-12"
                 style={{ color: color(cluster.cluster_id) }}>{t(cluster.cluster)}</h2>
-              <div className="opacity-50 mb-4">({cluster.arguments.length} {t("arguments")},%nbsp;
+              <div className="opacity-50 mb-4">({cluster.arguments.length} {t("arguments")},&nbsp;
                 {Math.round(100 * cluster.arguments.length / totalArgs)}% {t("of total")})</div>
               <div className='text-lg font-semibold my-3 mt-5'>{t("Cluster analysis")}</div>
               <div>{t(cluster.takeaways)}</div>
