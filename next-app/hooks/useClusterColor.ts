@@ -1,30 +1,30 @@
 import { useCallback, useMemo } from "react";
 
 const colors: string[] = [
-  "#8a2be2", // Purple
-  "#ff69b4", // Pink
-  "#1e90ff", // Blue
-  "#008080", // Teal
-  "#00d3d3", // Cyan
-  "#cdcd00", // Yellow
+  "#4169e1", // Royal Blue
+  "#ff6347", // Tomato
+  "#2e8b57", // Sea Green
+  "#dc143c", // Crimson
   "#ffa500", // Orange
-  "#ff0000", // Red
-  "#008000", // Green
+  "#8a2be2", // Purple
+  "#8b4513", // Saddle Brown
+  "#ff69b4", // Pink
+  "#00d3d3", // Cyan
+  "#556b2f", // Dark Olive Green
+  "#cdcd00", // Yellow
+  "#1e90ff", // Blue
   "#ff4500", // Orange-Red
   "#32cd32", // Lime Green
-  "#ff1493", // Deep Pink
-  "#9932cc", // Dark Orchid
-  "#20b2aa", // Light Sea Green
-  "#ff6347", // Tomato
-  "#4169e1", // Royal Blue
-  "#2e8b57", // Sea Green
-  "#8b4513", // Saddle Brown
-  "#00ffff", // Aqua
   "#ffd700", // Gold
+  "#ff1493", // Deep Pink
+  "#00ffff", // Aqua
+  "#20b2aa", // Light Sea Green
   "#4b0082", // Indigo
   "#ff8c00", // Dark Orange
-  "#dc143c", // Crimson
-  "#556b2f", // Dark Olive Green
+  "#008080", // Teal
+  "#ff0000", // Red
+  "#008000", // Green
+  "#9932cc", // Dark Orchid
 ];
 
 const useClusterColor = (clusterIds: string[]) => {
