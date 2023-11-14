@@ -1,8 +1,18 @@
 <script>
 	import Header from './Header.svelte';
 	import './styles.css';
-	import { deleteDoc, getDocs, query, where } from 'firebase/firestore/lite';
-	import { blogCollection, blogDoc } from '../firebase';
+	// import { deleteDoc, getDocs, query, where } from 'firebase/firestore/lite';
+	// import { blogCollection, blogDoc } from '../firebase';
+	import { onMount } from 'svelte';
+	import { onAuthStateChanged } from 'firebase/auth';
+	import { user } from '$lib/store';
+	import { auth } from '$lib/firebase';
+
+	onMount(() => {
+		onAuthStateChanged(auth, (firebaseUser) => {
+			$user = firebaseUser;
+		});
+	});
 </script>
 
 <div class="app">
@@ -12,7 +22,12 @@
 		<slot />
 	</main>
 
-	<footer>Developed by <a href="https://objective.is">AI Objectives Institute</a>.</footer>
+	<footer>
+		Developed by <a href="https://objective.is">AI Objectives Institute</a>
+		{#if $user}
+			Logged in as {$user.displayName}
+		{/if}
+	</footer>
 </div>
 
 <style>

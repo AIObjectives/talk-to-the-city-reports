@@ -1,21 +1,10 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from 'firebase/auth';
+	import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+	import { user } from '$lib/store';
+	import { goto } from '$app/navigation';
+	import { auth } from '$lib/firebase';
 
-	let auth;
-	let user;
 	let error;
-
-	onMount(() => {
-		auth = getAuth();
-		onAuthStateChanged(auth, (firebaseUser) => {
-			if (firebaseUser) {
-				user = firebaseUser;
-			} else {
-				user = null;
-			}
-		});
-	});
 
 	async function signInWithGoogle() {
 		try {
@@ -25,13 +14,14 @@
 			const result = await signInWithPopup(auth, provider);
 			const credential = GoogleAuthProvider.credentialFromResult(result);
 			const token = credential.accessToken;
+			await goto('/');
 		} catch (e) {
 			error = e;
 		}
 	}
 </script>
 
-{#if !user}
+{#if !$user}
 	<button on:click={signInWithGoogle}>Sign in with Google</button>
 {/if}
 
