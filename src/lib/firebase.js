@@ -17,14 +17,14 @@ const firebaseConfig = {
 let app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 let db = getFirestore(app);
-const blogCollection = collection(db, "blogs");
+const datasetCollection = collection(db, "datasets");
 const userDoc = (userId) => doc(db, "users", userId);
-const blogDoc = (blogId) => doc(db, "blogs", blogId)
+const datasetDoc = (datasetId) => doc(db, "datasets", datasetId)
 
 export {
     auth,
     db,
-    blogCollection,
+    datasetCollection,
     userDoc,
-    blogDoc
+    datasetDoc
 }

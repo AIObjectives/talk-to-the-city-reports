@@ -14,6 +14,12 @@
 	--column-margin-top: 4rem;
 	font-family: var(--font-body);
 	color: var(--color-text);
+	--background-color-default: transparent !important;
+	--attribution-background-color-default: transparent !important;
+}
+
+.svelte-flow__attribution {
+	display: none;
 }
 
 body {
@@ -50,7 +56,7 @@ a:hover {
 }
 
 h1 {
-	font-size: 2rem;
+	font-size: 4rem;
 	text-align: center;
 }
 

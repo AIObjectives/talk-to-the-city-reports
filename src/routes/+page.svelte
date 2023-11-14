@@ -1,5 +1,5 @@
 <script>
-	import Counter from './Counter.svelte';
+	import { user } from '$lib/store';
 </script>
 
 <svelte:head>
@@ -8,8 +8,18 @@
 </svelte:head>
 
 <section>
-	<h1>Talk to the City Turbo</h1>
-	<Counter />
+	<h1 class="text-3xl pt-10 pb-10">Talk to the City Turbo</h1>
+
+	{#if $user}
+		<a
+			href="/projects/new"
+			class="w-64 bg-blue-300 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded text-center"
+		>
+			New project
+		</a>
+	{:else}
+		Please sign in to create a new project.
+	{/if}
 </section>
 
 <style>
@@ -18,18 +28,11 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		flex: 0.6;
+		margin-top: 0px;
+		padding-top: 0px;
 	}
 
 	h1 {
 		width: 100%;
-	}
-
-	.welcome {
-		display: block;
-		position: relative;
-		width: 100%;
-		height: 0;
-		padding: 0 0 calc(100% * 495 / 2048) 0;
 	}
 </style>

@@ -1,12 +1,12 @@
 <script>
 	import Header from './Header.svelte';
 	import './styles.css';
-	// import { deleteDoc, getDocs, query, where } from 'firebase/firestore/lite';
-	// import { blogCollection, blogDoc } from '../firebase';
+	import { SvelteToast } from '@zerodevx/svelte-toast';
 	import { onMount } from 'svelte';
 	import { onAuthStateChanged } from 'firebase/auth';
 	import { user } from '$lib/store';
 	import { auth } from '$lib/firebase';
+	import '/src/app.css';
 
 	onMount(() => {
 		onAuthStateChanged(auth, (firebaseUser) => {
@@ -16,6 +16,7 @@
 </script>
 
 <div class="app">
+	<SvelteToast />
 	<Header />
 
 	<main>
