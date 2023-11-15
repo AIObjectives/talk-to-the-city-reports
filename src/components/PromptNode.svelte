@@ -18,6 +18,7 @@
 	export let selected;
 	export let sourcePosition;
 	export let targetPosition;
+	export let showSystemPrompt = false;
 
 	const { system_prompt, prompt, output } = data;
 </script>
@@ -29,12 +30,14 @@
 		<Check color="green" />
 	{/if} -->
 	<div>{data.label}</div>
-	<textarea
-		rows="4"
-		class="nodrag"
-		on:input={(evt) => (data.system_prompt = evt.target?.value)}
-		value={system_prompt}
-	/>
+	{#if showSystemPrompt}
+		<textarea
+			rows="4"
+			class="nodrag"
+			on:input={(evt) => (data.system_prompt = evt.target?.value)}
+			value={system_prompt}
+		/>
+	{/if}
 	<textarea
 		rows="4"
 		class="nodrag"

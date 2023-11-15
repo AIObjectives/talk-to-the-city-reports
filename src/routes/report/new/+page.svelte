@@ -6,12 +6,12 @@
 	import { goto } from '$app/navigation';
 	import { templates } from '$lib/templates';
 
+	const defaultTemplate = 'heal_michigan';
+	const showTemplate = false;
 	let projectTitle = '';
 	let projectSlug = '';
 	let projectDescription = '';
-	let projectTemplate = '';
-
-	$: projectSlug = createProjectSlug(projectTitle);
+	let projectTemplate = defaultTemplate;
 
 	function createProjectSlug(str) {
 		return str
@@ -49,11 +49,7 @@
 		});
 
 		success('Project added successfully');
-		goto(`/projects/${projectSlug}`);
-		projectTitle = '';
-		projectSlug = '';
-		projectDescription = '';
-		projectTemplate = '';
+		goto(`/report/${projectSlug}`);
 	}
 </script>
 
@@ -72,7 +68,7 @@
 					id="project-name"
 					class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
 					type="text"
-					placeholder="Enter project name"
+					placeholder="Enter report name"
 					bind:value={projectTitle}
 				/>
 			</div>
@@ -81,15 +77,14 @@
 					class="block uppercase tracking-wide text-gray-500 text-xs font-bold mb-2"
 					for="project-slug"
 				>
-					Project Slug
+					Report Slug
 				</label>
 				<input
 					id="project-slug"
 					class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
 					type="text"
-					placeholder="Project slug"
-					value={projectSlug}
-					readonly
+					placeholder="Report slug"
+					bind:value={projectSlug}
 				/>
 			</div>
 			<div class="w-full px-3">
@@ -103,25 +98,27 @@
 					id="project-description"
 					rows="5"
 					class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-					placeholder="Enter project description"
+					placeholder="Enter report description"
 					bind:value={projectDescription}
 				/>
 			</div>
-			<div class="w-full px-3">
-				<label
-					class="block uppercase tracking-wide text-gray-500 text-xs font-bold mb-2"
-					for="project-template"
-				>
-					Project Template
-				</label>
-				<select
-					id="project-template"
-					class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-					bind:value={projectTemplate}
-				>
-					<option value="heal_michigan">Heal Michigan</option>
-				</select>
-			</div>
+			{#if showTemplate}
+				<div class="w-full px-3">
+					<label
+						class="block uppercase tracking-wide text-gray-500 text-xs font-bold mb-2"
+						for="project-template"
+					>
+						Project Template
+					</label>
+					<select
+						id="project-template"
+						class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+						bind:value={projectTemplate}
+					>
+						<option value="heal_michigan">Heal Michigan</option>
+					</select>
+				</div>
+			{/if}
 			<div class="w-full px-3 pt-5">
 				<button
 					class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"

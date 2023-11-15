@@ -1,5 +1,6 @@
 <script>
 	import { user } from '$lib/store';
+	import Projects from '$components/Projects.svelte';
 </script>
 
 <svelte:head>
@@ -11,14 +12,15 @@
 	<h1 class="text-3xl pt-10 pb-10">Talk to the City Turbo</h1>
 
 	{#if $user}
+		<Projects />
 		<a
-			href="/projects/new"
-			class="w-64 bg-blue-300 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded text-center"
+			href="/report/new"
+			class="mt-10 w-64 bg-blue-300 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded text-center"
 		>
-			New project
+			New report
 		</a>
 	{:else}
-		Please sign in to create a new project.
+		Please sign in to create a new report.
 	{/if}
 </section>
 

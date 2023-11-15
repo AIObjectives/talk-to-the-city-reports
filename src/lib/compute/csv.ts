@@ -9,15 +9,34 @@ export const csv = async (node, inputData) => {
 	}
 	console.log('Computing', node.data.label, 'with input data', inputData);
 	const contents = node.data.csv;
-	const lines = contents.split('\n');
-	const columns = lines[0].split(',').map((x: string) => x.trim());
-	const missingColumns = requiredColumns.filter((x: string) => !columns.includes(x));
-	if (missingColumns.length) {
-		console.log(`Missing required columns: ${missingColumns.join(', ')}`);
-	} else {
-		node.data.output = papa.parse(contents, { header: true }).data;
-		node.data.dirty = false;
-		console.log(node.data.output);
-		return node.data.output;
+	const parsedData = papa.parse(contents, { header: true }).data;
+
+	const validRows = [];
+
+	for (const row of parsedData) {
+		let isValidRow = true;
+
+		// trim all values
+		for (const column in row) {
+			row[column] = row[column].trim();
+		}
+
+		for (const column of requiredColumns) {
+			if (!row[column] || row[column].trim() === '') {
+				isValidRow = false;
+				break;
+			}
+		}
+
+		if (isValidRow) {
+			validRows.push(row);
+		}
 	}
+
+	node.data.output = validRows;
+	node.data.dirty = false;
+	// clean up to save space
+	node.data.csv = null;
+	console.log(node.data.output);
+	return node.data.output;
 };

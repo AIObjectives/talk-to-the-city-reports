@@ -1,5 +1,5 @@
 export const report = async (node, inputData) => {
-	node.data.output = inputData;
+	console.log(inputData);
 	node.data.dirty = false;
-	return node.data.output;
+	return inputData;
 };

@@ -1,14 +1,15 @@
 <script>
-	import { getDocs, query } from 'firebase/firestore/lite';
+	import { query, where, getDocs } from 'firebase/firestore/lite';
 	import { datasetCollection } from '$lib/firebase';
 	import { onMount } from 'svelte';
 	import ProjectCard from '$components/ProjectCard.svelte';
+	import { user } from '$lib/store';
 
 	let projects = [];
 	let loading = true;
 
 	async function load_projects() {
-		const q = query(datasetCollection);
+		const q = query(datasetCollection, where('owner', '==', $user.uid));
 		const querySnapshot = await getDocs(q);
 		projects = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 		projects = projects;

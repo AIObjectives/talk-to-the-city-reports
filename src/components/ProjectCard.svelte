@@ -19,9 +19,9 @@
 	<p class="font-bold text-xl mb-2">{project.title}</p>
 	<p class="text-gray-700 text-base">{project.description}</p>
 	<a
-		href="/projects/{project.title}"
+		href="/report/{project.title}"
 		class="block w-full bg-blue-300 hover:bg-blue-400 text-white font-bold py-2 px-4 mt-4 rounded text-center"
 	>
-		View project
+		View report
 	</a>
 </div>

@@ -4,9 +4,13 @@ async function gpt(
 	apiKey: string,
 	systemPrompt: string,
 	promptTemplate: string,
-	replacements: { [key: string]: string }
+	replacements: { [key: string]: string },
+	info,
+	error,
+	success
 ) {
 	console.log('calling openai on ...');
+	info('Calling OpenAI');
 	let prompt = promptTemplate;
 	for (const [key, value] of Object.entries(replacements)) {
 		prompt = prompt.replace(`{${key}}`, value);
@@ -31,12 +35,13 @@ async function processInChunks(array, handler, chunkSize) {
 	}
 }
 
-export const argument_extraction = async (node, inputData) => {
+export const argument_extraction = async (node, inputData, info, error, success) => {
 	if (!node.data.dirty) {
 		console.log('Argument extraction not dirty. Returning.');
 		return node.data.output;
 	}
 	console.log('Computing', node.data.label, 'with input data', inputData);
+	info('Computing ' + node.data.label);
 	if (node.data.output == null) {
 		node.data.output = {};
 	}
@@ -48,16 +53,23 @@ export const argument_extraction = async (node, inputData) => {
 		const comment = csv_by_ids[id]['comment-body'];
 		const interview = csv_by_ids[id]['interview'];
 		console.log('running for id', id);
-		const response = await gpt(open_ai_key, system_prompt, prompt, {
-			comment,
-			clusters: JSON.stringify(cluster_extraction)
-		});
-		node.data.output[id] = { id, comment, interview, ...JSON.parse(response) }; // Store output
+		const response = await gpt(
+			open_ai_key,
+			system_prompt,
+			prompt,
+			{
+				comment,
+				clusters: JSON.stringify(cluster_extraction)
+			},
+			info,
+			error,
+			success
+		);
+		node.data.output[id] = { id, comment, interview, ...JSON.parse(response) };
 	}
 
 	let ids = Object.keys(csv_by_ids);
 	ids.sort();
-	ids = ids.slice(0, 10);
 
 	const output_ids = Object.keys(node.data.output);
 	ids = ids.filter((x) => !output_ids.includes(x));
@@ -67,7 +79,7 @@ export const argument_extraction = async (node, inputData) => {
 	} catch (err) {
 		console.error(err);
 	}
-	node.data.dirty =
-		Object.keys(node.data.output).slice(0, 10).length !== Object.keys(node.data.output).length;
+	node.data.dirty = Object.keys(node.data.output).length !== Object.keys(node.data.output).length;
+	success('Done computing ' + node.data.label);
 	return node.data.output;
 };
