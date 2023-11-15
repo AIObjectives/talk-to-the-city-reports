@@ -17,7 +17,6 @@ For example:
 
 - [Recursive Public](https://tttc.dev/recursive) is a report generated using data collected by the Pol.is tool. The input included votes and the maps let you filter arguments by level of consensus.
 - [GenAI Taiwan](https://tttc.dev/genai) is a report which can be read either in English or Mandarin. The data came from a public consultation about generative AI conducted in Taiwan by the Collective Intelligence Project.
-- [Heal Michigan](https://tttc.dev/heal-michigan-7/) is a report generated using video transcripts and links to the source videos, from an activist community in Michigan.
 
 TttC is developed by the [AI Objectives Institute](http://aiobjectives.org), an non-profit research organization focused on AI alignment.
 
