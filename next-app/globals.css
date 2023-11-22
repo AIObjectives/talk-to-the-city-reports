@@ -20,3 +20,14 @@ html,
 body {
   overscroll-behavior: none;
 }
+
+/* Tailwind overrides */
+.text-xl {
+  font-size: 1.25rem !important
+}
+
+.text-3xl {
+    font-size: 2rem;
+    line-height: 2.75rem;
+}
+

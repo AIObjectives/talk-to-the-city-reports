@@ -36,7 +36,7 @@ def translation(config):
                "Showing", "arguments", "Reset zoom", "Click anywhere on the map to close this",
                "Click on the dot for details",
                "agree", "disagree", "Language", "English", "arguments", "of total",
-               "Overview", "Cluster analysis", "Representative comments", "Introduction",
+               "Project", "Overview", "Cluster analysis", "Representative comments", "Introduction",
                "Clusters", "Appendix", "This report was generated using an AI pipeline that consists of the following steps",
                "Step", "extraction", "show code", "hide code", "show prompt", "hide prompt", "embedding",
                "clustering", "labelling", "takeaways", "overview"]
