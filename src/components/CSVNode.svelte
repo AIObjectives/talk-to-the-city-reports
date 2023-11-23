@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { Handle, Position, type NodeProps } from '@xyflow/svelte';
 	import { writable, type Writable } from 'svelte/store';
-	import Close from 'svelte-material-icons/Close.svelte';
-	import Check from 'svelte-material-icons/Check.svelte';
+	import Button from '@smui/button';
 
 	type $$Props = NodeProps;
 
@@ -19,7 +18,11 @@
 	export let sourcePosition;
 	export let targetPosition;
 
-	const fileInput = writable(null);
+	let fileInput;
+
+	function triggerFileSelect() {
+		fileInput.click();
+	}
 
 	function handleFileChange(event) {
 		const uploadedFile = event.target.files[0];
@@ -36,17 +39,19 @@
 </script>
 
 <div class="csvnode">
-	<!-- {#if data.dirty}
-		<Close color="red" />
-	{:else}
-		<Check color="green" />
-	{/if} -->
-	{#if data.csv}
+	<div>CSV data</div>
+	{#if data.filename}
 		<div>{data.filename}</div>
 		<div>{data.size_kb} KB</div>
 	{:else}
-		<div>CSV data</div>
-		<input class="nodrag" type="file" bind:this={$fileInput} on:change={handleFileChange} />
+		<input
+			class="nodrag"
+			type="file"
+			bind:this={fileInput}
+			on:change={handleFileChange}
+			style="display: none;"
+		/>
+		<Button on:click={triggerFileSelect}>Upload CSV</Button>
 	{/if}
 	<Handle type="source" position={Position.Bottom} />
 </div>

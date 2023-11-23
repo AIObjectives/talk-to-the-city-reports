@@ -8,11 +8,18 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
-		"format": "prettier --plugin-search-dir . --write ."
+		"format": "prettier --plugin-search-dir . --write .",
+		"prepare": "npm run smui-theme",
+		"smui-theme": "smui-theme compile static/smui.css -i src/theme"
 	},
 	"devDependencies": {
 		"@fontsource/fira-mono": "^4.5.10",
 		"@neoconfetti/svelte": "^1.0.0",
+		"@smui/button": "^7.0.0-beta.15",
+		"@smui/card": "^7.0.0-beta.15",
+		"@smui/paper": "^7.0.0-beta.15",
+		"@smui/select": "^7.0.0-beta.15",
+		"@smui/textfield": "^7.0.0-beta.15",
 		"@sveltejs/adapter-auto": "^2.0.0",
 		"@sveltejs/kit": "^1.27.4",
 		"@types/cookie": "^0.5.1",
@@ -24,6 +31,7 @@
 		"eslint-plugin-svelte": "^2.30.0",
 		"prettier": "^2.8.0",
 		"prettier-plugin-svelte": "^2.10.1",
+		"smui-theme": "^7.0.0-beta.15",
 		"svelte": "^4.0.5",
 		"svelte-check": "^3.6.0",
 		"tslib": "^2.4.1",

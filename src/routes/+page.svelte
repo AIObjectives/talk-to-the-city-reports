@@ -1,4 +1,5 @@
 <script>
+	import Button from '@smui/button';
 	import { user } from '$lib/store';
 	import Projects from '$components/Projects.svelte';
 </script>
@@ -13,12 +14,7 @@
 
 	{#if $user}
 		<Projects />
-		<a
-			href="/report/new"
-			class="mt-10 w-64 bg-blue-300 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded text-center"
-		>
-			New report
-		</a>
+		<Button href="/report/new" class="mt-10">New report</Button>
 	{:else}
 		Please sign in to create a new report.
 	{/if}

@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { Handle, Position, type NodeProps } from '@xyflow/svelte';
-	import Close from 'svelte-material-icons/Close.svelte';
-	import Check from 'svelte-material-icons/Check.svelte';
+	import TextField from '@smui/textfield';
 
 	type $$Props = NodeProps;
 
@@ -25,13 +24,10 @@
 </script>
 
 <div class="text-input">
-	<!-- {#if dirty}
-		<Close color="red" />
-	{:else}
-		<Check color="green" />
-	{/if} -->
 	<div>OpenAI Key</div>
-	<input
+	<TextField
+		style="width: 100%;"
+		helperLine$style="width: 100%;"
 		class="nodrag"
 		type="text"
 		on:input={(evt) => (data.text = evt.target?.value)}

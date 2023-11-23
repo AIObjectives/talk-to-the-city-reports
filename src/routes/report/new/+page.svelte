@@ -1,4 +1,9 @@
 <script>
+	import Button from '@smui/button';
+	import HelperText from '@smui/textfield/helper-text';
+	import TextField from '@smui/textfield';
+	import Select from '@smui/select';
+	import MenuItem from '@smui/menu';
 	import { query, where, getDocs } from 'firebase/firestore/lite';
 	import { addDoc, serverTimestamp } from 'firebase/firestore/lite';
 	import { auth, datasetCollection } from '$lib/firebase';
@@ -58,74 +63,25 @@
 		<div class="flex flex-wrap -mx-3 mb-6">
 			<h2 class="px-3 w-full text-center text-xl font-bold mb-2">Create a new project</h2>
 			<div class="w-full px-3">
-				<label
-					class="block uppercase tracking-wide text-gray-500 text-xs font-bold mb-2"
-					for="project-name"
-				>
-					Project Name
-				</label>
-				<input
-					id="project-name"
-					class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-					type="text"
-					placeholder="Enter report name"
-					bind:value={projectTitle}
-				/>
+				<TextField style="width: 100%;" label="Report Name" bind:value={projectTitle} />
 			</div>
 			<div class="w-full px-3">
-				<label
-					class="block uppercase tracking-wide text-gray-500 text-xs font-bold mb-2"
-					for="project-slug"
-				>
-					Report Slug
-				</label>
-				<input
-					id="project-slug"
-					class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-					type="text"
-					placeholder="Report slug"
-					bind:value={projectSlug}
-				/>
+				<TextField style="width: 100%;" bind:value={projectSlug} label="Report slug" />
 			</div>
 			<div class="w-full px-3">
-				<label
-					class="block uppercase tracking-wide text-gray-500 text-xs font-bold mb-2"
-					for="project-description"
-				>
-					Project Description
-				</label>
-				<textarea
-					id="project-description"
-					rows="5"
-					class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-					placeholder="Enter report description"
-					bind:value={projectDescription}
-				/>
+				<TextField style="width: 100%;" rows="5" textarea bind:value={projectDescription}>
+					<HelperText persistent slot="helper">Report description</HelperText>
+				</TextField>
 			</div>
 			{#if showTemplate}
 				<div class="w-full px-3">
-					<label
-						class="block uppercase tracking-wide text-gray-500 text-xs font-bold mb-2"
-						for="project-template"
-					>
-						Project Template
-					</label>
-					<select
-						id="project-template"
-						class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-						bind:value={projectTemplate}
-					>
-						<option value="heal_michigan">Heal Michigan</option>
-					</select>
+					<Select label="Project Template" bind:value={projectTemplate}>
+						<MenuItem value="heal_michigan">Heal Michigan</MenuItem>
+					</Select>
 				</div>
 			{/if}
 			<div class="w-full px-3 pt-5">
-				<button
-					class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-					type="submit"
-				>
-					Create
-				</button>
+				<Button raised type="submit">Create</Button>
 			</div>
 		</div>
 	</form>

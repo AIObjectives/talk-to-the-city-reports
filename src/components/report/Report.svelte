@@ -3,6 +3,7 @@
 	import { hierarchy } from 'd3-hierarchy';
 	import { scaleSequential, scaleOrdinal } from 'd3-scale';
 	import * as chromatic from 'd3-scale-chromatic';
+	import Paper from '@smui/paper';
 	import { hsl } from 'd3-color';
 	import { format, sortFunc } from 'svelte-ux';
 	import Breadcrumbs from '$components/report/Breadcrumbs.svelte';
@@ -70,7 +71,7 @@
 	let complexHierarchy;
 
 	$: {
-		if (report.argument_extraction) {
+		if (cluster_extraction.topics) {
 			let transformedData = transformData(report);
 			complexHierarchy = hierarchy(transformedData)
 				.sum((d) => d.value)
@@ -130,29 +131,36 @@
 		<InfoPanel {clickEvent} {csv} />
 	</div>
 {/if}
+<br />
 
-{#if report && report.cluster_extraction}
+{#if cluster_extraction.topics}
 	{#each report.cluster_extraction.topics as topic}
-		<div class="p-4 rounded">
-			<h2
-				class="text-2xl font-bold"
-				style="color: {hsl(ordinalColor(topic.topicName)).brighter(-1)}"
-			>
-				{topic.topicName}
-			</h2>
-			<h3 class="mt-4 mb-4">{topic.topicShortDescription}</h3>
-			{#each topic.subtopics as subtopic}
-				<div class="ml-3 items-center justify-between">
-					<div class="flex items-center mt-5">
-						<div class="w-1 h-1 mr-2 rounded-full" style="background-color: #bbbbff" />
-						<div class="text-lg" style="color: #555">{subtopic.subtopicName}</div>
-					</div>
-					<div class="ml-5 mt-2 mb-2" style="color: black">
-						<h3>{subtopic.subtopicShortDescription}</h3>
-					</div>
-					<Claims {report} {topic} {subtopic} {getClaimsForTopic} />
-				</div>
-			{/each}
-		</div>
+		<Paper square>
+			<div class="p-4 rounded">
+				<h2
+					class="text-2xl font-bold"
+					style="color: {hsl(ordinalColor(topic.topicName)).brighter(-1)}"
+				>
+					{topic.topicName}
+				</h2>
+				<h3 class="mt-4 mb-4">{topic.topicShortDescription}</h3>
+				{#each topic.subtopics as subtopic}
+					<Paper square>
+						<div class="ml-3 items-center justify-between">
+							<div class="flex items-center mt-1">
+								<div class="w-1 h-1 mr-2 rounded-full" style="background-color: #bbbbff" />
+								<div class="text-lg" style="color: #555">{subtopic.subtopicName}</div>
+							</div>
+							<div class="ml-5 mt-2 mb-2" style="color: black">
+								<h3>{subtopic.subtopicShortDescription}</h3>
+							</div>
+							<Claims {report} {topic} {subtopic} {getClaimsForTopic} />
+						</div>
+					</Paper>
+					<br />
+				{/each}
+			</div>
+		</Paper>
+		<br />
 	{/each}
 {/if}

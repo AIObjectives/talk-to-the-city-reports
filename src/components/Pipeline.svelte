@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Card from '@smui/card';
 	import { writable, get } from 'svelte/store';
 	import { SvelteFlow, SvelteFlowProvider, type Node, type Edge } from '@xyflow/svelte';
 	import '@xyflow/svelte/dist/style.css';
@@ -11,6 +12,7 @@
 	import { open_ai_key } from '$lib/compute/open_ai_key';
 	import { report } from '$lib/compute/report';
 	import { success, error, info } from '$components/toast/theme';
+	import Button from '@smui/button';
 
 	// input nodes
 	import TextInputNode from '$components/TextInputNode.svelte';
@@ -73,18 +75,26 @@
 </script>
 
 <SvelteFlowProvider>
-	<div class="relative rounded overflow-hidden shadow-lg m-4 p-4 bg-gray-200">
-		<TextInputNode data={$nodes[0].data} />
-	</div>
-	<div class="relative rounded overflow-hidden shadow-lg m-4 p-4 bg-gray-200">
-		<CSVNode data={$nodes[1].data} />
-	</div>
-	<div class="relative rounded overflow-hidden shadow-lg m-4 p-4 bg-gray-200">
-		<PromptNode data={$nodes[2].data} />
-	</div>
-	<div class="relative rounded overflow-hidden shadow-lg m-4 p-4 bg-gray-200">
-		<PromptNode data={$nodes[3].data} />
-	</div>
+	<Card class="m-4">
+		<div class="p-4">
+			<TextInputNode data={$nodes[0].data} />
+		</div>
+	</Card>
+	<Card class="m-4">
+		<div class="p-4">
+			<CSVNode data={$nodes[1].data} />
+		</div>
+	</Card>
+	<Card class="m-4">
+		<div class="p-4">
+			<PromptNode data={$nodes[2].data} />
+		</div>
+	</Card>
+	<Card class="m-4">
+		<div class="p-4">
+			<PromptNode data={$nodes[3].data} />
+		</div>
+	</Card>
 
 	<div style:height="0vh">
 		<SvelteFlow
@@ -102,20 +112,10 @@
 	</div>
 </SvelteFlowProvider>
 
-<button
-	class="mt-10 w-40 bg-blue-300 hover:bg-blue-400 py-2 px-4 rounded"
+<Button
 	on:click={async () => {
 		await processNodes();
 	}}
 >
 	Generate Report
-</button>
-
-<button
-	class="mt-10 w-40 bg-blue-300 hover:bg-blue-400 py-2 px-4 rounded"
-	on:click={() => {
-		updateDataset({ graph: { nodes: get(nodes), edges: get(edges) } });
-	}}
->
-	Save
-</button>
+</Button>

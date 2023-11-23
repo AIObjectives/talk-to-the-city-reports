@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Handle, Position, type NodeProps } from '@xyflow/svelte';
-	import Close from 'svelte-material-icons/Close.svelte';
-	import Check from 'svelte-material-icons/Check.svelte';
+	import TextField from '@smui/textfield';
+	import HelperText from '@smui/textfield/helper-text';
 
 	type $$Props = NodeProps;
 
@@ -24,28 +24,31 @@
 </script>
 
 <div class="text-input">
-	<!-- {#if data.dirty}
-		<Close color="red" />
-	{:else}
-		<Check color="green" />
-	{/if} -->
 	<div>{data.label}</div>
 	{#if showSystemPrompt}
-		<textarea
-			rows="4"
-			class="nodrag"
-			on:input={(evt) => (data.system_prompt = evt.target?.value)}
+		<TextField
+			style="width: 100%;"
+			helperLine$style="width: 100% !important;"
+			textarea
+			input$rows={5}
 			value={system_prompt}
-		/>
+			on:input={(evt) => (data.system_prompt = evt.target?.value)}
+		>
+			<HelperText slot="helper">System extraction prompt</HelperText>
+		</TextField>
 	{/if}
-	<textarea
-		rows="4"
-		class="nodrag"
-		on:input={(evt) => (data.prompt = evt.target?.value)}
+	<TextField
+		style="width: 100%;"
+		helperLine$style="width: 100% !important;"
+		textarea
+		input$rows={5}
 		value={prompt}
-	/>
+		on:input={(evt) => (data.prompt = evt.target?.value)}
+	>
+		<HelperText slot="helper">Primary extraction prompt</HelperText>
+	</TextField>
 	{#if output}
-		Objects: {Object.keys(output).length}: {Object.keys(output)[0]} ...
+		<div>Objects: {Object.keys(output).length}: {Object.keys(output)[0]} ...</div>
 	{/if}
 	<Handle type="target" position={Position.Top} />
 	<Handle type="source" position={Position.Bottom} />

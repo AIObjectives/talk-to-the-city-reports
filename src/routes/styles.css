@@ -1,9 +1,10 @@
-@import '@fontsource/fira-mono';
+@import url('https://fonts.googleapis.com/css?family=Quattrocento:400,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Quattrocento+Sans:400,400i,700&display=swap');
 
 :root {
-	--font-body: Arial, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
-		Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-	--font-mono: 'Fira Mono', monospace;
+	--font-body: 'Quattrocento Sans', Arial, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+		Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	--font-heading: 'Quattrocento', serif;
 	--color-bg-0: rgb(202, 216, 228);
 	--color-bg-1: hsl(209, 36%, 86%);
 	--color-bg-2: hsl(224, 44%, 95%);
@@ -38,7 +39,11 @@ body {
 
 h1,
 h2,
-p {
+h3,
+h4,
+h5,
+h6 {
+	font-family: var(--font-heading);
 	font-weight: 400;
 }
 
@@ -66,7 +71,7 @@ h2 {
 
 pre {
 	font-size: 16px;
-	font-family: var(--font-mono);
+	font-family: var(--font-body); /* You can adjust this if you want monospaced font */
 	background-color: rgba(255, 255, 255, 0.45);
 	border-radius: 3px;
 	box-shadow: 2px 2px 6px rgb(255 255 255 / 25%);
@@ -110,17 +115,4 @@ button:focus:not(:focus-visible) {
 	position: absolute;
 	width: 1px;
 	white-space: nowrap;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-	font-family: 'Libre Baskerville', serif;
-}
-
-body {
-	font-family: 'Open Sans', sans-serif;
 }
