@@ -63,12 +63,23 @@
 		<div class="flex flex-wrap -mx-3 mb-6">
 			<h2 class="px-3 w-full text-center text-xl font-bold mb-2">Create a new project</h2>
 			<div class="w-full px-3">
-				<TextField style="width: 100%;" label="Report Name" bind:value={projectTitle} />
+				<TextField
+					style="width: 100%;"
+					label="Report Name"
+					bind:value={projectTitle}
+					on:input={() => {
+						projectSlug = createProjectSlug(projectTitle);
+					}}
+				/>
 			</div>
-			<div class="w-full px-3">
-				<TextField style="width: 100%;" bind:value={projectSlug} label="Report slug" />
+			<div class="w-full px-3 py-5">
+				<TextField style="width: 100%;" bind:value={projectSlug} label="Report url path">
+					<HelperText persistent slot="helper"
+						>https://tttc-turbo.web.app/report/{projectSlug}</HelperText
+					>
+				</TextField>
 			</div>
-			<div class="w-full px-3">
+			<div class="w-full px-3 py-5">
 				<TextField style="width: 100%;" rows="5" textarea bind:value={projectDescription}>
 					<HelperText persistent slot="helper">Report description</HelperText>
 				</TextField>

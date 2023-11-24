@@ -11,8 +11,10 @@
 	import { argument_extraction } from '$lib/compute/argument_extraction';
 	import { open_ai_key } from '$lib/compute/open_ai_key';
 	import { report } from '$lib/compute/report';
+	import { participant_filter } from '$lib/compute/participant_filter';
 	import { success, error, info } from '$components/toast/theme';
 	import Button from '@smui/button';
+	import { user } from '$lib/store';
 
 	// input nodes
 	import TextInputNode from '$components/TextInputNode.svelte';
@@ -24,7 +26,6 @@
 	async function updateDataset(updatedData) {
 		try {
 			info('Updating dataset...');
-			console.log(JSON.stringify(updatedData));
 			await updateDoc(doc(datasetCollection, dataset.id), updatedData);
 			dataset.graph = updatedData.graph;
 			success('Dataset updated');
@@ -45,7 +46,8 @@
 		csv: csv,
 		cluster_extraction: cluster_extraction,
 		argument_extraction: argument_extraction,
-		report: report
+		report: report,
+		participant_filter: participant_filter
 	};
 
 	const nodes = writable<Node[]>(dataset.graph.nodes);
@@ -53,69 +55,95 @@
 
 	async function processNodes() {
 		let nodeOutputs = {};
-		const sortedNodes = topologicalSort(get(nodes), edges);
-		for (let i = 0; i < sortedNodes.length; i++) {
-			const nodeId = sortedNodes[i];
-			const node = get(nodes).find((n) => n.id === nodeId);
-			let edgeData = get(edges)
-				.filter((edge) => edge.target === node.id)
-				.filter((edge) => nodeOutputs[edge.source] !== undefined);
+		const allNodes = get(nodes);
+		const allEdges = get(edges);
+		const sortedNodes = topologicalSort(allNodes, allEdges);
+		let save = false;
+
+		let dirtyNodes = new Set(allNodes.filter((node) => node.data.dirty).map((node) => node.id));
+
+		function markDownstreamNodesAsDirty(nodeId) {
+			allEdges.forEach((edge) => {
+				if (edge.source === nodeId && !dirtyNodes.has(edge.target)) {
+					dirtyNodes.add(edge.target);
+					markDownstreamNodesAsDirty(edge.target);
+				}
+			});
+		}
+
+		dirtyNodes.forEach((nodeId) => markDownstreamNodesAsDirty(nodeId));
+
+		for (let nodeId of sortedNodes) {
+			const node = allNodes.find((n) => n.id === nodeId);
 
 			let inputData = {};
-			edgeData.forEach((edge) => {
-				inputData[edge.source] = nodeOutputs[edge.source];
-			});
+			allEdges
+				.filter((edge) => edge.target === node.id)
+				.forEach((edge) => {
+					if (nodeOutputs[edge.source] !== undefined) {
+						inputData[edge.source] = nodeOutputs[edge.source];
+					}
+				});
+
+			save = save || node.data.dirty;
 			let output = await compute[node.id](node, inputData, info, error, success);
 			nodeOutputs[node.id] = output;
-			dataset.graph = { nodes: get(nodes), edges: get(edges) };
-			console.log(dataset);
-			updateDataset({ graph: { nodes: get(nodes), edges: get(edges) } });
+		}
+
+		if (save) {
+			updateDataset({ graph: { nodes: allNodes, edges: allEdges } });
 		}
 	}
 </script>
 
-<SvelteFlowProvider>
-	<Card class="m-4">
-		<div class="p-4">
-			<TextInputNode data={$nodes[0].data} />
-		</div>
-	</Card>
-	<Card class="m-4">
-		<div class="p-4">
-			<CSVNode data={$nodes[1].data} />
-		</div>
-	</Card>
-	<Card class="m-4">
-		<div class="p-4">
-			<PromptNode data={$nodes[2].data} />
-		</div>
-	</Card>
-	<Card class="m-4">
-		<div class="p-4">
-			<PromptNode data={$nodes[3].data} />
-		</div>
-	</Card>
+<div class="pipeline-container">
+	{#if $user && $user.uid === dataset.owner}
+		<SvelteFlowProvider>
+			{#each $nodes as node (node.id)}
+				{#if nodeTypes[node.type]}
+					<Card class="m-4">
+						<div class="p-4">
+							<svelte:component this={nodeTypes[node.type]} data={node.data} />
+						</div>
+					</Card>
+				{/if}
+			{/each}
 
-	<div style:height="0vh">
-		<SvelteFlow
-			{nodes}
-			{edges}
-			{nodeTypes}
-			elementsSelectable={false}
-			preventScrolling={false}
-			nodesDraggable={false}
-			panOnDrag={false}
-			autoPanOnNodeDrag={false}
-			zoomOnDoubleClick={false}
-			fitView
-		/>
-	</div>
-</SvelteFlowProvider>
+			<div style:height="0vh">
+				<SvelteFlow
+					{nodes}
+					{edges}
+					{nodeTypes}
+					elementsSelectable={false}
+					preventScrolling={false}
+					nodesDraggable={false}
+					panOnDrag={false}
+					autoPanOnNodeDrag={false}
+					zoomOnDoubleClick={false}
+					fitView
+				/>
+			</div>
+		</SvelteFlowProvider>
 
-<Button
-	on:click={async () => {
-		await processNodes();
-	}}
->
-	Generate Report
-</Button>
+		<Button
+			on:click={async () => {
+				await processNodes();
+			}}
+		>
+			Generate Report
+		</Button>
+	{/if}
+</div>
+
+<style>
+	.pipeline-container {
+		padding: var(--main-padding);
+		max-width: 50rem;
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		margin: 0 auto;
+		box-sizing: border-box;
+	}
+</style>

@@ -1,5 +1,3 @@
-import { get } from 'svelte/store';
-
 export function topologicalSort(nodes, edges) {
 	let sorted = [];
 	let visited = {};
@@ -12,7 +10,7 @@ export function topologicalSort(nodes, edges) {
 	});
 
 	// Map the edges to the graph
-	get(edges).forEach((edge) => {
+	edges.forEach((edge) => {
 		graph[edge.source].edges.push(edge.target);
 	});
 

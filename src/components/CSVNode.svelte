@@ -32,6 +32,7 @@
 				data.csv = e.target.result;
 				data.filename = uploadedFile.name;
 				data.size_kb = uploadedFile.size / 1000;
+				data.dirty = true;
 			};
 			reader.readAsText(uploadedFile, 'UTF-8');
 		}

@@ -9,13 +9,16 @@ export const open_ai_key = async (node, inputData) => {
 	let ui_key_is_valid = keyIsValid(ui_key);
 	if (ui_key && ui_key_is_valid) {
 		Cookies.set('open_ai_key', ui_key);
+		node.data.dirty = false;
 		return ui_key;
 	}
 	if (ui_key && !ui_key_is_valid) {
+		node.data.dirty = false;
 		return;
 	}
 	let local_key = Cookies.get('open_ai_key');
 	if (local_key && keyIsValid(local_key)) {
+		node.data.dirty = false;
 		return local_key;
 	}
 };

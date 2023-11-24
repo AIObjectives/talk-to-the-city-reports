@@ -19,6 +19,6 @@
 	</span>
 
 	<p class="font-bold text-xl mb-2">{project.title}</p>
-	<p class="text-gray-700 text-base">{project.description}</p>
+	<p class="text-gray-700 text-base">{project.description.slice(0, 100)}</p>
 	<a href="/report/{project.title}"> <Button>View report</Button></a>
 </Card>

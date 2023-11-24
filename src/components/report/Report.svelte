@@ -51,17 +51,23 @@
 			};
 
 			topic.subtopics.forEach((subtopic) => {
-				let claims = getClaimsForTopic(data, topic.topicName, subtopic.subtopicName);
-				topicObj.children.push({
-					name: subtopic.subtopicName,
-					children: claims.map((claim) => {
-						return {
-							name: claim.claim,
-							claim: claim,
-							value: 1
-						};
-					})
+				const claims = getClaimsForTopic(data, topic.topicName, subtopic.subtopicName);
+				const claims_obj = claims.map((claim) => {
+					return {
+						name: claim.claim,
+						claim: claim,
+						value: 1
+					};
 				});
+				const subtopic_obj = {
+					name: subtopic.subtopicName
+				};
+				if (claims_obj.length > 0) {
+					subtopic_obj.children = claims_obj;
+				} else {
+					subtopic_obj.value = 1;
+				}
+				topicObj.children.push(subtopic_obj);
 			});
 			result.children.push(topicObj);
 		});
@@ -79,15 +85,8 @@
 		}
 	}
 
-	let selected;
-	let zoom;
 	let tooltipEvent;
 	let clickEvent;
-
-	$: if (zoom && selected) {
-		const diameter = selected.r * 2;
-		zoom.zoomTo({ x: selected.x, y: selected.y }, { width: diameter, height: diameter });
-	}
 
 	const sequentialColor = scaleSequential([4, -1], chromatic.interpolateGnBu);
 	const ordinalColor = scaleOrdinal(
@@ -108,59 +107,81 @@
 		}
 	}
 
-	onMount(() => {
-		selected = complexHierarchy;
-	});
 	console.log(report);
 </script>
 
-{#if complexHierarchy}
-	<Breadcrumbs {selected} {format} onSelect={(item) => (selected = item)} />
-	<Tooltip {tooltipEvent} />
-	<div style="display: grid; grid-template-columns: 1fr 1fr;">
-		<div class="h-[400px] p-4 rounded overflow-hidden">
-			<Chart
-				{complexHierarchy}
-				{getNodeColor}
-				onSelect={(node) => (selected = node)}
-				on:click={(e) => (clickEvent = e.detail)}
-				on:mouseenter={(e) => (tooltipEvent = e.detail)}
-				on:mouseleave={(e) => (tooltipEvent = null)}
-			/>
+<div class="graph-container">
+	{#if complexHierarchy}
+		<Tooltip {tooltipEvent} />
+		<div style="display: grid; grid-template-columns: 1fr 1fr;">
+			<div class="h-[400px] p-4 rounded overflow-hidden">
+				<Chart
+					{complexHierarchy}
+					{getNodeColor}
+					on:click={(e) => (clickEvent = e.detail)}
+					on:mouseenter={(e) => (tooltipEvent = e.detail)}
+					on:mouseleave={(e) => (tooltipEvent = null)}
+				/>
+			</div>
+			<InfoPanel {clickEvent} {csv} />
 		</div>
-		<InfoPanel {clickEvent} {csv} />
-	</div>
-{/if}
+	{/if}
+</div>
 <br />
 
-{#if cluster_extraction.topics}
-	{#each report.cluster_extraction.topics as topic}
-		<Paper square>
-			<div class="p-4 rounded">
-				<h2
-					class="text-2xl font-bold"
-					style="color: {hsl(ordinalColor(topic.topicName)).brighter(-1)}"
-				>
-					{topic.topicName}
-				</h2>
-				<h3 class="mt-4 mb-4">{topic.topicShortDescription}</h3>
-				{#each topic.subtopics as subtopic}
-					<Paper square>
-						<div class="ml-3 items-center justify-between">
-							<div class="flex items-center mt-1">
-								<div class="w-1 h-1 mr-2 rounded-full" style="background-color: #bbbbff" />
-								<div class="text-lg" style="color: #555">{subtopic.subtopicName}</div>
+<div class="report-container">
+	{#if cluster_extraction.topics}
+		{#each report.cluster_extraction.topics as topic}
+			<Paper square>
+				<div class="p-4 rounded">
+					<h2
+						class="text-2xl font-bold"
+						style="color: {hsl(ordinalColor(topic.topicName)).brighter(-1)}"
+					>
+						{topic.topicName}
+					</h2>
+					<h3 class="mt-4 mb-4">{topic.topicShortDescription}</h3>
+					{#each topic.subtopics as subtopic}
+						<Paper square>
+							<div class="ml-3 items-center justify-between">
+								<div class="flex items-center mt-1">
+									<div class="w-1 h-1 mr-2 rounded-full" style="background-color: #bbbbff" />
+									<div class="text-lg" style="color: #555">{subtopic.subtopicName}</div>
+								</div>
+								<div class="ml-5 mt-2 mb-2" style="color: black">
+									<h3>{subtopic.subtopicShortDescription}</h3>
+								</div>
+								<Claims {report} {topic} {subtopic} {getClaimsForTopic} />
 							</div>
-							<div class="ml-5 mt-2 mb-2" style="color: black">
-								<h3>{subtopic.subtopicShortDescription}</h3>
-							</div>
-							<Claims {report} {topic} {subtopic} {getClaimsForTopic} />
-						</div>
-					</Paper>
-					<br />
-				{/each}
-			</div>
-		</Paper>
-		<br />
-	{/each}
-{/if}
+						</Paper>
+						<br />
+					{/each}
+				</div>
+			</Paper>
+			<br />
+		{/each}
+	{/if}
+</div>
+
+<style>
+	.graph-container {
+		padding: var(--main-padding);
+		max-width: 70rem;
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		margin: 0 auto;
+		box-sizing: border-box;
+	}
+	.report-container {
+		padding: var(--main-padding);
+		max-width: 50rem;
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		margin: 0 auto;
+		box-sizing: border-box;
+	}
+</style>

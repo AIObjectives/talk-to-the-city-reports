@@ -42,9 +42,7 @@ export const argument_extraction = async (node, inputData, info, error, success)
 	}
 	console.log('Computing', node.data.label, 'with input data', inputData);
 	info('Computing ' + node.data.label);
-	if (node.data.output == null) {
-		node.data.output = {};
-	}
+	node.data.output = {};
 	const { prompt, system_prompt } = node.data;
 	const { open_ai_key, cluster_extraction, csv } = inputData;
 

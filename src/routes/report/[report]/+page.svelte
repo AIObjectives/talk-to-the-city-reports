@@ -5,6 +5,7 @@
 	import { onMount } from 'svelte';
 	import Pipeline from '$components/Pipeline.svelte';
 	import Report from '$components/report/Report.svelte';
+	import LeftPane from '$components/report/LeftPane.svelte';
 
 	onMount(load_dataset);
 	let loading = true;
@@ -16,33 +17,36 @@
 		let datasets = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 		loading = false;
 		dataset = datasets[0];
-		dataset = dataset;
 	}
 </script>
 
-{#if loading && !dataset}
-	<p class="text-center text-lg text-gray-500">Loading...</p>
-{:else}
-	<h1 class="text-3xl uppercase">{dataset.title}</h1>
-	<Pipeline bind:dataset />
-	<Report bind:dataset />
-{/if}
+<LeftPane {dataset} />
 
-<div class="left-pane p-5">
-	{#if dataset}
-		<h2 class="text-2xl font-bold">{dataset.title}</h2>
-		<h2 class="text-lg font-bold mt-5 mb-2">Description:</h2>
-		<p class="text-gray-500">{dataset.description}</p>
+<main>
+	{#if loading && !dataset}
+		<p class="text-center text-lg text-gray-500">Loading...</p>
+	{:else}
+		<h1 class="text-3xl uppercase">{dataset.title}</h1>
+		<Pipeline bind:dataset />
+		<Report bind:dataset />
 	{/if}
-</div>
+</main>
 
 <style>
-	.left-pane {
-		width: 20rem;
-		height: 100vh;
-		position: fixed;
-		left: 0;
-		top: 0;
-		background-color: #00000005;
+	main {
+		flex-grow: 1;
+		padding: 1rem;
+	}
+
+	@media (max-width: 768px) {
+		main {
+			order: 1;
+			width: 100%;
+		}
+	}
+
+	:root {
+		--main-padding: 0.5rem;
+		--main-max-width: 100%;
 	}
 </style>

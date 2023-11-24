@@ -52,59 +52,74 @@ Return a JSON object of the form {
 
 Now here are the comment: "{comments}"`.trim();
 
+const open_ai_key = {
+	id: 'open_ai_key',
+	data: { label: 'OpenAI Key', text: 'sk-...', dirty: true },
+	position: { x: -200, y: 50 },
+	type: 'text-input'
+};
+
+let csv = {
+	id: 'csv',
+	data: { label: 'CSV', csv: '', filename: '', size_kb: 0, dirty: true },
+	position: { x: 100, y: -50 },
+	type: 'csv'
+};
+
+const cluster_extraction = {
+	id: 'cluster_extraction',
+	data: {
+		label: 'Cluster Extraction',
+		output: {},
+		text: '',
+		system_prompt:
+			'You are a professional research assistant. You have helped run may public consultations, surveys and citizen assemblies.',
+		prompt: summary_prompt,
+		dirty: true
+	},
+	position: { x: 100, y: 100 },
+	type: 'prompt'
+};
+
+const argument_extraction = {
+	id: 'argument_extraction',
+	data: {
+		label: 'Argument Extraction',
+		output: {},
+		text: '',
+		system_prompt:
+			'You are a professional research assistant. You have helped run may public consultations, surveys and citizen assemblies. You have good instincts when it comes to extracting interesting insights. You are familiar with public consultation tools like Pol.is and you understand the benefits for working with very clear, concise claims that other people would be able to vote on.',
+		prompt: extraction_prompt,
+		dirty: true
+	},
+	position: { x: 0, y: 350 },
+	type: 'prompt'
+};
+
+const report = {
+	id: 'report',
+	data: {
+		label: 'Report',
+		output: {},
+		dirty: true
+	},
+	position: { x: 200, y: 700 }
+};
+
+const participant_filter = {
+	id: 'participant_filter',
+	data: {
+		label: 'Participant Filter',
+		output: {},
+		dirty: true
+	},
+	position: { x: 200, y: 600 },
+	type: 'participant-filter'
+};
+
 export let templates = {
 	heal_michigan: {
-		nodes: [
-			{
-				id: 'open_ai_key',
-				data: { label: 'OpenAI Key', text: 'sk-...', dirty: true },
-				position: { x: -200, y: 50 },
-				type: 'text-input'
-			},
-			{
-				id: 'csv',
-				data: { label: 'CSV', csv: '', filename: '', size_kb: 0, dirty: true },
-				position: { x: 100, y: -50 },
-				type: 'csv'
-			},
-			{
-				id: 'cluster_extraction',
-				data: {
-					label: 'Cluster Extraction',
-					output: {},
-					text: '',
-					system_prompt:
-						'You are a professional research assistant. You have helped run may public consultations, surveys and citizen assemblies.',
-					prompt: summary_prompt,
-					dirty: true
-				},
-				position: { x: 100, y: 100 },
-				type: 'prompt'
-			},
-			{
-				id: 'argument_extraction',
-				data: {
-					label: 'Argument Extraction',
-					output: {},
-					text: '',
-					system_prompt:
-						'You are a professional research assistant. You have helped run may public consultations, surveys and citizen assemblies. You have good instincts when it comes to extracting interesting insights. You are familiar with public consultation tools like Pol.is and you understand the benefits for working with very clear, concise claims that other people would be able to vote on.',
-					prompt: extraction_prompt,
-					dirty: true
-				},
-				position: { x: 0, y: 350 },
-				type: 'prompt'
-			},
-			{
-				id: 'report',
-				data: {
-					label: 'Report',
-					output: {},
-					dirty: true
-				},
-				position: { x: 200, y: 600 }
-			}
-		],
+		nodes: [open_ai_key, csv, cluster_extraction, argument_extraction, participant_filter, report],
 		edges: [
 			{
 				id: 'open_ai_key-cluster_extraction',
@@ -132,13 +147,18 @@ export let templates = {
 				target: 'argument_extraction'
 			},
 			{
-				id: 'argument_extraction-report',
+				id: 'argument_extraction-participant_filter',
 				source: 'argument_extraction',
-				target: 'report'
+				target: 'participant_filter'
 			},
 			{
-				id: 'cluster_extraction-report',
+				id: 'cluster_extraction-participant_filter',
 				source: 'cluster_extraction',
+				target: 'participant_filter'
+			},
+			{
+				id: 'participant_filter-report',
+				source: 'participant_filter',
 				target: 'report'
 			}
 		]

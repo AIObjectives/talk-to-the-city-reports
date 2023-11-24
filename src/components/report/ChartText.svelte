@@ -1,6 +1,6 @@
 <script>
 	export let node;
-	export let scale;
+	export let scale = 1;
 	import { fade } from 'svelte/transition';
 
 	function splitToLines(text, width) {
@@ -20,15 +20,19 @@
 
 		return lines;
 	}
+	// Make fontSize reactive and dependent on scale
+	$: fontSize = scale > 0 ? 0.9 / scale : 0.9;
+
+	// Now other reactive statements that depend on fontSize
+	$: lineHeight = fontSize * 20;
+	$: textBlockHeight = lines.length * lineHeight;
+	$: yPosition = lines.length > 1 ? node.y - textBlockHeight / 2.5 : node.y;
+
 	let text = node.data.name;
 	if (node.children) {
 		text = node.data.name + ' (' + node.children.length + ')';
 	}
 	let lines = splitToLines(text, 20);
-	$: lineHeight = fontSize * 20;
-	$: textBlockHeight = lines.length * lineHeight;
-	$: yPosition = lines.length > 1 ? node.y - textBlockHeight / 2.5 : node.y;
-	$: fontSize = 0.9 / scale;
 </script>
 
 <g in:fade|local>

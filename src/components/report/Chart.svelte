@@ -35,16 +35,12 @@
 		>
 			<Pack {padding} let:nodes>
 				{#each nodes.filter((node) => node.depth <= (selected ? selected.depth + 1 : 1)) as node (node.data.name + '-' + node.depth + '-' + node.x + '-' + node.y)}
-					{console.log(node)}
 					<Group
 						x={node.x}
 						y={node.y}
 						on:click={(e) => {
 							e.stopPropagation();
 							selected = node;
-							if (node.depth == 3) {
-								console.log('here');
-							}
 						}}
 						class="cursor-pointer hover:contrast-[1.2]"
 					>

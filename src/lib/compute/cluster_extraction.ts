@@ -36,6 +36,10 @@ export const cluster_extraction = async (node, inputData, info, error, success) 
 	}
 	console.log('Computing', node.data.label, 'with input data', inputData);
 	info('Computing' + node.data.label);
+	if (inputData.csv.length == 0) {
+		node.data.dirty = false;
+		return;
+	}
 	const { prompt, system_prompt } = node.data;
 	const result = await gpt(
 		inputData.open_ai_key,

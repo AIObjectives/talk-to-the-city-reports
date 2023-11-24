@@ -32,7 +32,10 @@
 			textarea
 			input$rows={5}
 			value={system_prompt}
-			on:input={(evt) => (data.system_prompt = evt.target?.value)}
+			on:input={(evt) => {
+				data.system_prompt = evt.target?.value;
+				data.dirty = true;
+			}}
 		>
 			<HelperText slot="helper">System extraction prompt</HelperText>
 		</TextField>
@@ -43,7 +46,10 @@
 		textarea
 		input$rows={5}
 		value={prompt}
-		on:input={(evt) => (data.prompt = evt.target?.value)}
+		on:input={(evt) => {
+			data.prompt = evt.target?.value;
+			data.dirty = true;
+		}}
 	>
 		<HelperText slot="helper">Primary extraction prompt</HelperText>
 	</TextField>
