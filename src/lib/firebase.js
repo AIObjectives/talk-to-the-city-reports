@@ -18,6 +18,7 @@ let app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 let db = getFirestore(app);
 const datasetCollection = collection(db, "datasets");
+const templatesCollection = collection(db, "templates");
 const userDoc = (userId) => doc(db, "users", userId);
 const datasetDoc = (datasetId) => doc(db, "datasets", datasetId)
 
@@ -26,5 +27,6 @@ export {
     db,
     datasetCollection,
     userDoc,
-    datasetDoc
+    datasetDoc,
+    templatesCollection
 }

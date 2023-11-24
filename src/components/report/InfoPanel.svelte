@@ -6,13 +6,16 @@
 	let newIframeSrc;
 	$: {
 		if (clickEvent) {
-			claimId = parseInt(clickEvent.node.data.claim.id);
-			video = csv[claimId].video;
-			let [hours, minutes, seconds] = csv[claimId].timestamp.split(':').map(Number);
-			let totalSeconds = hours * 3600 + minutes * 60 + seconds;
-			const parts = video.split('/');
-			const videoId = parts[parts.length - 1];
-			newIframeSrc = `https://player.vimeo.com/video/${videoId}#t=${totalSeconds}s`;
+			let entry = csv.find((entry) => entry['comment-id'] === clickEvent.node.data.claim.id);
+			if (entry) {
+				claimId = parseInt(clickEvent.node.data.claim.id);
+				video = entry.video;
+				let [hours, minutes, seconds] = entry.timestamp.split(':').map(Number);
+				let totalSeconds = hours * 3600 + minutes * 60 + seconds;
+				const parts = video.split('/');
+				const videoId = parts[parts.length - 1];
+				newIframeSrc = `https://player.vimeo.com/video/${videoId}#t=${totalSeconds}s`;
+			}
 		}
 	}
 </script>
@@ -28,17 +31,22 @@
 			{clickEvent.node.data.claim.quote}
 			<br />
 			<br />
-			<p>Interview:</p>
-			{clickEvent.node.data.claim.interview}
-			<br />
-			<iframe
-				src={newIframeSrc}
-				width="320"
-				height="240"
-				frameborder="0"
-				allow="autoplay; fullscreen; picture-in-picture"
-				allowfullscreen
-			/>
+			{#if clickEvent.node.data.claim.interview}
+				<p>Interview:</p>
+				{clickEvent.node.data.claim.interview}
+				<br />
+			{/if}
+			{#if newIframeSrc}
+				<div class="iframe-container">
+					<iframe
+						class="responsive-iframe"
+						src={newIframeSrc}
+						frameborder="0"
+						allow="autoplay; fullscreen; picture-in-picture"
+						allowfullscreen
+					/>
+				</div>
+			{/if}
 		</div>
 	</div>
 {/if}
@@ -51,5 +59,20 @@
 	.inner-div {
 		max-height: 100%;
 		overflow: auto;
+	}
+
+	.iframe-container {
+		position: relative;
+		width: 100%;
+		padding-top: 56.25%; /* 16:9 Aspect Ratio */
+	}
+
+	.responsive-iframe {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		border: 0; /* Optional: Removes the border */
 	}
 </style>

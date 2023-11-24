@@ -19,7 +19,7 @@
 	export let sourcePosition;
 	export let targetPosition;
 
-	const { text } = data;
+	const { number } = data;
 </script>
 
 <Paper title={id}>
@@ -28,12 +28,13 @@
 		style="width: 100%;"
 		helperLine$style="width: 100%;"
 		class="nodrag"
-		type="text"
+		type="number"
+		input$step="1"
 		on:input={(evt) => {
-			data.text = evt.target?.value;
+			data.number = evt.target?.value;
 			data.dirty = true;
 		}}
-		value={text}
+		value={number}
 	/>
 	<Handle type="target" position={Position.Top} />
 	<Handle type="source" position={Position.Bottom} />

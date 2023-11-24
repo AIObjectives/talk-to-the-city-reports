@@ -116,3 +116,14 @@ button:focus:not(:focus-visible) {
 	width: 1px;
 	white-space: nowrap;
 }
+
+.dg-node {
+	background-color: #fff;
+	border: 1px solid #000;
+	border-radius: 4px;
+	padding: 8px;
+}
+
+.mdc-menu {
+	background-color: #fff;
+}

@@ -12,15 +12,19 @@
 	let colorBy = 'parent';
 
 	let zoom;
-	let selected = complexHierarchy;
+	let selected;
 
 	onMount(() => {
 		selected = complexHierarchy;
 	});
 
+	$: selected = complexHierarchy;
+
 	$: if (zoom && selected) {
-		const diameter = selected.r * 2;
-		zoom.zoomTo({ x: selected.x, y: selected.y }, { width: diameter, height: diameter });
+		if (selected.x != undefined && selected.y != undefined) {
+			const diameter = selected.r * 2;
+			zoom.zoomTo({ x: selected.x, y: selected.y }, { width: diameter, height: diameter });
+		}
 	}
 </script>
 
@@ -55,7 +59,7 @@
 						/>
 					</Group>
 				{/each}
-				{#each selected.children ?? [selected] as node (node.data.name + '-' + node.depth + '-' + node.x + '-' + node.y)}
+				{#each selected ? selected.children ?? [selected] : [] as node (node.data.name + '-' + node.depth + '-' + node.x + '-' + node.y)}
 					{#if node.depth < 3 || (node.depth == 3 && node.parent.children.length <= 5)}
 						<ChartText {node} {scale} />
 					{/if}

@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { Handle, Position, type NodeProps } from '@xyflow/svelte';
-	import { writable, type Writable } from 'svelte/store';
+	import { type Writable } from 'svelte/store';
 	import Button from '@smui/button';
+	import Paper from '@smui/paper';
 
 	type $$Props = NodeProps;
 
@@ -39,7 +40,7 @@
 	}
 </script>
 
-<div class="csvnode">
+<Paper title={id}>
 	<div>CSV data</div>
 	{#if data.filename}
 		<div>{data.filename}</div>
@@ -54,15 +55,9 @@
 		/>
 		<Button on:click={triggerFileSelect}>Upload CSV</Button>
 	{/if}
-	<Handle type="source" position={Position.Bottom} />
-</div>
+	{#if data.dirty}
+		<div class="text-sm text-gray-500">Unsaved changes</div>
+	{/if}
 
-<style>
-	:global(.svelte-flow__node-csv) {
-		font-size: 12px;
-		background: #eee;
-		border: 1px solid #555;
-		border-radius: 5px;
-		text-align: center;
-	}
-</style>
+	<Handle type="source" position={Position.Bottom} />
+</Paper>

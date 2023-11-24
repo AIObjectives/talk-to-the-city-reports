@@ -1,4 +1,5 @@
 import openai from 'openai';
+import { open_ai_key } from './open_ai_key';
 
 async function gpt(
 	apiKey: string,
@@ -36,17 +37,19 @@ export const cluster_extraction = async (node, inputData, info, error, success) 
 	}
 	console.log('Computing', node.data.label, 'with input data', inputData);
 	info('Computing' + node.data.label);
-	if (inputData.csv.length == 0) {
+	const csv = inputData.csv || inputData[node.data.input_ids.csv];
+	const open_ai_key = inputData.open_ai_key || inputData[node.data.input_ids.open_ai_key];
+	if (csv.length == 0) {
 		node.data.dirty = false;
 		return;
 	}
 	const { prompt, system_prompt } = node.data;
 	const result = await gpt(
-		inputData.open_ai_key,
+		open_ai_key,
 		system_prompt,
 		prompt,
 		{
-			comments: inputData.csv.map((x: any) => x['comment-body']).join('\n')
+			comments: csv.map((x: any) => x['comment-body']).join('\n')
 		},
 		info,
 		error,

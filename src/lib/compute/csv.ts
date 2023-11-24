@@ -1,6 +1,6 @@
 import papa from 'papaparse';
 
-const requiredColumns = ['comment-id', 'comment-body'];
+// const requiredColumns = ['comment-id', 'comment-body'];
 
 export const csv = async (node, inputData) => {
 	if (!node.data.dirty) {
@@ -21,12 +21,22 @@ export const csv = async (node, inputData) => {
 			row[column] = row[column].trim();
 		}
 
-		for (const column of requiredColumns) {
-			if (!row[column] || row[column].trim() === '') {
-				isValidRow = false;
+		// check that not all rows are empty
+		let allEmpty = true;
+		for (const column in row) {
+			if (row[column] !== '') {
+				allEmpty = false;
 				break;
 			}
 		}
+		isValidRow = !allEmpty;
+
+		// for (const column of requiredColumns) {
+		// if (!row[column] || row[column].trim() === '') {
+		// isValidRow = false;
+		// break;
+		// }
+		// }
 
 		if (isValidRow) {
 			validRows.push(row);

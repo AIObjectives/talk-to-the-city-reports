@@ -5,23 +5,26 @@ export function topologicalSort(nodes, edges) {
 
 	// Initialize the graph
 	nodes.forEach((node) => {
-		graph[node.id] = { id: node.id, edges: [] };
+		graph[node.id] = { node: node, edges: [] };
 		visited[node.id] = false;
 	});
 
 	// Map the edges to the graph
 	edges.forEach((edge) => {
-		graph[edge.source].edges.push(edge.target);
+		if (graph[edge.source]) {
+			graph[edge.source].edges.push(edge.target);
+		}
 	});
 
 	// DFS to sort the graph
-	function visit(node) {
-		if (visited[node]) return;
-		visited[node] = true;
+	function visit(nodeId) {
+		if (visited[nodeId]) return;
+		visited[nodeId] = true;
 
-		graph[node].edges.forEach((neighbor) => visit(neighbor));
+		graph[nodeId].edges.forEach((neighbor) => visit(neighbor));
 
-		sorted.push(node);
+		// Push the actual node instead of node ID
+		sorted.push(graph[nodeId].node);
 	}
 
 	nodes.forEach((node) => visit(node.id));

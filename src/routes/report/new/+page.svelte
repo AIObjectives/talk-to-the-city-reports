@@ -2,21 +2,22 @@
 	import Button from '@smui/button';
 	import HelperText from '@smui/textfield/helper-text';
 	import TextField from '@smui/textfield';
-	import Select from '@smui/select';
-	import MenuItem from '@smui/menu';
+	import Select, { Option } from '@smui/select';
 	import { query, where, getDocs } from 'firebase/firestore/lite';
 	import { addDoc, serverTimestamp } from 'firebase/firestore/lite';
 	import { auth, datasetCollection } from '$lib/firebase';
 	import { success, error } from '$components/toast/theme';
 	import { goto } from '$app/navigation';
-	import { templates } from '$lib/templates';
+	import { loadTemplates } from '$lib/templates';
+	import { onMount } from 'svelte';
 
-	const defaultTemplate = 'heal_michigan';
-	const showTemplate = false;
+	const defaultTemplate = 'heal_michigan_v0';
+	const showTemplate = true;
 	let projectTitle = '';
 	let projectSlug = '';
 	let projectDescription = '';
 	let projectTemplate = defaultTemplate;
+	let templates;
 
 	function createProjectSlug(str) {
 		return str
@@ -25,6 +26,11 @@
 			.replace(/\s+/g, '-')
 			.replace(/[^0-9a-z\-]/g, '');
 	}
+
+	onMount(async () => {
+		templates = await loadTemplates();
+		console.log(templates);
+	});
 
 	async function createNewProject(event) {
 		event.preventDefault();
@@ -85,11 +91,17 @@
 				</TextField>
 			</div>
 			{#if showTemplate}
-				<div class="w-full px-3">
-					<Select label="Project Template" bind:value={projectTemplate}>
-						<MenuItem value="heal_michigan">Heal Michigan</MenuItem>
-					</Select>
-				</div>
+				{#if templates}
+					<div class="w-full px-3">
+						<Select label="Project Template" bind:value={projectTemplate}>
+							{#each Object.keys(templates) as templateKey}
+								<Option value={templateKey}>{templateKey}</Option>
+							{/each}
+						</Select>
+					</div>
+				{:else}
+					<p>Loading templates...</p>
+				{/if}
 			{/if}
 			<div class="w-full px-3 pt-5">
 				<Button raised type="submit">Create</Button>

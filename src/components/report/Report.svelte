@@ -1,92 +1,72 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { findAncestor } from '$lib/hierarchy';
 	import { hierarchy } from 'd3-hierarchy';
 	import { scaleSequential, scaleOrdinal } from 'd3-scale';
 	import * as chromatic from 'd3-scale-chromatic';
 	import Paper from '@smui/paper';
 	import { hsl } from 'd3-color';
-	import { format, sortFunc } from 'svelte-ux';
-	import Breadcrumbs from '$components/report/Breadcrumbs.svelte';
+	import { sortFunc } from 'svelte-ux';
 	import Chart from '$components/report/Chart.svelte';
 	import Claims from '$components/report/Claims.svelte';
 	import Tooltip from '$components/report/Tooltip.svelte';
 	import InfoPanel from '$components/report/InfoPanel.svelte';
 	// import { complexData } from '$components/hierarchy';
-	export let dataset;
+	export let dataset: any;
 
-	import { findAncestor } from '$lib/hierarchy';
+	let report: any;
+	let csv: any;
 
-	$: argument_extraction = dataset.graph.nodes.find((node) => node.id === 'argument_extraction')
-		.data.output;
-	$: cluster_extraction = dataset.graph.nodes.find((node) => node.id === 'cluster_extraction').data
-		.output;
-	$: report = { argument_extraction, cluster_extraction };
-	$: csv = dataset.graph.nodes.find((node) => node.id === 'csv').data.output;
-
-	function getClaimsForTopic(data, topicName, subtopicName) {
-		let claims = [];
-		for (const key in data.argument_extraction) {
-			const extraction = data.argument_extraction[key];
-
-			extraction.claims.forEach((claim) => {
-				if (claim.topicName === topicName && claim.subtopicName === subtopicName) {
-					claim.interview = extraction.interview;
-					claim.id = extraction.id;
-					claims.push(claim);
-				}
-			});
-		}
-		return claims;
-	}
-
-	function transformData(data) {
-		const result = {
+	function transformData(originalData) {
+		const transformed = {
 			name: 'heal michigan',
 			children: []
 		};
-		data.cluster_extraction.topics.forEach((topic) => {
-			const topicObj = {
+		originalData.topics.forEach((topic) => {
+			const topicEntry = {
 				name: topic.topicName,
 				children: []
 			};
-
 			topic.subtopics.forEach((subtopic) => {
-				const claims = getClaimsForTopic(data, topic.topicName, subtopic.subtopicName);
-				const claims_obj = claims.map((claim) => {
+				const claims = subtopic.claims.map((claim) => {
 					return {
 						name: claim.claim,
 						claim: claim,
 						value: 1
 					};
 				});
-				const subtopic_obj = {
+				const subtopicEntry = {
 					name: subtopic.subtopicName
 				};
-				if (claims_obj.length > 0) {
-					subtopic_obj.children = claims_obj;
+				if (claims.length > 0) {
+					subtopicEntry.children = claims;
 				} else {
-					subtopic_obj.value = 1;
+					subtopicEntry.value = 1;
 				}
-				topicObj.children.push(subtopic_obj);
+				topicEntry.children.push(subtopicEntry);
 			});
-			result.children.push(topicObj);
+			transformed.children.push(topicEntry);
 		});
-		return result;
+		return transformed;
 	}
 
-	let complexHierarchy;
+	let complexHierarchy: any;
 
 	$: {
-		if (cluster_extraction.topics) {
-			let transformedData = transformData(report);
-			complexHierarchy = hierarchy(transformedData)
-				.sum((d) => d.value)
-				.sort(sortFunc('value', 'desc'));
+		let report_node = dataset.graph.nodes.find((n) => n.type === 'report_v0');
+		if (report_node) {
+			report = report_node.data.output;
+			csv = dataset.graph.nodes.find((n) => n.type === 'csv_v0').data.output;
+			if (report && report.topics && report.topics.length > 0) {
+				let transformedData = transformData(report);
+				complexHierarchy = hierarchy(transformedData)
+					.sum((d) => d.value)
+					.sort(sortFunc('value', 'desc'));
+			}
 		}
 	}
 
-	let tooltipEvent;
-	let clickEvent;
+	let tooltipEvent: any;
+	let clickEvent: any;
 
 	const sequentialColor = scaleSequential([4, -1], chromatic.interpolateGnBu);
 	const ordinalColor = scaleOrdinal(
@@ -106,8 +86,6 @@
 					: '#ddd';
 		}
 	}
-
-	console.log(report);
 </script>
 
 <div class="graph-container">
@@ -130,8 +108,8 @@
 <br />
 
 <div class="report-container">
-	{#if cluster_extraction.topics}
-		{#each report.cluster_extraction.topics as topic}
+	{#if report && report.topics}
+		{#each report.topics as topic}
 			<Paper square>
 				<div class="p-4 rounded">
 					<h2
@@ -140,6 +118,7 @@
 					>
 						{topic.topicName}
 					</h2>
+
 					<h3 class="mt-4 mb-4">{topic.topicShortDescription}</h3>
 					{#each topic.subtopics as subtopic}
 						<Paper square>
@@ -151,7 +130,7 @@
 								<div class="ml-5 mt-2 mb-2" style="color: black">
 									<h3>{subtopic.subtopicShortDescription}</h3>
 								</div>
-								<Claims {report} {topic} {subtopic} {getClaimsForTopic} />
+								<Claims claims={subtopic.claims} />
 							</div>
 						</Paper>
 						<br />

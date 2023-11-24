@@ -1,17 +1,18 @@
 <script lang="ts">
-	import { Handle, Position, type NodeProps } from '@xyflow/svelte';
+	import { NodeToolbar, Handle, Position, type NodeProps, useEdges } from '@xyflow/svelte';
 	import TextField from '@smui/textfield';
 	import HelperText from '@smui/textfield/helper-text';
+	import Paper from '@smui/paper';
 
+	const edges = useEdges();
 	type $$Props = NodeProps;
 
 	export let data: $$Props['data'];
 
-	export let id;
+	export let id: $$Props['id'];
 	export let zIndex;
 	export let dragging;
 	export let dragHandle;
-	export let isConnectable;
 	export let type;
 	export let xPos;
 	export let yPos;
@@ -23,7 +24,11 @@
 	const { system_prompt, prompt, output } = data;
 </script>
 
-<div class="text-input">
+<!-- <NodeToolbar>
+	<input type="text" bind:value={data.label} />
+</NodeToolbar> -->
+
+<Paper>
 	<div>{data.label}</div>
 	{#if showSystemPrompt}
 		<TextField
@@ -56,21 +61,9 @@
 	{#if output}
 		<div>Objects: {Object.keys(output).length}: {Object.keys(output)[0]} ...</div>
 	{/if}
+	{#if data.dirty}
+		<div class="text-sm text-gray-500">Unsaved changes</div>
+	{/if}
 	<Handle type="target" position={Position.Top} />
 	<Handle type="source" position={Position.Bottom} />
-</div>
-
-<style>
-	:global(.svelte-flow__node-prompt) {
-		font-size: 12px;
-		width: 300px;
-		background: #eee;
-		border: 1px solid #555;
-		border-radius: 5px;
-		text-align: center;
-	}
-
-	.nodrag {
-		width: 100%;
-	}
-</style>
+</Paper>

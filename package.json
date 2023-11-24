@@ -40,7 +40,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@xyflow/svelte": "^0.0.27",
+		"@xyflow/svelte": "^0.0.28",
 		"@zerodevx/svelte-toast": "^0.9.5",
 		"firebase": "^10.6.0",
 		"js-cookie": "^3.0.5",

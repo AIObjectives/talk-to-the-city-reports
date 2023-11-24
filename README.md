@@ -1,40 +1,17 @@
-# create-svelte
+# tttc-turbo
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+This application creates reports based on participant surveys.
 
-## Creating a project
+https://tttc-turbo.web.app/report/test
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Nodes
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+To add pipeline computation nodes:
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
-
-https://gist.github.com/coehne/caf0b3934455d842dfbfe1f4c1544348
+- add a TS type to `src/lib/node_data_types.d.ts`
+- add the node to `src/lib/templates.ts`
+  - add it to the `node_register` variable
+- create a component as required, in `src/components`
+  - register the component in `src/lib/node_types.ts`
+- create the compute function in `src/lib/compute/`
+  - import it and add it in `src/lib/compute.ts`

@@ -44,7 +44,10 @@ export const argument_extraction = async (node, inputData, info, error, success)
 	info('Computing ' + node.data.label);
 	node.data.output = {};
 	const { prompt, system_prompt } = node.data;
-	const { open_ai_key, cluster_extraction, csv } = inputData;
+	const csv = inputData.csv || inputData[node.data.input_ids.csv];
+	const open_ai_key = inputData.open_ai_key || inputData[node.data.input_ids.open_ai_key];
+	const cluster_extraction =
+		inputData.cluster_extraction || inputData[node.data.input_ids.cluster_extraction];
 
 	const csv_by_ids = Object.fromEntries(csv.map((item) => [item['comment-id'], item]));
 	async function extract_args(id) {

@@ -1,125 +1,185 @@
-const extraction_prompt = `
-I'm going to give you the transcript of a video interview and a list of topics and subtopics which have already been extracted.  
+import { getDocs, doc, setDoc, addDoc, query } from '@firebase/firestore/lite';
+import { templatesCollection } from '$lib/firebase';
+import { extraction_prompt, summary_prompt } from './prompts';
 
-I want you to extract a list of concise claims that the interviewee may have made or supported if they had been asked the questions "what are the most important challenges faced by returning citizens in Michigan?". 
-
-We are only interested in claims that can be mapped to one of the given topic and subtopic. The claim must be fairly general but not a platitude. It must be something that other people may potentially disagree with. Each claim must also be atomic. 
-
-For each claim, please also provide a relevant quote from the transcript. The quote must be as concise as possible while still supporting the argument. The quote doesn't need to be a logical argument. It could also be a personal story or anecdote illustrating why the interviewee would make this claim. You may use "[...]" in the quote to skip the less interesting bits of the quote. 
-
-Return a JSON object of the form {
-  "claims": [
-    {
-      "claim": string, // a very concise extracted claim
-      "quote": string // the exact quote,
-      "topicName": string // from the given list of topics
-      "subtopicName": string // from the list of subtopics
-    }, 
-    // ... 
-  ]
-}
-
-Now here is the list of topics and subtopics: {clusters}
-
-Now here is the comment: "{comment}"
-
-Remember to keep the claims very concise. 
-`.trim();
-
-const summary_prompt = `
-I will give you a long list for comments extracted from different video interviews on the topic of "which challenges are you and the community facing?".
-
-I want you to propose a way to break down the information contains in this comments into topics and subtopics of interests. 
-
-Keep the topic and subtopic names very concise and use the short description to explain what the topic is about.
-
-Return a JSON object of the form {
-  "topics": [
-    {
-      "topicName:": string, 
-      "topicShortDescription": string,
-      "subtopics": [
-        {
-          "subtopicName": string,  
-          "subtopicShortDescription": string, 
-        },
-        ...
-      ]
-    }, 
-    ... 
-  ]
-}
-
-Now here are the comment: "{comments}"`.trim();
-
-const open_ai_key = {
+const open_ai_key: OpenAIKeyNode = {
 	id: 'open_ai_key',
-	data: { label: 'OpenAI Key', text: 'sk-...', dirty: true },
+	data: {
+		label: 'OpenAI Key',
+		text: 'sk-...',
+		dirty: false,
+		save_output: false,
+		compute_type: 'open_ai_key_v0',
+		input_ids: {}
+	},
 	position: { x: -200, y: 50 },
-	type: 'text-input'
+	type: 'text_input_v0'
 };
 
-let csv = {
+const translate: TranslateNode = {
+	id: 'translate',
+	data: {
+		label: 'Translate',
+		target_language: 'English',
+		keys: [],
+		dirty: false,
+		save_output: true,
+		compute_type: 'translate_v0',
+		input_ids: { open_ai_key: '', data: '' }
+	},
+	position: { x: -200, y: 50 },
+	type: 'translate_v0'
+};
+
+let csv: CSVNode = {
 	id: 'csv',
-	data: { label: 'CSV', csv: '', filename: '', size_kb: 0, dirty: true },
+	data: {
+		label: 'CSV',
+		csv: '',
+		filename: '',
+		size_kb: 0,
+		dirty: false,
+		save_output: true,
+		compute_type: 'csv_v0',
+		input_ids: {}
+	},
 	position: { x: 100, y: -50 },
-	type: 'csv'
+	type: 'csv_v0'
 };
 
-const cluster_extraction = {
+let limit_csv: LimitCSVNode = {
+	id: 'limit_csv',
+	data: {
+		label: 'Limit CSV',
+		dirty: false,
+		number: 2,
+		save_output: false,
+		compute_type: 'limit_csv_v0',
+		input_ids: { csv: '' }
+	},
+	position: { x: 100, y: -50 },
+	type: 'number_input_v0'
+};
+
+let edit_csv: EditCSVNode = {
+	id: 'edit_csv',
+	data: {
+		label: 'Edit CSV',
+		dirty: false,
+		generate: {},
+		delete: [],
+		rename: {},
+		save_output: false,
+		compute_type: 'edit_csv_v0',
+		input_ids: { csv: '' }
+	},
+	position: { x: 100, y: -50 },
+	type: 'edit_csv_v0'
+};
+
+const cluster_extraction: ClusterExtractionNode = {
 	id: 'cluster_extraction',
 	data: {
 		label: 'Cluster Extraction',
 		output: {},
 		text: '',
 		system_prompt:
-			'You are a professional research assistant. You have helped run may public consultations, surveys and citizen assemblies.',
+			'You are a professional research assistant. You have helped run many public consultations, surveys and citizen assemblies.',
 		prompt: summary_prompt,
-		dirty: true
+		dirty: false,
+		save_output: true,
+		compute_type: 'cluster_extraction_v0',
+		input_ids: { open_ai_key: '', csv: '' }
 	},
 	position: { x: 100, y: 100 },
-	type: 'prompt'
+	type: 'prompt_v0'
 };
 
-const argument_extraction = {
+const argument_extraction: ArgumentExtractionNode = {
 	id: 'argument_extraction',
 	data: {
 		label: 'Argument Extraction',
 		output: {},
 		text: '',
 		system_prompt:
-			'You are a professional research assistant. You have helped run may public consultations, surveys and citizen assemblies. You have good instincts when it comes to extracting interesting insights. You are familiar with public consultation tools like Pol.is and you understand the benefits for working with very clear, concise claims that other people would be able to vote on.',
+			'You are a professional research assistant. You have helped run many public consultations, surveys and citizen assemblies. You have good instincts when it comes to extracting interesting insights. You are familiar with public consultation tools like Pol.is and you understand the benefits for working with very clear, concise claims that other people would be able to vote on.',
 		prompt: extraction_prompt,
-		dirty: true
+		dirty: false,
+		save_output: true,
+		compute_type: 'argument_extraction_v0',
+		input_ids: { open_ai_key: '', csv: '', cluster_extraction: '' }
 	},
 	position: { x: 0, y: 350 },
-	type: 'prompt'
+	type: 'prompt_v0'
 };
 
-const report = {
+const report: ReportNode = {
 	id: 'report',
 	data: {
 		label: 'Report',
 		output: {},
-		dirty: true
+		dirty: false,
+		save_output: false,
+		compute_type: 'report_v0',
+		input_ids: {}
 	},
-	position: { x: 200, y: 700 }
+	position: { x: 200, y: 850 },
+	type: 'report_v0'
 };
 
-const participant_filter = {
+const participant_filter: ParticipantFilterNode = {
 	id: 'participant_filter',
 	data: {
-		label: 'Participant Filter',
+		label: 'Participant filter',
+		text: '',
+		dirty: false,
+		save_output: false,
 		output: {},
-		dirty: true
+		compute_type: 'participant_filter_v0',
+		input_ids: {}
+	},
+	position: { x: 200, y: 700 },
+	type: 'text_input_v0'
+};
+
+const merge: MergeNode = {
+	id: 'merge',
+	data: {
+		label: 'Merge',
+		output: {},
+		dirty: false,
+		save_output: false,
+		compute_type: 'merge_v0',
+		input_ids: { cluster_extraction: '', argument_extraction: '' }
 	},
 	position: { x: 200, y: 600 },
-	type: 'participant-filter'
+	type: 'merge_v0'
 };
+
+export let node_register = [
+	open_ai_key,
+	csv,
+	edit_csv,
+	cluster_extraction,
+	argument_extraction,
+	merge,
+	participant_filter,
+	report,
+	limit_csv,
+	translate
+];
 
 export let templates = {
 	heal_michigan: {
-		nodes: [open_ai_key, csv, cluster_extraction, argument_extraction, participant_filter, report],
+		nodes: [
+			open_ai_key,
+			csv,
+			cluster_extraction,
+			argument_extraction,
+			merge,
+			participant_filter,
+			report
+		],
 		edges: [
 			{
 				id: 'open_ai_key-cluster_extraction',
@@ -147,13 +207,18 @@ export let templates = {
 				target: 'argument_extraction'
 			},
 			{
-				id: 'argument_extraction-participant_filter',
+				id: 'argument_extraction-merge',
 				source: 'argument_extraction',
-				target: 'participant_filter'
+				target: 'merge'
 			},
 			{
-				id: 'cluster_extraction-participant_filter',
+				id: 'cluster_extraction-merge',
 				source: 'cluster_extraction',
+				target: 'merge'
+			},
+			{
+				id: 'merge-participant_filter',
+				source: 'merge',
 				target: 'participant_filter'
 			},
 			{
@@ -164,3 +229,28 @@ export let templates = {
 		]
 	}
 };
+
+export async function loadTemplates() {
+	const q = query(templatesCollection);
+	const querySnapshot = await getDocs(q);
+	let templates = {};
+	querySnapshot.docs.forEach((doc) => {
+		templates[doc.id] = doc.data();
+	});
+	return templates;
+}
+
+export async function saveTemplate(name: string, data: any) {
+	for (const node of data.nodes) {
+		if (!node.data.output) {
+			node.data.output = {};
+		}
+	}
+	try {
+		const docRef = doc(templatesCollection, name);
+		await setDoc(docRef, data);
+		console.log(`Template '${name}' successfully updated.`);
+	} catch (error) {
+		console.error('Error updating template:', error);
+	}
+}
