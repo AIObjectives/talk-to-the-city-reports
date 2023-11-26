@@ -1,7 +1,6 @@
 interface BaseData {
 	label: string;
 	dirty: boolean;
-	save_output: boolean;
 	compute_type: string;
 	input_ids: { [key: string]: string };
 }
@@ -12,6 +11,7 @@ interface OpenAIKeyData extends BaseData {
 
 interface TranslateData extends BaseData {
 	target_language: string;
+	gcs_path: string;
 	keys: string[];
 }
 
@@ -19,6 +19,7 @@ interface CSVData extends BaseData {
 	csv: string;
 	filename: string;
 	size_kb: number;
+	gcs_path: string;
 }
 
 interface EditCSVData extends BaseData {
@@ -36,6 +37,7 @@ interface ClusterExtractionData extends BaseData {
 	text: string;
 	system_prompt: string;
 	prompt: string;
+	csv_length: number;
 }
 
 interface ArgumentExtractionData extends ClusterExtractionData {

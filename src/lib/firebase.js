@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { collection, doc, getFirestore } from "firebase/firestore/lite";
+import { getStorage } from "firebase/storage";
 
 
 const firebaseConfig = {
@@ -17,6 +18,8 @@ const firebaseConfig = {
 let app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 let db = getFirestore(app);
+const storage = getStorage(app);
+
 const datasetCollection = collection(db, "datasets");
 const templatesCollection = collection(db, "templates");
 const userDoc = (userId) => doc(db, "users", userId);
@@ -28,5 +31,6 @@ export {
     datasetCollection,
     userDoc,
     datasetDoc,
-    templatesCollection
+    templatesCollection,
+    storage
 }

@@ -8,7 +8,6 @@ const open_ai_key: OpenAIKeyNode = {
 		label: 'OpenAI Key',
 		text: 'sk-...',
 		dirty: false,
-		save_output: false,
 		compute_type: 'open_ai_key_v0',
 		input_ids: {}
 	},
@@ -23,7 +22,7 @@ const translate: TranslateNode = {
 		target_language: 'English',
 		keys: [],
 		dirty: false,
-		save_output: true,
+		gcs_path: '',
 		compute_type: 'translate_v0',
 		input_ids: { open_ai_key: '', data: '' }
 	},
@@ -39,7 +38,7 @@ let csv: CSVNode = {
 		filename: '',
 		size_kb: 0,
 		dirty: false,
-		save_output: true,
+		gcs_path: '',
 		compute_type: 'csv_v0',
 		input_ids: {}
 	},
@@ -53,7 +52,6 @@ let limit_csv: LimitCSVNode = {
 		label: 'Limit CSV',
 		dirty: false,
 		number: 2,
-		save_output: false,
 		compute_type: 'limit_csv_v0',
 		input_ids: { csv: '' }
 	},
@@ -69,7 +67,6 @@ let edit_csv: EditCSVNode = {
 		generate: {},
 		delete: [],
 		rename: {},
-		save_output: false,
 		compute_type: 'edit_csv_v0',
 		input_ids: { csv: '' }
 	},
@@ -86,8 +83,8 @@ const cluster_extraction: ClusterExtractionNode = {
 		system_prompt:
 			'You are a professional research assistant. You have helped run many public consultations, surveys and citizen assemblies.',
 		prompt: summary_prompt,
+		csv_length: 0,
 		dirty: false,
-		save_output: true,
 		compute_type: 'cluster_extraction_v0',
 		input_ids: { open_ai_key: '', csv: '' }
 	},
@@ -104,8 +101,8 @@ const argument_extraction: ArgumentExtractionNode = {
 		system_prompt:
 			'You are a professional research assistant. You have helped run many public consultations, surveys and citizen assemblies. You have good instincts when it comes to extracting interesting insights. You are familiar with public consultation tools like Pol.is and you understand the benefits for working with very clear, concise claims that other people would be able to vote on.',
 		prompt: extraction_prompt,
+		csv_length: 0,
 		dirty: false,
-		save_output: true,
 		compute_type: 'argument_extraction_v0',
 		input_ids: { open_ai_key: '', csv: '', cluster_extraction: '' }
 	},
@@ -119,7 +116,6 @@ const report: ReportNode = {
 		label: 'Report',
 		output: {},
 		dirty: false,
-		save_output: false,
 		compute_type: 'report_v0',
 		input_ids: {}
 	},
@@ -133,7 +129,6 @@ const participant_filter: ParticipantFilterNode = {
 		label: 'Participant filter',
 		text: '',
 		dirty: false,
-		save_output: false,
 		output: {},
 		compute_type: 'participant_filter_v0',
 		input_ids: {}
@@ -148,7 +143,6 @@ const merge: MergeNode = {
 		label: 'Merge',
 		output: {},
 		dirty: false,
-		save_output: false,
 		compute_type: 'merge_v0',
 		input_ids: { cluster_extraction: '', argument_extraction: '' }
 	},
@@ -168,67 +162,6 @@ export let node_register = [
 	limit_csv,
 	translate
 ];
-
-export let templates = {
-	heal_michigan: {
-		nodes: [
-			open_ai_key,
-			csv,
-			cluster_extraction,
-			argument_extraction,
-			merge,
-			participant_filter,
-			report
-		],
-		edges: [
-			{
-				id: 'open_ai_key-cluster_extraction',
-				source: 'open_ai_key',
-				target: 'cluster_extraction'
-			},
-			{
-				id: 'open_ai_key-argument_extraction',
-				source: 'open_ai_key',
-				target: 'argument_extraction'
-			},
-			{
-				id: 'csv-cluster_extraction',
-				source: 'csv',
-				target: 'cluster_extraction'
-			},
-			{
-				id: 'cluster_extraction-argument_extraction',
-				source: 'cluster_extraction',
-				target: 'argument_extraction'
-			},
-			{
-				id: 'csv-argument_extraction',
-				source: 'csv',
-				target: 'argument_extraction'
-			},
-			{
-				id: 'argument_extraction-merge',
-				source: 'argument_extraction',
-				target: 'merge'
-			},
-			{
-				id: 'cluster_extraction-merge',
-				source: 'cluster_extraction',
-				target: 'merge'
-			},
-			{
-				id: 'merge-participant_filter',
-				source: 'merge',
-				target: 'participant_filter'
-			},
-			{
-				id: 'participant_filter-report',
-				source: 'participant_filter',
-				target: 'report'
-			}
-		]
-	}
-};
 
 export async function loadTemplates() {
 	const q = query(templatesCollection);

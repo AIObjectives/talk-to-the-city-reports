@@ -35,6 +35,9 @@
 		}}
 		value={text}
 	/>
+	{#if data.dirty}
+		<div class="text-sm text-gray-500">Unsaved changes</div>
+	{/if}
 	<Handle type="target" position={Position.Top} />
 	<Handle type="source" position={Position.Bottom} />
 </Paper>

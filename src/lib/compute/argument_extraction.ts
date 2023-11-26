@@ -1,4 +1,5 @@
 import openai from 'openai';
+import { readFileFromGCS, uploadDataToGCS } from '$lib/utils';
 
 async function gpt(
 	apiKey: string,
@@ -35,19 +36,35 @@ async function processInChunks(array, handler, chunkSize) {
 	}
 }
 
-export const argument_extraction = async (node, inputData, info, error, success) => {
-	if (!node.data.dirty) {
-		console.log('Argument extraction not dirty. Returning.');
-		return node.data.output;
-	}
+export const argument_extraction = async (node, inputData, info, error, success, slug) => {
 	console.log('Computing', node.data.label, 'with input data', inputData);
-	info('Computing ' + node.data.label);
-	node.data.output = {};
 	const { prompt, system_prompt } = node.data;
 	const csv = inputData.csv || inputData[node.data.input_ids.csv];
 	const open_ai_key = inputData.open_ai_key || inputData[node.data.input_ids.open_ai_key];
 	const cluster_extraction =
 		inputData.cluster_extraction || inputData[node.data.input_ids.cluster_extraction];
+
+	console.log('csv', csv);
+
+	if (!csv || csv.length == 0 || !cluster_extraction) {
+		node.data.dirty = false;
+		return;
+	}
+
+	node.data.dirty = node.data.csv_length != csv.length;
+
+	if (!node.data.dirty && node.data.gcs_path) {
+		let doc = await readFileFromGCS(node);
+		if (typeof doc === 'string') {
+			doc = JSON.parse(doc);
+		}
+		node.data.output = doc;
+		node.data.dirty = false;
+		console.log('Already computed', node.data.label);
+		return node.data.output;
+	}
+
+	node.data.output = {};
 
 	const csv_by_ids = Object.fromEntries(csv.map((item) => [item['comment-id'], item]));
 	async function extract_args(id) {
@@ -69,18 +86,20 @@ export const argument_extraction = async (node, inputData, info, error, success)
 		node.data.output[id] = { id, comment, interview, ...JSON.parse(response) };
 	}
 
-	let ids = Object.keys(csv_by_ids);
-	ids.sort();
+	node.data.csv_length = csv.length;
 
-	const output_ids = Object.keys(node.data.output);
-	ids = ids.filter((x) => !output_ids.includes(x));
+	let ids = Object.keys(csv_by_ids);
+
+	console.log('ids', ids);
 
 	try {
-		await processInChunks(ids, extract_args, 5);
+		await processInChunks(ids, extract_args, 10);
 	} catch (err) {
 		console.error(err);
 	}
-	node.data.dirty = Object.keys(node.data.output).length !== Object.keys(node.data.output).length;
 	success('Done computing ' + node.data.label);
+	node.data.dirty = false;
+	console.log(node.data.output);
+	await uploadDataToGCS(node, node.data.output, slug);
 	return node.data.output;
 };

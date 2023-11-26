@@ -15,6 +15,7 @@
 
 	onMount(async () => {
 		await processNodes(nodes, edges, dataset);
+		console.log(dataset);
 		dataset = dataset;
 	});
 

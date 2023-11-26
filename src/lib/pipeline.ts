@@ -1,4 +1,4 @@
-import { writable, get } from 'svelte/store';
+import { get } from 'svelte/store';
 import { success, error, info } from '$components/toast/theme';
 import { doc, updateDoc } from 'firebase/firestore/lite';
 import { topologicalSort } from '$lib/utils';
@@ -10,9 +10,7 @@ export async function updateDataset(updatedData, datasetId) {
 		info('Updating dataset...');
 		const copy = JSON.parse(JSON.stringify(updatedData));
 		copy.graph.nodes = copy.graph.nodes.map((x) => {
-			if (!x.data.save_output) {
-				x.data.output = [];
-			}
+			x.data.output = [];
 			return x;
 		});
 		await updateDoc(doc(datasetCollection, datasetId), copy);
@@ -52,13 +50,14 @@ export async function processNodes(nodes, edges, dataset) {
 				inputData[edge.source] = nodeOutputs[edge.source];
 			});
 
-		save = save || (node.data.dirty && node.data.save_output);
+		save = save || node.data.dirty;
 		nodeOutputs[node.id] = await compute[node.data.compute_type](
 			node,
 			inputData,
 			info,
 			error,
-			success
+			success,
+			dataset.slug
 		);
 		dataset.graph = { nodes: allNodes, edges: allEdges };
 	}

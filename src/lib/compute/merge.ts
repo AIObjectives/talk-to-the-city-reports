@@ -6,7 +6,7 @@ export const merge = async (node, inputData) => {
 
 	console.log('Computing merge');
 
-	if (!cluster_extraction.topics) {
+	if (!cluster_extraction || !argument_extraction || !cluster_extraction.topics) {
 		node.data.dirty = false;
 		return;
 	}

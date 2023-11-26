@@ -1,11 +1,18 @@
 export const edit_csv = async (node, inputData) => {
+	console.log('Computing', node.data.label, 'with input data', inputData);
 	const input = inputData[Object.keys(inputData)[0]];
+	if (!input) {
+		node.data.dirty = false;
+		return;
+	}
 
 	for (const [key, value] of Object.entries(node.data.generate)) {
 		input.forEach((row) => {
 			row[key] = value;
 		});
 	}
+
+	console.log(node.data);
 
 	node.data.delete.forEach((column) => {
 		input.forEach((row) => {

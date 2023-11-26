@@ -1,5 +1,5 @@
 import openai from 'openai';
-import { open_ai_key } from './open_ai_key';
+import { readFileFromGCS, uploadDataToGCS } from '$lib/utils';
 
 async function gpt(
 	apiKey: string,
@@ -30,19 +30,32 @@ async function gpt(
 	return res.choices[0].message.content!;
 }
 
-export const cluster_extraction = async (node, inputData, info, error, success) => {
-	if (!node.data.dirty) {
-		console.log('Cluster data is not dirty. Returning.');
-		return node.data.output;
-	}
+export const cluster_extraction = async (node, inputData, info, error, success, slug) => {
 	console.log('Computing', node.data.label, 'with input data', inputData);
-	info('Computing' + node.data.label);
 	const csv = inputData.csv || inputData[node.data.input_ids.csv];
 	const open_ai_key = inputData.open_ai_key || inputData[node.data.input_ids.open_ai_key];
-	if (csv.length == 0) {
+	if (!csv || csv.length == 0) {
 		node.data.dirty = false;
 		return;
 	}
+
+	node.data.dirty = node.data.csv_length != csv.length;
+	console.log('node.data.dirty', node.data.dirty);
+	console.log('node.data.csv_length', node.data.csv_length);
+	console.log('csv.length', csv.length);
+
+	if (!node.data.dirty && node.data.gcs_path) {
+		let doc = await readFileFromGCS(node);
+		if (typeof doc === 'string') {
+			doc = JSON.parse(doc);
+		}
+		node.data.output = doc;
+		node.data.dirty = false;
+		console.log('Already computed', node.data.label);
+		return node.data.output;
+	}
+	info('Computing' + node.data.label);
+	node.data.csv_length = csv.length;
 	const { prompt, system_prompt } = node.data;
 	const result = await gpt(
 		open_ai_key,
@@ -56,7 +69,9 @@ export const cluster_extraction = async (node, inputData, info, error, success) 
 		success
 	);
 	node.data.output = JSON.parse(result);
+	await uploadDataToGCS(node, node.data.output, slug);
 	node.data.dirty = false;
 	success('Done computing ' + node.data.label);
+	success('Done computing ' + node.data.label, node.data.output);
 	return node.data.output;
 };

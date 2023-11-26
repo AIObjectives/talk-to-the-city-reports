@@ -1,12 +1,18 @@
 <script lang="ts">
-	import { Handle, Position, type NodeProps } from '@xyflow/svelte';
-	import { type Writable } from 'svelte/store';
+	import {
+		getStorage,
+		ref as storageRef,
+		uploadBytesResumable,
+		getDownloadURL
+	} from 'firebase/storage';
+	import { getAuth } from 'firebase/auth';
 	import Button from '@smui/button';
 	import Paper from '@smui/paper';
+	import { Position, Handle, type NodeProps } from '@xyflow/svelte';
+	import { page } from '$app/stores';
 
 	type $$Props = NodeProps;
 
-	export let data: { file: Writable<File | null> };
 	export let id;
 	export let zIndex;
 	export let dragging;
@@ -19,24 +25,46 @@
 	export let sourcePosition;
 	export let targetPosition;
 
+	export let data: $$Props['data'];
+
 	let fileInput;
+	const storage = getStorage();
+	const auth = getAuth();
 
 	function triggerFileSelect() {
 		fileInput.click();
 	}
 
-	function handleFileChange(event) {
-		const uploadedFile = event.target.files[0];
-		if (uploadedFile) {
-			let reader = new FileReader();
-			reader.onload = function (e) {
-				data.csv = e.target.result;
-				data.filename = uploadedFile.name;
-				data.size_kb = uploadedFile.size / 1000;
-				data.dirty = true;
-			};
-			reader.readAsText(uploadedFile, 'UTF-8');
-		}
+	async function handleFileChange(event: Event) {
+		const uploadedFile = (event.target as HTMLInputElement).files[0];
+		if (!uploadedFile) return;
+
+		const userId = auth.currentUser.uid;
+		const filePath = `uploads/${userId}/${$page.params.report}/${uploadedFile.name}`;
+		const fileRef = storageRef(storage, filePath);
+
+		let reader = new FileReader();
+		reader.onload = function (e) {
+			data.csv = e.target.result;
+			const uploadTask = uploadBytesResumable(fileRef, uploadedFile);
+			uploadTask.on(
+				'state_changed',
+				(snapshot) => {
+					// Handle progress...
+				},
+				(error) => {
+					console.error('Upload failed', error);
+				},
+				async () => {
+					await getDownloadURL(uploadTask.snapshot.ref);
+					data.gcs_path = filePath;
+					data.filename = uploadedFile.name;
+					data.size_kb = uploadedFile.size / 1000;
+					data.dirty = true;
+				}
+			);
+		};
+		reader.readAsText(uploadedFile, 'UTF-8');
 	}
 </script>
 
@@ -45,6 +73,7 @@
 	{#if data.filename}
 		<div>{data.filename}</div>
 		<div>{data.size_kb} KB</div>
+		<small style="color: gray">{data.gcs_path}</small>
 	{:else}
 		<input
 			class="nodrag"
