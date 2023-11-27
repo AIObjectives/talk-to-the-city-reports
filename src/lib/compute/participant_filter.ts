@@ -1,4 +1,8 @@
-export const participant_filter = async (node: ParticipantFilterNode, inputData: object) => {
+export const participant_filter = async (
+	node: ParticipantFilterNode,
+	inputData: object,
+	context
+) => {
 	node.data.dirty = false;
 	const input = inputData[Object.keys(inputData)[0]];
 	console.log('participant_filter', input);
@@ -18,4 +22,27 @@ export const participant_filter = async (node: ParticipantFilterNode, inputData:
 		console.log('copy', copy);
 		return copy;
 	}
+};
+
+interface ParticipantFilterData extends BaseData {
+	text: string;
+	output: object;
+}
+
+type ParticipantFilterNode = DGNodeInterface & {
+	data: ParticipantFilterData;
+};
+
+export const participant_filter_node: ParticipantFilterNode = {
+	id: 'participant_filter',
+	data: {
+		label: 'Participant filter',
+		text: '',
+		dirty: false,
+		output: {},
+		compute_type: 'participant_filter_v0',
+		input_ids: {}
+	},
+	position: { x: 200, y: 700 },
+	type: 'text_input_v0'
 };

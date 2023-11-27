@@ -26,7 +26,7 @@ async function processInChunks(array, handler, chunkSize) {
 	}
 }
 
-export const translate = async (node, inputData, info, error, success, slug) => {
+export const translate = async (node, inputData, context, info, error, success, slug) => {
 	console.log('Initiating translation process');
 	const open_ai_key = inputData.open_ai_key || inputData[node.data.input_ids.open_ai_key];
 	const data = inputData.data || inputData[node.data.input_ids.data];
@@ -38,19 +38,12 @@ export const translate = async (node, inputData, info, error, success, slug) => 
 		return;
 	}
 
-	console.log('data', data);
-	console.log('data', data.length);
-
 	if (node.data.gcs_path) {
 		let storedData = await readFileFromGCS(node);
 		if (typeof storedData === 'string') storedData = JSON.parse(storedData);
 		storedData = storedData.slice(0, data.length);
 		node.data.output = storedData;
 	}
-
-	console.log('node.data.output', node.data.output);
-	console.log('node.data.output', node.data.output.length);
-	console.log('node.data.dirty', node.data.dirty);
 
 	if (!node.data.dirty && node.data.output.length >= data.length) {
 		console.log('Using cached translations');
@@ -60,27 +53,54 @@ export const translate = async (node, inputData, info, error, success, slug) => 
 		});
 	}
 
-	const translateHandler = (text) => oai_translate(open_ai_key, text, target_language, info);
-	let translations = [];
+	if (context == 'run') {
+		const translateHandler = (text) => oai_translate(open_ai_key, text, target_language, info);
+		let translations = [];
 
-	for (let i = 0; i < data.length; i++) {
-		let translationItem = {};
-		await processInChunks(
-			keys,
-			async (key) => {
-				translationItem[key] = await translateHandler(data[i][key]);
-			},
-			5
-		);
-		translations.push(translationItem);
+		for (let i = 0; i < data.length; i++) {
+			let translationItem = {};
+			await processInChunks(
+				keys,
+				async (key) => {
+					translationItem[key] = await translateHandler(data[i][key]);
+				},
+				5
+			);
+			translations.push(translationItem);
+		}
+
+		node.data.dirty = false;
+		node.data.output = translations;
+		await uploadDataToGCS(node, translations, slug + '/translate');
+
+		console.log('Translation process completed');
+		return translations.map((translatedItem, index) => {
+			return { ...data[index], ...translatedItem };
+		});
 	}
+};
 
-	node.data.dirty = false;
-	node.data.output = translations;
-	await uploadDataToGCS(node, translations, slug + '/translate');
+interface TranslateData extends BaseData {
+	target_language: string;
+	gcs_path: string;
+	keys: string[];
+}
 
-	console.log('Translation process completed');
-	return translations.map((translatedItem, index) => {
-		return { ...data[index], ...translatedItem };
-	});
+type TranslateNode = DGNodeInterface & {
+	data: TranslateData;
+};
+
+export const translate_node: TranslateNode = {
+	id: 'translate',
+	data: {
+		label: 'Translate',
+		target_language: 'English',
+		keys: [],
+		dirty: false,
+		gcs_path: '',
+		compute_type: 'translate_v0',
+		input_ids: { open_ai_key: '', data: '' }
+	},
+	position: { x: -200, y: 50 },
+	type: 'translate_v0'
 };

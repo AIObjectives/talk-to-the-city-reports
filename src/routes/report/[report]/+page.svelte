@@ -1,21 +1,28 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { query, where, getDocs } from 'firebase/firestore/lite';
-	import { datasetCollection } from '$lib/firebase';
+	import { Dataset } from '$lib/dataset';
 	import { onMount } from 'svelte';
+	import { SvelteFlowProvider } from '@xyflow/svelte';
 	import Pipeline from '$components/Pipeline.svelte';
 	import Report from '$components/report/Report.svelte';
 	import LeftPane from '$components/report/LeftPane.svelte';
+	import { error } from '$components/toast/theme';
 
-	onMount(load_dataset);
-	let dataset = null;
+	let dataset: Dataset | null = null;
 
-	async function load_dataset() {
-		const q = query(datasetCollection, where('slug', '==', $page.params.report));
-		const querySnapshot = await getDocs(q);
-		let datasets = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-		dataset = datasets[0];
-	}
+	onMount(async () => {
+		const slug = $page.params.report;
+		if (slug) {
+			dataset = await Dataset.loadDataset(slug);
+			if (!dataset) {
+				console.log('Dataset not found');
+				error('Dataset not found');
+			}
+		} else {
+			console.log('No slug provided');
+			error('No slug provided');
+		}
+	});
 </script>
 
 <LeftPane {dataset} />
@@ -25,7 +32,9 @@
 		<p class="text-center text-lg text-gray-500">Loading...</p>
 	{:else}
 		<h1 class="text-3xl uppercase">{dataset.title}</h1>
-		<Pipeline bind:dataset />
+		<SvelteFlowProvider>
+			<Pipeline bind:dataset />
+		</SvelteFlowProvider>
 		<Report bind:dataset />
 	{/if}
 </main>

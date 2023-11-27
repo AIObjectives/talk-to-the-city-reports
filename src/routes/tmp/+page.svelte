@@ -1,34 +1,24 @@
-<script>
-	import { getStorage, ref, uploadBytesResumable } from 'firebase/storage';
-	import { getAuth } from 'firebase/auth';
+<script lang="ts">
+	import jsonata from 'jsonata';
 
-	let fileInput;
-	const storage = getStorage();
-	const auth = getAuth();
-	let uploadProgress = 0;
+	const data = [
+		{ id: 1, name: 'Alice', age: 30, isActive: true },
+		{ id: 2, name: 'Bob', age: 25, isActive: false },
+		{ id: 3, name: 'Charlie', age: 35, isActive: true },
+		{ id: 4, name: 'David', age: 28, isActive: false },
+		{ id: 5, name: 'Eve', age: 22, isActive: true }
+	];
 
-	async function handleFileUpload() {
-		const file = fileInput.files[0];
-		if (!file) return;
-		const userId = auth.currentUser.uid;
-		const storageRef = ref(storage, `uploads/${userId}/${file.name}`);
-		const uploadTask = uploadBytesResumable(storageRef, file);
-		uploadTask.on(
-			'state_changed',
-			(snapshot) => {
-				const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-				uploadProgress = progress;
-			},
-			(error) => {
-				console.error('Upload failed', error);
-			},
-			() => {
-				console.log('Upload successful');
-			}
-		);
-	}
+	import { onMount } from 'svelte';
+	onMount(async (x) => {
+		const expression = '$[isActive].name';
+		const jsonataExpr = jsonata(expression);
+
+		try {
+			const result = await jsonataExpr.evaluate(data);
+			console.log(result);
+		} catch (e) {
+			console.error('Error evaluating JSONata expression:', e);
+		}
+	});
 </script>
-
-<input type="file" bind:this={fileInput} />
-<button on:click={handleFileUpload}>Upload</button>
-<p>Upload Progress: {uploadProgress}%</p>

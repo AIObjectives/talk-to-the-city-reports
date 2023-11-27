@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { useEdges, useNodes } from '@xyflow/svelte';
 	import Select, { Option } from '@smui/select';
+	import { Dataset } from '$lib/dataset';
 
 	export let onClick: () => void;
 	export let id: string;
@@ -8,13 +9,10 @@
 	export let left: number | undefined;
 	export let right: number | undefined;
 	export let bottom: number | undefined;
+	export let dataset: Dataset;
 
 	const nodes = useNodes();
 	const edges = useEdges();
-
-	let fruits = ['Apple', 'Orange', 'Banana', 'Mango'];
-
-	let value = 'Orange';
 
 	function duplicateNode() {
 		const node = $nodes.find((node) => node.id === id);
@@ -32,6 +30,7 @@
 		$nodes = $nodes;
 	}
 	const node = $nodes.find((node) => node.id === id);
+	const edge = $edges.filter((edge) => edge.id === id);
 
 	function getUnregisteredInput() {
 		if (!node?.data.input_ids) node.data.input_ids = {};
@@ -40,12 +39,11 @@
 	}
 
 	function deleteNode() {
-		$nodes = $nodes.filter((node) => node.id !== id);
-		$edges = $edges.filter((edge) => edge.source !== id && edge.target !== id);
+		dataset.graph.deleteNode(id);
 	}
-
-	getUnregisteredInput();
-	console.log(node.data);
+	function deleteEdge() {
+		$edges = $edges.filter((edge) => edge.id !== id);
+	}
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -55,19 +53,32 @@
 	class="context-menu"
 >
 	<p style="margin: 0.5em;">
-		<small>node: {id}</small>
+		<small
+			>{#if node}
+				node: {id}
+			{/if}
+			{#if edge}
+				edge: {id}
+			{/if}
+		</small>
 	</p>
-	{#each Object.keys(node.data.input_ids) as key}
-		<Select bind:value={node.data.input_ids[key]} label={key}>
-			{#each getUnregisteredInput() as input}
-				<Option value={input}>{input}</Option>
-			{/each}
-		</Select>
-	{/each}
+	{#if node}
+		{#each Object.keys(node.data.input_ids) as key}
+			<Select bind:value={node.data.input_ids[key]} label={key}>
+				{#each getUnregisteredInput() as input}
+					<Option value={input}>{input}</Option>
+				{/each}
+			</Select>
+		{/each}
 
-	<hr />
-	<button on:click={duplicateNode}>duplicate</button>
-	<button on:click={deleteNode}>delete</button>
+		<hr />
+		<button on:click={duplicateNode}>duplicate</button>
+		<button on:click={deleteNode}>delete</button>
+	{/if}
+	{#if edge}
+		<hr />
+		<button on:click={deleteEdge}>delete</button>
+	{/if}
 </div>
 
 <style>

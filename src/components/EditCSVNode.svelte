@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { writable, get } from 'svelte/store';
+	import { writable } from 'svelte/store';
 	import { Handle, Position, type NodeProps } from '@xyflow/svelte';
 	import TextField from '@smui/textfield';
 	import Paper from '@smui/paper';
@@ -9,7 +9,8 @@
 	type $$Props = NodeProps;
 
 	export let data: $$Props['data'];
-	export let id;
+	export let id: $$Props['id'];
+	export let selected: $$Props['selected'];
 
 	const updateNodeInternals = useUpdateNodeInternals();
 
@@ -50,7 +51,7 @@
 	}
 </script>
 
-<Paper title={id}>
+<Paper title={id} class={selected ? 'selected-node' : ''}>
 	<div>{data.label}</div>
 	<br /><br />
 	<p>Generate Columns</p>

@@ -1,5 +1,6 @@
 import openai from 'openai';
 import { readFileFromGCS, uploadDataToGCS } from '$lib/utils';
+import { extraction_prompt, summary_prompt } from '$lib/prompts';
 
 async function gpt(
 	apiKey: string,
@@ -30,7 +31,7 @@ async function gpt(
 	return res.choices[0].message.content!;
 }
 
-export const cluster_extraction = async (node, inputData, info, error, success, slug) => {
+export const cluster_extraction = async (node, inputData, context, info, error, success, slug) => {
 	console.log('Computing', node.data.label, 'with input data', inputData);
 	const csv = inputData.csv || inputData[node.data.input_ids.csv];
 	const open_ai_key = inputData.open_ai_key || inputData[node.data.input_ids.open_ai_key];
@@ -39,12 +40,7 @@ export const cluster_extraction = async (node, inputData, info, error, success, 
 		return;
 	}
 
-	node.data.dirty = node.data.csv_length != csv.length;
-	console.log('node.data.dirty', node.data.dirty);
-	console.log('node.data.csv_length', node.data.csv_length);
-	console.log('csv.length', csv.length);
-
-	if (!node.data.dirty && node.data.gcs_path) {
+	if (!node.data.dirty && node.data.csv_length == csv.length && node.data.gcs_path) {
 		let doc = await readFileFromGCS(node);
 		if (typeof doc === 'string') {
 			doc = JSON.parse(doc);
@@ -54,24 +50,57 @@ export const cluster_extraction = async (node, inputData, info, error, success, 
 		console.log('Already computed', node.data.label);
 		return node.data.output;
 	}
-	info('Computing' + node.data.label);
-	node.data.csv_length = csv.length;
-	const { prompt, system_prompt } = node.data;
-	const result = await gpt(
-		open_ai_key,
-		system_prompt,
-		prompt,
-		{
-			comments: csv.map((x: any) => x['comment-body']).join('\n')
-		},
-		info,
-		error,
-		success
-	);
-	node.data.output = JSON.parse(result);
-	await uploadDataToGCS(node, node.data.output, slug);
-	node.data.dirty = false;
-	success('Done computing ' + node.data.label);
-	success('Done computing ' + node.data.label, node.data.output);
-	return node.data.output;
+
+	if (context == 'run' && open_ai_key && csv && csv.length > 0) {
+		info('Computing' + node.data.label);
+		node.data.csv_length = csv.length;
+		const { prompt, system_prompt } = node.data;
+		const result = await gpt(
+			open_ai_key,
+			system_prompt,
+			prompt,
+			{
+				comments: csv.map((x: any) => x['comment-body']).join('\n')
+			},
+			info,
+			error,
+			success
+		);
+		node.data.output = JSON.parse(result);
+		await uploadDataToGCS(node, node.data.output, slug);
+		node.data.dirty = false;
+		success('Done computing ' + node.data.label);
+		return node.data.output;
+	}
+};
+
+interface ClusterExtractionData extends BaseData {
+	output: object;
+	text: string;
+	system_prompt: string;
+	prompt: string;
+	csv_length: number;
+}
+
+type ClusterExtractionNode = DGNodeInterface & {
+	data: ClusterExtractionData;
+};
+
+export const cluster_extraction_node: ClusterExtractionNode = {
+	id: 'cluster_extraction',
+	data: {
+		label: 'Cluster Extraction',
+		output: {},
+		text: '',
+		system_prompt:
+			'You are a professional research assistant. You have helped run many public consultations, surveys and citizen assemblies.',
+		prompt: summary_prompt,
+		csv_length: 0,
+		dirty: false,
+		compute_type: 'cluster_extraction_v0',
+		input_ids: { open_ai_key: '', csv: '' },
+		compute: cluster_extraction
+	},
+	position: { x: 100, y: 100 },
+	type: 'prompt_v0'
 };

@@ -68,7 +68,7 @@
 	}
 </script>
 
-<Paper title={id}>
+<Paper title={id} class={selected ? 'selected-node' : ''}>
 	<div>CSV data</div>
 	{#if data.filename}
 		<div>{data.filename}</div>

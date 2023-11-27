@@ -3,21 +3,19 @@
 	import HelperText from '@smui/textfield/helper-text';
 	import TextField from '@smui/textfield';
 	import Select, { Option } from '@smui/select';
-	import { query, where, getDocs } from 'firebase/firestore/lite';
-	import { addDoc, serverTimestamp } from 'firebase/firestore/lite';
-	import { auth, datasetCollection } from '$lib/firebase';
-	import { success, error } from '$components/toast/theme';
+	import { auth } from '$lib/firebase';
+	import { Dataset } from '$lib/dataset';
 	import { goto } from '$app/navigation';
 	import { loadTemplates } from '$lib/templates';
 	import { onMount } from 'svelte';
 
 	const defaultTemplate = 'heal_michigan_v0';
-	const showTemplate = true;
 	let projectTitle = '';
 	let projectSlug = '';
 	let projectDescription = '';
 	let projectTemplate = defaultTemplate;
 	let templates;
+	let showTemplate = true;
 
 	function createProjectSlug(str) {
 		return str
@@ -29,38 +27,26 @@
 
 	onMount(async () => {
 		templates = await loadTemplates();
-		console.log(templates);
 	});
 
 	async function createNewProject(event) {
 		event.preventDefault();
 		let graph = templates[projectTemplate];
 
-		if (!projectTitle || !projectSlug || !projectDescription || !projectTemplate) {
-			error('Please fill all fields');
-			return;
+		const newDataset = new Dataset(
+			projectTitle,
+			projectSlug,
+			auth.currentUser.uid,
+			projectTemplate,
+			projectDescription,
+			graph
+		);
+
+		const successFlag = await newDataset.addDatasetToFirebase();
+
+		if (successFlag) {
+			goto(`/report/${projectSlug}`);
 		}
-
-		const q = query(datasetCollection, where('slug', '==', projectSlug));
-
-		const querySnapshot = await getDocs(q);
-		if (!querySnapshot.empty) {
-			error('Project slug already exists');
-			return;
-		}
-
-		await addDoc(datasetCollection, {
-			title: projectTitle,
-			slug: projectSlug,
-			owner: auth.currentUser.uid,
-			template: projectTemplate,
-			timestamp: serverTimestamp(),
-			description: projectDescription,
-			graph: graph
-		});
-
-		success('Project added successfully');
-		goto(`/report/${projectSlug}`);
 	}
 </script>
 

@@ -1,30 +1,42 @@
-<script>
+<script lang="ts">
 	import { query, where, getDocs } from 'firebase/firestore/lite';
 	import { datasetCollection } from '$lib/firebase';
 	import { onMount } from 'svelte';
 	import ProjectCard from '$components/ProjectCard.svelte';
 	import { user } from '$lib/store';
+	import { Dataset } from '$lib/dataset';
 
-	let projects = [];
+	let datasets = [];
 	let loading = true;
 
-	async function load_projects() {
+	async function loadDatasets() {
 		const q = query(datasetCollection, where('owner', '==', $user.uid));
 		const querySnapshot = await getDocs(q);
-		projects = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-		projects = projects;
+		datasets = querySnapshot.docs.map((doc) => {
+			const data = doc.data();
+			return new Dataset(
+				data.title,
+				data.slug,
+				data.owner,
+				data.template,
+				data.description,
+				data.graph,
+				doc.id
+			);
+		});
+		datasets = datasets;
 		loading = false;
 	}
 
-	onMount(load_projects);
+	onMount(loadDatasets);
 </script>
 
 <div class="flex flex-wrap justify-center">
 	{#if loading}
 		<p class="text-center text-lg text-gray-500">Loading...</p>
 	{:else}
-		{#each projects as project (project.timestamp)}
-			<ProjectCard {project} {load_projects} />
+		{#each datasets as dataset}
+			<ProjectCard {dataset} {loadDatasets} />
 		{/each}
 	{/if}
 </div>

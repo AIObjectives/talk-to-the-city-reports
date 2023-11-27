@@ -3,7 +3,9 @@
 	import Table from 'svelte-material-icons/Table.svelte';
 	import { useSvelteFlow } from '@xyflow/svelte';
 	const { fitView } = useSvelteFlow();
+	import { useEdges, useNodes } from '@xyflow/svelte';
 	export let isGraphView = false;
+	const nodes = useNodes();
 </script>
 
 <button
@@ -11,8 +13,12 @@
 		isGraphView = !isGraphView;
 		if (isGraphView) {
 			setTimeout(() => {
+				$nodes = $nodes;
+				for (const node of $nodes) {
+					node.data = { ...node.data };
+				}
 				fitView();
-			}, 100);
+			}, 500);
 		}
 	}}
 >

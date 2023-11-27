@@ -22,7 +22,7 @@
 	const { text } = data;
 </script>
 
-<Paper title={id}>
+<Paper title={id} class={selected ? 'selected-node' : ''}>
 	<div>{data.label}</div>
 	<TextField
 		style="width: 100%;"

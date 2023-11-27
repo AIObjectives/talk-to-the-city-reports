@@ -1,5 +1,6 @@
 import openai from 'openai';
 import { readFileFromGCS, uploadDataToGCS } from '$lib/utils';
+import { extraction_prompt, summary_prompt } from '$lib/prompts';
 
 async function gpt(
 	apiKey: string,
@@ -36,7 +37,7 @@ async function processInChunks(array, handler, chunkSize) {
 	}
 }
 
-export const argument_extraction = async (node, inputData, info, error, success, slug) => {
+export const argument_extraction = async (node, inputData, context, info, error, success, slug) => {
 	console.log('Computing', node.data.label, 'with input data', inputData);
 	const { prompt, system_prompt } = node.data;
 	const csv = inputData.csv || inputData[node.data.input_ids.csv];
@@ -44,16 +45,12 @@ export const argument_extraction = async (node, inputData, info, error, success,
 	const cluster_extraction =
 		inputData.cluster_extraction || inputData[node.data.input_ids.cluster_extraction];
 
-	console.log('csv', csv);
-
 	if (!csv || csv.length == 0 || !cluster_extraction) {
 		node.data.dirty = false;
 		return;
 	}
 
-	node.data.dirty = node.data.csv_length != csv.length;
-
-	if (!node.data.dirty && node.data.gcs_path) {
+	if (!node.data.dirty && node.data.csv_length == csv.length && node.data.gcs_path) {
 		let doc = await readFileFromGCS(node);
 		if (typeof doc === 'string') {
 			doc = JSON.parse(doc);
@@ -64,42 +61,68 @@ export const argument_extraction = async (node, inputData, info, error, success,
 		return node.data.output;
 	}
 
-	node.data.output = {};
+	if (context == 'run') {
+		node.data.output = {};
 
-	const csv_by_ids = Object.fromEntries(csv.map((item) => [item['comment-id'], item]));
-	async function extract_args(id) {
-		const comment = csv_by_ids[id]['comment-body'];
-		const interview = csv_by_ids[id]['interview'];
-		console.log('running for id', id);
-		const response = await gpt(
-			open_ai_key,
-			system_prompt,
-			prompt,
-			{
-				comment,
-				clusters: JSON.stringify(cluster_extraction)
-			},
-			info,
-			error,
-			success
-		);
-		node.data.output[id] = { id, comment, interview, ...JSON.parse(response) };
+		const csv_by_ids = Object.fromEntries(csv.map((item) => [item['comment-id'], item]));
+		async function extract_args(id) {
+			const comment = csv_by_ids[id]['comment-body'];
+			const interview = csv_by_ids[id]['interview'];
+			console.log('running for id', id);
+			const response = await gpt(
+				open_ai_key,
+				system_prompt,
+				prompt,
+				{
+					comment,
+					clusters: JSON.stringify(cluster_extraction)
+				},
+				info,
+				error,
+				success
+			);
+			node.data.output[id] = { id, comment, interview, ...JSON.parse(response) };
+		}
+
+		node.data.csv_length = csv.length;
+
+		let ids = Object.keys(csv_by_ids);
+
+		try {
+			await processInChunks(ids, extract_args, 10);
+		} catch (err) {
+			console.error(err);
+		}
+		success('Done computing ' + node.data.label);
+		node.data.dirty = false;
+		await uploadDataToGCS(node, node.data.output, slug);
+		return node.data.output;
 	}
+};
 
-	node.data.csv_length = csv.length;
+interface ArgumentExtractionData extends ClusterExtractionData {
+	// Inherits all properties from ClusterExtractionData
+}
 
-	let ids = Object.keys(csv_by_ids);
+type ArgumentExtractionNode = DGNodeInterface & {
+	data: ArgumentExtractionData;
+};
 
-	console.log('ids', ids);
-
-	try {
-		await processInChunks(ids, extract_args, 10);
-	} catch (err) {
-		console.error(err);
-	}
-	success('Done computing ' + node.data.label);
-	node.data.dirty = false;
-	console.log(node.data.output);
-	await uploadDataToGCS(node, node.data.output, slug);
-	return node.data.output;
+export const argument_extraction_node: ArgumentExtractionNode = {
+	id: 'argument_extraction',
+	data: {
+		label: 'Argument Extraction',
+		output: {},
+		text: '',
+		system_prompt:
+			'You are a professional research assistant. You have helped run many public consultations, surveys and citizen assemblies. You have good instincts when it comes to extracting interesting insights. You are familiar with public consultation tools like Pol.is and you understand the benefits for working with very clear, concise claims that other people would be able to vote on.',
+		prompt: extraction_prompt,
+		csv_length: 0,
+		dirty: false,
+		compute_type: 'argument_extraction_v0',
+		input_ids: { open_ai_key: '', csv: '', cluster_extraction: '' },
+		compute: argument_extraction
+	},
+	position: { x: 0, y: 350 },
+	type: 'prompt_v0'
 };

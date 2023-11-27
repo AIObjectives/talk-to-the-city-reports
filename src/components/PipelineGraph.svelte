@@ -1,16 +1,18 @@
 <script lang="ts">
 	import { SvelteFlow, Background, BackgroundVariant } from '@xyflow/svelte';
+	import { nodeTypes } from '$lib/node_types';
 	import { node_register } from '$lib/templates';
 	import ContextMenu from './ContextMenu.svelte';
-	import Button from '@smui/button';
 	import ContentSaveCogOutline from 'svelte-material-icons/ContentSaveCogOutline.svelte';
 	import { saveTemplate } from '$lib/templates';
-	import { writable, get } from 'svelte/store';
+	import { get } from 'svelte/store';
+	import { Dataset } from '$lib/dataset';
 
-	export let isGraphView;
+	export let isGraphView: boolean;
+	export let dataset: Dataset;
 	export let nodes;
 	export let edges;
-	export let nodeTypes;
+
 	let selectedNodeId = '';
 
 	function addNode() {
@@ -38,9 +40,18 @@
 	function handleContextMenu({ detail: { event, node } }) {
 		event.preventDefault();
 		const transformedPosition = { x: event.clientX, y: event.clientY };
-		console.log(transformedPosition);
 		menu = {
 			id: node.id,
+			top: transformedPosition.y,
+			left: transformedPosition.x
+		};
+	}
+
+	function handleEdgeContextMenu({ detail: { event, edge } }) {
+		event.preventDefault();
+		const transformedPosition = { x: event.clientX, y: event.clientY };
+		menu = {
+			id: edge.id,
 			top: transformedPosition.y,
 			left: transformedPosition.x
 		};
@@ -76,7 +87,9 @@
 			{edges}
 			{nodeTypes}
 			on:nodecontextmenu={handleContextMenu}
+			on:edgecontextmenu={handleEdgeContextMenu}
 			on:paneclick={handlePaneClick}
+			deleteKey=""
 			elementsSelectable={true}
 			preventScrolling={true}
 			nodesDraggable={true}
@@ -95,6 +108,7 @@
 				left={menu.left}
 				right={menu.right}
 				bottom={menu.bottom}
+				{dataset}
 			/>
 		{/if}
 	</div>

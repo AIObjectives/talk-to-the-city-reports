@@ -1,4 +1,4 @@
-export const merge = async (node, inputData) => {
+export const merge = async (node, inputData, context) => {
 	const cluster_extraction =
 		inputData.cluster_extraction || inputData[node.data.input_ids.cluster_extraction];
 	const argument_extraction =
@@ -44,4 +44,25 @@ export const merge = async (node, inputData) => {
 	node.data.output = [];
 	node.data.dirty = false;
 	return mergedData;
+};
+
+interface MergeData extends BaseData {
+	output: object;
+}
+
+type MergeNode = DGNodeInterface & {
+	data: MergeData;
+};
+
+export const merge_node: MergeNode = {
+	id: 'merge',
+	data: {
+		label: 'Merge',
+		output: {},
+		dirty: false,
+		compute_type: 'merge_v0',
+		input_ids: { cluster_extraction: '', argument_extraction: '' }
+	},
+	position: { x: 200, y: 600 },
+	type: 'merge_v0'
 };

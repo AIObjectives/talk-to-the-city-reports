@@ -1,7 +1,7 @@
 import papa from 'papaparse';
 import { readFileFromGCS } from '$lib/utils';
 
-export const csv = async (node, inputData) => {
+export const csv = async (node, inputData, context) => {
 	console.log('Computing', node.data.label);
 	if (node.data.gcs_path) {
 		node.data.csv = await readFileFromGCS(node);
@@ -32,4 +32,32 @@ export const csv = async (node, inputData) => {
 	node.data.csv = null;
 	console.log(node.data.output);
 	return node.data.output;
+};
+
+interface CSVData extends BaseData {
+	csv: string;
+	filename: string;
+	size_kb: number;
+	gcs_path: string;
+}
+
+type CSVNode = DGNodeInterface & {
+	data: CSVData;
+};
+
+export let csv_node: CSVNode = {
+	id: 'csv',
+	data: {
+		label: 'CSV',
+		csv: '',
+		filename: '',
+		size_kb: 0,
+		dirty: false,
+		gcs_path: '',
+		compute_type: 'csv_v0',
+		input_ids: {},
+		compute: csv
+	},
+	position: { x: 100, y: -50 },
+	type: 'csv_v0'
 };

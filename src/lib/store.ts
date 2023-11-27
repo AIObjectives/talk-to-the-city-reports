@@ -1,7 +1,8 @@
 import { writable } from 'svelte/store';
 import type { Writable } from 'svelte/store';
+import type { User } from '$lib/types';
 
-const user: Writable<Object | null> = writable(null);
+const user: Writable<User | null> = writable(null);
 const dataset: Writable<Object | null> = writable(null);
 
 export { user, dataset };

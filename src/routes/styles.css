@@ -127,3 +127,8 @@ button:focus:not(:focus-visible) {
 .mdc-menu {
 	background-color: #fff;
 }
+
+.selected-node {
+	border: 2px solid #aaaaff;
+	background-color: #e0e0ff;
+}

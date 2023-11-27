@@ -10,6 +10,7 @@
 
 	export let data: $$Props['data'];
 	export let id;
+	export let selected;
 
 	const updateNodeInternals = useUpdateNodeInternals();
 	const nodes = useNodes();
@@ -43,7 +44,7 @@
 	}
 </script>
 
-<Paper title={id}>
+<Paper title={id} class={selected ? 'selected-node' : ''}>
 	<div>{data.label}</div>
 	<TextField
 		style="width: 100%;"

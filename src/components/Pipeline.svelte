@@ -1,46 +1,57 @@
 <script lang="ts">
-	import { writable, get } from 'svelte/store';
-	import { SvelteFlowProvider, type Node, type Edge } from '@xyflow/svelte';
+	import { get } from 'svelte/store';
 	import { user } from '$lib/store';
 	import { onMount } from 'svelte';
-	import { updateDataset, processNodes } from '$lib/pipeline';
 	import ToggleView from '$components/ToggleView.svelte';
 	import PipelineStandard from '$components/PipelineStandard.svelte';
 	import PipelineGraph from '$components/PipelineGraph.svelte';
-	import { nodeTypes } from '$lib/node_types';
-
+	import type { Dataset } from '$lib/dataset';
 	import Button from '@smui/button';
-
 	import '@xyflow/svelte/dist/style.css';
+	import { useEdges, useNodes } from '@xyflow/svelte';
+	const n = useNodes();
+	import { useUpdateNodeInternals } from '@xyflow/svelte';
+	const updateNodeInternals = useUpdateNodeInternals();
 
-	onMount(async () => {
-		await processNodes(nodes, edges, dataset);
-		console.log(dataset);
-		dataset = dataset;
-	});
-
-	export let dataset;
+	export let dataset: Dataset;
 
 	let isGraphView = false;
 
-	const nodes = writable<Node[]>(dataset.graph.nodes),
-		edges = writable<Edge[]>(dataset.graph.edges);
+	const nodes = dataset.graph.nodes,
+		edges = dataset.graph.edges;
+
+	onMount(async () => {
+		await dataset.processNodes('load');
+		console.log(dataset);
+		dataset.graph.nodes.update((x) => x);
+		console.log(get(dataset.graph.nodes));
+		dataset = dataset;
+		$n = $n;
+	});
 </script>
 
 <div class="pipeline-container">
 	{#if $user && $user.uid === dataset.owner}
-		<SvelteFlowProvider>
-			<ToggleView bind:isGraphView />
-			{#if !isGraphView}
-				<PipelineStandard />
-			{/if}
-			<PipelineGraph {isGraphView} {nodes} {edges} {nodeTypes} />
-		</SvelteFlowProvider>
+		<ToggleView bind:isGraphView />
+		{#if !isGraphView}
+			<PipelineStandard />
+		{/if}
+		<PipelineGraph {isGraphView} {nodes} {edges} {dataset} />
 
 		<Button
 			on:click={async () => {
-				await processNodes(nodes, edges, dataset);
+				await dataset.processNodes('run');
 				dataset = dataset;
+				dataset.graph.nodes.set(get(dataset.graph.nodes));
+				for (const node of $n) {
+					if (Array.isArray(node.data.output)) {
+						node.data.output = node.data.output.map((x) => ({ ...x }));
+					} else if (typeof node.data.output === 'object') {
+						node.data.output = { ...node.data.output };
+					}
+					node.data = { ...node.data };
+					updateNodeInternals(node.id);
+				}
 			}}
 		>
 			Generate Report
@@ -48,7 +59,7 @@
 
 		<Button
 			on:click={async () => {
-				await updateDataset({ graph: { nodes: get(nodes), edges: get(edges) } }, dataset.id);
+				await dataset.updateDataset();
 			}}
 		>
 			Save

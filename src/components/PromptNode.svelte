@@ -28,7 +28,7 @@
 	<input type="text" bind:value={data.label} />
 </NodeToolbar> -->
 
-<Paper>
+<Paper title={id} class={selected ? 'selected-node' : ''}>
 	<div>{data.label}</div>
 	{#if showSystemPrompt}
 		<TextField
