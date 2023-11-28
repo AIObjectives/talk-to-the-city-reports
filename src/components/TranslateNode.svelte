@@ -5,6 +5,7 @@
 	import Paper from '@smui/paper';
 	import Button from '@smui/button';
 	import { useUpdateNodeInternals, useNodes } from '@xyflow/svelte';
+	import DGNode from '$components/DGNode.svelte';
 
 	type $$Props = NodeProps;
 
@@ -44,7 +45,7 @@
 	}
 </script>
 
-<Paper title={id} class={selected ? 'selected-node' : ''}>
+<DGNode {id} {data} {selected}>
 	<div>{data.label}</div>
 	<TextField
 		style="width: 100%;"
@@ -81,7 +82,7 @@
 	{/if}
 	<Handle type="target" position={Position.Top} />
 	<Handle type="source" position={Position.Bottom} />
-</Paper>
+</DGNode>
 
 <style>
 	.key-item {

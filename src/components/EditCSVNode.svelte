@@ -2,9 +2,9 @@
 	import { writable } from 'svelte/store';
 	import { Handle, Position, type NodeProps } from '@xyflow/svelte';
 	import TextField from '@smui/textfield';
-	import Paper from '@smui/paper';
 	import Button from '@smui/button';
 	import { useUpdateNodeInternals } from '@xyflow/svelte';
+	import DGNode from '$components/DGNode.svelte';
 
 	type $$Props = NodeProps;
 
@@ -40,18 +40,21 @@
 		store.update((items) => {
 			if (action === 'add') {
 				const isObjectStore = store === generateStore || store === renameStore;
+				data.dirty = true;
 				return [...items, isObjectStore ? ['', ''] : ''];
 			} else if (action === 'remove') {
+				data.dirty = true;
 				return items.filter((_, i) => i !== index);
 			} else if (action === 'update') {
 				items[index] = value;
+				data.dirty = true;
 				return items;
 			}
 		});
 	}
 </script>
 
-<Paper title={id} class={selected ? 'selected-node' : ''}>
+<DGNode {id} {data} {selected}>
 	<div>{data.label}</div>
 	<br /><br />
 	<p>Generate Columns</p>
@@ -130,7 +133,7 @@
 
 	<Handle type="target" position={Position.Top} />
 	<Handle type="source" position={Position.Bottom} />
-</Paper>
+</DGNode>
 
 <style>
 	.csv-action-item {

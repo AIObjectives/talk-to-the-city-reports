@@ -1,7 +1,7 @@
 export const grid = async (node: ParticipantFilterNode, inputData: object, context) => {
 	node.data.dirty = false;
 	const input = inputData[Object.keys(inputData)[0]];
-	console.log('Computing grid', input);
+	console.log('Computing grid');
 	node.data.output = input;
 	node.data = {
 		...node.data,

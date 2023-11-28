@@ -2,6 +2,7 @@
 	import Button from '@smui/button';
 	import { user } from '$lib/store';
 	import Projects from '$components/Projects.svelte';
+	import { _ } from 'svelte-i18n';
 </script>
 
 <svelte:head>
@@ -16,7 +17,7 @@
 		<Projects />
 		<Button href="/report/new" class="mt-10">New report</Button>
 	{:else}
-		Please sign in to create a new report.
+		{$_('sign_in_to_continue')}
 	{/if}
 </section>
 

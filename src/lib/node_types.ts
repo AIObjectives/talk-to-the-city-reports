@@ -45,3 +45,27 @@ export const compute = {
 	jsonata_v0: jsonata,
 	grid_v0: grid
 };
+
+import csv_doc from '$lib/docs/csv';
+import limit_csv_doc from '$lib/docs/limit_csv';
+import edit_csv_doc from '$lib/docs/edit_csv';
+import open_ai_key_doc from '$lib/docs/open_ai_key';
+import cluster_extraction_doc from '$lib/docs/cluster_extraction';
+import argument_extraction_doc from '$lib/docs/argument_extraction';
+import grid_doc from '$lib/docs/grid';
+import jsonata_doc from '$lib/docs/jsonata';
+import translate_doc from '$lib/docs/translate';
+import participant_filter_doc from './docs/participant_filter';
+
+export const docs = {
+	csv_v0: csv_doc,
+	limit_csv_v0: limit_csv_doc,
+	edit_csv_v0: edit_csv_doc,
+	open_ai_key_v0: open_ai_key_doc,
+	cluster_extraction_v0: cluster_extraction_doc,
+	argument_extraction_v0: argument_extraction_doc,
+	grid_v0: grid_doc,
+	jsonata_v0: jsonata_doc,
+	translate_v0: translate_doc,
+	participant_filter_v0: participant_filter_doc
+};

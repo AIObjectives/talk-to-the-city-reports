@@ -12,9 +12,10 @@ export const participant_filter = async (
 		console.log('participantName', participantName);
 		copy.topics.forEach((topic: any) => {
 			topic.subtopics.forEach((subtopic: any) => {
-				subtopic.claims = subtopic.claims.filter((claim: any) =>
-					claim.interview.toLowerCase().includes(participantName)
-				);
+				subtopic.claims = subtopic.claims.filter((claim: any) => {
+					if (claim.interview) return claim.interview.toLowerCase().includes(participantName);
+					else return true;
+				});
 			});
 			topic.subtopics = topic.subtopics.filter((subtopic: any) => subtopic.claims.length > 0);
 		});

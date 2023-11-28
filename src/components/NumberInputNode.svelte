@@ -2,6 +2,7 @@
 	import { Handle, Position, type NodeProps } from '@xyflow/svelte';
 	import TextField from '@smui/textfield';
 	import Paper from '@smui/paper';
+	import DGNode from './DGNode.svelte';
 
 	type $$Props = NodeProps;
 
@@ -22,7 +23,7 @@
 	const { number } = data;
 </script>
 
-<Paper title={id} class={selected ? 'selected-node' : ''}>
+<DGNode {data} {id} {selected}>
 	<div>{data.label}</div>
 	<TextField
 		style="width: 100%;"
@@ -36,9 +37,6 @@
 		}}
 		value={number}
 	/>
-	{#if data.dirty}
-		<div class="text-sm text-gray-500">Unsaved changes</div>
-	{/if}
 	<Handle type="target" position={Position.Top} />
 	<Handle type="source" position={Position.Bottom} />
-</Paper>
+</DGNode>

@@ -5,7 +5,6 @@ export const csv = async (node, inputData, context) => {
 	console.log('Computing', node.data.label);
 	if (node.data.gcs_path) {
 		node.data.csv = await readFileFromGCS(node);
-		console.log('Read CSV from GCS', node.data.csv);
 	}
 	const contents = node.data.csv;
 	const parsedData = papa.parse(contents, { header: true }).data;
@@ -30,7 +29,6 @@ export const csv = async (node, inputData, context) => {
 	node.data.output = validRows;
 	node.data.dirty = false;
 	node.data.csv = null;
-	console.log(node.data.output);
 	return node.data.output;
 };
 

@@ -1,12 +1,17 @@
+<script>
+	import { _ } from 'svelte-i18n';
+</script>
+
 <svelte:head>
-	<title>About</title>
+	<title>{$_('about')}</title>
 	<meta name="description" content="About this app" />
 </svelte:head>
 
 <div class="text-column">
-	<h1>About Talk to the City Turbo</h1>
-
+	<h1>
+		{@html $_('about_section_p')}
+	</h1>
 	<p>
-		We're busy building Talk to the City, an app that clusters and visualizes community feedback.
+		{@html $_('about_section_h1')}
 	</p>
 </div>

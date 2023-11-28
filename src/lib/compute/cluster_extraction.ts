@@ -1,6 +1,6 @@
 import openai from 'openai';
 import { readFileFromGCS, uploadDataToGCS } from '$lib/utils';
-import { extraction_prompt, summary_prompt } from '$lib/prompts';
+import { summary_prompt } from '$lib/prompts';
 
 async function gpt(
 	apiKey: string,
@@ -18,17 +18,22 @@ async function gpt(
 	const OpenAI = new openai({ apiKey, dangerouslyAllowBrowser: true });
 	console.log('calling openai...');
 	info('Calling OpenAI');
-	const res = await OpenAI.chat.completions.create({
-		messages: [
-			{ role: 'system', content: systemPrompt },
-			{ role: 'user', content: prompt }
-		],
-		model: 'gpt-4-1106-preview',
-		response_format: { type: 'json_object' },
-		temperature: 0.1
-	});
-	console.log('got result from openai...', res);
-	return res.choices[0].message.content!;
+	try {
+		const res = await OpenAI.chat.completions.create({
+			messages: [
+				{ role: 'system', content: systemPrompt },
+				{ role: 'user', content: prompt }
+			],
+			model: 'gpt-4-1106-preview',
+			response_format: { type: 'json_object' },
+			temperature: 0.1
+		});
+		console.log('got result from openai...', res);
+		return res.choices[0].message.content!;
+	} catch (e) {
+		error('Error calling OpenAI: ' + e.error.message);
+		console.log('Error calling openai...', e.error.message);
+	}
 }
 
 export const cluster_extraction = async (node, inputData, context, info, error, success, slug) => {

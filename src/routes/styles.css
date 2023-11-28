@@ -132,3 +132,33 @@ button:focus:not(:focus-visible) {
 	border: 2px solid #aaaaff;
 	background-color: #e0e0ff;
 }
+
+.docs p {
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+.docs div {
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+.docs code {
+	background-color: #ffcccc;
+	padding: 0.1em 0.3em;
+	border-radius: 3px;
+	font-size: 0.9em;
+}
+.docs h1 {
+	font-size: 2em;
+	margin-top: 1em;
+	margin-bottom: 0.5em;
+}
+.docs h2 {
+	font-size: 1.5em;
+	margin-top: 1em;
+	margin-bottom: 0.5em;
+}
+.docs h3 {
+	font-size: 1.2em;
+	margin-top: 1em;
+	margin-bottom: 0.5em;
+}

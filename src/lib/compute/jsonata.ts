@@ -4,13 +4,15 @@ export const jsonata = async (node: ParticipantFilterNode, inputData: object, co
 	node.data.dirty = false;
 	const input = inputData[Object.keys(inputData)[0]];
 
-	const jsonataExpr = jsonata_lib(node.data.text);
+	if (node.data.text) {
+		const jsonataExpr = jsonata_lib(node.data.text);
 
-	try {
-		const result = await jsonataExpr.evaluate(input);
-		return result;
-	} catch (e) {
-		console.error('Error evaluating JSONata expression:', e);
+		try {
+			const result = await jsonataExpr.evaluate(input);
+			return result;
+		} catch (e) {
+			console.error('Error evaluating JSONata expression:', e);
+		}
 	}
 };
 

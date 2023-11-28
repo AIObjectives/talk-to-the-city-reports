@@ -1,13 +1,14 @@
 <script>
 	export let clickEvent;
 	export let csv;
-	let claimId;
+	import { _ } from 'svelte-i18n';
+
 	let video;
 	let newIframeSrc;
 	$: {
 		if (clickEvent) {
 			let entry = csv.find((entry) => entry['comment-id'] === clickEvent.node.data.claim.id);
-			if (entry) {
+			if (entry && entry.video && entry.timestamp) {
 				claimId = parseInt(clickEvent.node.data.claim.id);
 				video = entry.video;
 				let [hours, minutes, seconds] = entry.timestamp.split(':').map(Number);
@@ -23,16 +24,16 @@
 {#if clickEvent}
 	<div class="outer-div">
 		<div class="inner-div p-2">
-			<p>Claim:</p>
+			<p>{$_('claim')}:</p>
 			{clickEvent.node.data.name}
 			<br />
 			<br />
-			<p>Quote:</p>
+			<p>{$_('home')}:</p>
 			{clickEvent.node.data.claim.quote}
 			<br />
 			<br />
 			{#if clickEvent.node.data.claim.interview}
-				<p>Interview:</p>
+				<p>{$_('interview')}:</p>
 				{clickEvent.node.data.claim.interview}
 				<br />
 			{/if}

@@ -3,6 +3,7 @@
 	import { user } from '$lib/store';
 	import { goto } from '$app/navigation';
 	import { auth } from '$lib/firebase';
+	import { _ } from 'svelte-i18n';
 
 	let error;
 
@@ -22,7 +23,7 @@
 </script>
 
 {#if !$user}
-	<button on:click={signInWithGoogle}>Sign in with Google</button>
+	<button on:click={signInWithGoogle}>{$_('sign_in_with_google')}</button>
 {/if}
 
 {#if error}

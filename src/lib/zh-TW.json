@@ -1,0 +1,17 @@
+{
+    "home": "首頁",
+    "sign_in": "登入",
+    "sign_up": "註冊",
+    "about": "關於",
+    "about_section_h1": "關於城市對話渦輪。",
+    "about_section_p": "我們正在熱忙地建造城市對話，一個聚集並可視化社區反饋的應用程式。",
+    "quote": "引述",
+    "interview": "訪談",
+    "description": "描述",
+    "representative_arguments": "代表性論點",
+    "show_more": "顯示更多",
+    "sign_in_with_google": "用 Google 登入",
+    "sign_in_to_continue": "請登入以創建新報告",
+    "developed_by": "開發者",
+    "logged_in_as": "已登入為"
+}

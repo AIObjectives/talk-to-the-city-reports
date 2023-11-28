@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Handle, Position, type NodeProps } from '@xyflow/svelte';
-	import Paper from '@smui/paper';
+	import DGNode from '$components/DGNode.svelte';
 	import AgGridSvelte from 'ag-grid-svelte';
 	import { onMount } from 'svelte';
 
@@ -49,22 +49,25 @@
 	onMount(() => {
 		autoSizeColumns();
 	});
+
+	console.log(data);
 </script>
 
-<Paper title={id} class={selected ? 'selected-node' : ''}>
+<DGNode {id} {data} {selected}>
 	<div>{data.label}</div>
-	{data.output.length}
-	<div class="ag-theme-alpine grid">
-		<AgGridSvelte
-			rowData={data.output}
-			{columnDefs}
-			defaultColDef={{ flex: 1, minWidth: 100 }}
-			{onGridReady}
-		/>
-	</div>
+	{#if data.output && Array.isArray(data.output) && data.output.length}
+		<div class="ag-theme-alpine grid">
+			<AgGridSvelte
+				rowData={data.output}
+				{columnDefs}
+				defaultColDef={{ flex: 1, minWidth: 100 }}
+				{onGridReady}
+			/>
+		</div>
+	{/if}
 	<Handle type="target" position={Position.Top} />
 	<Handle type="source" position={Position.Bottom} />
-</Paper>
+</DGNode>
 
 <style>
 	.grid {

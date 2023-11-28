@@ -7,9 +7,9 @@
 	} from 'firebase/storage';
 	import { getAuth } from 'firebase/auth';
 	import Button from '@smui/button';
-	import Paper from '@smui/paper';
 	import { Position, Handle, type NodeProps } from '@xyflow/svelte';
 	import { page } from '$app/stores';
+	import DGNode from './DGNode.svelte';
 
 	type $$Props = NodeProps;
 
@@ -68,7 +68,7 @@
 	}
 </script>
 
-<Paper title={id} class={selected ? 'selected-node' : ''}>
+<DGNode {data} {id} {selected}>
 	<div>CSV data</div>
 	{#if data.filename}
 		<div>{data.filename}</div>
@@ -84,9 +84,6 @@
 		/>
 		<Button on:click={triggerFileSelect}>Upload CSV</Button>
 	{/if}
-	{#if data.dirty}
-		<div class="text-sm text-gray-500">Unsaved changes</div>
-	{/if}
 
 	<Handle type="source" position={Position.Bottom} />
-</Paper>
+</DGNode>

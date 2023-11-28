@@ -55,10 +55,11 @@
 	$: {
 		if (dataset) {
 			let report_node = get(dataset.graph.nodes).find((n) => n.type === 'report_v0');
-			if (report_node) {
+			let csv_node = get(dataset.graph.nodes).find((n) => n.type === 'csv_v0');
+			if (report_node && report_node.data && csv_node && csv_node.data) {
 				report = report_node.data.output;
-				csv = get(dataset.graph.nodes).find((n) => n.type === 'csv_v0').data.output;
-				if (report && report.topics && report.topics.length > 0) {
+				csv = csv_node.data.output;
+				if (csv && report && report.topics && report.topics.length > 0) {
 					let transformedData = transformData(report);
 					complexHierarchy = hierarchy(transformedData)
 						.sum((d) => d.value)

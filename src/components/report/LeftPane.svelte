@@ -1,11 +1,12 @@
 <script lang="ts">
 	export let dataset;
+	import { _ } from 'svelte-i18n';
 </script>
 
 <div class="left-pane">
 	{#if dataset}
 		<h2 class="text-2xl font-bold text-gray-600 py-3">{dataset.title}</h2>
-		<h2 class="text-lg font-bold text-gray-600 py-3">Description:</h2>
+		<h2 class="text-lg font-bold text-gray-600 py-3">{$_('description')}:</h2>
 		<p class="text-gray-500 py-3">{dataset.description}</p>
 	{/if}
 </div>

@@ -7,6 +7,7 @@
 	import { user } from '$lib/store';
 	import { auth } from '$lib/firebase';
 	import '/src/app.css';
+	import { _ } from 'svelte-i18n';
 
 	onMount(() => {
 		onAuthStateChanged(auth, (firebaseUser) => {
@@ -24,9 +25,9 @@
 	</main>
 
 	<footer>
-		Developed by <a href="https://objective.is">AI Objectives Institute</a>
+		{$_('developed_by')} <a href="https://objective.is">AI Objectives Institute</a>
 		{#if $user}
-			Logged in as {$user.displayName}
+			{$_('logged_in_as')} {$user.displayName}
 		{/if}
 	</footer>
 </div>

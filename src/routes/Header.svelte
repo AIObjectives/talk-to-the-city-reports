@@ -2,6 +2,8 @@
 	import { page } from '$app/stores';
 	import github from '$lib/images/github.svg';
 	import { user } from '$lib/store';
+	import '$lib/i18n';
+	import { _ } from 'svelte-i18n';
 </script>
 
 <header>
@@ -13,14 +15,14 @@
 		</svg>
 		<ul>
 			<li aria-current={$page.url.pathname === '/' ? 'page' : undefined}>
-				<a href="/">Home</a>
+				<a href="/">{$_('home')} </a>
 			</li>
 			<li aria-current={$page.url.pathname === '/about' ? 'page' : undefined}>
-				<a href="/about">About</a>
+				<a href="/about">{$_('about')}</a>
 			</li>
 			{#if !$user}
 				<li aria-current={$page.url.pathname === '/login' ? 'page' : undefined}>
-					<a href="/login">Login</a>
+					<a href="/login">{$_('sign_in')}</a>
 				</li>
 			{/if}
 		</ul>

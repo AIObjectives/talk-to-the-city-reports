@@ -1,10 +1,9 @@
 <script lang="ts">
-	import { NodeToolbar, Handle, Position, type NodeProps, useEdges } from '@xyflow/svelte';
+	import { Handle, Position, type NodeProps } from '@xyflow/svelte';
 	import TextField from '@smui/textfield';
 	import HelperText from '@smui/textfield/helper-text';
-	import Paper from '@smui/paper';
+	import DGNode from '$components/DGNode.svelte';
 
-	const edges = useEdges();
 	type $$Props = NodeProps;
 
 	export let data: $$Props['data'];
@@ -24,11 +23,7 @@
 	const { system_prompt, prompt, output } = data;
 </script>
 
-<!-- <NodeToolbar>
-	<input type="text" bind:value={data.label} />
-</NodeToolbar> -->
-
-<Paper title={id} class={selected ? 'selected-node' : ''}>
+<DGNode {id} {data} {selected}>
 	<div>{data.label}</div>
 	{#if showSystemPrompt}
 		<TextField
@@ -61,9 +56,6 @@
 	{#if output}
 		<div>Objects: {Object.keys(output).length}: {Object.keys(output)[0]} ...</div>
 	{/if}
-	{#if data.dirty}
-		<div class="text-sm text-gray-500">Unsaved changes</div>
-	{/if}
 	<Handle type="target" position={Position.Top} />
 	<Handle type="source" position={Position.Bottom} />
-</Paper>
+</DGNode>
