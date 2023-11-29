@@ -1,22 +1,27 @@
-import openai from 'openai';
 import { readFileFromGCS, uploadDataToGCS } from '$lib/utils';
 
 async function oai_translate(apiKey, text, target_language, info) {
-	console.log('Translating: ' + text);
+	let vitest = import.meta.env.VITEST == 'true';
+	let openai = (await import(vitest ? '$lib/mock_open_ai' : 'openai')).default;
 	info('Translating: ' + text);
 	const OpenAI = new openai({ apiKey, dangerouslyAllowBrowser: true });
-	const response = await OpenAI.chat.completions.create({
-		messages: [
-			{
-				role: 'system',
-				content: 'Translate the following text to ' + target_language + '.'
-			},
-			{ role: 'user', content: text }
-		],
-		model: 'gpt-4',
-		temperature: 0.1
-	});
-	return response.choices[0].message.content;
+	try {
+		const response = await OpenAI.chat.completions.create({
+			messages: [
+				{
+					role: 'system',
+					content: 'Translate the following text to ' + target_language + '.'
+				},
+				{ role: 'user', content: text }
+			],
+			model: 'gpt-4',
+			temperature: 0.1
+		});
+		return response.choices[0].message.content;
+	} catch (error) {
+		console.error('Error translating text: ', error);
+		return null; // return null when an error occurs
+	}
 }
 
 async function processInChunks(array, handler, chunkSize) {
@@ -26,8 +31,15 @@ async function processInChunks(array, handler, chunkSize) {
 	}
 }
 
-export const translate = async (node, inputData, context, info, error, success, slug) => {
-	console.log('Initiating translation process');
+export const translate = async (
+	node: TranslateNode,
+	inputData: object,
+	context: string,
+	info: (arg: string) => void,
+	error: (arg: string) => void,
+	success: (arg: string) => void,
+	slug: string
+) => {
 	const open_ai_key = inputData.open_ai_key || inputData[node.data.input_ids.open_ai_key];
 	const data = inputData.data || inputData[node.data.input_ids.data];
 	const target_language = node.data.target_language;
@@ -45,9 +57,7 @@ export const translate = async (node, inputData, context, info, error, success, 
 		node.data.output = storedData;
 	}
 
-	if (!node.data.dirty && node.data.output.length >= data.length) {
-		console.log('Using cached translations');
-		console.log(data);
+	if (!node.data.dirty && node.data.output && node.data.output.length >= data.length) {
 		return node.data.output.map((translatedItem, index) => {
 			return { ...data[index], ...translatedItem };
 		});
@@ -73,7 +83,6 @@ export const translate = async (node, inputData, context, info, error, success, 
 		node.data.output = translations;
 		await uploadDataToGCS(node, translations, slug + '/translate');
 
-		console.log('Translation process completed');
 		return translations.map((translatedItem, index) => {
 			return { ...data[index], ...translatedItem };
 		});

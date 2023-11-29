@@ -1,5 +1,12 @@
-export const report = async (node, inputData, context) => {
-	console.log('Computing', node.data.label);
+export const report = async (
+	node: ReportNode,
+	inputData: object,
+	context: string,
+	info: (arg: string) => void,
+	error: (arg: string) => void,
+	success: (arg: string) => void,
+	slug: string
+) => {
 	node.data.dirty = false;
 	const input = inputData[Object.keys(inputData)[0]];
 	node.data.output = input;

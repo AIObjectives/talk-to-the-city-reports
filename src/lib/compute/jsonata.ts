@@ -1,17 +1,25 @@
 import jsonata_lib from 'jsonata';
 
-export const jsonata = async (node: ParticipantFilterNode, inputData: object, context) => {
+export const jsonata = async (
+	node: JsonataNode,
+	inputData: object,
+	context: string,
+	info: (arg: string) => void,
+	error: (arg: string) => void,
+	success: (arg: string) => void,
+	slug: string
+) => {
 	node.data.dirty = false;
 	const input = inputData[Object.keys(inputData)[0]];
 
 	if (node.data.text) {
-		const jsonataExpr = jsonata_lib(node.data.text);
-
 		try {
+			const jsonataExpr = jsonata_lib(node.data.text);
 			const result = await jsonataExpr.evaluate(input);
 			return result;
 		} catch (e) {
 			console.error('Error evaluating JSONata expression:', e);
+			return undefined;
 		}
 	}
 };

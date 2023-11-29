@@ -2,8 +2,7 @@
 	import { get } from 'svelte/store';
 	import { findAncestor } from '$lib/hierarchy';
 	import { hierarchy } from 'd3-hierarchy';
-	import { scaleSequential, scaleOrdinal } from 'd3-scale';
-	import * as chromatic from 'd3-scale-chromatic';
+	import { scaleOrdinal } from 'd3-scale';
 	import Paper from '@smui/paper';
 	import { hsl } from 'd3-color';
 	import { sortFunc } from 'svelte-ux';
@@ -11,7 +10,6 @@
 	import Claims from '$components/report/Claims.svelte';
 	import Tooltip from '$components/report/Tooltip.svelte';
 	import InfoPanel from '$components/report/InfoPanel.svelte';
-	// import { complexData } from '$components/hierarchy';
 	export let dataset: any;
 
 	let report: any;
@@ -72,23 +70,25 @@
 	let tooltipEvent: any;
 	let clickEvent: any;
 
-	const sequentialColor = scaleSequential([4, -1], chromatic.interpolateGnBu);
-	const ordinalColor = scaleOrdinal(
-		chromatic.schemeSpectral[9].filter((c) => hsl(c).h < 60 || hsl(c).h > 90)
-	);
+	const customColors = [
+		'#005F73',
+		'#0A9396',
+		'#94D2BD',
+		'#E9D8A6',
+		'#EE9B00',
+		'#CA6702',
+		'#BB3E03',
+		'#AE2012',
+		'#9B2226'
+	];
 
-	function getNodeColor(node, colorBy) {
-		switch (colorBy) {
-			case 'children':
-				return node.children ? '#ccc' : '#ddd';
-			case 'depth':
-				return sequentialColor(node.depth);
-			case 'parent':
-				const colorParent = findAncestor(node, (n) => n.depth === 1);
-				return colorParent
-					? hsl(ordinalColor(colorParent.data.name)).brighter(node.depth * 0.3)
-					: '#ddd';
-		}
+	const ordinalColor = scaleOrdinal(customColors);
+
+	function getNodeColor(node) {
+		const colorParent = findAncestor(node, (n) => n.depth === 1);
+		return colorParent
+			? hsl(ordinalColor(colorParent.data.name)).brighter(node.depth * 0.3)
+			: '#ddd';
 	}
 </script>
 

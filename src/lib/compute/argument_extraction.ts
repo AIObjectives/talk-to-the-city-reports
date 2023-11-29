@@ -1,33 +1,37 @@
-import openai from 'openai';
+import CryptoJS from 'crypto-js';
+
 import { readFileFromGCS, uploadDataToGCS } from '$lib/utils';
-import { extraction_prompt, summary_prompt } from '$lib/prompts';
+import { extraction_prompt } from '$lib/prompts';
 
 async function gpt(
 	apiKey: string,
 	systemPrompt: string,
 	promptTemplate: string,
 	replacements: { [key: string]: string },
-	info,
-	error,
-	success
+	info: (arg: string) => void,
+	error: (arg: string) => void,
+	success: (arg: string) => void
 ) {
-	console.log('calling openai on ...');
+	let vitest = import.meta.env.VITEST == 'true';
+	let openai = (await import(vitest ? '$lib/mock_open_ai' : 'openai')).default;
 	info('Calling OpenAI');
 	let prompt = promptTemplate;
 	for (const [key, value] of Object.entries(replacements)) {
 		prompt = prompt.replace(`{${key}}`, value);
 	}
 	const OpenAI = new openai({ apiKey, dangerouslyAllowBrowser: true });
+	const messages = [
+		{ role: 'system', content: systemPrompt },
+		{ role: 'user', content: prompt }
+	];
 	const res = await OpenAI.chat.completions.create({
-		messages: [
-			{ role: 'system', content: systemPrompt },
-			{ role: 'user', content: prompt }
-		],
+		messages,
 		model: 'gpt-4-1106-preview',
 		response_format: { type: 'json_object' },
 		temperature: 0.1
 	});
-	return res.choices[0].message.content!;
+	const resp = res.choices[0].message.content!;
+	return resp;
 }
 
 async function processInChunks(array, handler, chunkSize) {
@@ -37,8 +41,15 @@ async function processInChunks(array, handler, chunkSize) {
 	}
 }
 
-export const argument_extraction = async (node, inputData, context, info, error, success, slug) => {
-	console.log('Computing', node.data.label, 'with input data', inputData);
+export const argument_extraction = async (
+	node: ArgumentExtractionNode,
+	inputData: object,
+	context: string,
+	info: (arg: string) => void,
+	error: (arg: string) => void,
+	success: (arg: string) => void,
+	slug: string
+) => {
 	const { prompt, system_prompt } = node.data;
 	const csv = inputData.csv || inputData[node.data.input_ids.csv];
 	const open_ai_key = inputData.open_ai_key || inputData[node.data.input_ids.open_ai_key];
@@ -56,19 +67,18 @@ export const argument_extraction = async (node, inputData, context, info, error,
 			doc = JSON.parse(doc);
 		}
 		node.data.output = doc;
+		console.log(doc);
 		node.data.dirty = false;
-		console.log('Already computed', node.data.label);
 		return node.data.output;
 	}
 
-	if (context == 'run') {
+	if (context == 'run' && open_ai_key && (prompt || system_prompt)) {
 		node.data.output = {};
 
 		const csv_by_ids = Object.fromEntries(csv.map((item) => [item['comment-id'], item]));
 		async function extract_args(id) {
 			const comment = csv_by_ids[id]['comment-body'];
 			const interview = csv_by_ids[id]['interview'];
-			console.log('running for id', id);
 			const response = await gpt(
 				open_ai_key,
 				system_prompt,
@@ -93,7 +103,6 @@ export const argument_extraction = async (node, inputData, context, info, error,
 		} catch (err) {
 			console.error(err);
 		}
-		success('Done computing ' + node.data.label);
 		node.data.dirty = false;
 		await uploadDataToGCS(node, node.data.output, slug);
 		return node.data.output;

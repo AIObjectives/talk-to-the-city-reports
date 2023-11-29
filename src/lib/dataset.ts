@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 import { get } from 'svelte/store';
 import { compute } from '$lib/node_types';
 import { topologicalSort } from '$lib/utils';
@@ -85,7 +86,8 @@ export class Dataset {
 				info,
 				error,
 				success,
-				this.slug
+				this.slug,
+				Cookies
 			);
 			this.graph.nodes.update((node) => node);
 			this.graph.nodes = this.graph.nodes;

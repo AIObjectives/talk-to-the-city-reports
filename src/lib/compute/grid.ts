@@ -1,13 +1,19 @@
-export const grid = async (node: ParticipantFilterNode, inputData: object, context) => {
+export const grid = async (
+	node: GridNode,
+	inputData: object,
+	context: string,
+	info: (arg: string) => void,
+	error: (arg: string) => void,
+	success: (arg: string) => void,
+	slug: string
+) => {
 	node.data.dirty = false;
 	const input = inputData[Object.keys(inputData)[0]];
-	console.log('Computing grid');
 	node.data.output = input;
 	node.data = {
 		...node.data,
 		output: input
 	};
-	console.log(node.data);
 };
 
 interface GridData extends BaseData {

@@ -2,7 +2,7 @@
 	import Paper from '@smui/paper';
 	import { marked } from 'marked';
 	import { docs } from '$lib/node_types';
-	import Help from 'svelte-material-icons/HelpCircle.svelte';
+	import Help from '$lib/icons/HelpCircle.svelte';
 	import type { BaseData } from '$lib/node_data_types';
 
 	export let data: BaseData;

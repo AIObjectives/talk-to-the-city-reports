@@ -23,9 +23,7 @@
 
 	onMount(async () => {
 		await dataset.processNodes('load');
-		console.log(dataset);
 		dataset.graph.nodes.update((x) => x);
-		console.log(get(dataset.graph.nodes));
 		dataset = dataset;
 		$n = $n;
 	});

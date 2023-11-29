@@ -1,8 +1,15 @@
 import papa from 'papaparse';
 import { readFileFromGCS } from '$lib/utils';
 
-export const csv = async (node, inputData, context) => {
-	console.log('Computing', node.data.label);
+export const csv = async (
+	node: CSVNode,
+	inputData: object,
+	context: string,
+	info: (arg: string) => void,
+	error: (arg: string) => void,
+	success: (arg: string) => void,
+	slug: string
+) => {
 	if (node.data.gcs_path) {
 		node.data.csv = await readFileFromGCS(node);
 	}

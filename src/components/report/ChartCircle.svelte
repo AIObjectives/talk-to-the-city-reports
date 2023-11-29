@@ -4,18 +4,17 @@
 	import { createEventDispatcher } from 'svelte';
 
 	export let node;
-	export let colorBy;
 	export let scale;
 	export let getNodeColor;
 
 	const dispatch = createEventDispatcher();
 
-	let nodeColor = getNodeColor(node, colorBy);
+	let nodeColor = getNodeColor(node);
 </script>
 
 <Circle
 	r={node.r}
-	stroke={hsl(nodeColor).darker(colorBy === 'children' ? 0.5 : 1)}
+	stroke={hsl(nodeColor).darker(1)}
 	stroke-width={1 / scale}
 	fill={nodeColor}
 	rx={5}

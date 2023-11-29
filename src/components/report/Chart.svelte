@@ -9,7 +9,6 @@
 	export let getNodeColor;
 	export let onSelect;
 	let padding = 3;
-	let colorBy = 'parent';
 
 	let zoom;
 	let selected;
@@ -48,15 +47,7 @@
 						}}
 						class="cursor-pointer hover:contrast-[1.2]"
 					>
-						<ChartCircle
-							{node}
-							{colorBy}
-							{scale}
-							{getNodeColor}
-							on:mouseenter
-							on:mouseleave
-							on:click
-						/>
+						<ChartCircle {node} {scale} {getNodeColor} on:mouseenter on:mouseleave on:click />
 					</Group>
 				{/each}
 				{#each selected ? selected.children ?? [selected] : [] as node (node.data.name + '-' + node.depth + '-' + node.x + '-' + node.y)}

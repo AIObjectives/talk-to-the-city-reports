@@ -1,3 +1,5 @@
+.env
+coverage
 .vscode
 input
 .envrc
@@ -6,7 +8,6 @@ firebase-debug.log
 .DS_Store
 node_modules
 /build
-/.svelte-kit
 /package
 .env
 .env.*

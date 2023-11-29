@@ -1,6 +1,6 @@
 <script>
-	import Graph from 'svelte-material-icons/Graph.svelte';
-	import Table from 'svelte-material-icons/Table.svelte';
+	import Graph from '$lib/icons/Graph.svelte';
+	import Table from '$lib/icons/Table.svelte';
 	import Cookies from 'js-cookie';
 	import { useSvelteFlow } from '@xyflow/svelte';
 	import { useNodes } from '@xyflow/svelte';

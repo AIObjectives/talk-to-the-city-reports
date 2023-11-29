@@ -3,7 +3,7 @@
 	import { nodeTypes } from '$lib/node_types';
 	import { node_register } from '$lib/templates';
 	import ContextMenu from './ContextMenu.svelte';
-	import ContentSaveCogOutline from 'svelte-material-icons/ContentSaveCogOutline.svelte';
+	import ContentSaveCogOutline from '$lib/icons/ContentSaveCogOutline.svelte';
 	import { saveTemplate } from '$lib/templates';
 	import { get } from 'svelte/store';
 	import { Dataset } from '$lib/dataset';

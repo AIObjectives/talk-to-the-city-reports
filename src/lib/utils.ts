@@ -1,3 +1,4 @@
+import CryptoJS from 'crypto-js';
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { getAuth } from 'firebase/auth';
 
@@ -9,11 +10,8 @@ export async function uploadDataToGCS(node, data, slug) {
 		const storage = getStorage();
 		const userId = getAuth().currentUser.uid;
 		const filePath = `uploads/${userId}/${slug}/${node.id}.json`;
-		console.log('Uploading to GCS:', filePath);
 		const fileRef = storageRef(storage, filePath);
-		console.log('data:', data);
 		const jsonData = JSON.stringify(data, null, 2);
-		console.log('jsonData:', jsonData);
 		const blob = new Blob([jsonData], { type: 'application/json' });
 		await uploadBytes(fileRef, blob);
 		node.data.gcs_path = filePath;
@@ -76,4 +74,13 @@ export function topologicalSort(nodes, edges) {
 	nodes.forEach((node) => visit(node.id));
 
 	return sorted.reverse();
+}
+
+export function hashString(str) {
+	return CryptoJS.SHA256(str).toString();
+}
+
+export function hashObject(obj) {
+	const str = JSON.stringify(obj);
+	return CryptoJS.SHA256(str).toString();
 }

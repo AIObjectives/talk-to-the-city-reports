@@ -1,10 +1,16 @@
-export const merge = async (node, inputData, context) => {
+export const merge = async (
+	node: MergeNode,
+	inputData: object,
+	context: string,
+	info: (arg: string) => void,
+	error: (arg: string) => void,
+	success: (arg: string) => void,
+	slug: string
+) => {
 	const cluster_extraction =
 		inputData.cluster_extraction || inputData[node.data.input_ids.cluster_extraction];
 	const argument_extraction =
 		inputData.argument_extraction || inputData[node.data.input_ids.argument_extraction];
-
-	console.log('Computing merge');
 
 	if (!cluster_extraction || !argument_extraction || !cluster_extraction.topics) {
 		node.data.dirty = false;

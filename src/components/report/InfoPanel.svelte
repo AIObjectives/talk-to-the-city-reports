@@ -5,6 +5,7 @@
 
 	let video;
 	let newIframeSrc;
+	let claimId;
 	$: {
 		if (clickEvent) {
 			let entry = csv.find((entry) => entry['comment-id'] === clickEvent.node.data.claim.id);

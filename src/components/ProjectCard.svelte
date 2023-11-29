@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Close from 'svelte-material-icons/Close.svelte';
+	import Close from '$lib/icons/Close.svelte';
 	import { Dataset } from '$lib/dataset';
 
 	export let dataset: Dataset;
