@@ -7,6 +7,7 @@ export const grid = async (node: ParticipantFilterNode, inputData: object, conte
 		...node.data,
 		output: input
 	};
+	console.log(node.data);
 };
 
 interface GridData extends BaseData {

@@ -4,7 +4,8 @@
 	import { Dataset } from '$lib/dataset';
 
 	export let onClick: () => void;
-	export let id: string;
+	export let edge_id: string | undefined;
+	export let node_id: string | undefined;
 	export let top: number | undefined;
 	export let left: number | undefined;
 	export let right: number | undefined;
@@ -14,35 +15,20 @@
 	const nodes = useNodes();
 	const edges = useEdges();
 
-	function duplicateNode() {
-		const node = $nodes.find((node) => node.id === id);
-		if (node) {
-			$nodes.push({
-				...node,
-				// You should use a better id than this in production
-				id: `${id}-copy${Math.random()}`,
-				position: {
-					x: node.position.x,
-					y: node.position.y + 50
-				}
-			});
-		}
-		$nodes = $nodes;
-	}
-	const node = $nodes.find((node) => node.id === id);
-	const edge = $edges.filter((edge) => edge.id === id);
+	const node = node_id ? $nodes.find((node) => node.id === node_id) : undefined;
+	const edge = edge_id ? $edges.filter((edge) => edge.id === edge_id) : undefined;
 
 	function getUnregisteredInput() {
 		if (!node?.data.input_ids) node.data.input_ids = {};
-		const input_edges = $edges.filter((edge) => edge.target === id).map((edge) => edge.source);
+		const input_edges = $edges.filter((edge) => edge.target === node_id).map((edge) => edge.source);
 		return input_edges;
 	}
 
 	function deleteNode() {
-		dataset.graph.deleteNode(id);
+		dataset.graph.deleteNode(node_id);
 	}
 	function deleteEdge() {
-		$edges = $edges.filter((edge) => edge.id !== id);
+		$edges = $edges.filter((edge) => edge.id !== node_id);
 	}
 </script>
 
@@ -55,10 +41,10 @@
 	<p style="margin: 0.5em;">
 		<small
 			>{#if node}
-				node: {id}
+				node: {node_id}
 			{/if}
 			{#if edge}
-				edge: {id}
+				edge: {edge_id}
 			{/if}
 		</small>
 	</p>
@@ -72,12 +58,11 @@
 		{/each}
 
 		<hr />
-		<button on:click={duplicateNode}>duplicate</button>
-		<button on:click={deleteNode}>delete</button>
+		<button on:click={deleteNode}>delete node</button>
 	{/if}
 	{#if edge}
 		<hr />
-		<button on:click={deleteEdge}>delete</button>
+		<button on:click={deleteEdge}>delete edge</button>
 	{/if}
 </div>
 

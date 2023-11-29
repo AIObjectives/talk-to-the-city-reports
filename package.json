@@ -41,6 +41,8 @@
 	"type": "module",
 	"dependencies": {
 		"@google-cloud/storage": "^7.6.0",
+		"@smui/checkbox": "^7.0.0-beta.15",
+		"@smui/form-field": "^7.0.0-beta.15",
 		"@xyflow/svelte": "^0.0.28",
 		"@zerodevx/svelte-toast": "^0.9.5",
 		"ag-grid-community": "^30.2.1",

@@ -1,15 +1,19 @@
 <script>
 	import Graph from 'svelte-material-icons/Graph.svelte';
 	import Table from 'svelte-material-icons/Table.svelte';
+	import Cookies from 'js-cookie';
 	import { useSvelteFlow } from '@xyflow/svelte';
+	import { useNodes } from '@xyflow/svelte';
+
+	export let isGraphView;
+
 	const { fitView } = useSvelteFlow();
-	import { useEdges, useNodes } from '@xyflow/svelte';
-	export let isGraphView = false;
 	const nodes = useNodes();
 </script>
 
 <button
 	on:click={() => {
+		Cookies.set('isGraphView', !isGraphView);
 		isGraphView = !isGraphView;
 		if (isGraphView) {
 			setTimeout(() => {

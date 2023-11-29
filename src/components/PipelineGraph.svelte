@@ -35,13 +35,20 @@
 		}
 	}
 
-	let menu: { id: string; top?: number; left?: number; right?: number; bottom?: number } | null;
+	let menu: {
+		edge_id?: string;
+		node_id?: string;
+		top?: number;
+		left?: number;
+		right?: number;
+		bottom?: number;
+	} | null;
 
 	function handleContextMenu({ detail: { event, node } }) {
 		event.preventDefault();
 		const transformedPosition = { x: event.clientX, y: event.clientY };
 		menu = {
-			id: node.id,
+			node_id: node.id,
 			top: transformedPosition.y,
 			left: transformedPosition.x
 		};
@@ -51,7 +58,7 @@
 		event.preventDefault();
 		const transformedPosition = { x: event.clientX, y: event.clientY };
 		menu = {
-			id: edge.id,
+			edge_id: edge.id,
 			top: transformedPosition.y,
 			left: transformedPosition.x
 		};
@@ -81,7 +88,7 @@
 			{/each}
 		</select>
 	{/if}
-	<div style:height={isGraphView ? '80vh' : '0vh'}>
+	<div style:height={isGraphView ? '80vh' : '0vh'} class="flow-container">
 		<SvelteFlow
 			{nodes}
 			{edges}
@@ -103,7 +110,8 @@
 		{#if menu}
 			<ContextMenu
 				onClick={handlePaneClick}
-				id={menu.id}
+				edge_id={menu.edge_id}
+				node_id={menu.node_id}
 				top={menu.top}
 				left={menu.left}
 				right={menu.right}
@@ -113,3 +121,10 @@
 		{/if}
 	</div>
 </div>
+
+<style>
+	.flow-container {
+		border-color: #aaa;
+		border-width: 1px;
+	}
+</style>

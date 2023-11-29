@@ -15,6 +15,8 @@ async function gpt(
 	for (const [key, value] of Object.entries(replacements)) {
 		prompt = prompt.replace(`{${key}}`, value);
 	}
+	console.debug('systemPrompt', systemPrompt);
+	console.debug('prompt', prompt);
 	const OpenAI = new openai({ apiKey, dangerouslyAllowBrowser: true });
 	console.log('calling openai...');
 	info('Calling OpenAI');
@@ -103,8 +105,7 @@ export const cluster_extraction_node: ClusterExtractionNode = {
 		csv_length: 0,
 		dirty: false,
 		compute_type: 'cluster_extraction_v0',
-		input_ids: { open_ai_key: '', csv: '' },
-		compute: cluster_extraction
+		input_ids: { open_ai_key: '', csv: '' }
 	},
 	position: { x: 100, y: 100 },
 	type: 'prompt_v0'

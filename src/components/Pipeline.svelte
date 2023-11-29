@@ -5,6 +5,7 @@
 	import ToggleView from '$components/ToggleView.svelte';
 	import PipelineStandard from '$components/PipelineStandard.svelte';
 	import PipelineGraph from '$components/PipelineGraph.svelte';
+	import Cookies from 'js-cookie';
 	import type { Dataset } from '$lib/dataset';
 	import Button from '@smui/button';
 	import '@xyflow/svelte/dist/style.css';
@@ -15,7 +16,7 @@
 
 	export let dataset: Dataset;
 
-	let isGraphView = false;
+	let isGraphView = Cookies.get('isGraphView') === 'true';
 
 	const nodes = dataset.graph.nodes,
 		edges = dataset.graph.edges;
@@ -30,14 +31,17 @@
 	});
 </script>
 
-<div class="pipeline-container">
-	{#if $user && $user.uid === dataset.owner}
+{#if $user && $user.uid === dataset.owner}
+	<div class="pipeline-container">
 		<ToggleView bind:isGraphView />
 		{#if !isGraphView}
 			<PipelineStandard />
 		{/if}
-		<PipelineGraph {isGraphView} {nodes} {edges} {dataset} />
+	</div>
 
+	<PipelineGraph {isGraphView} {nodes} {edges} {dataset} />
+
+	<div class="pipeline-container">
 		<Button
 			on:click={async () => {
 				await dataset.processNodes('run');
@@ -64,8 +68,8 @@
 		>
 			Save
 		</Button>
-	{/if}
-</div>
+	</div>
+{/if}
 
 <style>
 	.pipeline-container {

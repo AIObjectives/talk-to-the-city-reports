@@ -22,8 +22,7 @@ export let limit_csv_node: LimitCSVNode = {
 		dirty: false,
 		number: 2,
 		compute_type: 'limit_csv_v0',
-		input_ids: { csv: '' },
-		compute: limit_csv
+		input_ids: { csv: '' }
 	},
 	position: { x: 100, y: -50 },
 	type: 'number_input_v0'

@@ -53,8 +53,7 @@ export let csv_node: CSVNode = {
 		dirty: false,
 		gcs_path: '',
 		compute_type: 'csv_v0',
-		input_ids: {},
-		compute: csv
+		input_ids: {}
 	},
 	position: { x: 100, y: -50 },
 	type: 'csv_v0'

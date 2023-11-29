@@ -1,10 +1,10 @@
-import NumberInputNode from '$components/NumberInputNode.svelte';
-import TextInputNode from '$components/TextInputNode.svelte';
-import PromptNode from '$components/PromptNode.svelte';
-import CSVNode from '$components/CSVNode.svelte';
-import TranslateNode from '$components/TranslateNode.svelte';
-import EditCSVNode from '$components/EditCSVNode.svelte';
-import GridNode from '$components/GridNode.svelte';
+import NumberInputNode from '$components/graph/nodes/NumberInputNode.svelte';
+import TextInputNode from '$components/graph/nodes/TextInputNode.svelte';
+import PromptNode from '$components/graph/nodes/PromptNode.svelte';
+import CSVNode from '$components/graph/nodes/CSVNode.svelte';
+import TranslateNode from '$components/graph/nodes/TranslateNode.svelte';
+import EditCSVNode from '$components/graph/nodes/EditCSVNode.svelte';
+import GridNode from '$components/graph/nodes/GridNode.svelte';
 
 export const nodeTypes = {
 	text_input_v0: TextInputNode,
