@@ -17,19 +17,18 @@ from utils import initialization, termination, run_step
 
 
 def main():
-
     config = initialization(sys.argv)
 
     try:
-        run_step('extraction', extraction, config)
-        run_step('embedding', embedding, config)
-        run_step('clustering', clustering, config)
-        run_step('labelling', labelling, config)
-        run_step('takeaways', takeaways, config)
-        run_step('overview', overview, config)
-        run_step('translation', translation, config)
-        run_step('aggregation', aggregation, config)
-        run_step('visualization', visualization, config)
+        run_step("extraction", extraction, config)
+        run_step("embedding", embedding, config)
+        run_step("clustering", clustering, config)
+        run_step("labelling", labelling, config)
+        run_step("takeaways", takeaways, config)
+        run_step("overview", overview, config)
+        run_step("translation", translation, config)
+        run_step("aggregation", aggregation, config)
+        run_step("visualization", visualization, config)
         termination(config)
     except Exception as e:
         termination(config, error=e)
