@@ -54,11 +54,6 @@ export const cluster_extraction = async (
 		node.data.dirty = false;
 		return;
 	}
-	// log !node.data.dirty && node.data.csv_length == csv.length && node.data.gcs_path
-	console.log('node.data.dirty', node.data.dirty);
-	console.log('node.data.csv_length', node.data.csv_length);
-	console.log('csv.length', csv.length);
-	console.log('node.data.gcs_path', node.data.gcs_path);
 
 	if (!node.data.dirty && node.data.csv_length == csv.length && node.data.gcs_path) {
 		let doc = await readFileFromGCS(node);
@@ -67,8 +62,6 @@ export const cluster_extraction = async (
 		}
 		node.data.output = doc;
 		node.data.dirty = false;
-		console.log(node.data.output);
-
 		return node.data.output;
 	}
 

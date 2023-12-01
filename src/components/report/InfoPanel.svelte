@@ -29,7 +29,7 @@
 			{clickEvent.node.data.name}
 			<br />
 			<br />
-			<p>{$_('home')}:</p>
+			<p>{$_('quote')}:</p>
 			{clickEvent.node.data.claim.quote}
 			<br />
 			<br />

@@ -1,3 +1,6 @@
+function isPlainObject(obj) {
+	return typeof obj === 'object' && obj !== null && !Array.isArray(obj);
+}
 export const grid = async (
 	node: GridNode,
 	inputData: object,
@@ -9,10 +12,23 @@ export const grid = async (
 ) => {
 	node.data.dirty = false;
 	const input = inputData[Object.keys(inputData)[0]];
-	node.data.output = input;
+	if (Array.isArray(input)) {
+		node.data.output = input;
+	} else if (isPlainObject(input)) {
+		const values = Object.values(input);
+		if (values.length === 1) {
+			if (Array.isArray(values[0])) {
+				node.data.output = values[0];
+			} else if (isPlainObject(values[0])) {
+				node.data.output = [values[0]];
+			}
+		} else if (values.length > 1) {
+			node.data.output = Object.values(values);
+		}
+	}
 	node.data = {
 		...node.data,
-		output: input
+		output: node.data.output
 	};
 };
 

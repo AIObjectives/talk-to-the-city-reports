@@ -35,6 +35,4 @@
 		}}
 		value={text}
 	/>
-	<Handle type="target" position={Position.Top} />
-	<Handle type="source" position={Position.Bottom} />
 </DGNode>

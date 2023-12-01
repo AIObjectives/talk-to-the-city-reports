@@ -51,3 +51,15 @@ Return a JSON object of the form {
 }
 
 Now here are the comment: "{comments}"`.trim();
+
+export const merge_extraction_prompt = `
+Please merge the following clusters of topics and subtopics into one JSON document with the same format.
+
+If the topics and subtopics are close enough to be merged, then merge them. If they are not then add them as separate topics and subtopics (perform the union of the sets).
+
+Here are the clusters:
+
+{clusters}
+
+Output JSON only.
+`;

@@ -1,5 +1,3 @@
-import CryptoJS from 'crypto-js';
-
 import { readFileFromGCS, uploadDataToGCS } from '$lib/utils';
 import { extraction_prompt } from '$lib/prompts';
 
@@ -67,7 +65,6 @@ export const argument_extraction = async (
 			doc = JSON.parse(doc);
 		}
 		node.data.output = doc;
-		console.log(doc);
 		node.data.dirty = false;
 		return node.data.output;
 	}

@@ -2,4 +2,4 @@
 	import UploadFileNode from '$components/graph/nodes/UploadFileNode.svelte';
 </script>
 
-<UploadFileNode {...$$restProps} fileType="CSV" />
+<UploadFileNode {...$$restProps} fileType="JSON" />

@@ -10,30 +10,33 @@ export const csv = async (
 	success: (arg: string) => void,
 	slug: string
 ) => {
-	if (node.data.gcs_path) {
-		node.data.csv = await readFileFromGCS(node);
+	if (!node.data.dirty && node.data.output && node.data.output.length > 0) {
+		return node.data.output;
 	}
-	const contents = node.data.csv;
-	const parsedData = papa.parse(contents, { header: true }).data;
-	const validRows = [];
-	for (const row of parsedData) {
-		let isValidRow = true;
-		for (const column in row) {
-			row[column] = row[column].trim();
-		}
-		let allEmpty = true;
-		for (const column in row) {
-			if (row[column] !== '') {
-				allEmpty = false;
-				break;
+	let contents;
+	if (node.data.gcs_path) {
+		contents = await readFileFromGCS(node);
+		const parsedData = papa.parse(contents, { header: true }).data;
+		const validRows = [];
+		for (const row of parsedData) {
+			let isValidRow = true;
+			for (const column in row) {
+				row[column] = row[column].trim();
+			}
+			let allEmpty = true;
+			for (const column in row) {
+				if (row[column] !== '') {
+					allEmpty = false;
+					break;
+				}
+			}
+			isValidRow = !allEmpty;
+			if (isValidRow) {
+				validRows.push(row);
 			}
 		}
-		isValidRow = !allEmpty;
-		if (isValidRow) {
-			validRows.push(row);
-		}
+		node.data.output = validRows;
 	}
-	node.data.output = validRows;
 	node.data.dirty = false;
 	node.data.csv = null;
 	return node.data.output;
@@ -54,7 +57,6 @@ export let csv_node: CSVNode = {
 	id: 'csv',
 	data: {
 		label: 'CSV',
-		csv: '',
 		filename: '',
 		size_kb: 0,
 		dirty: false,

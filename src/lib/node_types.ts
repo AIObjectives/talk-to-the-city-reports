@@ -2,6 +2,7 @@ import NumberInputNode from '$components/graph/nodes/NumberInputNode.svelte';
 import TextInputNode from '$components/graph/nodes/TextInputNode.svelte';
 import PromptNode from '$components/graph/nodes/PromptNode.svelte';
 import CSVNode from '$components/graph/nodes/CSVNode.svelte';
+import JSONNode from '$components/graph/nodes/JSONNode.svelte';
 import TranslateNode from '$components/graph/nodes/TranslateNode.svelte';
 import EditCSVNode from '$components/graph/nodes/EditCSVNode.svelte';
 import GridNode from '$components/graph/nodes/GridNode.svelte';
@@ -10,6 +11,7 @@ export const nodeTypes = {
 	text_input_v0: TextInputNode,
 	prompt_v0: PromptNode,
 	csv_v0: CSVNode,
+	json_v0: JSONNode,
 	participant_filter_v0: TextInputNode,
 	number_input_v0: NumberInputNode,
 	translate_v0: TranslateNode,
@@ -30,6 +32,9 @@ import { translate } from '$lib/compute/translate';
 import { edit_csv } from '$lib/compute/edit_csv';
 import { jsonata } from '$lib/compute/jsonata';
 import { grid } from '$lib/compute/grid';
+import { count_tokens } from '$lib/compute/count_tokens';
+import { merge_cluster_extraction } from '$lib/compute/merge_cluster_extraction';
+import { json } from '$lib/compute/json';
 
 export const compute = {
 	open_ai_key_v0: open_ai_key,
@@ -43,7 +48,10 @@ export const compute = {
 	translate_v0: translate,
 	edit_csv_v0: edit_csv,
 	jsonata_v0: jsonata,
-	grid_v0: grid
+	grid_v0: grid,
+	count_tokens_v0: count_tokens,
+	merge_cluster_extraction_v0: merge_cluster_extraction,
+	json_v0: json
 };
 
 import csv_doc from '$lib/docs/csv';
@@ -51,11 +59,13 @@ import limit_csv_doc from '$lib/docs/limit_csv';
 import edit_csv_doc from '$lib/docs/edit_csv';
 import open_ai_key_doc from '$lib/docs/open_ai_key';
 import cluster_extraction_doc from '$lib/docs/cluster_extraction';
+import merge_cluster_extraction_doc from '$lib/docs/merge_cluster_extraction';
 import argument_extraction_doc from '$lib/docs/argument_extraction';
 import grid_doc from '$lib/docs/grid';
 import jsonata_doc from '$lib/docs/jsonata';
 import translate_doc from '$lib/docs/translate';
 import participant_filter_doc from './docs/participant_filter';
+import json_doc from './docs/json';
 
 export const docs = {
 	csv_v0: csv_doc,
@@ -67,5 +77,7 @@ export const docs = {
 	grid_v0: grid_doc,
 	jsonata_v0: jsonata_doc,
 	translate_v0: translate_doc,
-	participant_filter_v0: participant_filter_doc
+	participant_filter_v0: participant_filter_doc,
+	merge_cluster_extraction_v0: merge_cluster_extraction_doc,
+	json_v0: json_doc
 };

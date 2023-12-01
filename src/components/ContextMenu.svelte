@@ -19,16 +19,21 @@
 	const edge = edge_id ? $edges.filter((edge) => edge.id === edge_id) : undefined;
 
 	function getUnregisteredInput() {
-		if (!node?.data.input_ids) node.data.input_ids = {};
-		const input_edges = $edges.filter((edge) => edge.target === node_id).map((edge) => edge.source);
-		return input_edges;
+		console.log(node.data.input_ids);
+		if (node.data.input_ids) {
+			const input_edges = $edges
+				.filter((edge) => edge.target === node_id)
+				.map((edge) => edge.source);
+			return input_edges;
+		}
+		return [];
 	}
 
 	function deleteNode() {
 		dataset.graph.deleteNode(node_id);
 	}
 	function deleteEdge() {
-		$edges = $edges.filter((edge) => edge.id !== node_id);
+		$edges = $edges.filter((edge) => edge.id !== edge_id);
 	}
 </script>
 
@@ -50,9 +55,14 @@
 	</p>
 	{#if node}
 		{#each Object.keys(node.data.input_ids) as key}
-			<Select bind:value={node.data.input_ids[key]} label={key}>
+			<Select value={node.data.input_ids[key]} label={key}>
 				{#each getUnregisteredInput() as input}
-					<Option value={input}>{input}</Option>
+					<Option
+						value={input}
+						on:click={(x) => {
+							node.data.input_ids[key] = input;
+						}}>{input}</Option
+					>
 				{/each}
 			</Select>
 		{/each}

@@ -9,10 +9,8 @@
 	import type { Dataset } from '$lib/dataset';
 	import Button from '@smui/button';
 	import '@xyflow/svelte/dist/style.css';
-	import { useEdges, useNodes } from '@xyflow/svelte';
+	import { useNodes } from '@xyflow/svelte';
 	const n = useNodes();
-	import { useUpdateNodeInternals } from '@xyflow/svelte';
-	const updateNodeInternals = useUpdateNodeInternals();
 
 	export let dataset: Dataset;
 
@@ -21,11 +19,20 @@
 	const nodes = dataset.graph.nodes,
 		edges = dataset.graph.edges;
 
+	function refreshData() {
+		dataset = dataset;
+		dataset.graph.nodes.set(get(dataset.graph.nodes));
+		setTimeout(() => {
+			$n = $n;
+			for (const node of $n) {
+				node.data = { ...node.data };
+			}
+		}, 500);
+	}
+
 	onMount(async () => {
 		await dataset.processNodes('load');
-		dataset.graph.nodes.update((x) => x);
-		dataset = dataset;
-		$n = $n;
+		refreshData();
 	});
 </script>
 
@@ -43,17 +50,7 @@
 		<Button
 			on:click={async () => {
 				await dataset.processNodes('run');
-				dataset = dataset;
-				dataset.graph.nodes.set(get(dataset.graph.nodes));
-				for (const node of $n) {
-					if (Array.isArray(node.data.output)) {
-						node.data.output = node.data.output.map((x) => ({ ...x }));
-					} else if (typeof node.data.output === 'object') {
-						node.data.output = { ...node.data.output };
-					}
-					node.data = { ...node.data };
-					updateNodeInternals(node.id);
-				}
+				refreshData();
 			}}
 		>
 			Generate Report

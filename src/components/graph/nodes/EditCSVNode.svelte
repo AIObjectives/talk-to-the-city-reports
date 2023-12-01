@@ -140,9 +140,6 @@
 		</div>
 	{/each}
 	<Button on:click={() => updateCSVAction(renameStore, 'add')}>Add Rename Column</Button>
-
-	<Handle type="target" position={Position.Top} />
-	<Handle type="source" position={Position.Bottom} />
 </DGNode>
 
 <style>

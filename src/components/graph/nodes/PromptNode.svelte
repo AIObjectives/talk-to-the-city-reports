@@ -67,6 +67,4 @@
 	{#if output && Object.keys(output).length}
 		<div>Objects: {Object.keys(output).length}: {Object.keys(output)[0]} ...</div>
 	{/if}
-	<Handle type="target" position={Position.Top} />
-	<Handle type="source" position={Position.Bottom} />
 </DGNode>

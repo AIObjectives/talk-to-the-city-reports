@@ -21,16 +21,26 @@
 			nodeToAdd = JSON.parse(JSON.stringify(nodeToAdd));
 			nodeToAdd.position.x = 0;
 			nodeToAdd.position.y = 0;
-			const nodeExists = $nodes.find((node) => node.id === nodeToAdd.id);
-			if (nodeExists) {
-				const regex = /_\d+$/;
-				if (regex.test(nodeExists.id)) {
-					const number = parseInt(nodeExists.id.match(regex)[0].slice(1));
-					nodeToAdd.id = `${nodeToAdd.id}_${number + 1}`;
-				} else {
-					nodeToAdd.id = `${nodeToAdd.id}_1`;
-				}
+
+			// Finding all matching nodes and sorting them
+			const matchingNodes = $nodes.filter((node) => node.id.startsWith(nodeToAdd.id + '_'));
+			const regex = /_(\d+)$/;
+
+			if (matchingNodes.length > 0) {
+				const sortedNodes = matchingNodes.sort((a, b) => {
+					const numberA = parseInt(a.id.match(regex)[1]);
+					const numberB = parseInt(b.id.match(regex)[1]);
+					return numberB - numberA;
+				});
+
+				// Increment the highest number found
+				const highestNumber = parseInt(sortedNodes[0].id.match(regex)[1]);
+				nodeToAdd.id = `${nodeToAdd.id}_${highestNumber + 1}`;
+			} else {
+				// If no matching nodes, append _1
+				nodeToAdd.id = `${nodeToAdd.id}_1`;
 			}
+
 			$nodes = [...$nodes, nodeToAdd];
 		}
 	}
@@ -103,6 +113,7 @@
 			panOnDrag={true}
 			autoPanOnNodeDrag={false}
 			zoomOnDoubleClick={false}
+			minZoom={0.1}
 			fitView
 		>
 			<Background variant={BackgroundVariant.Dots} />
