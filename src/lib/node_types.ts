@@ -6,6 +6,7 @@ import JSONNode from '$components/graph/nodes/JSONNode.svelte';
 import TranslateNode from '$components/graph/nodes/TranslateNode.svelte';
 import EditCSVNode from '$components/graph/nodes/EditCSVNode.svelte';
 import GridNode from '$components/graph/nodes/GridNode.svelte';
+import MarkdownNode from '$components/graph/nodes/MarkdownNode.svelte';
 
 export const nodeTypes = {
 	text_input_v0: TextInputNode,
@@ -17,7 +18,8 @@ export const nodeTypes = {
 	translate_v0: TranslateNode,
 	edit_csv_v0: EditCSVNode,
 	jsonata_v0: TextInputNode,
-	grid_v0: GridNode
+	grid_v0: GridNode,
+	markdown_v0: MarkdownNode
 };
 
 import { csv } from '$lib/compute/csv';
@@ -35,6 +37,7 @@ import { grid } from '$lib/compute/grid';
 import { count_tokens } from '$lib/compute/count_tokens';
 import { merge_cluster_extraction } from '$lib/compute/merge_cluster_extraction';
 import { json } from '$lib/compute/json';
+import { markdown } from '$lib/compute/markdown';
 
 export const compute = {
 	open_ai_key_v0: open_ai_key,
@@ -51,7 +54,8 @@ export const compute = {
 	grid_v0: grid,
 	count_tokens_v0: count_tokens,
 	merge_cluster_extraction_v0: merge_cluster_extraction,
-	json_v0: json
+	json_v0: json,
+	markdown_v0: markdown
 };
 
 import csv_doc from '$lib/docs/csv';
@@ -66,6 +70,7 @@ import jsonata_doc from '$lib/docs/jsonata';
 import translate_doc from '$lib/docs/translate';
 import participant_filter_doc from './docs/participant_filter';
 import json_doc from './docs/json';
+import markdown_doc from './docs/markdown';
 
 export const docs = {
 	csv_v0: csv_doc,
@@ -79,5 +84,6 @@ export const docs = {
 	translate_v0: translate_doc,
 	participant_filter_v0: participant_filter_doc,
 	merge_cluster_extraction_v0: merge_cluster_extraction_doc,
-	json_v0: json_doc
+	json_v0: json_doc,
+	markdown_v0: markdown_doc
 };

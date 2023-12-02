@@ -21,7 +21,7 @@
 		margin-top: 0;
 		z-index: 0;
 	}
-
+	/* 
 	@media (max-width: 1400px) {
 		.left-pane {
 			display: none;
@@ -34,5 +34,5 @@
 			order: 2;
 			position: static;
 		}
-	}
+	} */
 </style>

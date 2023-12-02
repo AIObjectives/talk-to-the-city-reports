@@ -26,17 +26,17 @@ To add pipeline computation nodes:
  ✓ src/test/translate.test.ts  (2 tests) 1ms
  ✓ src/test/limit_csv.test.js  (4 tests) 2ms
  ✓ src/test/grid.test.ts  (1 test) 1ms
- ✓ src/test/open_ai_key.test.ts  (4 tests) 3ms
  ✓ src/test/edit_csv.test.ts  (7 tests) 4ms
+ ✓ src/test/open_ai_key.test.ts  (4 tests) 3ms
  ✓ src/test/jsonata.test.ts  (3 tests) 9ms
  ✓ src/test/csv.test.js  (3 tests) 4ms
- ✓ src/test/cluster_extraction.test.ts  (5 tests) 127ms
- ✓ src/test/argument_extraction.test.ts  (6 tests) 128ms
+ ✓ src/test/cluster_extraction.test.ts  (5 tests) 121ms
+ ✓ src/test/argument_extraction.test.ts  (6 tests) 121ms
 
  Test Files  9 passed (9)
       Tests  35 passed (35)
-   Start at  02:34:51
-   Duration  600ms (transform 607ms, setup 1ms, collect 1.02s, tests 279ms, environment 1ms, prepare 793ms)
+   Start at  06:16:55
+   Duration  607ms (transform 663ms, setup 0ms, collect 1.05s, tests 266ms, environment 1ms, prepare 698ms)
 
  % Coverage report from v8
 -------------------|---------|----------|---------|---------|-------------------

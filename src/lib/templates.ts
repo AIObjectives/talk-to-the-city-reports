@@ -16,6 +16,7 @@ import { merge_node } from './compute/merge';
 import { jsonata_node } from './compute/jsonata';
 import { grid_node } from './compute/grid';
 import { count_tokens_node } from './compute/count_tokens';
+import { markdown_node } from './compute/markdown';
 
 export let node_register = [
 	open_ai_key_node,
@@ -32,7 +33,8 @@ export let node_register = [
 	jsonata_node,
 	grid_node,
 	count_tokens_node,
-	merge_cluster_extraction_node
+	merge_cluster_extraction_node,
+	markdown_node
 ];
 
 export async function loadTemplates() {
