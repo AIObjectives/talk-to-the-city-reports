@@ -1,5 +1,6 @@
 import Cookies from 'js-cookie';
 import { get } from 'svelte/store';
+import type { User } from '$lib/types';
 import { compute } from '$lib/node_types';
 import { topologicalSort } from '$lib/utils';
 import {
@@ -41,11 +42,11 @@ export class Dataset {
 		this.template = projectTemplate;
 		this.timestamp = new Date();
 		this.description = projectDescription;
-		this.graph = new DependencyGraph(graph.nodes, graph.edges);
+		this.graph = new DependencyGraph(graph.nodes, graph.edges, this);
 		this.id = id;
 	}
 
-	async processNodes(context: string) {
+	async processNodes(context: string, user: User) {
 		let nodeOutputs = {},
 			save = false,
 			dirtyNodes = new Set(
@@ -92,25 +93,27 @@ export class Dataset {
 			this.graph.nodes.update((node) => node);
 			this.graph.nodes = this.graph.nodes;
 		}
-		if (context == 'run' && save) await this.updateDataset();
+		if (context == 'run' && save) await this.updateDataset(user);
 	}
 
-	async updateDataset() {
-		try {
-			info('Updating dataset...');
-			const copy = JSON.parse(
-				JSON.stringify({ graph: { nodes: get(this.graph.nodes), edges: get(this.graph.edges) } })
-			);
-			copy.graph.nodes = copy.graph.nodes.map((x) => {
-				x.data.output = [];
-				return x;
-			});
-			console.log('Copy', copy);
-			await updateDoc(doc(datasetCollection, this.id), copy);
-			success('Dataset updated');
-		} catch (err) {
-			console.error('Error updating dataset: ', err);
-			error('Error updating dataset');
+	async updateDataset(user: User) {
+		if (user.uid === this.owner) {
+			try {
+				info('Updating dataset...');
+				const copy = JSON.parse(
+					JSON.stringify({ graph: { nodes: get(this.graph.nodes), edges: get(this.graph.edges) } })
+				);
+				copy.graph.nodes = copy.graph.nodes.map((x) => {
+					x.data.output = [];
+					return x;
+				});
+				console.log('Copy', copy);
+				await updateDoc(doc(datasetCollection, this.id), copy);
+				success('Dataset updated');
+			} catch (err) {
+				console.error('Error updating dataset: ', err);
+				error('Error updating dataset');
+			}
 		}
 	}
 

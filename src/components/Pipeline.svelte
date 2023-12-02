@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Pipe from '$lib/icons/Pipe.svelte';
 	import { get } from 'svelte/store';
 	import { user } from '$lib/store';
 	import { onMount } from 'svelte';
@@ -13,6 +14,7 @@
 	const n = useNodes();
 
 	export let dataset: Dataset;
+	let showPipeline = false;
 
 	let isGraphView = Cookies.get('isGraphView') === 'true';
 
@@ -36,7 +38,19 @@
 	});
 </script>
 
-{#if $user && $user.uid === dataset.owner}
+{#if !showPipeline}
+	<div class="pipeline-icon">
+		<button
+			on:click={(e) => {
+				showPipeline = !showPipeline;
+			}}
+		>
+			<Pipe color="#dcdcdd" size="30px" />
+		</button>
+	</div>
+{/if}
+
+{#if showPipeline || ($user && $user.uid === dataset.owner)}
 	<div class="pipeline-container">
 		<ToggleView bind:isGraphView />
 		{#if !isGraphView}
@@ -49,24 +63,32 @@
 	<div class="pipeline-container">
 		<Button
 			on:click={async () => {
-				await dataset.processNodes('run');
+				await dataset.processNodes('run', $user);
 				refreshData();
 			}}
 		>
 			Generate Report
 		</Button>
 
-		<Button
-			on:click={async () => {
-				await dataset.updateDataset();
-			}}
-		>
-			Save
-		</Button>
+		{#if $user && $user.uid === dataset.owner}
+			<Button
+				on:click={async () => {
+					await dataset.updateDataset($user);
+				}}
+			>
+				Save
+			</Button>
+		{/if}
 	</div>
 {/if}
 
 <style>
+	.pipeline-icon {
+		position: fixed;
+		bottom: 10px;
+		right: 10px;
+		cursor: pointer;
+	}
 	.pipeline-container {
 		padding: var(--main-padding);
 		max-width: 50rem;

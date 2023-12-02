@@ -6,14 +6,19 @@ import { writable, get } from 'svelte/store';
 export class DependencyGraph {
 	nodes: Writable<Node[]>;
 	edges: Writable<Edge[]>;
+	parent: any; // dataset
 
-	constructor(nodes: [Node], edges: [Edge]) {
+	constructor(nodes: [Node], edges: [Edge], parent: any) {
 		this.nodes = writable<Node[]>(nodes);
 		this.edges = writable<Edge[]>(edges);
+		this.parent = parent;
 	}
 
 	find = (id: string): DGNode => {
-		return new DGNode(get(this.nodes).find((node) => node.id === id));
+		return new DGNode(
+			get(this.nodes).find((node) => node.id === id),
+			this
+		);
 	};
 
 	deleteAssets = () => {

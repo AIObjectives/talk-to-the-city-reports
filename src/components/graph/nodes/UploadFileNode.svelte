@@ -42,7 +42,7 @@
 		if (!uploadedFile) return;
 
 		const userId = auth.currentUser.uid;
-		const filePath = `uploads/${userId}/${$page.params.report}/${uploadedFile.name}`;
+		const filePath = `uploads/${userId}/${$page.params.report}/${id}_${uploadedFile.name}`;
 		const fileRef = storageRef(storage, filePath);
 
 		let reader = new FileReader();
