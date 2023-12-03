@@ -12,20 +12,7 @@ export const grid = async (
 ) => {
 	node.data.dirty = false;
 	const input = inputData[Object.keys(inputData)[0]];
-	if (Array.isArray(input)) {
-		node.data.output = input;
-	} else if (isPlainObject(input)) {
-		const values = Object.values(input);
-		if (values.length === 1) {
-			if (Array.isArray(values[0])) {
-				node.data.output = values[0];
-			} else if (isPlainObject(values[0])) {
-				node.data.output = [values[0]];
-			}
-		} else if (values.length > 1) {
-			node.data.output = Object.values(values);
-		}
-	}
+	node.data.output = input;
 	node.data = {
 		...node.data,
 		output: node.data.output

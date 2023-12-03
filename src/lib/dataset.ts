@@ -55,8 +55,6 @@ export class Dataset {
 					.map((node) => node.id)
 			);
 
-		console.log('Dirty nodes', dirtyNodes);
-
 		const dataset = this;
 
 		function markDownstreamNodesAsDirty(nodeId) {
@@ -104,10 +102,9 @@ export class Dataset {
 					JSON.stringify({ graph: { nodes: get(this.graph.nodes), edges: get(this.graph.edges) } })
 				);
 				copy.graph.nodes = copy.graph.nodes.map((x) => {
-					x.data.output = [];
+					x.data.output = null;
 					return x;
 				});
-				console.log('Copy', copy);
 				await updateDoc(doc(datasetCollection, this.id), copy);
 				success('Dataset updated');
 			} catch (err) {

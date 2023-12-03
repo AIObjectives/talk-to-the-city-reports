@@ -1,5 +1,5 @@
 import { readFileFromGCS, uploadDataToGCS } from '$lib/utils';
-import { extraction_prompt } from '$lib/prompts';
+import { argument_extraction_prompt, argument_extraction_system_prompt } from '$lib/prompts';
 
 async function gpt(
 	apiKey: string,
@@ -120,9 +120,8 @@ export const argument_extraction_node: ArgumentExtractionNode = {
 		label: 'Argument Extraction',
 		output: {},
 		text: '',
-		system_prompt:
-			'You are a professional research assistant. You have helped run many public consultations, surveys and citizen assemblies. You have good instincts when it comes to extracting interesting insights. You are familiar with public consultation tools like Pol.is and you understand the benefits for working with very clear, concise claims that other people would be able to vote on.',
-		prompt: extraction_prompt,
+		system_prompt: argument_extraction_system_prompt,
+		prompt: argument_extraction_prompt,
 		csv_length: 0,
 		dirty: false,
 		compute_type: 'argument_extraction_v0',

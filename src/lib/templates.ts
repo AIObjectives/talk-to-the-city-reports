@@ -17,6 +17,9 @@ import { jsonata_node } from './compute/jsonata';
 import { grid_node } from './compute/grid';
 import { count_tokens_node } from './compute/count_tokens';
 import { markdown_node } from './compute/markdown';
+import { jq_node } from './compute/jq';
+import { stringify_node } from './compute/stringify';
+import { score_argument_relevance_node } from './compute/score_argument_relevance';
 
 export let node_register = [
 	open_ai_key_node,
@@ -31,10 +34,13 @@ export let node_register = [
 	limit_csv_node,
 	translate_node,
 	jsonata_node,
+	jq_node,
 	grid_node,
 	count_tokens_node,
 	merge_cluster_extraction_node,
-	markdown_node
+	markdown_node,
+	stringify_node,
+	score_argument_relevance_node
 ];
 
 export async function loadTemplates() {

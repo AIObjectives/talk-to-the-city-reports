@@ -18,7 +18,6 @@
 		source = $nodes.find((n) => n.id === source);
 		target = $nodes.find((n) => n.id === target);
 		target.data.dirty = true;
-		console.log('setting ' + target.id + ' dirty');
 		setTimeout(() => {
 			$nodes = $nodes;
 			for (const node of $nodes) {

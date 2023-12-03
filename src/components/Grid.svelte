@@ -23,7 +23,6 @@
 					gridData = first_obj;
 				}
 			}
-			console.log(gridData);
 		}
 	}
 

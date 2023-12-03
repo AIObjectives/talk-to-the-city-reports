@@ -79,7 +79,7 @@
 			{#if showTemplate}
 				{#if templates}
 					<div class="w-full px-3">
-						<Select label="Project Template" bind:value={projectTemplate}>
+						<Select style="min-width: 400px;" label="Project Template" bind:value={projectTemplate}>
 							{#each Object.keys(templates) as templateKey}
 								<Option value={templateKey}>{templateKey}</Option>
 							{/each}

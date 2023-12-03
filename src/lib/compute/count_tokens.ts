@@ -2,7 +2,7 @@ import { getEncoding } from 'js-tiktoken';
 
 export const count_tokens = async (
 	node: CountTokensNode,
-	inputData: object,
+	inputData: any,
 	context: string,
 	info: (arg: string) => void,
 	error: (arg: string) => void,
@@ -11,21 +11,22 @@ export const count_tokens = async (
 ) => {
 	const inputArray = inputData[Object.keys(inputData)[0]];
 	const inputMatches = inputArray.length && node.data.csv_length === inputArray.length;
-	if (!node.data.dirty && inputMatches) return;
-	const joinedInput = inputArray.map((entry) => entry['comment-body']).join(' ');
+	if (!node.data.dirty && inputMatches) return node.data.num_tokens;
+	const joinedInput = inputArray.map((entry: any) => entry['comment-body']).join(' ');
 	try {
 		node.data.csv_length = inputArray.length;
 		const encoding = getEncoding(node.data.text);
-		const num_tokens = encoding.encode(joinedInput).length;
+		node.data.num_tokens = encoding.encode(joinedInput).length;
 		node.data.dirty = false;
-		node.data.message = `Number of tokens: ${num_tokens}`;
+		node.data.message = `Number of tokens: ${node.data.num_tokens}`;
+		return node.data.num_tokens;
 	} catch (e) {
 		error(`Error: ${e}`);
 	}
 };
 
 interface CountTokensData extends BaseData {
-	number: number;
+	num_tokens: number;
 }
 
 type CountTokensNode = DGNodeInterface & {
@@ -38,8 +39,10 @@ export let count_tokens_node: CountTokensNode = {
 		label: 'Count Tokens',
 		dirty: false,
 		text: 'cl100k_base',
-		compute_type: 'count_tokens_v0',
+		num_tokens: 0,
+		message: '',
 		csv_length: 0,
+		compute_type: 'count_tokens_v0',
 		input_ids: { csv: '' },
 		compute: count_tokens
 	},

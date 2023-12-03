@@ -38,17 +38,15 @@
 	});
 </script>
 
-{#if !showPipeline}
-	<div class="pipeline-icon">
-		<button
-			on:click={(e) => {
-				showPipeline = !showPipeline;
-			}}
-		>
-			<Pipe color="#dcdcdd" size="30px" />
-		</button>
-	</div>
-{/if}
+<div class="pipeline-icon">
+	<button
+		on:click={(e) => {
+			showPipeline = !showPipeline;
+		}}
+	>
+		<Pipe color="#dcdcdd" size="30px" />
+	</button>
+</div>
 
 {#if showPipeline || ($user && $user.uid === dataset.owner)}
 	<div class="pipeline-container">

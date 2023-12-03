@@ -1,5 +1,5 @@
 import { readFileFromGCS, uploadDataToGCS } from '$lib/utils';
-import { summary_prompt } from '$lib/prompts';
+import { cluster_extraction_prompt, cluster_extraction_system_prompt } from '$lib/prompts';
 
 async function gpt(
 	apiKey: string,
@@ -106,9 +106,8 @@ export const cluster_extraction_node: ClusterExtractionNode = {
 		label: 'Cluster Extraction',
 		output: {},
 		text: '',
-		system_prompt:
-			'You are a professional research assistant. You have helped run many public consultations, surveys and citizen assemblies.',
-		prompt: summary_prompt,
+		system_prompt: cluster_extraction_prompt,
+		prompt: cluster_extraction_system_prompt,
 		csv_length: 0,
 		dirty: false,
 		compute_type: 'cluster_extraction_v0',

@@ -9,10 +9,6 @@ export const json = async (
 	success: (arg: string) => void,
 	slug: string
 ) => {
-	if (!node.data.dirty && node.data.output && node.data.output.length > 0) {
-		return node.data.output;
-	}
-
 	let contents;
 	if (node.data.gcs_path) {
 		contents = await readFileFromGCS(node);

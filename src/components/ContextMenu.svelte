@@ -19,7 +19,6 @@
 	const edge = edge_id ? $edges.filter((edge) => edge.id === edge_id) : undefined;
 
 	function getUnregisteredInput() {
-		console.log(node.data.input_ids);
 		if (node.data.input_ids) {
 			const input_edges = $edges
 				.filter((edge) => edge.target === node_id)
