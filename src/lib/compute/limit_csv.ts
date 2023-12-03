@@ -1,3 +1,5 @@
+import categories from '$lib/node_categories';
+
 export const limit_csv = async (
 	node: LimitCSVNode,
 	inputData: object,
@@ -33,7 +35,9 @@ export let limit_csv_node: LimitCSVNode = {
 		number: 2,
 		compute_type: 'limit_csv_v0',
 		input_ids: { csv: '' },
-		compute: limit_csv
+		compute: limit_csv,
+		category: categories.wrangling.id,
+		icon: 'limit_csv_v0'
 	},
 	position: { x: 100, y: -50 },
 	type: 'number_input_v0'

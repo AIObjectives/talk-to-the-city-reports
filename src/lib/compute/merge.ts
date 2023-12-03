@@ -1,3 +1,5 @@
+import categories from '$lib/node_categories';
+
 export const merge = async (
 	node: MergeNode,
 	inputData: object,
@@ -67,7 +69,9 @@ export const merge_node: MergeNode = {
 		output: {},
 		dirty: false,
 		compute_type: 'merge_v0',
-		input_ids: { cluster_extraction: '', argument_extraction: '' }
+		input_ids: { cluster_extraction: '', argument_extraction: '' },
+		category: categories.wrangling.id,
+		icon: 'merge_v0'
 	},
 	position: { x: 200, y: 600 },
 	type: 'merge_v0'

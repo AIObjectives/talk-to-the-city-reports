@@ -3,6 +3,7 @@ export interface BaseData {
 	dirty: boolean;
 	compute_type: string;
 	input_ids: { [key: string]: string };
+	category: string;
 }
 
 export interface DGEdgeInterface {

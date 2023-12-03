@@ -1,3 +1,5 @@
+import categories from '$lib/node_categories';
+
 export const participant_filter = async (
 	node: ParticipantFilterNode,
 	inputData: object,
@@ -43,7 +45,9 @@ export const participant_filter_node: ParticipantFilterNode = {
 		dirty: false,
 		output: {},
 		compute_type: 'participant_filter_v0',
-		input_ids: {}
+		input_ids: {},
+		category: categories.wrangling.id,
+		icon: 'participant_filter_v0'
 	},
 	position: { x: 200, y: 700 },
 	type: 'text_input_v0'

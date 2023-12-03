@@ -1,3 +1,4 @@
+import categories from '$lib/node_categories';
 import jq_lib from '$lib/jq.js';
 
 export const jq = async (
@@ -47,7 +48,9 @@ export const jq_node: JqNode = {
 		dirty: false,
 		output: {},
 		compute_type: 'jq_v0',
-		input_ids: {}
+		input_ids: {},
+		category: categories.wrangling.id,
+		icon: 'jq_v0'
 	},
 	position: { x: 200, y: 700 },
 	type: 'text_input_v0'

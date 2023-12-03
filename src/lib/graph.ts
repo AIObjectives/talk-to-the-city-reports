@@ -15,10 +15,8 @@ export class DependencyGraph {
 	}
 
 	find = (id: string): DGNode => {
-		return new DGNode(
-			get(this.nodes).find((node) => node.id === id),
-			this
-		);
+		const node = get(this.nodes).find((node) => node.id === id);
+		if (node) return new DGNode(node, this);
 	};
 
 	deleteAssets = () => {
@@ -32,5 +30,17 @@ export class DependencyGraph {
 		this.edges.update(($edges) =>
 			$edges.filter((edge) => edge.source !== id && edge.target !== id)
 		);
+	};
+
+	onConnect = (source: string, target: string) => {
+		source = get(this.nodes).find((n) => n.id === source);
+		target = get(this.nodes).find((n) => n.id === target);
+		target.data.dirty = true;
+		setTimeout(() => {
+			this.nodes.update(($nodes) => $nodes);
+			for (const node of get(this.nodes)) {
+				node.data = { ...node.data };
+			}
+		}, 500);
 	};
 }

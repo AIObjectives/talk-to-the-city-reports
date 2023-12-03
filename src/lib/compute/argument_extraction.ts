@@ -1,3 +1,4 @@
+import categories from '$lib/node_categories';
 import { readFileFromGCS, uploadDataToGCS } from '$lib/utils';
 import { argument_extraction_prompt, argument_extraction_system_prompt } from '$lib/prompts';
 
@@ -125,7 +126,9 @@ export const argument_extraction_node: ArgumentExtractionNode = {
 		csv_length: 0,
 		dirty: false,
 		compute_type: 'argument_extraction_v0',
-		input_ids: { open_ai_key: '', csv: '', cluster_extraction: '' }
+		input_ids: { open_ai_key: '', csv: '', cluster_extraction: '' },
+		category: categories.llm.id,
+		icon: 'argument_extraction_v0'
 	},
 	position: { x: 0, y: 350 },
 	type: 'prompt_v0'

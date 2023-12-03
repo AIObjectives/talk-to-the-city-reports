@@ -1,3 +1,5 @@
+import categories from '$lib/node_categories';
+
 import { readFileFromGCS, uploadDataToGCS } from '$lib/utils';
 import { merge_extraction_prompt } from '$lib/prompts';
 
@@ -128,7 +130,9 @@ export const merge_cluster_extraction_node: MergeClusterExtractionData = {
 		num_cluster_extractions: 0,
 		dirty: false,
 		compute_type: 'merge_cluster_extraction_v0',
-		input_ids: { csv: '', open_ai_key: '' }
+		input_ids: { csv: '', open_ai_key: '' },
+		category: categories.wrangling.id,
+		icon: 'merge_cluster_extraction_v0'
 	},
 	position: { x: 0, y: 350 },
 	type: 'prompt_v0'

@@ -1,3 +1,5 @@
+import categories from '$lib/node_categories';
+
 function keyIsValid(key) {
 	return key && key.length == 51 && key.slice(0, 3) == 'sk-';
 }
@@ -49,7 +51,9 @@ export const open_ai_key_node: OpenAIKeyNode = {
 		text: 'sk-...',
 		dirty: false,
 		compute_type: 'open_ai_key_v0',
-		input_ids: {}
+		input_ids: {},
+		category: categories.llm.id,
+		icon: 'open_ai_key_v0'
 	},
 	position: { x: -200, y: 50 },
 	type: 'text_input_v0'

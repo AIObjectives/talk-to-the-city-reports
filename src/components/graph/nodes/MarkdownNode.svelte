@@ -44,6 +44,11 @@
 			helperLine$style="width: 100% !important;"
 			textarea
 			input$rows={12}
+			on:keydown={(evt) => {
+				if (evt.key === 'Backspace') {
+					evt.stopPropagation();
+				}
+			}}
 			on:input={(evt) => {
 				data.markdown = evt.target?.value;
 				data.dirty = true;

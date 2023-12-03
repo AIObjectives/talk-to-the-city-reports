@@ -42,6 +42,11 @@
 			textarea
 			input$rows={5}
 			value={system_prompt}
+			on:keydown={(evt) => {
+				if (evt.key === 'Backspace') {
+					evt.stopPropagation();
+				}
+			}}
 			on:input={(evt) => {
 				data.system_prompt = evt.target?.value;
 				data.dirty = true;
@@ -60,6 +65,11 @@
 		on:input={(evt) => {
 			data.prompt = evt.target?.value;
 			data.dirty = true;
+		}}
+		on:keydown={(evt) => {
+			if (evt.key === 'Backspace') {
+				evt.stopPropagation();
+			}
 		}}
 	>
 		<HelperText slot="helper">Primary extraction prompt</HelperText>

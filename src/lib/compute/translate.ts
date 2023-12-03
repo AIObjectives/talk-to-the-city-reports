@@ -1,3 +1,4 @@
+import categories from '$lib/node_categories';
 import { readFileFromGCS, uploadDataToGCS } from '$lib/utils';
 
 async function oai_translate(apiKey, text, target_language, info) {
@@ -108,7 +109,9 @@ export const translate_node: TranslateNode = {
 		dirty: false,
 		gcs_path: '',
 		compute_type: 'translate_v0',
-		input_ids: { open_ai_key: '', data: '' }
+		input_ids: { open_ai_key: '', data: '' },
+		category: categories.llm.id,
+		icon: 'translate_v0'
 	},
 	position: { x: -200, y: 50 },
 	type: 'translate_v0'

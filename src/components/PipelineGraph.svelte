@@ -7,16 +7,17 @@
 	import { saveTemplate } from '$lib/templates';
 	import { get } from 'svelte/store';
 	import { Dataset } from '$lib/dataset';
+	import { DGNode } from '$lib/node';
+	import { user } from '$lib/store';
+	import PipelineCreateNodesToolbar from '$components/PipelineCreateNodesToolbar.svelte';
 
 	export let isGraphView: boolean;
 	export let dataset: Dataset;
 	export let nodes;
 	export let edges;
 
-	let selectedNodeId = '';
-
-	function addNode() {
-		let nodeToAdd = node_register.find((node) => node.id === selectedNodeId);
+	function addNode(x) {
+		let nodeToAdd = node_register.find((node) => node.id === x);
 		if (nodeToAdd) {
 			nodeToAdd = JSON.parse(JSON.stringify(nodeToAdd));
 			nodeToAdd.position.x = 0;
@@ -81,22 +82,19 @@
 
 <div>
 	{#if isGraphView}
-		<button
-			on:click={() => {
-				const name = prompt('Enter template name');
-				const data = { nodes: get(nodes), edges: get(edges) };
-				console.log(data);
-				saveTemplate(name, data);
-			}}
-		>
-			<ContentSaveCogOutline size="30px" title="Save as template" />
-		</button>
-		<select bind:value={selectedNodeId} on:change={(x) => addNode(x)}>
-			<option value="">add node</option>
-			{#each node_register as node}
-				<option value={node.id}>{node.id}</option>
-			{/each}
-		</select>
+		{#if $user.uid == 'H6U6UUpCtqb5pRvRc9BalA5eNWP2'}
+			<button
+				on:click={() => {
+					const name = prompt('Enter template name');
+					const data = { nodes: get(nodes), edges: get(edges) };
+					console.log(data);
+					saveTemplate(name, data);
+				}}
+			>
+				<ContentSaveCogOutline size="30px" title="Save as template" />
+			</button>
+		{/if}
+		<PipelineCreateNodesToolbar on:click={(x) => addNode(x.detail)} />
 	{/if}
 	<div style:height={isGraphView ? '80vh' : '0vh'} class="flow-container">
 		<SvelteFlow
@@ -106,7 +104,12 @@
 			on:nodecontextmenu={handleContextMenu}
 			on:edgecontextmenu={handleEdgeContextMenu}
 			on:paneclick={handlePaneClick}
-			deleteKey=""
+			ondelete={(e) => {
+				for (const node of e.nodes) {
+					const dg_node = new DGNode(node, dataset.graph);
+					dg_node.deleteAssets();
+				}
+			}}
 			elementsSelectable={true}
 			preventScrolling={true}
 			nodesDraggable={true}

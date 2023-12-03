@@ -1,3 +1,5 @@
+import categories from '$lib/node_categories';
+
 export const edit_csv = async (
 	node: EditCSVNode,
 	inputData: object,
@@ -58,7 +60,9 @@ export let edit_csv_node: EditCSVNode = {
 		delete: [],
 		rename: {},
 		compute_type: 'edit_csv_v0',
-		input_ids: { csv: '' }
+		input_ids: { csv: '' },
+		category: categories.wrangling.id,
+		icon: 'edit_csv_v0'
 	},
 	position: { x: 100, y: -50 },
 	type: 'edit_csv_v0'

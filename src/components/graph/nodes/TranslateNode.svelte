@@ -1,12 +1,6 @@
 <script lang="ts">
 	import { writable } from 'svelte/store';
-	import {
-		Handle,
-		Position,
-		useUpdateNodeInternals,
-		useNodes,
-		type NodeProps
-	} from '@xyflow/svelte';
+	import { useUpdateNodeInternals, useNodes, type NodeProps } from '@xyflow/svelte';
 	import TextField from '@smui/textfield';
 	import Button from '@smui/button';
 	import DGNode from './DGNode.svelte';
@@ -67,6 +61,11 @@
 		helperLine$style="width: 100%;"
 		class="nodrag"
 		type="text"
+		on:keydown={(evt) => {
+			if (evt.key === 'Backspace') {
+				evt.stopPropagation();
+			}
+		}}
 		on:input={(evt) => {
 			data.target_language = evt.target?.value;
 			data.dirty = true;
@@ -83,6 +82,11 @@
 				helperLine$style="width: 80%;"
 				class="nodrag"
 				type="text"
+				on:keydown={(evt) => {
+					if (evt.key === 'Backspace') {
+						evt.stopPropagation();
+					}
+				}}
 				on:input={(evt) => updateKey(index, evt.target?.value)}
 				value={key}
 			/>

@@ -1,7 +1,8 @@
 <script lang="ts">
 	import Pipe from '$lib/icons/Pipe.svelte';
 	import { get } from 'svelte/store';
-	import { user } from '$lib/store';
+	import { user, dataset as store_dataset } from '$lib/store';
+	// import { user } from '$lib/store';
 	import { onMount } from 'svelte';
 	import ToggleView from '$components/ToggleView.svelte';
 	import PipelineStandard from '$components/PipelineStandard.svelte';
@@ -36,6 +37,7 @@
 		await dataset.processNodes('load');
 		refreshData();
 	});
+	$: $store_dataset = dataset;
 </script>
 
 <div class="pipeline-icon">

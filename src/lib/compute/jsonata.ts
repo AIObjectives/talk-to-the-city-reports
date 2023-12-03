@@ -1,3 +1,4 @@
+import categories from '$lib/node_categories';
 import jsonata_lib from 'jsonata';
 
 export const jsonata = async (
@@ -41,7 +42,9 @@ export const jsonata_node: JsonataNode = {
 		dirty: false,
 		output: {},
 		compute_type: 'jsonata_v0',
-		input_ids: {}
+		input_ids: {},
+		category: categories.wrangling.id,
+		icon: 'jsonata_v0'
 	},
 	position: { x: 200, y: 700 },
 	type: 'text_input_v0'

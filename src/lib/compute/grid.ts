@@ -1,3 +1,5 @@
+import categories from '$lib/node_categories';
+
 function isPlainObject(obj) {
 	return typeof obj === 'object' && obj !== null && !Array.isArray(obj);
 }
@@ -36,7 +38,9 @@ export const grid_node: GridNode = {
 		dirty: false,
 		output: [],
 		compute_type: 'grid_v0',
-		input_ids: {}
+		input_ids: {},
+		category: categories.display.id,
+		icon: 'grid_v0'
 	},
 	position: { x: 200, y: 700 },
 	type: 'grid_v0'

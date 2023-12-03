@@ -1,3 +1,4 @@
+import categories from '$lib/node_categories';
 import { readFileFromGCS, uploadDataToGCS } from '$lib/utils';
 import { cluster_extraction_system_prompt, score_claim_relevance_prompt } from '$lib/prompts';
 import deepCopy from 'deep-copy';
@@ -122,7 +123,9 @@ export const score_argument_relevance_node: ScoreArgumentRelevanceNode = {
 		csv_length: 0,
 		dirty: false,
 		compute_type: 'score_argument_relevance_v0',
-		input_ids: { open_ai_key: '', argument_extraction: '' }
+		input_ids: { open_ai_key: '', argument_extraction: '' },
+		category: categories.llm.id,
+		icon: 'score_argument_relevance_v0'
 	},
 	position: { x: 0, y: 350 },
 	type: 'prompt_v0'

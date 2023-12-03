@@ -1,3 +1,5 @@
+import categories from '$lib/node_categories';
+
 export const markdown = async (
 	node: MarkdownNode,
 	inputData: object,
@@ -30,7 +32,9 @@ export const markdown_node: MarkdownNode = {
 		markdown: '',
 		dirty: false,
 		compute_type: 'markdown_v0',
-		input_ids: { markdown: '' }
+		input_ids: { markdown: '' },
+		category: categories.display.id,
+		icon: 'markdown_v0'
 	},
 	position: { x: 200, y: 850 },
 	type: 'markdown_v0'

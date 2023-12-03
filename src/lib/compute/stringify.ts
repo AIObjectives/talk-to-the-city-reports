@@ -1,3 +1,4 @@
+import categories from '$lib/node_categories';
 export const stringify = async (
 	node: JqNode,
 	inputData: object,
@@ -32,7 +33,9 @@ export const stringify_node: StringifyNode = {
 		dirty: false,
 		output: {},
 		compute_type: 'stringify_v0',
-		input_ids: {}
+		input_ids: {},
+		category: categories.wrangling.id,
+		icon: 'stringify_v0'
 	},
 	position: { x: 200, y: 700 },
 	type: 'default'

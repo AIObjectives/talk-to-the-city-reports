@@ -5,40 +5,46 @@
 	import Help from '$lib/icons/HelpCircle.svelte';
 	import type { BaseData } from '$lib/node_data_types';
 	import { Position, Handle } from '@xyflow/svelte';
-	import { useEdges, useNodes } from '@xyflow/svelte';
+	import { dataset } from '$lib/store';
+	import Connection from '$lib/icons/Connection.svelte';
+	import { useNodes } from '@xyflow/svelte';
+	const nodes = useNodes();
 
 	export let data: BaseData;
 	export let id: string;
 	export let selected: boolean;
 	export let style: string = '';
-	const nodes = useNodes();
 
 	function onConnect(x) {
 		let { source, target } = x.detail.connection;
-		source = $nodes.find((n) => n.id === source);
-		target = $nodes.find((n) => n.id === target);
-		target.data.dirty = true;
-		setTimeout(() => {
-			$nodes = $nodes;
-			for (const node of $nodes) {
-				node.data = { ...node.data };
-			}
-		}, 500);
+		$dataset?.graph.onConnect(source, target);
 	}
 
+	let dg_node = $dataset?.graph.find(id);
 	let show_help = false;
+	let has_all_inputs = true;
+	$: {
+		if (dg_node) {
+			$nodes; // trigger reactivity
+			selected; // trigger reactivity
+			has_all_inputs = dg_node.hasAllInputs;
+		}
+	}
 </script>
 
 <Paper title={id} class={selected ? 'selected-dg-node' : 'dg-node'} {style}>
-	{#if docs[data.compute_type]}
-		<button on:click={() => (show_help = !show_help)} style="float: right;"
-			><Help color="gray" /></button
-		>
-		{#if show_help}
-			<Paper class="mb-5">
-				<div class="docs">{@html marked.parse(docs[data.compute_type])}</div>
-			</Paper>
+	<div style="float: right; display: flex; justify-content: flex-end;">
+		{#if !has_all_inputs}
+			<Connection color="#ffaaaa" class="mr-2" />
 		{/if}
+		{#if docs[data.compute_type]}
+			<button on:click={() => (show_help = !show_help)}><Help color="gray" /></button>
+		{/if}
+	</div>
+	{#if show_help}
+		<Paper class="mb-5">
+			<div class="docs">{@html marked.parse(docs[data.compute_type])}</div>
+		</Paper>
 	{/if}
 	<slot />
 	{#if data && data.dirty}

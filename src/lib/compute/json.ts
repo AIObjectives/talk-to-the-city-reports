@@ -1,3 +1,4 @@
+import categories from '$lib/node_categories';
 import { readFileFromGCS } from '$lib/utils';
 
 export const json = async (
@@ -40,7 +41,9 @@ export let json_node: JSONNode = {
 		dirty: false,
 		gcs_path: '',
 		compute_type: 'json_v0',
-		input_ids: {}
+		input_ids: {},
+		category: categories.input.id,
+		icon: 'json_v0'
 	},
 	position: { x: 100, y: -50 },
 	type: 'json_v0'

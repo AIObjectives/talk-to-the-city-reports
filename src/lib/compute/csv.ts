@@ -1,3 +1,5 @@
+import categories from '$lib/node_categories';
+
 import papa from 'papaparse';
 import { readFileFromGCS } from '$lib/utils';
 
@@ -62,7 +64,9 @@ export let csv_node: CSVNode = {
 		dirty: false,
 		gcs_path: '',
 		compute_type: 'csv_v0',
-		input_ids: {}
+		input_ids: {},
+		category: categories.input.id,
+		icon: 'csv_v0'
 	},
 	position: { x: 100, y: -50 },
 	type: 'csv_v0'

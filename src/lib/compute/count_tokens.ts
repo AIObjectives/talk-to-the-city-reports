@@ -1,3 +1,4 @@
+import categories from '$lib/node_categories';
 import { getEncoding } from 'js-tiktoken';
 
 export const count_tokens = async (
@@ -44,7 +45,9 @@ export let count_tokens_node: CountTokensNode = {
 		csv_length: 0,
 		compute_type: 'count_tokens_v0',
 		input_ids: { csv: '' },
-		compute: count_tokens
+		compute: count_tokens,
+		category: categories.llm.id,
+		icon: 'count_tokens_v0'
 	},
 	position: { x: 100, y: -50 },
 	type: 'text_input_v0'

@@ -1,3 +1,4 @@
+import categories from '$lib/node_categories';
 export const report = async (
 	node: ReportNode,
 	inputData: object,
@@ -28,7 +29,9 @@ export const report_node: ReportNode = {
 		output: {},
 		dirty: false,
 		compute_type: 'report_v0',
-		input_ids: {}
+		input_ids: {},
+		category: categories.display.id,
+		icon: 'report_v0'
 	},
 	position: { x: 200, y: 850 },
 	type: 'report_v0'

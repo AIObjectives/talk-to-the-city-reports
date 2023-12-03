@@ -1,3 +1,4 @@
+import categories from '$lib/node_categories';
 import { readFileFromGCS, uploadDataToGCS } from '$lib/utils';
 import { cluster_extraction_prompt, cluster_extraction_system_prompt } from '$lib/prompts';
 
@@ -111,7 +112,9 @@ export const cluster_extraction_node: ClusterExtractionNode = {
 		csv_length: 0,
 		dirty: false,
 		compute_type: 'cluster_extraction_v0',
-		input_ids: { open_ai_key: '', csv: '' }
+		input_ids: { open_ai_key: '', csv: '' },
+		category: categories.llm.id,
+		icon: 'cluster_extraction_v0'
 	},
 	position: { x: 100, y: 100 },
 	type: 'prompt_v0'

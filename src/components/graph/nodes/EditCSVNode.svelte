@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { writable } from 'svelte/store';
-	import { Handle, Position, type NodeProps } from '@xyflow/svelte';
+	import { type NodeProps } from '@xyflow/svelte';
 	import TextField from '@smui/textfield';
 	import Button from '@smui/button';
 	import { useUpdateNodeInternals } from '@xyflow/svelte';
@@ -75,6 +75,11 @@
 				helperLine$style="width: 35%;"
 				class="nodrag"
 				type="text"
+				on:keydown={(evt) => {
+					if (evt.key === 'Backspace') {
+						evt.stopPropagation();
+					}
+				}}
 				on:input={(evt) =>
 					updateCSVAction(generateStore, 'update', index, [evt.target?.value, item[1]])}
 				value={item[0]}
@@ -85,6 +90,11 @@
 				helperLine$style="width: 35%;"
 				class="nodrag"
 				type="text"
+				on:keydown={(evt) => {
+					if (evt.key === 'Backspace') {
+						evt.stopPropagation();
+					}
+				}}
 				on:input={(evt) =>
 					updateCSVAction(generateStore, 'update', index, [item[0], evt.target?.value])}
 				value={item[1]}
@@ -104,6 +114,11 @@
 				helperLine$style="width: 80%;"
 				class="nodrag"
 				type="text"
+				on:keydown={(evt) => {
+					if (evt.key === 'Backspace') {
+						evt.stopPropagation();
+					}
+				}}
 				on:input={(evt) => updateCSVAction(deleteStore, 'update', index, evt.target?.value)}
 				value={item}
 			/>
@@ -121,6 +136,11 @@
 				helperLine$style="width: 35%;"
 				class="nodrag"
 				type="text"
+				on:keydown={(evt) => {
+					if (evt.key === 'Backspace') {
+						evt.stopPropagation();
+					}
+				}}
 				on:input={(evt) =>
 					updateCSVAction(renameStore, 'update', index, [evt.target?.value, item[1]])}
 				value={item[0]}
@@ -131,6 +151,11 @@
 				helperLine$style="width: 35%;"
 				class="nodrag"
 				type="text"
+				on:keydown={(evt) => {
+					if (evt.key === 'Backspace') {
+						evt.stopPropagation();
+					}
+				}}
 				on:input={(evt) =>
 					updateCSVAction(renameStore, 'update', index, [item[0], evt.target?.value])}
 				value={item[1]}
