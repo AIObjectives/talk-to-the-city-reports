@@ -45,6 +45,6 @@ export let json_node: JSONNode = {
 		category: categories.input.id,
 		icon: 'json_v0'
 	},
-	position: { x: 100, y: -50 },
+	position: { x: 0, y: 0 },
 	type: 'json_v0'
 };

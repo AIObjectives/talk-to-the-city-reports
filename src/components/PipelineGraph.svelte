@@ -9,19 +9,39 @@
 	import { Dataset } from '$lib/dataset';
 	import { DGNode } from '$lib/node';
 	import { user } from '$lib/store';
+	import DeepCopy from 'deep-copy';
 	import PipelineCreateNodesToolbar from '$components/PipelineCreateNodesToolbar.svelte';
+	import { useSvelteFlow } from '@xyflow/svelte';
+
+	const { screenToFlowPosition, getViewport, flowToScreenPosition } = useSvelteFlow();
 
 	export let isGraphView: boolean;
 	export let dataset: Dataset;
 	export let nodes;
 	export let edges;
 
-	function addNode(x) {
-		let nodeToAdd = node_register.find((node) => node.id === x);
+	const onDragOver = (event: DragEvent) => {
+		event.preventDefault();
+		if (event.dataTransfer) event.dataTransfer.dropEffect = 'move';
+	};
+
+	function addNode(event: DragEvent) {
+		event.preventDefault();
+		if (!event.dataTransfer) return null;
+
+		const type = event.dataTransfer.getData('application/svelteflow');
+		console.log(type);
+
+		const position = screenToFlowPosition({
+			x: event.clientX,
+			y: event.clientY
+		});
+
+		let nodeToAdd = node_register.find((node) => node.id === type);
+
 		if (nodeToAdd) {
-			nodeToAdd = JSON.parse(JSON.stringify(nodeToAdd));
-			nodeToAdd.position.x = 0;
-			nodeToAdd.position.y = 0;
+			nodeToAdd = DeepCopy(nodeToAdd);
+			nodeToAdd.position = position;
 
 			// Finding all matching nodes and sorting them
 			const matchingNodes = $nodes.filter((node) => node.id.startsWith(nodeToAdd.id + '_'));
@@ -87,7 +107,6 @@
 				on:click={() => {
 					const name = prompt('Enter template name');
 					const data = { nodes: get(nodes), edges: get(edges) };
-					console.log(data);
 					saveTemplate(name, data);
 				}}
 			>
@@ -104,6 +123,8 @@
 			on:nodecontextmenu={handleContextMenu}
 			on:edgecontextmenu={handleEdgeContextMenu}
 			on:paneclick={handlePaneClick}
+			on:dragover={onDragOver}
+			on:drop={addNode}
 			ondelete={(e) => {
 				for (const node of e.nodes) {
 					const dg_node = new DGNode(node, dataset.graph);
@@ -114,7 +135,7 @@
 			preventScrolling={true}
 			nodesDraggable={true}
 			panOnDrag={true}
-			autoPanOnNodeDrag={false}
+			autoPanOnNodeDrag={true}
 			zoomOnDoubleClick={false}
 			minZoom={0.1}
 			fitView

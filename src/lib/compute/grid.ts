@@ -19,6 +19,7 @@ export const grid = async (
 		...node.data,
 		output: node.data.output
 	};
+	return input;
 };
 
 interface GridData extends BaseData {
@@ -42,6 +43,6 @@ export const grid_node: GridNode = {
 		category: categories.display.id,
 		icon: 'grid_v0'
 	},
-	position: { x: 200, y: 700 },
+	position: { x: 0, y: 0 },
 	type: 'grid_v0'
 };

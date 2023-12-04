@@ -33,6 +33,16 @@
 </script>
 
 <Paper title={id} class={selected ? 'selected-dg-node' : 'dg-node'} {style}>
+	{#if data.icon}
+		<div style="float: left; margin-right: 0.5rem;" class="w-6 h-6">
+			<img
+				style="width: 100%; height: 100%; object-fit: contain;"
+				src="https://talktothecity.s3.us-west-1.amazonaws.com/tttc-turbo/static/{data.icon}.png"
+				class="w-6 h-6"
+			/>
+		</div>
+	{/if}
+
 	<div style="float: right; display: flex; justify-content: flex-end;">
 		{#if !has_all_inputs}
 			<Connection color="#ffaaaa" class="mr-2" />

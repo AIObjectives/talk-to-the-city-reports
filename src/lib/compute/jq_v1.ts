@@ -1,5 +1,7 @@
 import categories from '$lib/node_categories';
-export const stringify = async (
+import * as jq_web from 'jq-web/jq.asm.bundle.js';
+
+export const jq_v1 = async (
 	node: JqNode,
 	inputData: object,
 	context: string,
@@ -10,33 +12,36 @@ export const stringify = async (
 ) => {
 	node.data.dirty = false;
 	const input = inputData[Object.keys(inputData)[0]];
-
 	try {
-		return JSON.stringify(input, null, 2);
-	} catch {
-		return input;
+		if (node.data.text) {
+			return jq_web.json(input, node.data.text);
+		}
+	} catch (e) {
+		return undefined;
 	}
 };
 
-interface StringifyData extends BaseData {
+interface JqData extends BaseData {
+	filter: string;
 	output: object;
 }
 
-type StringifyNode = DGNodeInterface & {
-	data: StringifyData;
+type JqNode = DGNodeInterface & {
+	data: JqData;
 };
 
-export const stringify_node: StringifyNode = {
-	id: 'stringify',
+export const jq_v1_node: JqNode = {
+	id: 'jq_v1',
 	data: {
-		label: 'Stringify',
+		label: 'JQ',
+		text: '',
 		dirty: false,
 		output: {},
-		compute_type: 'stringify_v0',
+		compute_type: 'jq_v1',
 		input_ids: {},
 		category: categories.wrangling.id,
-		icon: 'stringify_v0'
+		icon: 'jq_v0'
 	},
 	position: { x: 0, y: 0 },
-	type: 'default'
+	type: 'text_input_v0'
 };

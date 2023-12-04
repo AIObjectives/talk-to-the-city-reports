@@ -86,11 +86,11 @@ export const score_argument_relevance = async (
 						success
 					);
 					claim.score = JSON.parse(result).score;
+					claim.explanation = JSON.parse(result).explanation;
 				};
 				funcs.push(score_claim);
 			}
 		}
-		console.log(funcs);
 		const chunkSize = 50;
 		for (let i = 0; i < funcs.length; i += chunkSize) {
 			const chunk = funcs.slice(i, i + chunkSize);
@@ -127,6 +127,6 @@ export const score_argument_relevance_node: ScoreArgumentRelevanceNode = {
 		category: categories.llm.id,
 		icon: 'score_argument_relevance_v0'
 	},
-	position: { x: 0, y: 350 },
+	position: { x: 0, y: 0 },
 	type: 'prompt_v0'
 };

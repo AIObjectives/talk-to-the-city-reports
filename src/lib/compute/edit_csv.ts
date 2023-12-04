@@ -64,6 +64,6 @@ export let edit_csv_node: EditCSVNode = {
 		category: categories.wrangling.id,
 		icon: 'edit_csv_v0'
 	},
-	position: { x: 100, y: -50 },
+	position: { x: 0, y: 0 },
 	type: 'edit_csv_v0'
 };

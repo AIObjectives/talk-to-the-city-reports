@@ -17,9 +17,11 @@ import { jsonata_node } from './compute/jsonata';
 import { grid_node } from './compute/grid';
 import { count_tokens_node } from './compute/count_tokens';
 import { markdown_node } from './compute/markdown';
-import { jq_node } from './compute/jq';
+import { jq_v1_node } from './compute/jq_v1';
 import { stringify_node } from './compute/stringify';
 import { score_argument_relevance_node } from './compute/score_argument_relevance';
+// import { llama_node } from './compute/llama';
+// import { argument_extraction_llama_node } from './compute/argument_extraction_llama';
 
 export let node_register = [
 	open_ai_key_node,
@@ -34,13 +36,15 @@ export let node_register = [
 	limit_csv_node,
 	translate_node,
 	jsonata_node,
-	jq_node,
+	jq_v1_node,
 	grid_node,
 	count_tokens_node,
 	merge_cluster_extraction_node,
 	markdown_node,
 	stringify_node,
 	score_argument_relevance_node
+	// llama_node,
+	// argument_extraction_llama_node
 ];
 
 export async function loadTemplates() {

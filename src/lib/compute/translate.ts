@@ -113,6 +113,6 @@ export const translate_node: TranslateNode = {
 		category: categories.llm.id,
 		icon: 'translate_v0'
 	},
-	position: { x: -200, y: 50 },
+	position: { x: 0, y: 0 },
 	type: 'translate_v0'
 };

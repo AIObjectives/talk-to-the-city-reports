@@ -107,8 +107,8 @@ export const cluster_extraction_node: ClusterExtractionNode = {
 		label: 'Cluster Extraction',
 		output: {},
 		text: '',
-		system_prompt: cluster_extraction_prompt,
-		prompt: cluster_extraction_system_prompt,
+		system_prompt: cluster_extraction_system_prompt,
+		prompt: cluster_extraction_prompt,
 		csv_length: 0,
 		dirty: false,
 		compute_type: 'cluster_extraction_v0',
@@ -116,6 +116,6 @@ export const cluster_extraction_node: ClusterExtractionNode = {
 		category: categories.llm.id,
 		icon: 'cluster_extraction_v0'
 	},
-	position: { x: 100, y: 100 },
+	position: { x: 0, y: 0 },
 	type: 'prompt_v0'
 };

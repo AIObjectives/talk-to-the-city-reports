@@ -55,6 +55,6 @@ export const open_ai_key_node: OpenAIKeyNode = {
 		category: categories.llm.id,
 		icon: 'open_ai_key_v0'
 	},
-	position: { x: -200, y: 50 },
+	position: { x: 0, y: 0 },
 	type: 'text_input_v0'
 };

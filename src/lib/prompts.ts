@@ -89,3 +89,24 @@ Your response is in the form:
 }
 
 `;
+
+export const argument_extraction_llama_system_prompt = `\
+Perform the instructions to the best of your ability.
+`;
+
+export const argument_extraction_llama_prompt = `\
+### Instruction:
+
+Extract the argument made as a list of bullet points.
+Each bullet point should be a maximum of 10 words long.
+
+• argument 1
+
+• argument 2
+
+• argument 3
+
+• etc.
+
+{comment}
+`;

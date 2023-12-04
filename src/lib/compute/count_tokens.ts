@@ -49,6 +49,6 @@ export let count_tokens_node: CountTokensNode = {
 		category: categories.llm.id,
 		icon: 'count_tokens_v0'
 	},
-	position: { x: 100, y: -50 },
+	position: { x: 0, y: 0 },
 	type: 'text_input_v0'
 };

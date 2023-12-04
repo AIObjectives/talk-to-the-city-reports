@@ -39,6 +39,9 @@
 
 		let mData = [];
 		let iWn = [];
+		if (!Array.isArray(d)) {
+			return mData;
+		}
 		d.forEach((row) => {
 			if (hasNestedData(row)) {
 				if (iWn.length > 0) {

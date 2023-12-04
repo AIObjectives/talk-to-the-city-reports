@@ -1,7 +1,8 @@
 <script lang="ts">
-	import { Handle, Position, type NodeProps } from '@xyflow/svelte';
+	import { type NodeProps } from '@xyflow/svelte';
 	import TextField from '@smui/textfield';
 	import DGNode from './DGNode.svelte';
+	import _ from 'lodash';
 
 	type $$Props = NodeProps;
 
@@ -20,19 +21,36 @@
 	export let targetPosition: $$Props['targetPosition'];
 
 	const { text } = data;
+	console.log(data.compute_type);
 </script>
 
 <DGNode {data} {id} {selected}>
 	<div>{data.label}</div>
-	<TextField
-		style="width: 100%;"
-		helperLine$style="width: 100%;"
-		class="nodrag"
-		type="text"
-		on:input={(evt) => {
-			data.text = evt.target?.value;
-			data.dirty = true;
-		}}
-		value={text}
-	/>
+	{#if _.includes(['jq_v1', 'jsonata_v0'], data.compute_type)}
+		<TextField
+			style="width: 100%; min-width: 400px;"
+			helperLine$style="width: 100%;"
+			class="nodrag"
+			type="text"
+			textarea
+			input$rows={6}
+			on:input={(evt) => {
+				data.text = evt.target?.value;
+				data.dirty = true;
+			}}
+			value={text}
+		/>
+	{:else}
+		<TextField
+			style="width: 100%;"
+			helperLine$style="width: 100%;"
+			class="nodrag"
+			type="text"
+			on:input={(evt) => {
+				data.text = evt.target?.value;
+				data.dirty = true;
+			}}
+			value={text}
+		/>
+	{/if}
 </DGNode>

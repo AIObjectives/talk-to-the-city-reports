@@ -2,6 +2,11 @@
 	export let node;
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
+	const onDragStart = (event: DragEvent, nodeType: string) => {
+		if (!event.dataTransfer) return null;
+		event.dataTransfer.setData('application/svelteflow', nodeType);
+		event.dataTransfer.effectAllowed = 'move';
+	};
 
 	let showTooltip = false;
 </script>
@@ -15,16 +20,18 @@
 	on:mouseout={() => (showTooltip = false)}
 >
 	<!-- svelte-ignore missing-declaration -->
-	<button on:click={() => dispatch('click', node.id)}>
-		<div style="width: 30px; height: 30px; overflow: hidden;" title={node.data.label}>
-			<!-- svelte-ignore a11y-missing-attribute -->
-			<img
-				src="https://talktothecity.s3.us-west-1.amazonaws.com/tttc-turbo/static/{node.data
-					.icon}.png"
-				style="width: 100%; height: 100%; object-fit: contain;"
-			/>
-		</div>
-	</button>
+	<div
+		style="width: 30px; height: 30px; overflow: hidden;"
+		title={node.data.label}
+		draggable={true}
+		on:dragstart={(event) => onDragStart(event, node.id)}
+	>
+		<!-- svelte-ignore a11y-missing-attribute -->
+		<img
+			src="https://talktothecity.s3.us-west-1.amazonaws.com/tttc-turbo/static/{node.data.icon}.png"
+			style="width: 100%; height: 100%; object-fit: contain;"
+		/>
+	</div>
 	{#if showTooltip}
 		<div
 			style="position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 5px; border-radius: 5px;"

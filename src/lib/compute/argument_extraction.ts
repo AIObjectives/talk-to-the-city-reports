@@ -23,6 +23,7 @@ async function gpt(
 		{ role: 'system', content: systemPrompt },
 		{ role: 'user', content: prompt }
 	];
+	console.log(prompt);
 	const res = await OpenAI.chat.completions.create({
 		messages,
 		model: 'gpt-4-1106-preview',
@@ -97,7 +98,7 @@ export const argument_extraction = async (
 		let ids = Object.keys(csv_by_ids);
 
 		try {
-			await processInChunks(ids, extract_args, 10);
+			await processInChunks(ids, extract_args, 50);
 		} catch (err) {
 			console.error(err);
 		}
@@ -130,6 +131,6 @@ export const argument_extraction_node: ArgumentExtractionNode = {
 		category: categories.llm.id,
 		icon: 'argument_extraction_v0'
 	},
-	position: { x: 0, y: 350 },
+	position: { x: 0, y: 0 },
 	type: 'prompt_v0'
 };

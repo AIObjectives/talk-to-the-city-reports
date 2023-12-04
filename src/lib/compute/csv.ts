@@ -68,6 +68,6 @@ export let csv_node: CSVNode = {
 		category: categories.input.id,
 		icon: 'csv_v0'
 	},
-	position: { x: 100, y: -50 },
+	position: { x: 0, y: 0 },
 	type: 'csv_v0'
 };

@@ -134,6 +134,6 @@ export const merge_cluster_extraction_node: MergeClusterExtractionData = {
 		category: categories.wrangling.id,
 		icon: 'merge_cluster_extraction_v0'
 	},
-	position: { x: 0, y: 350 },
+	position: { x: 0, y: 0 },
 	type: 'prompt_v0'
 };

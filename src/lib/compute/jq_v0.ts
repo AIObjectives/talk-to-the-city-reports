@@ -1,7 +1,7 @@
 import categories from '$lib/node_categories';
 import jq_lib from '$lib/jq.js';
 
-export const jq = async (
+export const jq_v0 = async (
 	node: JqNode,
 	inputData: object,
 	context: string,
@@ -40,8 +40,8 @@ type JqNode = DGNodeInterface & {
 	data: JqData;
 };
 
-export const jq_node: JqNode = {
-	id: 'jq',
+export const jq_v0_node: JqNode = {
+	id: 'jq_v0',
 	data: {
 		label: 'JQ',
 		text: '',
@@ -52,6 +52,6 @@ export const jq_node: JqNode = {
 		category: categories.wrangling.id,
 		icon: 'jq_v0'
 	},
-	position: { x: 200, y: 700 },
+	position: { x: 0, y: 0 },
 	type: 'text_input_v0'
 };

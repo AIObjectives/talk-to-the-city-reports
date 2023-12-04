@@ -12,6 +12,9 @@
 	import Button from '@smui/button';
 	import '@xyflow/svelte/dist/style.css';
 	import { useNodes } from '@xyflow/svelte';
+	import { useUpdateNodeInternals } from '@xyflow/svelte';
+	const updateNodeInternals = useUpdateNodeInternals();
+
 	const n = useNodes();
 
 	export let dataset: Dataset;
@@ -30,6 +33,7 @@
 			for (const node of $n) {
 				node.data = { ...node.data };
 			}
+			updateNodeInternals();
 		}, 500);
 	}
 

@@ -46,6 +46,6 @@ export const jsonata_node: JsonataNode = {
 		category: categories.wrangling.id,
 		icon: 'jsonata_v0'
 	},
-	position: { x: 200, y: 700 },
+	position: { x: 0, y: 0 },
 	type: 'text_input_v0'
 };

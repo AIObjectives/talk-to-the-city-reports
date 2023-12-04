@@ -73,6 +73,6 @@ export const merge_node: MergeNode = {
 		category: categories.wrangling.id,
 		icon: 'merge_v0'
 	},
-	position: { x: 200, y: 600 },
+	position: { x: 0, y: 0 },
 	type: 'merge_v0'
 };

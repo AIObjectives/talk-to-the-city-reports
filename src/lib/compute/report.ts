@@ -33,6 +33,6 @@ export const report_node: ReportNode = {
 		category: categories.display.id,
 		icon: 'report_v0'
 	},
-	position: { x: 200, y: 850 },
+	position: { x: 0, y: 0 },
 	type: 'report_v0'
 };

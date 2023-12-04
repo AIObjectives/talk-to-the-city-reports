@@ -49,6 +49,6 @@ export const participant_filter_node: ParticipantFilterNode = {
 		category: categories.wrangling.id,
 		icon: 'participant_filter_v0'
 	},
-	position: { x: 200, y: 700 },
+	position: { x: 0, y: 0 },
 	type: 'text_input_v0'
 };

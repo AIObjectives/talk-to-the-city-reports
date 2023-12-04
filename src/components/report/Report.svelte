@@ -121,6 +121,10 @@
 						style="color: {hsl(ordinalColor(topic.topicName)).brighter(-1)}"
 					>
 						{topic.topicName}
+						<small style="color: {hsl(ordinalColor(topic.topicName)).brighter(-2)}"
+							>{topic.subtopics.length} subtopics
+							{topic.subtopics.reduce((total, x) => total + x.claims.length, 0)} claims</small
+						>
 					</h2>
 
 					<h3 class="mt-4 mb-4">{topic.topicShortDescription}</h3>
@@ -129,7 +133,10 @@
 							<div class="ml-3 items-center justify-between">
 								<div class="flex items-center mt-1">
 									<div class="w-1 h-1 mr-2 rounded-full" style="background-color: #bbbbff" />
-									<div class="text-lg" style="color: #555">{subtopic.subtopicName}</div>
+									<div class="text-lg" style="color: #555">
+										{subtopic.subtopicName}
+										<small>{subtopic.claims.length} claims</small>
+									</div>
 								</div>
 								<div class="ml-5 mt-2 mb-2" style="color: black">
 									<h3>{subtopic.subtopicShortDescription}</h3>

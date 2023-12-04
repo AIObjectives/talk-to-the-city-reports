@@ -1,4 +1,5 @@
 import categories from '$lib/node_categories';
+import _ from 'lodash';
 
 export const limit_csv = async (
 	node: LimitCSVNode,
@@ -11,8 +12,9 @@ export const limit_csv = async (
 ) => {
 	const input: [object] = inputData[Object.keys(inputData)[0]];
 	node.data.dirty = false;
-
-	if (input && input.length) {
+	if (input && _.isPlainObject(input)) {
+		return _.pick(input, _.keys(input).slice(0, node.data.number));
+	} else if (input && _.isArray(input)) {
 		return input.slice(0, node.data.number);
 	} else {
 		return [];
@@ -30,7 +32,7 @@ type LimitCSVNode = DGNodeInterface & {
 export let limit_csv_node: LimitCSVNode = {
 	id: 'limit_csv',
 	data: {
-		label: 'Limit CSV',
+		label: 'Max CSV',
 		dirty: false,
 		number: 2,
 		compute_type: 'limit_csv_v0',
@@ -39,6 +41,6 @@ export let limit_csv_node: LimitCSVNode = {
 		category: categories.wrangling.id,
 		icon: 'limit_csv_v0'
 	},
-	position: { x: 100, y: -50 },
+	position: { x: 0, y: 0 },
 	type: 'number_input_v0'
 };

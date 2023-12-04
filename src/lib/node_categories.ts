@@ -7,6 +7,10 @@ const categories = {
 		label: 'LLM',
 		id: 'llm'
 	},
+	// llama: {
+	// 	label: 'LLAMA',
+	// 	id: 'llama'
+	// },
 	wrangling: {
 		label: 'Wrangling',
 		id: 'wrangling'

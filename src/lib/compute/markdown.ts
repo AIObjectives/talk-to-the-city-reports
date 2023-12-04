@@ -36,6 +36,6 @@ export const markdown_node: MarkdownNode = {
 		category: categories.display.id,
 		icon: 'markdown_v0'
 	},
-	position: { x: 200, y: 850 },
+	position: { x: 0, y: 0 },
 	type: 'markdown_v0'
 };

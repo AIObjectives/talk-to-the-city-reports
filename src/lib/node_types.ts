@@ -34,7 +34,8 @@ import { limit_csv } from '$lib/compute/limit_csv';
 import { translate } from '$lib/compute/translate';
 import { edit_csv } from '$lib/compute/edit_csv';
 import { jsonata } from '$lib/compute/jsonata';
-import { jq } from '$lib/compute/jq';
+import { jq_v0 } from '$lib/compute/jq_v0';
+import { jq_v1 } from '$lib/compute/jq_v1';
 import { grid } from '$lib/compute/grid';
 import { count_tokens } from '$lib/compute/count_tokens';
 import { merge_cluster_extraction } from '$lib/compute/merge_cluster_extraction';
@@ -42,6 +43,8 @@ import { json } from '$lib/compute/json';
 import { markdown } from '$lib/compute/markdown';
 import { stringify } from '$lib/compute/stringify';
 import { score_argument_relevance } from './compute/score_argument_relevance';
+// import { llama } from './compute/llama';
+// import { argument_extraction_llama } from './compute/argument_extraction_llama';
 
 export const compute = {
 	open_ai_key_v0: open_ai_key,
@@ -55,7 +58,8 @@ export const compute = {
 	translate_v0: translate,
 	edit_csv_v0: edit_csv,
 	jsonata_v0: jsonata,
-	jq_v0: jq,
+	jq_v0: jq_v0,
+	jq_v1: jq_v1,
 	grid_v0: grid,
 	count_tokens_v0: count_tokens,
 	merge_cluster_extraction_v0: merge_cluster_extraction,
@@ -63,6 +67,8 @@ export const compute = {
 	markdown_v0: markdown,
 	stringify_v0: stringify,
 	score_argument_relevance_v0: score_argument_relevance
+	// llama_v0: llama,
+	// argument_extraction_llama_v0: argument_extraction_llama
 };
 
 import csv_doc from '$lib/docs/csv';

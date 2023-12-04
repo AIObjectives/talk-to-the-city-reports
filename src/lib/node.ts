@@ -12,6 +12,7 @@ export class DGNode {
 	}
 
 	get hasAllInputs() {
+		if (!this.node || !this.node.data) return false;
 		return Object.keys(this.node.data.input_ids).every((id) => {
 			const input_id = this.node.data.input_ids[id];
 			const input_node = this.parent.find(input_id);

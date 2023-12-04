@@ -10,7 +10,14 @@ describe('limit_csv function', () => {
         const result = await limit_csv(node, inputData, null);
         expect(result).toEqual([{ name: 'Alice' }, { name: 'Bob' }]);
     });
-
+    it('should limit the number of rows correctly, for an object', async () =>
+    {
+        const node = deepCopy(limit_csv_node);
+        node.data.number = 1;
+        const inputData = { csv: { 1: { name: 'Alice' }, 2: { name: 'Bob' }, 3: { name: 'Charlie' } } };
+        const result = await limit_csv(node, inputData, null);
+        expect(result).toEqual({ 1: { name: 'Alice' } });
+    });
     it('should return all rows if limit is greater than number of rows', async () => {
         const node = deepCopy(limit_csv_node);
         node.data.number = 5;
