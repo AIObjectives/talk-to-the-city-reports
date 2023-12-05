@@ -23,24 +23,24 @@ To add pipeline computation nodes:
  RUN  v0.34.6 /Users/orb/dev/tttc-turbo
       Coverage enabled with v8
 
- ✓ src/test/jq_v0.test.js  (2 tests) 4ms
- ✓ src/test/open_ai_key.test.ts  (4 tests) 3ms
- ✓ src/test/edit_csv.test.ts  (7 tests) 4ms
+ ✓ src/test/jq_v0.test.js  (2 tests) 3ms
+ ✓ src/test/open_ai_key.test.ts  (4 tests) 4ms
+ ✓ src/test/edit_csv.test.ts  (7 tests) 3ms
  ✓ src/test/limit_csv.test.js  (5 tests) 3ms
- ✓ src/test/jsonata.test.ts  (3 tests) 8ms
- ✓ src/test/csv.test.js  (3 tests) 4ms
+ ✓ src/test/jsonata.test.ts  (3 tests) 10ms
  ✓ src/test/json.test.ts  (3 tests) 4ms
- ✓ src/test/cluster_extraction.test.ts  (5 tests) 122ms
- ✓ src/test/argument_extraction.test.ts  (6 tests) 122ms
- ✓ src/test/grid.test.ts  (1 test) 3ms
+ ✓ src/test/csv.test.js  (3 tests) 5ms
+ ✓ src/test/argument_extraction.test.ts  (6 tests) 124ms
+ ✓ src/test/cluster_extraction.test.ts  (5 tests) 123ms
+ ✓ src/test/grid.test.ts  (1 test) 2ms
  ✓ src/test/translate.test.ts  (2 tests) 1ms
- ✓ src/test/count_tokens.test.ts  (2 tests) 261ms
- ✓ src/test/jq_v1.test.js  (2 tests) 279ms
+ ✓ src/test/count_tokens.test.ts  (2 tests) 239ms
+ ✓ src/test/jq_v1.test.js  (2 tests) 277ms
 
  Test Files  13 passed (13)
       Tests  45 passed (45)
-   Start at  19:43:21
-   Duration  808ms (transform 810ms, setup 1ms, collect 1.87s, tests 818ms, environment 1ms, prepare 919ms)
+   Start at  06:58:47
+   Duration  770ms (transform 815ms, setup 0ms, collect 1.84s, tests 798ms, environment 1ms, prepare 1.04s)
 
  % Coverage report from v8
 -------------------|---------|----------|---------|---------|-------------------

@@ -14,4 +14,9 @@
 	<p>
 		{@html $_('about_section_h1')}
 	</p>
+
+	<br />
+	<br />
+	<br />
+	<a href="/help">API Documentation</a>
 </div>

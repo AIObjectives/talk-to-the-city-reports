@@ -8,10 +8,14 @@
 	import { auth } from '$lib/firebase';
 	import '/src/app.css';
 	import { _ } from 'svelte-i18n';
+	import Cookies from 'js-cookie';
 
 	onMount(() => {
 		onAuthStateChanged(auth, (firebaseUser) => {
 			$user = firebaseUser;
+			firebaseUser.getIdToken().then((token) => {
+				Cookies.set('token', token);
+			});
 		});
 	});
 </script>

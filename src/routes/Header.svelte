@@ -32,7 +32,7 @@
 	</nav>
 
 	<div class="corner">
-		<a href="https://github.com/AIObjectives">
+		<a href="https://github.com/AIObjectives/tttc-turbo">
 			<img src={github} alt="GitHub" />
 		</a>
 	</div>
