@@ -119,17 +119,44 @@ export class Dataset {
 		await deleteDoc(doc(datasetCollection, this.id));
 	}
 
+	static async loadDoc(slug: string) {
+		const q = query(datasetCollection, where('slug', '==', slug));
+		const querySnapshot = await getDocs(q);
+		if (querySnapshot.empty) {
+			error('No dataset found with the provided slug');
+			return null;
+		}
+		const doc = querySnapshot.docs[0].data();
+		return { doc: doc, id: querySnapshot.docs[0].id };
+	}
+
+	static loadDatasetFromDoc(doc: Object, id: string): Promise<Dataset | null> {
+		return new Dataset(
+			doc.title,
+			doc.slug,
+			doc.owner,
+			doc.template,
+			doc.description,
+			doc.graph,
+			id
+		);
+	}
+
+	datasetToDoc(): Object {
+		return {
+			title: this.title,
+			slug: this.slug,
+			owner: this.owner,
+			template: this.template,
+			timestamp: this.timestamp,
+			description: this.description,
+			graph: { nodes: get(this.graph.nodes), edges: get(this.graph.edges) }
+		};
+	}
+
 	static async loadDataset(slug: string): Promise<Dataset | null> {
 		try {
-			const q = query(datasetCollection, where('slug', '==', slug));
-			const querySnapshot = await getDocs(q);
-
-			if (querySnapshot.empty) {
-				error('No dataset found with the provided slug');
-				return null;
-			}
-
-			const doc = querySnapshot.docs[0].data();
+			const { doc, id } = await this.loadDoc(slug);
 			return new Dataset(
 				doc.title,
 				doc.slug,
@@ -137,7 +164,7 @@ export class Dataset {
 				doc.template,
 				doc.description,
 				doc.graph,
-				querySnapshot.docs[0].id
+				id
 			);
 		} catch (e) {
 			error('An error occurred while loading the dataset');

@@ -39,14 +39,9 @@
 		min-height: 100vh;
 	}
 
-	:root {
-		--main-padding: 1rem;
-		--main-max-width: 50rem;
-	}
-
 	main {
-		padding: var(--main-padding);
-		max-width: var(--main-max-width);
+		padding: 1rem;
+		max-width: 100%;
 		flex: 1;
 		display: flex;
 		flex-direction: column;

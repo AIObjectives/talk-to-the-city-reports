@@ -6,7 +6,7 @@
 	import { user } from '$lib/store';
 	import { Dataset } from '$lib/dataset';
 
-	let datasets = [];
+	let datasets: Dataset[] = [];
 	let loading = true;
 
 	async function loadDatasets() {

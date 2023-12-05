@@ -51,9 +51,4 @@
 			width: 100%;
 		}
 	}
-
-	:root {
-		--main-padding: 0.5rem;
-		--main-max-width: 100%;
-	}
 </style>

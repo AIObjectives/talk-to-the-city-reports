@@ -72,35 +72,36 @@
 </script>
 
 {#if modData && modData.length}
-	<button
-		on:click={() => {
-			editing = !editing;
-		}}><Pencil /></button
-	>
-	{#if editing}
-		<TextField
-			style="width: 100%; overflow: auto; min-width: 500px; min-height: 600px;"
-			class="nowheel nodrag"
-			helperLine$style="width: 100% !important;"
-			textarea
-			input$rows={12}
-			value={JSON.stringify(data, null, 2)}
-		/>
-	{:else}
-		{#if totalPages > 1}
-			<button on:click={() => changePage(currentPage - 1)}>Previous</button>
-			<button on:click={() => changePage(currentPage + 1)}>Next</button>
-		{/if}
-		{#each modData as item, index (item)}
-			{#if index >= (currentPage - 1) * itemsPerPage && index < currentPage * itemsPerPage}
-				{#if item.indent}
-					<div class={item.indent ? 'ml-5' : ''}>
-						<svelte:self data={item.data} />
-					</div>
-				{:else}
-					<Grid data={item.data} />
-				{/if}
+	<div class="nowheel nodrag">
+		<button
+			on:click={() => {
+				editing = !editing;
+			}}><Pencil /></button
+		>
+		{#if editing}
+			<TextField
+				style="width: 100%; overflow: auto; min-width: 500px; min-height: 600px;"
+				helperLine$style="width: 100% !important;"
+				textarea
+				input$rows={12}
+				value={JSON.stringify(data, null, 2)}
+			/>
+		{:else}
+			{#if totalPages > 1}
+				<button on:click={() => changePage(currentPage - 1)}>Previous</button>
+				<button on:click={() => changePage(currentPage + 1)}>Next</button>
 			{/if}
-		{/each}
-	{/if}
+			{#each modData as item, index (item)}
+				{#if index >= (currentPage - 1) * itemsPerPage && index < currentPage * itemsPerPage}
+					{#if item.indent}
+						<div class={item.indent ? 'ml-5' : ''}>
+							<svelte:self data={item.data} />
+						</div>
+					{:else}
+						<Grid data={item.data} />
+					{/if}
+				{/if}
+			{/each}
+		{/if}
+	</div>
 {/if}

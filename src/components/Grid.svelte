@@ -1,6 +1,7 @@
 <script lang="ts">
 	import AgGridSvelte from 'ag-grid-svelte';
 	import { onMount } from 'svelte';
+	import _ from 'lodash';
 
 	export let data: Array<{ [key: string]: any }>;
 	export let depth = 0;
@@ -12,14 +13,14 @@
 
 	$: {
 		if (data) {
-			if (Array.isArray(data) && data.length > 0) {
-				columnDefs = Object.keys(data[0]).map((key) => ({ field: key, editable: true }));
+			if (_.isArray(data) && data.length > 0) {
+				columnDefs = _.keys(data[0]).map((key) => ({ field: key, editable: true }));
 				gridData = data;
-			} else if (typeof data === 'object') {
-				const first_key = Object.keys(data)[0];
+			} else if (_.isObject(data)) {
+				const first_key = _.keys(data)[0];
 				const first_obj = data[first_key];
-				if (Array.isArray(first_obj) && first_obj.length > 0) {
-					columnDefs = Object.keys(first_obj[0]).map((key) => ({ field: key, editable: true }));
+				if (_.isArray(first_obj) && first_obj.length > 0) {
+					columnDefs = _.keys(first_obj[0]).map((key) => ({ field: key, editable: true }));
 					gridData = first_obj;
 				}
 			}
@@ -53,13 +54,15 @@
 			pagination={gridData.length > 10}
 			paginationPageSize={10}
 			paginationAutoPageSize={false}
-			rowData={data}
+			rowData={gridData}
 			{columnDefs}
 			defaultColDef={{ flex: 1, minWidth: 100 }}
 			domLayout="autoHeight"
 			alwaysShowHorizontalScroll={false}
 			suppressHorizontalScroll={true}
 			scrollbarWidth={0}
+			suppressDragLeaveHidesColumns={true}
+			suppressRowDrag={true}
 			{onGridReady}
 		/>
 	</div>
