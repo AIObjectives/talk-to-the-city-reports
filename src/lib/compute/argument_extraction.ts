@@ -1,3 +1,4 @@
+import nodes from '$lib/node_register';
 import categories from '$lib/node_categories';
 import { readFileFromGCS, uploadDataToGCS } from '$lib/utils';
 import { argument_extraction_prompt, argument_extraction_system_prompt } from '$lib/prompts';
@@ -41,82 +42,96 @@ async function processInChunks(array, handler, chunkSize) {
 	}
 }
 
-export const argument_extraction = async (
-	node: ArgumentExtractionNode,
-	inputData: object,
-	context: string,
-	info: (arg: string) => void,
-	error: (arg: string) => void,
-	success: (arg: string) => void,
-	slug: string
-) => {
-	const { prompt, system_prompt } = node.data;
-	const csv = inputData.csv || inputData[node.data.input_ids.csv];
-	const open_ai_key = inputData.open_ai_key || inputData[node.data.input_ids.open_ai_key];
-	const cluster_extraction =
-		inputData.cluster_extraction || inputData[node.data.input_ids.cluster_extraction];
+export default class ArgumentExtractionNode {
+	id: string;
+	data: ArgumentExtractionData;
+	position: { x: number; y: number };
+	type: string;
 
-	if (!csv || csv.length == 0 || !cluster_extraction) {
-		node.data.dirty = false;
-		return;
+	constructor(node_data) {
+		const { id, data, position, type } = node_data;
+		this.id = id;
+		this.data = data;
+		this.position = position;
+		this.type = type;
 	}
 
-	if (!node.data.dirty && node.data.csv_length == csv.length && node.data.gcs_path) {
-		let doc = await readFileFromGCS(node);
-		if (typeof doc === 'string') {
-			doc = JSON.parse(doc);
+	async compute(
+		inputData: object,
+		context: string,
+		info: (arg: string) => void,
+		error: (arg: string) => void,
+		success: (arg: string) => void,
+		slug: string
+	) {
+		const { prompt, system_prompt } = this.data;
+		const csv = inputData.csv || inputData[this.data.input_ids.csv];
+		const open_ai_key = inputData.open_ai_key || inputData[this.data.input_ids.open_ai_key];
+		const cluster_extraction =
+			inputData.cluster_extraction || inputData[this.data.input_ids.cluster_extraction];
+
+		if (!csv || csv.length == 0 || !cluster_extraction) {
+			this.data.dirty = false;
+			return;
 		}
-		node.data.output = doc;
-		node.data.dirty = false;
-		return node.data.output;
+
+		if (!this.data.dirty && this.data.csv_length == csv.length && this.data.gcs_path) {
+			let doc = await readFileFromGCS(this);
+			if (typeof doc === 'string') {
+				doc = JSON.parse(doc);
+			}
+			this.data.output = doc;
+			this.data.dirty = false;
+			return this.data.output;
+		}
+
+		if (context == 'run' && open_ai_key && (prompt || system_prompt)) {
+			this.data.output = {};
+
+			const csv_by_ids = Object.fromEntries(csv.map((item) => [item['comment-id'], item]));
+			async function extract_args(id) {
+				const comment = csv_by_ids[id]['comment-body'];
+				const interview = csv_by_ids[id]['interview'];
+				const response = await gpt(
+					open_ai_key,
+					system_prompt,
+					prompt,
+					{
+						comment,
+						clusters: JSON.stringify(cluster_extraction)
+					},
+					info,
+					error,
+					success
+				);
+				this.data.output[id] = { id, comment, interview, ...JSON.parse(response) };
+			}
+
+			this.data.csv_length = csv.length;
+
+			let ids = Object.keys(csv_by_ids);
+
+			try {
+				await processInChunks(ids, extract_args.bind(this), 50);
+			} catch (err) {
+				console.error(err);
+			}
+			this.data.dirty = false;
+			await uploadDataToGCS(this, this.data.output, slug);
+			return this.data.output;
+		}
 	}
-
-	if (context == 'run' && open_ai_key && (prompt || system_prompt)) {
-		node.data.output = {};
-
-		const csv_by_ids = Object.fromEntries(csv.map((item) => [item['comment-id'], item]));
-		async function extract_args(id) {
-			const comment = csv_by_ids[id]['comment-body'];
-			const interview = csv_by_ids[id]['interview'];
-			const response = await gpt(
-				open_ai_key,
-				system_prompt,
-				prompt,
-				{
-					comment,
-					clusters: JSON.stringify(cluster_extraction)
-				},
-				info,
-				error,
-				success
-			);
-			node.data.output[id] = { id, comment, interview, ...JSON.parse(response) };
-		}
-
-		node.data.csv_length = csv.length;
-
-		let ids = Object.keys(csv_by_ids);
-
-		try {
-			await processInChunks(ids, extract_args, 50);
-		} catch (err) {
-			console.error(err);
-		}
-		node.data.dirty = false;
-		await uploadDataToGCS(node, node.data.output, slug);
-		return node.data.output;
-	}
-};
+}
 
 interface ArgumentExtractionData extends ClusterExtractionData {
 	// Inherits all properties from ClusterExtractionData
 }
 
-type ArgumentExtractionNode = DGNodeInterface & {
+type ArgumentExtractionNodeInterface = DGNodeInterface & {
 	data: ArgumentExtractionData;
 };
 
-export const argument_extraction_node: ArgumentExtractionNode = {
+export let argument_extraction_node_data: ArgumentExtractionNodeInterface = {
 	id: 'argument_extraction',
 	data: {
 		label: 'Argument Extraction',
@@ -134,3 +149,9 @@ export const argument_extraction_node: ArgumentExtractionNode = {
 	position: { x: 0, y: 0 },
 	type: 'prompt_v0'
 };
+
+export let argument_extraction_node = new ArgumentExtractionNode(argument_extraction_node_data);
+
+nodes['argument_extraction_v0'] = argument_extraction_node;
+
+nodes.register(ArgumentExtractionNode, argument_extraction_node_data);

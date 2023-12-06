@@ -1,7 +1,7 @@
-import { cluster_extraction, cluster_extraction_node } from '$lib/compute/cluster_extraction';
-import deepCopy from 'deep-copy';
 import { describe, it, vi } from 'vitest';
 import { expect } from 'vitest';
+import ClusterExtractionNode, { cluster_extraction_node_data } from '$lib/compute/cluster_extraction';
+import deepCopy from 'deep-copy';
 import mock_cluster_extraction_data from '$lib/mock_data/cluster_extraction/cluster_extraction.json';
 import csv_data from '$lib/mock_data/csv/csv.json';
 import prompt from '$lib/mock_data/cluster_extraction/prompt.txt?raw';
@@ -12,63 +12,55 @@ vi.mock('$lib/utils', () => ({
 	uploadDataToGCS: vi.fn(() => Promise.resolve())
 }));
 
-async function call(node, inputData) {
-	return await cluster_extraction(
-		node,
-		inputData,
-		'run',
-		console.log,
-		console.error,
-		console.log,
-		'test_slug'
-	);
-}
-
-describe('cluster extract', () => {
+describe('ClusterExtractionNode class', () => {
 	it('extract the cluster', async () => {
-		const node = deepCopy(cluster_extraction_node);
+		const node = new ClusterExtractionNode(deepCopy(cluster_extraction_node_data));
 		node.data.prompt = prompt;
 		node.data.system_prompt = system_prompt;
 		const inputData = {
 			open_ai_key: 'sk-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
 			csv: csv_data
 		};
-		const output = await call(node, inputData);
+		const output = await node.compute(inputData, 'run', console.log, console.error, console.log, 'test_slug');
 		expect(output).toEqual(mock_cluster_extraction_data);
 	});
+
 	it('should not extract the cluster if no csv', async () => {
-		const node = deepCopy(cluster_extraction_node);
+		const node = new ClusterExtractionNode(deepCopy(cluster_extraction_node_data));
 		node.data.prompt = prompt;
 		node.data.system_prompt = system_prompt;
 		const inputData = {
 			open_ai_key: 'sk-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
 		};
-		const output = await call(node, inputData);
+		const output = await node.compute(inputData, 'run', console.log, console.error, console.log, 'test_slug');
 		expect(output).toEqual(undefined);
 	});
+
 	it('should not extract the cluster if no open_ai_key', async () => {
-		const node = deepCopy(cluster_extraction_node);
+		const node = new ClusterExtractionNode(deepCopy(cluster_extraction_node_data));
 		node.data.prompt = prompt;
 		node.data.system_prompt = system_prompt;
 		const inputData = {
 			csv: csv_data
 		};
-		const output = await call(node, inputData);
+		const output = await node.compute(inputData, 'run', console.log, console.error, console.log, 'test_slug');
 		expect(output).toEqual(undefined);
 	});
+
 	it('should not extract the cluster if no prompt and no system prompt', async () => {
-		const node = deepCopy(cluster_extraction_node);
+		const node = new ClusterExtractionNode(deepCopy(cluster_extraction_node_data));
 		node.data.system_prompt = undefined;
 		node.data.prompt = undefined;
 		const inputData = {
 			open_ai_key: 'sk-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
 			csv: csv_data
 		};
-		const output = await call(node, inputData);
+		const output = await node.compute(inputData, 'run', console.log, console.error, console.log, 'test_slug');
 		expect(output).toEqual(undefined);
 	});
+
 	it('test GCS caching', async () => {
-		const node = deepCopy(cluster_extraction_node);
+		const node = new ClusterExtractionNode(deepCopy(cluster_extraction_node_data));
 		node.data.prompt = prompt;
 		node.data.system_prompt = system_prompt;
 		node.data.dirty = false;
@@ -78,18 +70,10 @@ describe('cluster extract', () => {
 			open_ai_key: 'sk-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
 			csv: csv_data
 		};
-		const output = await cluster_extraction(
-			node,
-			inputData,
-			'run',
-			(x) => {
-				console.log(x);
-				expect(x == 'Calling OpenAI').toEqual(false);
-			},
-			console.error,
-			console.log,
-			'test_slug'
-		);
+		const output = await node.compute(inputData, 'run', (x) => {
+			console.log(x);
+			expect(x == 'Calling OpenAI').toEqual(false);
+		}, console.error, console.log, 'test_slug');
 		expect(output).toEqual(mock_cluster_extraction_data);
 	});
 });

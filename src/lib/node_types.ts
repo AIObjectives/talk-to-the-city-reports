@@ -23,53 +23,28 @@ export const nodeTypes = {
 	markdown_v0: MarkdownNode
 };
 
-import { csv } from '$lib/compute/csv';
-import { merge } from '$lib/compute/merge';
-import { cluster_extraction } from '$lib/compute/cluster_extraction';
-import { argument_extraction } from '$lib/compute/argument_extraction';
-import { open_ai_key } from '$lib/compute/open_ai_key';
-import { report } from '$lib/compute/report';
-import { participant_filter } from '$lib/compute/participant_filter';
-import { limit_csv } from '$lib/compute/limit_csv';
-import { translate } from '$lib/compute/translate';
-import { edit_csv } from '$lib/compute/edit_csv';
-import { jsonata } from '$lib/compute/jsonata';
-import { jq_v0 } from '$lib/compute/jq_v0';
-import { jq_v1 } from '$lib/compute/jq_v1';
-import { grid } from '$lib/compute/grid';
-import { count_tokens } from '$lib/compute/count_tokens';
-import { merge_cluster_extraction } from '$lib/compute/merge_cluster_extraction';
-import { json } from '$lib/compute/json';
-import { markdown } from '$lib/compute/markdown';
-import { stringify } from '$lib/compute/stringify';
-import { score_argument_relevance } from './compute/score_argument_relevance';
-// import { llama } from './compute/llama';
-// import { argument_extraction_llama } from './compute/argument_extraction_llama';
-
-export const compute = {
-	open_ai_key_v0: open_ai_key,
-	csv_v0: csv,
-	cluster_extraction_v0: cluster_extraction,
-	argument_extraction_v0: argument_extraction,
-	report_v0: report,
-	participant_filter_v0: participant_filter,
-	merge_v0: merge,
-	limit_csv_v0: limit_csv,
-	translate_v0: translate,
-	edit_csv_v0: edit_csv,
-	jsonata_v0: jsonata,
-	jq_v0: jq_v0,
-	jq_v1: jq_v1,
-	grid_v0: grid,
-	count_tokens_v0: count_tokens,
-	merge_cluster_extraction_v0: merge_cluster_extraction,
-	json_v0: json,
-	markdown_v0: markdown,
-	stringify_v0: stringify,
-	score_argument_relevance_v0: score_argument_relevance
-	// llama_v0: llama,
-	// argument_extraction_llama_v0: argument_extraction_llama
-};
+import '$lib/compute/csv';
+import '$lib/compute/merge';
+import '$lib/compute/cluster_extraction';
+import '$lib/compute/argument_extraction';
+import '$lib/compute/open_ai_key';
+import '$lib/compute/report';
+import '$lib/compute/participant_filter';
+import '$lib/compute/limit_csv';
+import '$lib/compute/translate';
+import '$lib/compute/edit_csv';
+import '$lib/compute/jsonata';
+import '$lib/compute/jq_v0';
+import '$lib/compute/jq_v1';
+import '$lib/compute/grid';
+import '$lib/compute/count_tokens';
+import '$lib/compute/merge_cluster_extraction';
+import '$lib/compute/json';
+import '$lib/compute/markdown';
+import '$lib/compute/stringify';
+import './compute/score_argument_relevance';
+// import './compute/llama';
+// import './compute/argument_extraction_llama';
 
 import csv_doc from '$lib/docs/csv';
 import limit_csv_doc from '$lib/docs/limit_csv';

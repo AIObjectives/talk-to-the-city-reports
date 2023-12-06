@@ -1,3 +1,4 @@
+import nodes from '$lib/node_register';
 import categories from '$lib/node_categories';
 
 export const llama = async (
@@ -47,3 +48,5 @@ export const llama_node: LlamaNode = {
 	position: { x: 0, y: 0 },
 	type: 'text_input_v0'
 };
+
+nodes.register(llama, llama_node);

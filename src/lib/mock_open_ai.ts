@@ -1,4 +1,5 @@
 import CryptoJS from 'crypto-js';
+import merged_clusters from '$lib/mock_data/cluster_extraction/merged_cluster_extraction.json';
 
 type Message = {
 	role: 'system' | 'user';
@@ -91,10 +92,15 @@ export default class OpenAI {
 						]
 					}
 				]
+			},
+			ab2c974812cfbc6ffe18d755100b22f063794b5e4f41f2c4cfa27c075c5e6823: merged_clusters,
+			'7785a959baf7ddc5e7b9a7def06a69f678623f3d6296aeb9b9921c6cedf7ed40': {
+				score: 0.5,
+				explanation: 'This is a test explanation.'
 			}
 		};
 		const hash = CryptoJS.SHA256(JSON.stringify(messages)).toString();
-		let resp = 'translated value';
+		let resp = '{}';
 		if (responses[hash]) {
 			resp = JSON.stringify(responses[hash]);
 		}

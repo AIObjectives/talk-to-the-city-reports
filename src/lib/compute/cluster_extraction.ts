@@ -1,3 +1,4 @@
+import nodes from '$lib/node_register';
 import categories from '$lib/node_categories';
 import { readFileFromGCS, uploadDataToGCS } from '$lib/utils';
 import { cluster_extraction_prompt, cluster_extraction_system_prompt } from '$lib/prompts';
@@ -39,55 +40,69 @@ async function gpt(
 	}
 }
 
-export const cluster_extraction = async (
-	node: ClusterExtractionNode,
-	inputData: object,
-	context: string,
-	info: (arg: string) => void,
-	error: (arg: string) => void,
-	success: (arg: string) => void,
-	slug: string
-) => {
-	const csv = inputData.csv || inputData[node.data.input_ids.csv];
-	const open_ai_key = inputData.open_ai_key || inputData[node.data.input_ids.open_ai_key];
+export default class ClusterExtractionNode {
+	id: string;
+	data: ClusterExtractionData;
+	position: { x: number; y: number };
+	type: string;
 
-	if (!csv || csv.length == 0 || !(node.data.prompt || node.data.system_prompt)) {
-		node.data.dirty = false;
-		return;
+	constructor(node_data) {
+		const { id, data, position, type } = node_data;
+		this.id = id;
+		this.data = data;
+		this.position = position;
+		this.type = type;
 	}
 
-	if (!node.data.dirty && node.data.csv_length == csv.length && node.data.gcs_path) {
-		let doc = await readFileFromGCS(node);
-		if (typeof doc === 'string') {
-			doc = JSON.parse(doc);
+	async compute(
+		inputData: object,
+		context: string,
+		info: (arg: string) => void,
+		error: (arg: string) => void,
+		success: (arg: string) => void,
+		slug: string
+	) {
+		const csv = inputData.csv || inputData[this.data.input_ids.csv];
+		const open_ai_key = inputData.open_ai_key || inputData[this.data.input_ids.open_ai_key];
+
+		if (!csv || csv.length == 0 || !(this.data.prompt || this.data.system_prompt)) {
+			this.data.dirty = false;
+			return;
 		}
-		node.data.output = doc;
-		node.data.dirty = false;
-		return node.data.output;
-	}
 
-	if (context == 'run' && open_ai_key && csv && csv.length > 0 && open_ai_key) {
-		info('Computing ' + node.data.label);
-		node.data.csv_length = csv.length;
-		const { prompt, system_prompt } = node.data;
-		const result = await gpt(
-			open_ai_key,
-			system_prompt,
-			prompt,
-			{
-				comments: csv.map((x: any) => x['comment-body']).join('\n')
-			},
-			info,
-			error,
-			success
-		);
-		node.data.output = JSON.parse(result);
-		await uploadDataToGCS(node, node.data.output, slug);
-		node.data.dirty = false;
-		success('Done computing ' + node.data.label);
-		return node.data.output;
+		if (!this.data.dirty && this.data.csv_length == csv.length && this.data.gcs_path) {
+			let doc = await readFileFromGCS(this);
+			if (typeof doc === 'string') {
+				doc = JSON.parse(doc);
+			}
+			this.data.output = doc;
+			this.data.dirty = false;
+			return this.data.output;
+		}
+
+		if (context == 'run' && open_ai_key && csv && csv.length > 0) {
+			info('Computing ' + this.data.label);
+			this.data.csv_length = csv.length;
+			const { prompt, system_prompt } = this.data;
+			const result = await gpt(
+				open_ai_key,
+				system_prompt,
+				prompt,
+				{
+					comments: csv.map((x: any) => x['comment-body']).join('\n')
+				},
+				info,
+				error,
+				success
+			);
+			this.data.output = JSON.parse(result);
+			await uploadDataToGCS(this, this.data.output, slug);
+			this.data.dirty = false;
+			success('Done computing ' + this.data.label);
+			return this.data.output;
+		}
 	}
-};
+}
 
 interface ClusterExtractionData extends BaseData {
 	output: object;
@@ -97,11 +112,11 @@ interface ClusterExtractionData extends BaseData {
 	csv_length: number;
 }
 
-type ClusterExtractionNode = DGNodeInterface & {
+type ClusterExtractionNodeInterface = DGNodeInterface & {
 	data: ClusterExtractionData;
 };
 
-export const cluster_extraction_node: ClusterExtractionNode = {
+export let cluster_extraction_node_data: ClusterExtractionNodeInterface = {
 	id: 'cluster_extraction',
 	data: {
 		label: 'Cluster Extraction',
@@ -119,3 +134,7 @@ export const cluster_extraction_node: ClusterExtractionNode = {
 	position: { x: 0, y: 0 },
 	type: 'prompt_v0'
 };
+
+export let cluster_extraction_node = new ClusterExtractionNode(cluster_extraction_node_data);
+
+nodes.register(ClusterExtractionNode, cluster_extraction_node_data);

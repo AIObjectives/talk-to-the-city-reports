@@ -1,7 +1,8 @@
 import Cookies from 'js-cookie';
 import { get } from 'svelte/store';
 import type { User } from '$lib/types';
-import { compute } from '$lib/node_types';
+import '$lib/node_types';
+import nodes from '$lib/node_register';
 import { topologicalSort } from '$lib/utils';
 import {
 	query,
@@ -78,8 +79,8 @@ export class Dataset {
 				});
 
 			save = save || node.data.dirty;
-			nodeOutputs[node.id] = await compute[node.data.compute_type](
-				node,
+			const node_impl = nodes.init(node.data.compute_type, node);
+			nodeOutputs[node.id] = await node_impl.compute(
 				inputData,
 				context,
 				info,

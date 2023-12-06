@@ -1,118 +1,132 @@
-import categories from '$lib/node_categories';
+import nodes from '$lib/node_register';
 import { readFileFromGCS, uploadDataToGCS } from '$lib/utils';
 import { cluster_extraction_system_prompt, score_claim_relevance_prompt } from '$lib/prompts';
 import deepCopy from 'deep-copy';
+import categories from '$lib/node_categories';
+import CryptoJS from 'crypto-js';
 
-async function gpt(
-	apiKey: string,
-	systemPrompt: string,
-	promptTemplate: string,
-	replacements: { [key: string]: string },
-	info: (arg: string) => void,
-	error: (arg: string) => void,
-	success: (arg: string) => void
-) {
-	let vitest = import.meta.env.VITEST == 'true';
-	let openai = (await import(vitest ? '$lib/mock_open_ai' : 'openai')).default;
-	info('Calling OpenAI');
-	let prompt = promptTemplate;
-	for (const [key, value] of Object.entries(replacements)) {
-		prompt = prompt.replace(`{${key}}`, value);
-	}
-	const OpenAI = new openai({ apiKey, dangerouslyAllowBrowser: true });
-	const messages = [
-		{ role: 'system', content: systemPrompt },
-		{ role: 'user', content: prompt }
-	];
-	console.log('messages', messages);
-	const res = await OpenAI.chat.completions.create({
-		messages,
-		model: 'gpt-4',
-		temperature: 0.1
-	});
-	const resp = res.choices[0].message.content!;
-	return resp;
-}
+export default class ScoreArgumentRelevanceNode {
+	id: string;
+	data: ScoreArgumentRelevanceData;
+	position: { x: number; y: number };
+	type: string;
 
-export const score_argument_relevance = async (
-	node: ScoreClaimRelevanceNode,
-	inputData: object,
-	context: string,
-	info: (arg: string) => void,
-	error: (arg: string) => void,
-	success: (arg: string) => void,
-	slug: string
-) => {
-	const { prompt, system_prompt } = node.data;
-	const argument_extraction =
-		inputData.argument_extraction || inputData[node.data.input_ids.argument_extraction];
-	const open_ai_key = inputData.open_ai_key || inputData[node.data.input_ids.open_ai_key];
-
-	console.log('Running score_argument_relevance');
-
-	if (!argument_extraction || Object.values(argument_extraction).length == 0) {
-		node.data.dirty = false;
-		return;
+	constructor(node_data: ScoreArgumentRelevanceNodeInterface) {
+		const { id, data, position, type } = node_data;
+		this.id = id;
+		this.data = data;
+		this.position = position;
+		this.type = type;
 	}
 
-	if (
-		!node.data.dirty &&
-		node.data.csv_length == Object.values(argument_extraction).length &&
-		node.data.gcs_path
+	async compute(
+		inputData: object,
+		context: string,
+		info: (arg: string) => void,
+		error: (arg: string) => void,
+		success: (arg: string) => void,
+		slug: string
 	) {
-		let doc = await readFileFromGCS(node);
-		if (typeof doc === 'string') {
-			doc = JSON.parse(doc);
+		const { prompt, system_prompt } = this.data;
+		const argument_extraction =
+			inputData.argument_extraction || inputData[this.data.input_ids.argument_extraction];
+		const open_ai_key = inputData.open_ai_key || inputData[this.data.input_ids.open_ai_key];
+
+		if (!argument_extraction || Object.values(argument_extraction).length == 0) {
+			this.data.dirty = false;
+			return;
 		}
-		node.data.output = doc;
-		node.data.dirty = false;
-		return node.data.output;
+
+		if (
+			!this.data.dirty &&
+			this.data.csv_length == Object.values(argument_extraction).length &&
+			this.data.gcs_path
+		) {
+			let doc = await readFileFromGCS(this);
+			if (typeof doc === 'string') {
+				doc = JSON.parse(doc);
+			}
+			this.data.output = doc;
+			this.data.dirty = false;
+			return this.data.output;
+		}
+
+		if (context == 'run' && open_ai_key && (prompt || system_prompt)) {
+			const copy = deepCopy(argument_extraction);
+			const funcs = [];
+			for (const key of Object.keys(copy)) {
+				const claims = copy[key];
+				for (const claim of claims.claims) {
+					const score_claim = async () => {
+						const result = await this.gpt(
+							open_ai_key,
+							system_prompt,
+							prompt,
+							{ claim: JSON.stringify(claim, null, 2) },
+							info,
+							error,
+							success
+						);
+						claim.score = JSON.parse(result).score;
+						claim.explanation = JSON.parse(result).explanation;
+					};
+					funcs.push(score_claim);
+				}
+			}
+			const chunkSize = 50;
+			for (let i = 0; i < funcs.length; i += chunkSize) {
+				const chunk = funcs.slice(i, i + chunkSize);
+				await Promise.all(chunk.map((x) => x()));
+			}
+			this.data.output = copy;
+			this.data.csv_length = Object.keys(copy).length;
+			this.data.dirty = false;
+			await uploadDataToGCS(this, this.data.output, slug);
+			return this.data.output;
+		}
 	}
 
-	if (context == 'run' && open_ai_key && (prompt || system_prompt)) {
-		const copy = deepCopy(argument_extraction);
-		const funcs = [];
-		for (const key of Object.keys(copy)) {
-			const claims = copy[key];
-			for (const claim of claims.claims) {
-				const score_claim = async function () {
-					const result = await gpt(
-						open_ai_key,
-						system_prompt,
-						prompt,
-						{ claim: JSON.stringify(claim, null, 2) },
-						info,
-						error,
-						success
-					);
-					claim.score = JSON.parse(result).score;
-					claim.explanation = JSON.parse(result).explanation;
-				};
-				funcs.push(score_claim);
-			}
+	private async gpt(
+		apiKey: string,
+		systemPrompt: string,
+		promptTemplate: string,
+		replacements: { [key: string]: string },
+		info: (arg: string) => void,
+		error: (arg: string) => void,
+		success: (arg: string) => void
+	) {
+		let vitest = import.meta.env.VITEST == 'true';
+		let openai = (await import(vitest ? '$lib/mock_open_ai' : 'openai')).default;
+		info('Calling OpenAI');
+		let prompt = promptTemplate;
+		for (const [key, value] of Object.entries(replacements)) {
+			prompt = prompt.replace(`{${key}}`, value);
 		}
-		const chunkSize = 50;
-		for (let i = 0; i < funcs.length; i += chunkSize) {
-			const chunk = funcs.slice(i, i + chunkSize);
-			await Promise.all(chunk.map((x) => x()));
-		}
-		node.data.output = copy;
-		node.data.csv_length = Object.keys(copy).length;
-		node.data.dirty = false;
-		await uploadDataToGCS(node, node.data.output, slug);
-		return node.data.output;
+		const OpenAI = new openai({ apiKey, dangerouslyAllowBrowser: true });
+		const messages = [
+			{ role: 'system', content: systemPrompt },
+			{ role: 'user', content: prompt }
+		];
+		const hash = CryptoJS.SHA256(JSON.stringify(messages)).toString();
+		const res = await OpenAI.chat.completions.create({
+			messages,
+			model: 'gpt-4',
+			temperature: 0.1
+		});
+		const resp = res.choices[0].message.content!;
+		return resp;
 	}
-};
+}
 
 interface ScoreArgumentRelevanceData extends ClusterExtractionData {
 	// Inherits all properties from ClusterExtractionData
 }
 
-type ScoreArgumentRelevanceNode = DGNodeInterface & {
+type ScoreArgumentRelevanceNodeInterface = DGNodeInterface & {
 	data: ScoreArgumentRelevanceData;
 };
 
-export const score_argument_relevance_node: ScoreArgumentRelevanceNode = {
+export let score_argument_relevance_node_data: ScoreArgumentRelevanceNodeInterface = {
 	id: 'score_argument_relevance',
 	data: {
 		label: 'Score Argument Relevance',
@@ -130,3 +144,9 @@ export const score_argument_relevance_node: ScoreArgumentRelevanceNode = {
 	position: { x: 0, y: 0 },
 	type: 'prompt_v0'
 };
+
+export let score_argument_relevance_node = new ScoreArgumentRelevanceNode(
+	score_argument_relevance_node_data
+);
+
+nodes.register(ScoreArgumentRelevanceNode, score_argument_relevance_node_data);
