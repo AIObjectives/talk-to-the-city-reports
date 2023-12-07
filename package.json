@@ -62,6 +62,7 @@
 		"ag-grid-community": "^30.2.1",
 		"ag-grid-svelte": "^0.3.0",
 		"crypto-js": "^4.2.0",
+		"csv-parser": "^3.0.0",
 		"deep-copy": "^1.4.2",
 		"firebase": "^10.6.0",
 		"firebase-admin": "^11.11.1",

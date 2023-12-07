@@ -1,5 +1,6 @@
 import nodes from '$lib/node_register';
 import categories from '$lib/node_categories';
+import deepCopy from 'deep-copy';
 
 export default class MergeNode {
 	id: string;
@@ -23,15 +24,18 @@ export default class MergeNode {
 		success: (arg: string) => void,
 		slug: string
 	) {
-		const cluster_extraction =
+		let cluster_extraction =
 			inputData.cluster_extraction || inputData[this.data.input_ids.cluster_extraction];
-		const argument_extraction =
+		let argument_extraction =
 			inputData.argument_extraction || inputData[this.data.input_ids.argument_extraction];
 
 		if (!cluster_extraction || !argument_extraction || !cluster_extraction.topics) {
 			this.data.dirty = false;
 			return;
 		}
+
+		cluster_extraction = deepCopy(cluster_extraction);
+		argument_extraction = deepCopy(argument_extraction);
 
 		const findClaimsForSubtopic = (topicName, subtopicName) => {
 			const claims = [];

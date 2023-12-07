@@ -1,6 +1,7 @@
 import nodes from '$lib/node_register';
 import categories from '$lib/node_categories';
 import papa from 'papaparse';
+import { browser } from '$app/environment';
 import { readFileFromGCS } from '$lib/utils';
 
 interface BaseData {}
@@ -44,13 +45,35 @@ export default class CSVNode {
 		let contents;
 		if (this.data.gcs_path) {
 			contents = await readFileFromGCS(this);
-			const parsedData = papa.parse(contents, { header: true }).data;
+			let parsedData = '';
+			if (browser) parsedData = this.paparseCSV(contents);
+			else parsedData = await this.csvParser(contents);
 			this.data.output = this.filterValidRows(parsedData);
 		}
 
 		this.data.dirty = false;
 		this.data.csv = null;
 		return this.data.output;
+	}
+	async csvParser(csvString: string): Promise<any[]> {
+		const csvModule = await import('csv-parser');
+		const csv = csvModule.default;
+		const streamModule = await import('stream');
+		const { Readable } = streamModule;
+
+		return new Promise((resolve, reject) => {
+			const results = [];
+			Readable.from(csvString)
+				.pipe(csv())
+				.on('data', (data) => results.push(data))
+				.on('end', () => resolve(results))
+				.on('error', (err) => reject(err));
+		});
+	}
+
+	paparseCSV(csv: string) {
+		const parsedData = papa.parse(csv, { header: true }).data;
+		return parsedData;
 	}
 
 	filterValidRows(parsedData: any[]) {

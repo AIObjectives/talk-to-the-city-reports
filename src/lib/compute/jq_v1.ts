@@ -35,7 +35,8 @@ export default class JqNodeV1 {
 		const input = inputData[Object.keys(inputData)[0]];
 		try {
 			if (this.data.text) {
-				return jq_web.json(input, this.data.text);
+				this.data.output = jq_web.json(input, this.data.text);
+				return this.data.output;
 			}
 		} catch (e) {
 			return undefined;

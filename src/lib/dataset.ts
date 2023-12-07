@@ -97,7 +97,7 @@ export class Dataset {
 	}
 
 	async updateDataset(user: User) {
-		if (user.uid === this.owner) {
+		if (user && user.uid === this.owner) {
 			try {
 				info('Updating dataset...');
 				const copy = JSON.parse(

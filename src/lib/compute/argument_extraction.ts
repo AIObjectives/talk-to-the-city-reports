@@ -24,7 +24,6 @@ async function gpt(
 		{ role: 'system', content: systemPrompt },
 		{ role: 'user', content: prompt }
 	];
-	console.log(prompt);
 	const res = await OpenAI.chat.completions.create({
 		messages,
 		model: 'gpt-4-1106-preview',

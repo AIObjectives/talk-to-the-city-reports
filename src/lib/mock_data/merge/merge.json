@@ -1,0 +1,44 @@
+{
+  "topics": [
+    {
+      "topicName": "Current Conditions",
+      "topicShortDescription": "Describes the present state of the weather.",
+      "subtopics": [
+        {
+          "subtopicName": "Pleasant Weather",
+          "subtopicShortDescription": "References to the weather being enjoyable or comfortable at the moment.",
+          "claims": [
+            {
+              "claim": "The weather is currently pleasant in the city.",
+              "quote": "The weather is indeed pleasant today",
+              "topicName": "Current Conditions",
+              "subtopicName": "Pleasant Weather",
+              "interview": "Bob",
+              "id": "28"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topicName": "Weather Patterns",
+      "topicShortDescription": "Discusses the trends and changes in weather over time.",
+      "subtopics": [
+        {
+          "subtopicName": "Rain Duration",
+          "subtopicShortDescription": "Concerns about the length of time the rain is expected to last.",
+          "claims": [
+            {
+              "claim": "The rain in the city is persistent.",
+              "quote": "When will the rain stop.",
+              "topicName": "Weather Patterns",
+              "subtopicName": "Rain Duration",
+              "interview": "Alice",
+              "id": "0"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
