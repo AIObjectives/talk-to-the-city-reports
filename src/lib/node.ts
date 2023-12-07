@@ -1,6 +1,8 @@
 import type { Node } from '@xyflow/svelte';
 import { getAuth } from 'firebase/auth';
 import { getStorage, ref as storageRef, deleteObject } from 'firebase/storage';
+import { readFileFromGCS, uploadDataToGCS } from '$lib/utils';
+import { success, error, info } from '$components/toast/theme';
 
 export class DGNode {
 	node: Node;
@@ -20,12 +22,24 @@ export class DGNode {
 		});
 	}
 
+	copyAssets = async () => {
+		const auth = getAuth();
+		const pathPrefix = `uploads/${auth.currentUser.uid}/${this.parent.parent.slug}`;
+		if (this.node.data.gcs_path && !this.node.data.gcs_path.includes(pathPrefix)) {
+			try {
+				info(`Copying file ${this.node.data.gcs_path} to ${pathPrefix}`);
+				const data = await readFileFromGCS(this.node);
+				await uploadDataToGCS(this.node, data, this.parent.parent.slug);
+			} catch (error) {
+				console.error('Error copying file:', error);
+			}
+		}
+	};
+
 	deleteAssets = () => {
 		if (this.node.data.gcs_path) {
 			const auth = getAuth();
-			const userId = auth.currentUser.uid;
-			const slug = this.parent.parent.slug;
-			const pathPrefix = `uploads/${userId}/${slug}`;
+			const pathPrefix = `uploads/${auth.currentUser.uid}/${this.parent.parent.slug}`;
 			if (this.node.data.gcs_path.includes(pathPrefix)) {
 				const storage = getStorage();
 				const fileRef = storageRef(storage, this.node.data.gcs_path);

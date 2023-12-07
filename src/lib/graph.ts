@@ -23,6 +23,14 @@ export class DependencyGraph {
 		get(this.nodes).forEach((node) => this.find(node.id).deleteAssets());
 	};
 
+	copyAssets = async () => {
+		await Promise.all(
+			get(this.nodes).map(async (node) => {
+				await this.find(node.id).copyAssets();
+			})
+		);
+	};
+
 	deleteNode = (id: string) => {
 		const node = this.find(id);
 		node.deleteAssets();

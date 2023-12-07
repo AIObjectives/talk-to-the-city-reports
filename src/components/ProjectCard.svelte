@@ -17,8 +17,8 @@
 	<span class="absolute top-0 right-0 cursor-pointer mt-2 mr-2">
 		<button on:click={deleteDataset}><Close /></button>
 	</span>
-
 	<p class="font-bold text-xl mb-2">{dataset.title}</p>
 	<p class="text-gray-700 text-base">{dataset.description.slice(0, 100)}</p>
 	<a href="/report/{dataset.slug}"> <Button>View report</Button></a>
+	<p class="text-gray-400 text-base"><small>/{dataset.slug}</small></p>
 </Card>

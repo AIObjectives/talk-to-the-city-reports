@@ -1,6 +1,7 @@
+import { goto } from '$app/navigation';
 import Cookies from 'js-cookie';
 import { get } from 'svelte/store';
-import type { User } from '$lib/types';
+import Deepcopy from 'deep-copy';
 import '$lib/node_types';
 import nodes from '$lib/node_register';
 import { topologicalSort } from '$lib/utils';
@@ -100,7 +101,9 @@ export class Dataset {
 			try {
 				info('Updating dataset...');
 				const copy = JSON.parse(
-					JSON.stringify({ graph: { nodes: get(this.graph.nodes), edges: get(this.graph.edges) } })
+					JSON.stringify({
+						graph: { nodes: get(this.graph.nodes), edges: get(this.graph.edges) }
+					})
 				);
 				copy.graph.nodes = copy.graph.nodes.map((x) => {
 					x.data.output = null;
@@ -113,6 +116,54 @@ export class Dataset {
 				error('Error updating dataset');
 			}
 		}
+	}
+
+	static async exists(slug: string): Promise<boolean> {
+		const q = query(datasetCollection, where('slug', '==', slug));
+		const querySnapshot = await getDocs(q);
+		return !querySnapshot.empty;
+	}
+
+	async fork(slug: string): Promise<boolean> {
+		try {
+			info('Forking dataset...');
+			const dataset = new Dataset(
+				this.title,
+				slug,
+				auth!.currentUser!.uid,
+				this.template,
+				this.description,
+				Deepcopy({ nodes: get(this.graph.nodes), edges: get(this.graph.edges) })
+			);
+
+			await dataset.sanitize();
+			await dataset.addDatasetToFirebase();
+			info('Copying assets...');
+			await dataset.graph.copyAssets();
+			info('Saving dataset with new asset paths...');
+			await dataset.updateDataset(auth.currentUser);
+			success('Dataset forked');
+			goto(`/report/${slug}`);
+			return true;
+		} catch (err) {
+			console.error('Error forking dataset: ', err);
+			error('Error forking dataset');
+			return false;
+		}
+	}
+
+	sanitize() {
+		this.graph.nodes.update((nodes) =>
+			nodes.map((node) => {
+				for (const key in node) {
+					if (key !== 'id' && key !== 'position' && key !== 'type' && key !== 'data') {
+						delete node[key];
+					}
+				}
+				delete node.data.output;
+				return node;
+			})
+		);
 	}
 
 	async deleteDataset(): Promise<boolean> {

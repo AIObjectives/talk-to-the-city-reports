@@ -1,10 +1,19 @@
-<script>
+<script lang="ts">
 	import { page } from '$app/stores';
 	import github from '$lib/images/github.svg';
 	import { user } from '$lib/store';
+	import Menu from '$components/menu/menu.svelte';
+
 	import '$lib/i18n';
-	import { _ } from 'svelte-i18n';
+	import { _ as __ } from 'svelte-i18n';
+	import _ from 'lodash';
 </script>
+
+<Menu {user} />
+
+<a href="https://github.com/AIObjectives/tttc-turbo">
+	<img src={github} alt="GitHub" class="github" />
+</a>
 
 <header>
 	<div class="corner" />
@@ -15,14 +24,14 @@
 		</svg>
 		<ul>
 			<li aria-current={$page.url.pathname === '/' ? 'page' : undefined}>
-				<a href="/">{$_('home')} </a>
+				<a href="/">{$__('home')} </a>
 			</li>
 			<li aria-current={$page.url.pathname === '/about' ? 'page' : undefined}>
-				<a href="/about">{$_('about')}</a>
+				<a href="/about">{$__('about')}</a>
 			</li>
 			{#if !$user}
 				<li aria-current={$page.url.pathname === '/login' ? 'page' : undefined}>
-					<a href="/login">{$_('sign_in')}</a>
+					<a href="/login">{$__('sign_in')}</a>
 				</li>
 			{/if}
 		</ul>
@@ -31,17 +40,20 @@
 		</svg>
 	</nav>
 
-	<div class="corner">
-		<a href="https://github.com/AIObjectives/tttc-turbo">
-			<img src={github} alt="GitHub" />
-		</a>
-	</div>
+	<div class="corner" />
 </header>
 
 <style>
 	header {
 		display: flex;
 		justify-content: space-between;
+	}
+
+	.github {
+		position: absolute;
+		width: 30px;
+		left: 5px;
+		top: 5px;
 	}
 
 	.corner {
