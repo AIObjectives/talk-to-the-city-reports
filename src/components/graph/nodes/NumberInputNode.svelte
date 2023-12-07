@@ -7,22 +7,11 @@
 
 	export let data: $$Props['data'];
 	export let id: $$Props['id'];
-	export let zIndex: $$Props['zIndex'];
-	export let dragging: $$Props['dragging'];
-	export let dragHandle: $$Props['dragHandle'];
-	export let isConnectable: $$Props['isConnectable'];
-	export let type: $$Props['type'];
-	export let positionAbsolute: $$Props['positionAbsolute'];
-	export let width: $$Props['width'];
-	export let height: $$Props['height'];
-	export let selected: $$Props['selected'];
-	export let sourcePosition: $$Props['sourcePosition'];
-	export let targetPosition: $$Props['targetPosition'];
 
 	const { number } = data;
 </script>
 
-<DGNode {data} {id} {selected}>
+<DGNode {data} {id} {...$$restProps}>
 	<div>{data.label}</div>
 	<TextField
 		style="width: 100%;"

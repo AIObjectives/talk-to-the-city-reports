@@ -3,11 +3,11 @@ import categories from '$lib/node_categories';
 import papa from 'papaparse';
 import { browser } from '$app/environment';
 import { readFileFromGCS } from '$lib/utils';
+import type { BaseData, GCSBaseData, DGNodeInterface } from '$lib/node_data_types';
 
-interface BaseData {}
+export interface CSVNodeInterface extends DGNodeInterface<GCSBaseData> {}
 
 interface CSVData extends BaseData {
-	csv: string;
 	filename: string;
 	size_kb: number;
 	gcs_path: string;
@@ -19,7 +19,7 @@ export default class CSVNode {
 	position: { x: number; y: number };
 	type: string;
 
-	constructor(node_data) {
+	constructor(node_data: CSVNodeInterface) {
 		const { id, data, position, type } = node_data;
 		this.id = id;
 		this.data = data;
@@ -52,7 +52,6 @@ export default class CSVNode {
 		}
 
 		this.data.dirty = false;
-		this.data.csv = null;
 		return this.data.output;
 	}
 	async csvParser(csvString: string): Promise<any[]> {
@@ -100,10 +99,6 @@ export default class CSVNode {
 		return !allEmpty;
 	}
 }
-
-type CSVNodeInterface = DGNodeInterface & {
-	data: CSVData;
-};
 
 // This data matters, as it is used for the tests
 // please make sure it remains available

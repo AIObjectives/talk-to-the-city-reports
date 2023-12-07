@@ -2,12 +2,12 @@
 	import Button from '@smui/button';
 	import { user } from '$lib/store';
 	import Projects from '$components/Projects.svelte';
-	import { _ } from 'svelte-i18n';
+	import { _ as __ } from 'svelte-i18n';
 </script>
 
 <svelte:head>
-	<title>Home</title>
-	<meta name="description" content="Svelte demo app" />
+	<title>tttc-turbo</title>
+	<meta name="description" content="Talk to the City Turbo" />
 </svelte:head>
 
 <section>
@@ -17,7 +17,7 @@
 		<Projects />
 		<Button href="/report/new" class="mt-10">New report</Button>
 	{:else}
-		{$_('sign_in_to_continue')}
+		{$__('sign_in_to_continue')}
 	{/if}
 </section>
 

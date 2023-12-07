@@ -12,7 +12,7 @@ import system_prompt from '$lib/mock_data/argument_extraction/system_prompt.txt?
 
 vi.mock('$lib/utils', () => ({
 	readFileFromGCS: vi.fn(() => Promise.resolve(JSON.stringify(mock_argument_extraction_data))),
-	uploadDataToGCS: vi.fn(() => Promise.resolve())
+	uploadJSONToGCS: vi.fn(() => Promise.resolve())
 }));
 
 describe('ArgumentExtractionNode class', () => {

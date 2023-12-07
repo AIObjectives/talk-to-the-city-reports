@@ -1,4 +1,6 @@
-import ScoreArgumentRelevanceNode, { score_argument_relevance_node_data } from '$lib/compute/score_argument_relevance';
+import ScoreArgumentRelevanceNode, {
+	score_argument_relevance_node_data
+} from '$lib/compute/score_argument_relevance';
 import deepCopy from 'deep-copy';
 import { describe, it, vi } from 'vitest';
 import { expect } from 'vitest';
@@ -8,7 +10,7 @@ import scored_arguments from '$lib/mock_data/cluster_extraction/scored_arguments
 
 vi.mock('$lib/utils', () => ({
 	readFileFromGCS: vi.fn(() => Promise.resolve(JSON.stringify(mock_argument_extraction_data))),
-	uploadDataToGCS: vi.fn(() => Promise.resolve())
+	uploadJSONToGCS: vi.fn(() => Promise.resolve())
 }));
 
 describe('ScoreArgumentRelevanceNode class', () => {
@@ -19,7 +21,14 @@ describe('ScoreArgumentRelevanceNode class', () => {
 			open_ai_key: 'sk-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
 			argument_extraction: mock_argument_extraction_data
 		};
-		const output = await node.compute(inputData, 'run', console.log, console.error, console.log, 'test_slug');
+		const output = await node.compute(
+			inputData,
+			'run',
+			console.log,
+			console.error,
+			console.log,
+			'test_slug'
+		);
 		expect(output).toEqual(scored_arguments);
 	});
 
@@ -32,7 +41,14 @@ describe('ScoreArgumentRelevanceNode class', () => {
 			open_ai_key: 'sk-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
 			argument_extraction: mock_argument_extraction_data
 		};
-		const output = await node.compute(inputData, 'run', console.log, console.error, console.log, 'test_slug');
+		const output = await node.compute(
+			inputData,
+			'run',
+			console.log,
+			console.error,
+			console.log,
+			'test_slug'
+		);
 		expect(output).toEqual(mock_argument_extraction_data);
 	});
 
@@ -41,7 +57,14 @@ describe('ScoreArgumentRelevanceNode class', () => {
 		const inputData = {
 			open_ai_key: 'sk-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
 		};
-		const output = await node.compute(inputData, 'run', console.log, console.error, console.log, 'test_slug');
+		const output = await node.compute(
+			inputData,
+			'run',
+			console.log,
+			console.error,
+			console.log,
+			'test_slug'
+		);
 		expect(output).toBeUndefined();
 	});
 
@@ -50,7 +73,14 @@ describe('ScoreArgumentRelevanceNode class', () => {
 		const inputData = {
 			argument_extraction: mock_argument_extraction_data
 		};
-		const output = await node.compute(inputData, 'run', console.log, console.error, console.log, 'test_slug');
+		const output = await node.compute(
+			inputData,
+			'run',
+			console.log,
+			console.error,
+			console.log,
+			'test_slug'
+		);
 		expect(output).toBeUndefined();
 	});
 
@@ -62,7 +92,14 @@ describe('ScoreArgumentRelevanceNode class', () => {
 			open_ai_key: 'sk-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
 			argument_extraction: mock_argument_extraction_data
 		};
-		const output = await node.compute(inputData, 'run', console.log, console.error, console.log, 'test_slug');
+		const output = await node.compute(
+			inputData,
+			'run',
+			console.log,
+			console.error,
+			console.log,
+			'test_slug'
+		);
 		expect(output).toBeUndefined();
 	});
 });

@@ -1,14 +1,15 @@
-import type { Node } from '@xyflow/svelte';
+// import type { Node } from '@xyflow/svelte';
 import { getAuth } from 'firebase/auth';
 import { getStorage, ref as storageRef, deleteObject } from 'firebase/storage';
 import { readFileFromGCS, uploadDataToGCS } from '$lib/utils';
-import { success, error, info } from '$components/toast/theme';
+import { info } from '$components/toast/theme';
+import type { DGNodeInterface, BaseData, GCSBaseData } from '$lib/node_data_types';
 
 export class DGNode {
-	node: Node;
+	node: DGNodeInterface;
 	parent: any; // graph
 
-	constructor(node: Node, parent: any) {
+	constructor(node: DGNodeInterface, parent: any) {
 		this.node = node;
 		this.parent = parent;
 	}
@@ -21,15 +22,18 @@ export class DGNode {
 			return input_node != null;
 		});
 	}
-
 	copyAssets = async () => {
 		const auth = getAuth();
-		const pathPrefix = `uploads/${auth.currentUser.uid}/${this.parent.parent.slug}`;
-		if (this.node.data.gcs_path && !this.node.data.gcs_path.includes(pathPrefix)) {
+		const pathPrefix = `uploads/${auth.currentUser!.uid}/${this.parent.parent.slug}`;
+		const node_data: GCSBaseData = this.node.data as GCSBaseData;
+		if (node_data.gcs_path && !node_data.gcs_path.includes(pathPrefix)) {
 			try {
-				info(`Copying file ${this.node.data.gcs_path} to ${pathPrefix}`);
+				info(`Copying file ${node_data.gcs_path} to ${pathPrefix}`);
 				const data = await readFileFromGCS(this.node);
-				await uploadDataToGCS(this.node, data, this.parent.parent.slug);
+				console.log('data');
+				console.log(data);
+				const fileName = node_data.gcs_path.split('/').pop();
+				await uploadDataToGCS(this.node, data, this.parent.parent.slug, fileName);
 			} catch (error) {
 				console.error('Error copying file:', error);
 			}
@@ -39,7 +43,7 @@ export class DGNode {
 	deleteAssets = () => {
 		if (this.node.data.gcs_path) {
 			const auth = getAuth();
-			const pathPrefix = `uploads/${auth.currentUser.uid}/${this.parent.parent.slug}`;
+			const pathPrefix = `uploads/${auth.currentUser!.uid}/${this.parent.parent.slug}`;
 			if (this.node.data.gcs_path.includes(pathPrefix)) {
 				const storage = getStorage();
 				const fileRef = storageRef(storage, this.node.data.gcs_path);

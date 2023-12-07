@@ -3,6 +3,7 @@ import Cookies from 'js-cookie';
 import { get } from 'svelte/store';
 import Deepcopy from 'deep-copy';
 import '$lib/node_types';
+import { saveTemplate } from '$lib/templates';
 import nodes from '$lib/node_register';
 import { topologicalSort } from '$lib/utils';
 import {
@@ -28,6 +29,7 @@ export class Dataset {
 	description: string;
 	graph: DependencyGraph;
 	id?: string;
+	projectParent?: string;
 
 	constructor(
 		projectTitle: string,
@@ -36,7 +38,8 @@ export class Dataset {
 		projectTemplate: string,
 		projectDescription: string,
 		graph: any,
-		id?: string
+		id?: string,
+		projectParent?: string
 	) {
 		this.title = projectTitle;
 		this.slug = projectSlug;
@@ -46,6 +49,7 @@ export class Dataset {
 		this.description = projectDescription;
 		this.graph = new DependencyGraph(graph.nodes, graph.edges, this);
 		this.id = id;
+		this.projectParent = projectParent;
 	}
 
 	async processNodes(context: string, user: User) {
@@ -78,6 +82,10 @@ export class Dataset {
 				.forEach((edge) => {
 					inputData[edge.source] = nodeOutputs[edge.source];
 				});
+
+			if (!node.data) {
+				continue;
+			}
 
 			save = save || node.data.dirty;
 			const node_impl = nodes.init(node.data.compute_type, node);
@@ -124,6 +132,11 @@ export class Dataset {
 		return !querySnapshot.empty;
 	}
 
+	saveAsTemplate(name: string) {
+		const data = { nodes: get(this.graph.nodes), edges: get(this.graph.edges) };
+		saveTemplate(name, data);
+	}
+
 	async fork(slug: string): Promise<boolean> {
 		try {
 			info('Forking dataset...');
@@ -133,7 +146,9 @@ export class Dataset {
 				auth!.currentUser!.uid,
 				this.template,
 				this.description,
-				Deepcopy({ nodes: get(this.graph.nodes), edges: get(this.graph.edges) })
+				Deepcopy({ nodes: get(this.graph.nodes), edges: get(this.graph.edges) }),
+				undefined,
+				this.slug
 			);
 
 			await dataset.sanitize();
@@ -144,6 +159,9 @@ export class Dataset {
 			await dataset.updateDataset(auth.currentUser);
 			success('Dataset forked');
 			goto(`/report/${slug}`);
+			setTimeout(() => {
+				if (window) window.location.reload();
+			}, 3000);
 			return true;
 		} catch (err) {
 			console.error('Error forking dataset: ', err);
@@ -175,6 +193,7 @@ export class Dataset {
 		const q = query(datasetCollection, where('slug', '==', slug));
 		const querySnapshot = await getDocs(q);
 		if (querySnapshot.empty) {
+			console.error('No dataset found with the provided slug');
 			error('No dataset found with the provided slug');
 			return null;
 		}
@@ -190,7 +209,8 @@ export class Dataset {
 			doc.template,
 			doc.description,
 			doc.graph,
-			id
+			id,
+			doc.projectParent
 		);
 	}
 
@@ -202,11 +222,13 @@ export class Dataset {
 			template: this.template,
 			timestamp: this.timestamp,
 			description: this.description,
-			graph: { nodes: get(this.graph.nodes), edges: get(this.graph.edges) }
+			graph: { nodes: get(this.graph.nodes), edges: get(this.graph.edges) },
+			projectParent: this.projectParent
 		};
 	}
 
 	static async loadDataset(slug: string): Promise<Dataset | null> {
+		console.log('loading dataset', slug);
 		try {
 			const { doc, id } = await this.loadDoc(slug);
 			return new Dataset(
@@ -216,7 +238,8 @@ export class Dataset {
 				doc.template,
 				doc.description,
 				doc.graph,
-				id
+				id,
+				doc.projectParent
 			);
 		} catch (e) {
 			error('An error occurred while loading the dataset');
@@ -246,7 +269,8 @@ export class Dataset {
 				template: this.template,
 				timestamp: serverTimestamp(),
 				description: this.description,
-				graph: { nodes: get(this.graph.nodes), edges: get(this.graph.edges) }
+				graph: { nodes: get(this.graph.nodes), edges: get(this.graph.edges) },
+				projectParent: this.projectParent
 			});
 
 			this.id = docs.id;

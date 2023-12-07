@@ -1,4 +1,6 @@
-import MergeClusterExtractionNode, { merge_cluster_extraction_node_data } from '$lib/compute/merge_cluster_extraction';
+import MergeClusterExtractionNode, {
+	merge_cluster_extraction_node_data
+} from '$lib/compute/merge_cluster_extraction';
 import deepCopy from 'deep-copy';
 import { describe, it, vi } from 'vitest';
 import { expect } from 'vitest';
@@ -11,7 +13,7 @@ vi.mock('$lib/utils', () => ({
 	readFileFromGCS: vi.fn(() =>
 		Promise.resolve(JSON.stringify(mock_merged_cluster_extraction_data))
 	),
-	uploadDataToGCS: vi.fn(() => Promise.resolve())
+	uploadJSONToGCS: vi.fn(() => Promise.resolve())
 }));
 
 describe('MergeClusterExtractionNode class', () => {
@@ -28,7 +30,14 @@ describe('MergeClusterExtractionNode class', () => {
 			cluster_extraction_1: mock_cluster_extraction_data,
 			cluster_extraction_2: mock_cluster_extraction_data_2
 		};
-		const output = await node.compute(inputData, 'run', console.log, console.error, console.log, 'test_slug');
+		const output = await node.compute(
+			inputData,
+			'run',
+			console.log,
+			console.error,
+			console.log,
+			'test_slug'
+		);
 		expect(output).toBeInstanceOf(Object);
 		expect(output).toHaveProperty('topics');
 		expect(output).toEqual(mock_merged_cluster_extraction_data);
@@ -42,7 +51,14 @@ describe('MergeClusterExtractionNode class', () => {
 			open_ai_key: 'sk-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
 			csv: csv_data
 		};
-		const output = await node.compute(inputData, 'run', console.log, console.error, console.log, 'test_slug');
+		const output = await node.compute(
+			inputData,
+			'run',
+			console.log,
+			console.error,
+			console.log,
+			'test_slug'
+		);
 		expect(output).toBeInstanceOf(Object);
 	});
 
@@ -59,7 +75,14 @@ describe('MergeClusterExtractionNode class', () => {
 			cluster_extraction_1: mock_cluster_extraction_data,
 			cluster_extraction_2: mock_cluster_extraction_data_2
 		};
-		const output = await node.compute(inputData, 'run', console.log, console.error, console.log, 'test_slug');
+		const output = await node.compute(
+			inputData,
+			'run',
+			console.log,
+			console.error,
+			console.log,
+			'test_slug'
+		);
 		expect(output).toEqual(mock_merged_cluster_extraction_data);
 	});
 
@@ -74,7 +97,14 @@ describe('MergeClusterExtractionNode class', () => {
 			cluster_extraction_1: mock_cluster_extraction_data,
 			cluster_extraction_2: mock_cluster_extraction_data_2
 		};
-		const output = await node.compute(inputData, 'run', console.log, console.error, console.log, 'test_slug');
+		const output = await node.compute(
+			inputData,
+			'run',
+			console.log,
+			console.error,
+			console.log,
+			'test_slug'
+		);
 		expect(output).toBeUndefined();
 	});
 });

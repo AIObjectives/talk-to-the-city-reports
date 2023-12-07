@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Checkbox from '@smui/checkbox';
+	import FormField from '@smui/form-field';
 	import Paper from '@smui/paper';
 	import { marked } from 'marked';
 	import { docs } from '$lib/node_types';
@@ -14,12 +16,15 @@
 	export let id: string;
 	export let selected: boolean;
 	export let style: string = '';
+	export let type: string = '';
+	export let isStandardView: boolean = false;
 
 	function onConnect(x) {
 		let { source, target } = x.detail.connection;
 		$dataset?.graph.onConnect(source, target);
 	}
 
+	$: show = isStandardView ? data.show_in_ui === undefined || data.show_in_ui === true : true;
 	let dg_node = $dataset?.graph.find(id);
 	let show_help = false;
 	let has_all_inputs = true;
@@ -32,38 +37,93 @@
 	}
 </script>
 
-<Paper title={id} class={selected ? 'selected-dg-node' : 'dg-node'} {style}>
-	{#if data.icon}
-		<div style="float: left; margin-right: 0.5rem;" class="w-6 h-6">
-			<img
-				style="width: 100%; height: 100%; object-fit: contain;"
-				src="https://talktothecity.s3.us-west-1.amazonaws.com/tttc-turbo/static/{data.icon}.png"
-				class="w-6 h-6"
-			/>
+{#if data && show}
+	<Paper title={id} class={selected ? 'selected-dg-node' : 'dg-node'} {style}>
+		{#if data?.icon}
+			<div style="float: left; margin-right: 0.5rem;" class="w-6 h-6">
+				<img
+					style="width: 100%; height: 100%; object-fit: contain;"
+					src="https://talktothecity.s3.us-west-1.amazonaws.com/tttc-turbo/static/{data.icon}.png"
+					class="w-6 h-6"
+				/>
+			</div>
+		{/if}
+
+		<div style="float: right; display: flex; justify-content: flex-end;">
+			{#if !has_all_inputs}
+				<Connection color="#ffaaaa" class="mr-2" />
+			{/if}
+			{#if docs[data?.compute_type]}
+				<button on:click={() => (show_help = !show_help)}><Help color="gray" /></button>
+			{/if}
 		</div>
-	{/if}
-
-	<div style="float: right; display: flex; justify-content: flex-end;">
-		{#if !has_all_inputs}
-			<Connection color="#ffaaaa" class="mr-2" />
+		{#if show_help}
+			<Paper class="mb-5">
+				<div class="docs">{@html marked.parse(docs[data?.compute_type])}</div>
+			</Paper>
 		{/if}
-		{#if docs[data.compute_type]}
-			<button on:click={() => (show_help = !show_help)}><Help color="gray" /></button>
+		<slot />
+		{#if data?.dirty}
+			<div class="text-sm text-gray-500">Unsaved changes</div>
 		{/if}
-	</div>
-	{#if show_help}
-		<Paper class="mb-5">
-			<div class="docs">{@html marked.parse(docs[data.compute_type])}</div>
-		</Paper>
-	{/if}
-	<slot />
-	{#if data && data.dirty}
-		<div class="text-sm text-gray-500">Unsaved changes</div>
-	{/if}
-	{#if data && data.message}
-		<div class="text-sm text-gray-500">{data.message}</div>
-	{/if}
+		{#if data?.message}
+			<div class="text-sm text-gray-500">{data?.message}</div>
+		{/if}
 
-	<Handle type="source" position={Position.Bottom} on:connect={onConnect} />
-	<Handle type="target" position={Position.Top} on:connect={onConnect} />
-</Paper>
+		<div>
+			<!-- {#if !isStandardView}
+				<FormField align="end">
+					<span
+						><Checkbox
+							on:change={(x) => {
+								data.show_in_ui = x.target.checked;
+							}}
+						/></span
+					>
+					<span slot="label">Show in standard view.</span>
+				</FormField>
+			{/if} -->
+		</div>
+
+		<Handle type="source" position={Position.Bottom} on:connect={onConnect} />
+		<Handle
+			type="target"
+			position={Position.Top}
+			on:connect={onConnect}
+			style={'background-color: ' + (has_all_inputs ? 'rgb(200, 203, 223)' : '#ffaaaa')}
+		/>
+	</Paper>
+{/if}
+
+<style>
+	:global(.svelte-flow .svelte-flow__handle) {
+		width: 30px;
+		height: 14px;
+		border-radius: 3px;
+		border-color: #3342a5;
+		background-color: rgb(200, 203, 223);
+	}
+
+	:global(.svelte-flow .svelte-flow__handle-top) {
+		top: -10px;
+	}
+
+	:global(.svelte-flow__edge-path) {
+		stroke-width: 50;
+		stroke: #ccccff;
+	}
+
+	:global(.svelte-flow__edge-interaction) {
+		stroke-width: 50 !important;
+		stroke: rgb(255, 0, 149) !important;
+	}
+
+	:global(.svelte-flow .svelte-flow__handle-bottom) {
+		bottom: -10px;
+	}
+
+	:global(.svelte-flow .svelte-flow__edge path, .svelte-flow__connectionline path) {
+		stroke-width: 3;
+		stroke: rgb(185, 191, 220);
+	}
+</style>

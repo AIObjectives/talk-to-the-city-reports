@@ -19,6 +19,15 @@ export class DependencyGraph {
 		if (node) return new DGNode(node, this);
 	};
 
+	listAssets = () => {
+		let assets: string[] = [];
+		get(this.nodes).forEach((node) => {
+			const asset = this.find(node.id).node.data.gcs_path;
+			if (asset) assets.push(asset);
+		});
+		return assets;
+	};
+
 	deleteAssets = () => {
 		get(this.nodes).forEach((node) => this.find(node.id).deleteAssets());
 	};

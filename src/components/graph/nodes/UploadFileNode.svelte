@@ -5,29 +5,24 @@
 		uploadBytesResumable,
 		getDownloadURL
 	} from 'firebase/storage';
+	import { useEdges, useNodes } from '@xyflow/svelte';
 	import { getAuth } from 'firebase/auth';
 	import Button from '@smui/button';
 	import { type NodeProps } from '@xyflow/svelte';
 	import { page } from '$app/stores';
 	import DGNode from './DGNode.svelte';
+	import { dataset } from '$lib/store';
+	import { get } from 'svelte/store';
 
 	type $$Props = NodeProps;
 
 	export let data: $$Props['data'];
 	export let id: $$Props['id'];
-	export let zIndex: $$Props['zIndex'];
-	export let dragging: $$Props['dragging'];
-	export let dragHandle: $$Props['dragHandle'];
-	export let isConnectable: $$Props['isConnectable'];
-	export let type: $$Props['type'];
-	export let positionAbsolute: $$Props['positionAbsolute'];
-	export let width: $$Props['width'];
-	export let height: $$Props['height'];
-	export let selected: $$Props['selected'];
-	export let sourcePosition: $$Props['sourcePosition'];
-	export let targetPosition: $$Props['targetPosition'];
 
 	export let fileType = 'CSV';
+
+	const nodes = useNodes();
+	const edges = useEdges();
 
 	let fileInput;
 	const storage = getStorage();
@@ -62,6 +57,10 @@
 					data.filename = uploadedFile.name;
 					data.size_kb = uploadedFile.size / 1000;
 					data.dirty = true;
+					$nodes = $nodes;
+					for (const node of $nodes) {
+						node.data = { ...node.data };
+					}
 				}
 			);
 		};
@@ -69,12 +68,12 @@
 	}
 </script>
 
-<DGNode {data} {id} {selected}>
+<DGNode {data} {id} {...$$restProps} }>
 	<div>{fileType} data</div>
-	{#if data.filename}
-		<div>{data.filename}</div>
-		<div>{data.size_kb} KB</div>
-		<small style="color: gray">{data.gcs_path}</small>
+	{#if data?.filename}
+		<div>{data?.filename}</div>
+		<div>{data?.size_kb} KB</div>
+		<small style="color: gray">{data?.gcs_path}</small>
 	{:else}
 		<input
 			class="nodrag"

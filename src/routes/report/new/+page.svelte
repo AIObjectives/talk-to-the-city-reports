@@ -39,7 +39,9 @@
 			auth.currentUser.uid,
 			projectTemplate,
 			projectDescription,
-			graph
+			graph,
+			null,
+			null
 		);
 
 		const successFlag = await newDataset.addDatasetToFirebase();

@@ -1,6 +1,7 @@
 import nodes from '$lib/node_register';
 import categories from '$lib/node_categories';
 import * as jq_web from 'jq-web/jq.asm.bundle.js';
+import _ from 'lodash';
 
 interface BaseData {}
 
@@ -31,14 +32,18 @@ export default class JqNodeV1 {
 		success: (arg: string) => void,
 		slug: string
 	) {
+		this.data.message = '';
 		this.data.dirty = false;
 		const input = inputData[Object.keys(inputData)[0]];
 		try {
-			if (this.data.text) {
+			if (this.data.text && (_.isPlainObject(input) || _.isArray(input))) {
 				this.data.output = jq_web.json(input, this.data.text);
 				return this.data.output;
 			}
 		} catch (e) {
+			console.log(e);
+			console.error(e.toString());
+			this.data.message = e.toString();
 			return undefined;
 		}
 	}

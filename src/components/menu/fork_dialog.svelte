@@ -8,12 +8,16 @@
 
 	let message = '';
 	let focused = false;
-	let value: string = $page.params.report;
+	let value: string = '';
 	let dirty = false;
 	let invalid = false;
 	export let modalShowing: boolean = false;
 	export let showDropdown: boolean = false;
 	$: disabled = focused || !value || !dirty || invalid;
+	let reportPath: string;
+	$: {
+		reportPath = $page.route.id?.startsWith('/report/');
+	}
 
 	async function handleOk() {
 		message = '';
@@ -22,7 +26,6 @@
 			message = 'A report with this name already exists.';
 			invalid = true;
 		} else {
-			console.log($dataset);
 			await $dataset!.fork(value);
 			message = 'forking report';
 			modalShowing = false;
@@ -36,30 +39,33 @@
 	}
 </script>
 
-<Dialog open={modalShowing} aria-labelledby="simple-title" aria-describedby="simple-content">
-	<Title id="simple-title">Fork Report</Title>
-	<Content id="simple-content">
-		<p>You are about to create a fork of this report. Please enter a name for the new report:</p>
-		<br />
-		<Textfield
-			type="text"
-			bind:dirty
-			bind:invalid
-			updateInvalid
-			bind:value
-			label="Fork"
-			style="min-width: 100%;"
-			on:focus={() => (focused = true)}
-			on:blur={() => (focused = false)}
-			withTrailingIcon={!disabled}
-		/>
-		<br />
-	</Content>
-	<p class="ml-5 mb-2">{message}</p>
-	<Button on:click={handleOk}>
-		<Label>OK</Label>
-	</Button>
-	<Button on:click={handleCancel}>
-		<Label>Cancel</Label>
-	</Button>
-</Dialog>
+{#if reportPath}
+	<Dialog open={modalShowing} aria-labelledby="simple-title" aria-describedby="simple-content">
+		<Title id="simple-title">Fork Report</Title>
+		<Content id="simple-content">
+			<p>You are about to create a fork of this report. Please enter a name for the new report:</p>
+			<br />
+			<Textfield
+				type="text"
+				bind:dirty
+				bind:invalid
+				updateInvalid
+				value={$page.params.report}
+				on:change={(e) => (value = e.target.value)}
+				label="Fork"
+				style="min-width: 100%;"
+				on:focus={() => (focused = true)}
+				on:blur={() => (focused = false)}
+				withTrailingIcon={!disabled}
+			/>
+			<br />
+		</Content>
+		<p class="ml-5 mb-2">{message}</p>
+		<Button on:click={handleOk}>
+			<Label>OK</Label>
+		</Button>
+		<Button on:click={handleCancel}>
+			<Label>Cancel</Label>
+		</Button>
+	</Dialog>
+{/if}

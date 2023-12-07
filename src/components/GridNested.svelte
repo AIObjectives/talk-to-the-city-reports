@@ -4,7 +4,9 @@
 	import Grid from '$components/Grid.svelte';
 	import _ from 'lodash';
 
+	export let id;
 	export let data: Array<{ [key: string]: any }>;
+	export let isStandardView: boolean;
 
 	let currentPage = 1;
 	const itemsPerPage = 10;
@@ -95,10 +97,10 @@
 				{#if index >= (currentPage - 1) * itemsPerPage && index < currentPage * itemsPerPage}
 					{#if item.indent}
 						<div class={item.indent ? 'ml-5' : ''}>
-							<svelte:self data={item.data} />
+							<svelte:self data={item.data} {id} />
 						</div>
 					{:else}
-						<Grid data={item.data} />
+						<Grid data={item.data} {id} />
 					{/if}
 				{/if}
 			{/each}

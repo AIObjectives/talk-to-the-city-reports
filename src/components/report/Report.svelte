@@ -10,6 +10,7 @@
 	import Claims from '$components/report/Claims.svelte';
 	import Tooltip from '$components/report/Tooltip.svelte';
 	import InfoPanel from '$components/report/InfoPanel.svelte';
+	import DebugReport from '$components/report/debug_report.svelte';
 	export let dataset: any;
 
 	let report: any;
@@ -50,10 +51,13 @@
 
 	let complexHierarchy: any;
 
+	let report_node;
+	let csv_node;
+
 	$: {
 		if (dataset) {
-			let report_node = get(dataset.graph.nodes).find((n) => n.type === 'report_v0');
-			let csv_node = get(dataset.graph.nodes).find((n) => n.type === 'csv_v0');
+			report_node = get(dataset.graph.nodes).find((n) => n.data?.compute_type === 'report_v0');
+			csv_node = get(dataset.graph.nodes).find((n) => n.data?.compute_type === 'csv_v0');
 			if (report_node && report_node.data && csv_node && csv_node.data) {
 				report = report_node.data.output;
 				csv = csv_node.data.output;
@@ -91,6 +95,10 @@
 			: '#ddd';
 	}
 </script>
+
+<h1 class="text-3xl uppercase">{dataset.title}</h1>
+
+<!-- <DebugReport {dataset} {report_node} {csv_node} {report} {csv} /> -->
 
 <div class="graph-container">
 	{#if complexHierarchy}

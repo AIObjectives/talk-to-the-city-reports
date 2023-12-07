@@ -1,23 +1,17 @@
 import nodes from '$lib/node_register';
 import categories from '$lib/node_categories';
 import { readFileFromGCS } from '$lib/utils';
+import type { GCSBaseData, DGNodeInterface } from '$lib/node_data_types';
 
-interface BaseData {}
+export interface JSONNodeInterface extends DGNodeInterface<GCSBaseData> {}
 
-interface JSONData extends BaseData {
-	json: any;
-	filename: string;
-	size_kb: number;
-	gcs_path: string;
-}
-
-class JSONNode {
+class JSONNode implements JSONNodeInterface {
 	id: string;
-	data: JSONData;
+	data: GCSBaseData;
 	position: { x: number; y: number };
 	type: string;
 
-	constructor(node_data) {
+	constructor(node_data: JSONNodeInterface) {
 		const { id, data, position, type } = node_data;
 		this.id = id;
 		this.data = data;
@@ -37,16 +31,11 @@ class JSONNode {
 		}
 
 		this.data.dirty = false;
-		this.data.json = null;
 		return this.data.output;
 	}
 }
 
 export default JSONNode;
-
-type JSONNodeInterface = DGNodeInterface & {
-	data: JSONData;
-};
 
 export let json_node_data: JSONNodeInterface = {
 	id: 'json',
@@ -56,6 +45,7 @@ export let json_node_data: JSONNodeInterface = {
 		size_kb: 0,
 		dirty: false,
 		gcs_path: '',
+		output: [],
 		compute_type: 'json_v0',
 		input_ids: {},
 		category: categories.input.id,

@@ -9,20 +9,27 @@
 	import { error } from '$components/toast/theme';
 
 	let dataset: Dataset | null = null;
+	let dataset_refresh: number = 0;
 
-	onMount(async () => {
+	const loadDataset = async (slug: string) => {
+		console.log('Loading dataset: ', slug);
+		dataset = await Dataset.loadDataset(slug);
+		dataset_refresh++;
+		if (!dataset) {
+			console.log('Dataset not found');
+			error('Dataset not found');
+		}
+	};
+
+	$: {
 		const slug = $page.params.report;
 		if (slug) {
-			dataset = await Dataset.loadDataset(slug);
-			if (!dataset) {
-				console.log('Dataset not found');
-				error('Dataset not found');
-			}
+			loadDataset(slug);
 		} else {
 			console.log('No slug provided');
 			error('No slug provided');
 		}
-	});
+	}
 </script>
 
 <LeftPane {dataset} />
@@ -31,9 +38,8 @@
 	{#if !dataset}
 		<p class="text-center text-lg text-gray-500">Loading...</p>
 	{:else}
-		<h1 class="text-3xl uppercase">{dataset.title}</h1>
 		<SvelteFlowProvider>
-			<Pipeline bind:dataset />
+			<Pipeline bind:dataset {dataset_refresh} />
 		</SvelteFlowProvider>
 		<Report bind:dataset />
 	{/if}
@@ -42,7 +48,6 @@
 <style>
 	main {
 		flex-grow: 1;
-		padding: 1rem;
 	}
 
 	@media (max-width: 768px) {

@@ -44,7 +44,6 @@
 	}
 
 	main {
-		padding: 1rem;
 		max-width: 100%;
 		flex: 1;
 		display: flex;

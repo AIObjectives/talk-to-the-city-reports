@@ -1,21 +1,23 @@
 <script lang="ts">
-	import { SvelteFlow, Background, BackgroundVariant } from '@xyflow/svelte';
+	import { Controls, SvelteFlow } from '@xyflow/svelte';
 	import { nodeTypes } from '$lib/node_types';
 	import { node_register } from '$lib/templates';
 	import ContextMenu from './ContextMenu.svelte';
-	import ContentSaveCogOutline from '$lib/icons/ContentSaveCogOutline.svelte';
-	import { saveTemplate } from '$lib/templates';
-	import { get } from 'svelte/store';
 	import { Dataset } from '$lib/dataset';
 	import { DGNode } from '$lib/node';
-	import { user } from '$lib/store';
 	import DeepCopy from 'deep-copy';
 	import PipelineCreateNodesToolbar from '$components/PipelineCreateNodesToolbar.svelte';
+	import { user } from '$lib/store';
 	import { useSvelteFlow } from '@xyflow/svelte';
+	import { viewMode } from '$lib/store';
+	import ContentSaveOutline from '$lib/icons/ContentSaveOutline.svelte';
+	import RobotOutline from '$lib/icons/RobotOutline.svelte';
 
-	const { screenToFlowPosition, getViewport, flowToScreenPosition } = useSvelteFlow();
+	import { Panel } from '@xyflow/svelte';
+	import DownloadImage from '$components/graph/DownloadImage.svelte';
 
-	export let isGraphView: boolean;
+	const { screenToFlowPosition } = useSvelteFlow();
+
 	export let dataset: Dataset;
 	export let nodes;
 	export let edges;
@@ -30,7 +32,6 @@
 		if (!event.dataTransfer) return null;
 
 		const type = event.dataTransfer.getData('application/svelteflow');
-		console.log(type);
 
 		const position = screenToFlowPosition({
 			x: event.clientX,
@@ -101,21 +102,14 @@
 </script>
 
 <div>
-	{#if isGraphView}
-		{#if $user.uid == 'H6U6UUpCtqb5pRvRc9BalA5eNWP2'}
-			<button
-				on:click={() => {
-					const name = prompt('Enter template name');
-					const data = { nodes: get(nodes), edges: get(edges) };
-					saveTemplate(name, data);
-				}}
-			>
-				<ContentSaveCogOutline size="30px" title="Save as template" />
-			</button>
-		{/if}
+	{#if $viewMode == 'graph' || $viewMode == 'dual'}
 		<PipelineCreateNodesToolbar on:click={(x) => addNode(x.detail)} />
 	{/if}
-	<div style:height={isGraphView ? '80vh' : '0vh'} class="flow-container">
+	<div
+		style:width={$viewMode == 'graph' || $viewMode == 'dual' ? '100%' : '0vw'}
+		style:height={'97vh'}
+		class="flow-container"
+	>
 		<SvelteFlow
 			{nodes}
 			{edges}
@@ -125,10 +119,17 @@
 			on:paneclick={handlePaneClick}
 			on:dragover={onDragOver}
 			on:drop={addNode}
+			deleteKey={{ key: 'Backspace', modifier: 'meta' }}
 			ondelete={(e) => {
 				for (const node of e.nodes) {
 					const dg_node = new DGNode(node, dataset.graph);
 					dg_node.deleteAssets();
+					// for (const edge of e.edges) {
+					// 	if (edge.source === node.id) {
+					// 		const target_node = dataset.graph.find(edge.target);
+					// 		target_node.node.data.input_data = {};
+					// 	}
+					// }
 				}
 			}}
 			elementsSelectable={true}
@@ -140,7 +141,28 @@
 			minZoom={0.1}
 			fitView
 		>
-			<Background variant={BackgroundVariant.Dots} />
+			<Controls showLock={false} />
+			<Panel position="top-right">
+				<div class="exec-buttons-top" style="height:42px;">
+					<button
+						on:click={async () => {
+							await dataset.processNodes('run', $user);
+						}}><RobotOutline size={30} /></button
+					>
+				</div>
+
+				<div class="exec-buttons-bottom" style="height:42px;">
+					<button
+						on:click={async () => {
+							await dataset.updateDataset($user);
+						}}><ContentSaveOutline size={30} /></button
+					>
+				</div>
+			</Panel>
+
+			<Panel position="bottom-right">
+				<div class="exec-buttons" style="height:42px;"><DownloadImage /></div>
+			</Panel>
 		</SvelteFlow>
 		{#if menu}
 			<ContextMenu
@@ -158,8 +180,33 @@
 </div>
 
 <style>
-	.flow-container {
-		border-color: #aaa;
+	.exec-buttons-top {
+		background-color: #f8f8f8;
+		border: solid;
 		border-width: 1px;
+		border-bottom-width: 0.5px;
+		border-radius: 2%;
+		border-color: #ddd;
+		padding: 4px;
+		margin: 0px;
+	}
+	.exec-buttons {
+		background-color: #f8f8f8;
+		border: solid;
+		border-top-width: 1px;
+		border-radius: 2%;
+		border-color: #ddd;
+		padding: 4px;
+		margin: 0px;
+	}
+	.exec-buttons-bottom {
+		background-color: #f8f8f8;
+		border: solid;
+		border-top-width: 0.5px;
+		border-width: 1px;
+		border-radius: 2%;
+		border-color: #ddd;
+		padding: 4px;
+		margin: 0px;
 	}
 </style>

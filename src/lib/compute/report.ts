@@ -50,7 +50,7 @@ export let report_node_data: ReportNodeInterface = {
 		icon: 'report_v0'
 	},
 	position: { x: 0, y: 0 },
-	type: 'report_v0'
+	type: 'default_v0'
 };
 
 export let report_node = new ReportNode(report_node_data);

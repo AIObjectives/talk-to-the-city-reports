@@ -1,6 +1,8 @@
 import { describe, it, vi } from 'vitest';
 import { expect } from 'vitest';
-import ClusterExtractionNode, { cluster_extraction_node_data } from '$lib/compute/cluster_extraction';
+import ClusterExtractionNode, {
+	cluster_extraction_node_data
+} from '$lib/compute/cluster_extraction';
 import deepCopy from 'deep-copy';
 import mock_cluster_extraction_data from '$lib/mock_data/cluster_extraction/cluster_extraction.json';
 import csv_data from '$lib/mock_data/csv/csv.json';
@@ -9,7 +11,7 @@ import system_prompt from '$lib/mock_data/cluster_extraction/system_prompt.txt?r
 
 vi.mock('$lib/utils', () => ({
 	readFileFromGCS: vi.fn(() => Promise.resolve(JSON.stringify(mock_cluster_extraction_data))),
-	uploadDataToGCS: vi.fn(() => Promise.resolve())
+	uploadJSONToGCS: vi.fn(() => Promise.resolve())
 }));
 
 describe('ClusterExtractionNode class', () => {
@@ -21,7 +23,14 @@ describe('ClusterExtractionNode class', () => {
 			open_ai_key: 'sk-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
 			csv: csv_data
 		};
-		const output = await node.compute(inputData, 'run', console.log, console.error, console.log, 'test_slug');
+		const output = await node.compute(
+			inputData,
+			'run',
+			console.log,
+			console.error,
+			console.log,
+			'test_slug'
+		);
 		expect(output).toEqual(mock_cluster_extraction_data);
 	});
 
@@ -32,7 +41,14 @@ describe('ClusterExtractionNode class', () => {
 		const inputData = {
 			open_ai_key: 'sk-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
 		};
-		const output = await node.compute(inputData, 'run', console.log, console.error, console.log, 'test_slug');
+		const output = await node.compute(
+			inputData,
+			'run',
+			console.log,
+			console.error,
+			console.log,
+			'test_slug'
+		);
 		expect(output).toEqual(undefined);
 	});
 
@@ -43,7 +59,14 @@ describe('ClusterExtractionNode class', () => {
 		const inputData = {
 			csv: csv_data
 		};
-		const output = await node.compute(inputData, 'run', console.log, console.error, console.log, 'test_slug');
+		const output = await node.compute(
+			inputData,
+			'run',
+			console.log,
+			console.error,
+			console.log,
+			'test_slug'
+		);
 		expect(output).toEqual(undefined);
 	});
 
@@ -55,7 +78,14 @@ describe('ClusterExtractionNode class', () => {
 			open_ai_key: 'sk-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
 			csv: csv_data
 		};
-		const output = await node.compute(inputData, 'run', console.log, console.error, console.log, 'test_slug');
+		const output = await node.compute(
+			inputData,
+			'run',
+			console.log,
+			console.error,
+			console.log,
+			'test_slug'
+		);
 		expect(output).toEqual(undefined);
 	});
 
@@ -70,10 +100,17 @@ describe('ClusterExtractionNode class', () => {
 			open_ai_key: 'sk-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
 			csv: csv_data
 		};
-		const output = await node.compute(inputData, 'run', (x) => {
-			console.log(x);
-			expect(x == 'Calling OpenAI').toEqual(false);
-		}, console.error, console.log, 'test_slug');
+		const output = await node.compute(
+			inputData,
+			'run',
+			(x) => {
+				console.log(x);
+				expect(x == 'Calling OpenAI').toEqual(false);
+			},
+			console.error,
+			console.log,
+			'test_slug'
+		);
 		expect(output).toEqual(mock_cluster_extraction_data);
 	});
 });

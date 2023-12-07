@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Close from '$lib/icons/Close.svelte';
 	import { Dataset } from '$lib/dataset';
+	import { _ as __ } from 'svelte-i18n';
 
 	export let dataset: Dataset;
 	export let loadDatasets: () => void;
@@ -8,8 +9,11 @@
 	import Card from '@smui/card';
 
 	const deleteDataset = async () => {
-		await dataset.deleteDataset();
-		loadDatasets();
+		const assets: string[] = dataset.graph.listAssets();
+		if (confirm($__('are_you_sure_delete_dataset') + '\n\n' + assets.join('\n'))) {
+			await dataset.deleteDataset();
+			loadDatasets();
+		}
 	};
 </script>
 

@@ -1,0 +1,4 @@
+rm -rf node_modules
+rm -rf .svelte-kit/generated .svelte-kit/ambient.d.ts .svelte-kit/types
+npm install --force
+npm run dev

@@ -1,47 +1,51 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import github from '$lib/images/github.svg';
-	import { user } from '$lib/store';
+	import { user, viewMode } from '$lib/store';
 	import Menu from '$components/menu/menu.svelte';
 
 	import '$lib/i18n';
 	import { _ as __ } from 'svelte-i18n';
 	import _ from 'lodash';
+	$: isReport = $page.route.id.startsWith('/report/[report]');
+	$: isStandard = $viewMode == 'standard';
+	$: showMenu = (isReport && isStandard) || !isReport;
 </script>
 
 <Menu {user} />
 
-<a href="https://github.com/AIObjectives/tttc-turbo">
-	<img src={github} alt="GitHub" class="github" />
-</a>
+{#if showMenu}
+	<a href="https://github.com/AIObjectives/tttc-turbo">
+		<img src={github} alt="GitHub" class="github" />
+	</a>
+	<header>
+		<div class="corner" />
 
-<header>
-	<div class="corner" />
-
-	<nav>
-		<svg viewBox="0 0 2 3" aria-hidden="true">
-			<path d="M0,0 L1,2 C1.5,3 1.5,3 2,3 L2,0 Z" />
-		</svg>
-		<ul>
-			<li aria-current={$page.url.pathname === '/' ? 'page' : undefined}>
-				<a href="/">{$__('home')} </a>
-			</li>
-			<li aria-current={$page.url.pathname === '/about' ? 'page' : undefined}>
-				<a href="/about">{$__('about')}</a>
-			</li>
-			{#if !$user}
-				<li aria-current={$page.url.pathname === '/login' ? 'page' : undefined}>
-					<a href="/login">{$__('sign_in')}</a>
+		<nav>
+			<svg viewBox="0 0 2 3" aria-hidden="true">
+				<path d="M0,0 L1,2 C1.5,3 1.5,3 2,3 L2,0 Z" />
+			</svg>
+			<ul>
+				<li aria-current={$page.url.pathname === '/' ? 'page' : undefined}>
+					<a href="/">{$__('home')} </a>
 				</li>
-			{/if}
-		</ul>
-		<svg viewBox="0 0 2 3" aria-hidden="true">
-			<path d="M0,0 L0,3 C0.5,3 0.5,3 1,2 L2,0 Z" />
-		</svg>
-	</nav>
+				<li aria-current={$page.url.pathname === '/about' ? 'page' : undefined}>
+					<a href="/about">{$__('about')}</a>
+				</li>
+				{#if !$user}
+					<li aria-current={$page.url.pathname === '/login' ? 'page' : undefined}>
+						<a href="/login">{$__('sign_in')}</a>
+					</li>
+				{/if}
+			</ul>
+			<svg viewBox="0 0 2 3" aria-hidden="true">
+				<path d="M0,0 L0,3 C0.5,3 0.5,3 1,2 L2,0 Z" />
+			</svg>
+		</nav>
 
-	<div class="corner" />
-</header>
+		<div class="corner" />
+	</header>
+{/if}
 
 <style>
 	header {

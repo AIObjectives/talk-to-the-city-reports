@@ -7,6 +7,7 @@ import TranslateNode from '$components/graph/nodes/TranslateNode.svelte';
 import EditCSVNode from '$components/graph/nodes/EditCSVNode.svelte';
 import GridNode from '$components/graph/nodes/GridNode.svelte';
 import MarkdownNode from '$components/graph/nodes/MarkdownNode.svelte';
+import DefaultNode from '$components/graph/nodes/DefaultNode.svelte';
 
 export const nodeTypes = {
 	text_input_v0: TextInputNode,
@@ -20,7 +21,8 @@ export const nodeTypes = {
 	jsonata_v0: TextInputNode,
 	jq_v0: TextInputNode,
 	grid_v0: GridNode,
-	markdown_v0: MarkdownNode
+	markdown_v0: MarkdownNode,
+	default_v0: DefaultNode
 };
 
 import '$lib/compute/csv';

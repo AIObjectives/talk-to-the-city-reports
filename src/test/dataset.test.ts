@@ -129,11 +129,11 @@ describe('Full pipeline run test', () => {
 	});
 	it('CSV JQ test', async () => {
 		vi.spyOn(utils, 'readFileFromGCS').mockResolvedValue(weather);
-		vi.spyOn(utils, 'uploadDataToGCS').mockResolvedValue(
+		vi.spyOn(utils, 'uploadJSONToGCS').mockResolvedValue(
 			`uploads/123/test/cluster_extraction.json`
 		);
-		const uploadDataToGCSSpy = vi
-			.spyOn(utils, 'uploadDataToGCS')
+		const uploadJSONToGCSSpy = vi
+			.spyOn(utils, 'uploadJSONToGCS')
 			.mockResolvedValue(`uploads/123/test/cluster_extraction.json`);
 		const dataset = new Dataset(
 			'title',
@@ -149,11 +149,11 @@ describe('Full pipeline run test', () => {
 		expect(dataset.graph.find('cluster_extraction').node.data.output).toEqual(
 			mock_cluster_extraction_data
 		);
-		expect(uploadDataToGCSSpy.mock.calls[0][0].data.output).toEqual(mock_cluster_extraction_data);
+		expect(uploadJSONToGCSSpy.mock.calls[0][0].data.output).toEqual(mock_cluster_extraction_data);
 		expect(dataset.graph.find('argument_extraction').node.data.output).toEqual(
 			mock_argument_extraction_data
 		);
-		expect(uploadDataToGCSSpy.mock.calls[1][0].data.output).toEqual(mock_argument_extraction_data);
+		expect(uploadJSONToGCSSpy.mock.calls[1][0].data.output).toEqual(mock_argument_extraction_data);
 		expect(dataset.graph.find('merge').node.data.output).toEqual(mock_merge_data);
 	});
 });

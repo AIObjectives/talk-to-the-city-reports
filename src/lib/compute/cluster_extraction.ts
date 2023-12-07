@@ -1,6 +1,6 @@
 import nodes from '$lib/node_register';
 import categories from '$lib/node_categories';
-import { readFileFromGCS, uploadDataToGCS } from '$lib/utils';
+import { readFileFromGCS, uploadJSONToGCS } from '$lib/utils';
 import { cluster_extraction_prompt, cluster_extraction_system_prompt } from '$lib/prompts';
 
 async function gpt(
@@ -84,6 +84,12 @@ export default class ClusterExtractionNode {
 			info('Computing ' + this.data.label);
 			this.data.csv_length = csv.length;
 			const { prompt, system_prompt } = this.data;
+			let i = 0;
+			const interval = setInterval(() => {
+				this.data.message = 'Computing ' + this.data.label + '.'.repeat(i % 4);
+				info(this.data.message);
+				i++;
+			}, 5000);
 			const result = await gpt(
 				open_ai_key,
 				system_prompt,
@@ -95,8 +101,9 @@ export default class ClusterExtractionNode {
 				error,
 				success
 			);
+			clearInterval(interval);
 			this.data.output = JSON.parse(result);
-			await uploadDataToGCS(this, this.data.output, slug);
+			await uploadJSONToGCS(this, this.data.output, slug);
 			this.data.dirty = false;
 			success('Done computing ' + this.data.label);
 			return this.data.output;

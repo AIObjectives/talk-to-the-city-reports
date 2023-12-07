@@ -1,9 +1,8 @@
 import nodes from '$lib/node_register';
-import { readFileFromGCS, uploadDataToGCS } from '$lib/utils';
+import { readFileFromGCS, uploadJSONToGCS } from '$lib/utils';
 import { cluster_extraction_system_prompt, score_claim_relevance_prompt } from '$lib/prompts';
 import deepCopy from 'deep-copy';
 import categories from '$lib/node_categories';
-import CryptoJS from 'crypto-js';
 
 export default class ScoreArgumentRelevanceNode {
 	id: string;
@@ -81,7 +80,7 @@ export default class ScoreArgumentRelevanceNode {
 			this.data.output = copy;
 			this.data.csv_length = Object.keys(copy).length;
 			this.data.dirty = false;
-			await uploadDataToGCS(this, this.data.output, slug);
+			await uploadJSONToGCS(this, this.data.output, slug);
 			return this.data.output;
 		}
 	}
@@ -107,7 +106,6 @@ export default class ScoreArgumentRelevanceNode {
 			{ role: 'system', content: systemPrompt },
 			{ role: 'user', content: prompt }
 		];
-		const hash = CryptoJS.SHA256(JSON.stringify(messages)).toString();
 		const res = await OpenAI.chat.completions.create({
 			messages,
 			model: 'gpt-4',

@@ -1,7 +1,6 @@
 <script lang="ts">
+	import { fade } from 'svelte/transition';
 	export let node;
-	import { createEventDispatcher } from 'svelte';
-	const dispatch = createEventDispatcher();
 	const onDragStart = (event: DragEvent, nodeType: string) => {
 		if (!event.dataTransfer) return null;
 		event.dataTransfer.setData('application/svelteflow', nodeType);

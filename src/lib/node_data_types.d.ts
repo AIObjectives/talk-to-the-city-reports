@@ -4,6 +4,8 @@ export interface BaseData {
 	compute_type: string;
 	input_ids: { [key: string]: string };
 	category: string;
+	icon: string;
+	output?: any;
 }
 
 export interface DGEdgeInterface {
@@ -13,11 +15,20 @@ export interface DGEdgeInterface {
 	target: string;
 }
 
-export interface DGNodeInterface {
+export interface GCSData {
+	filename: string;
+	size_kb: number;
+	gcs_path: string;
+}
+
+export interface DGNodeInterface<T extends BaseData = BaseData> {
 	id: string;
 	position: {
 		x: number;
 		y: number;
 	};
-	type?: string;
+	type: string;
+	data: T;
 }
+
+export type GCSBaseData = BaseData & GCSData;

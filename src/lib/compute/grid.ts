@@ -31,14 +31,14 @@ export default class GridNode {
 		success: (arg: string) => void,
 		slug: string
 	) {
-		if (!this.data.dirty && this.data.output && Object.keys(this.data.output).length > 0) {
-			return this.data.output;
-		}
-
+		this.data.dirty = false;
 		const input = inputData[Object.keys(inputData)[0]];
 		this.data.output = input;
-		this.data.dirty = false;
-		return this.data.output;
+		this.data = {
+			...this.data,
+			output: this.data.output
+		};
+		return input;
 	}
 }
 
@@ -56,7 +56,9 @@ export let grid_node_data: GridNodeInterface = {
 		compute_type: 'grid_v0',
 		input_ids: {},
 		category: categories.display.id,
-		icon: 'grid_v0'
+		icon: 'grid_v0',
+		width: 700,
+		height: 500
 	},
 	position: { x: 0, y: 0 },
 	type: 'grid_v0'

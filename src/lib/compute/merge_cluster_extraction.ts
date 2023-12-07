@@ -1,7 +1,6 @@
 import nodes from '$lib/node_register';
-import { readFileFromGCS, uploadDataToGCS } from '$lib/utils';
+import { readFileFromGCS, uploadJSONToGCS } from '$lib/utils';
 import { merge_extraction_prompt } from '$lib/prompts';
-import CryptoJS from 'crypto-js';
 import categories from '$lib/node_categories';
 
 export default class MergeClusterExtractionNode {
@@ -72,7 +71,7 @@ export default class MergeClusterExtractionNode {
 				success
 			);
 			this.data.output = JSON.parse(result);
-			await uploadDataToGCS(this, this.data.output, slug);
+			await uploadJSONToGCS(this, this.data.output, slug);
 			this.data.dirty = false;
 			success('Done computing ' + this.data.label);
 			return this.data.output;
@@ -101,7 +100,6 @@ export default class MergeClusterExtractionNode {
 			{ role: 'system', content: systemPrompt },
 			{ role: 'user', content: prompt }
 		];
-		const hash = CryptoJS.SHA256(JSON.stringify(messages)).toString();
 		const res = await OpenAI.chat.completions.create({
 			messages,
 			model: 'gpt-4-1106-preview',

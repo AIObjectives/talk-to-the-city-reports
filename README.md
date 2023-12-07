@@ -13,121 +13,183 @@ To add pipeline computation nodes:
 - register the component and compute function in `src/lib/node_types.ts`
 - add the node to `src/lib/templates.ts`
 
-## Test coverage report
-
-```
-> tttc-turbo@0.0.1 test-update-readme
-> vitest --coverage --run --no-color --silent
 
 
- RUN  v0.34.6 /Users/orb/dev/tttc-turbo
-      Coverage enabled with v8
+## Test Results
+| Metric                | Count |
+|-----------------------|------:|
+| Total Test Suites     | 44 |
+| Passed Test Suites    | 44 |
+| Failed Test Suites    | 0 |
+| Pending Test Suites   | 0 |
+| Total Tests           | 78 |
+| Passed Tests          | 78 |
+| Failed Tests          | 0 |
+| Pending Tests         | 0 |
+| Todo Tests            | 0 |
 
- ✓ src/test/participant_filter.test.ts  (5 tests) 3ms
- ✓ src/test/markdown.test.ts  (5 tests) 5ms
- ✓ src/test/limit_csv.test.ts  (5 tests) 3ms
- ✓ src/test/csv.test.ts  (3 tests) 8ms
- ✓ src/test/cluster_extraction.test.ts  (5 tests) 125ms
- ✓ src/test/score_argument_relevance.test.ts  (5 tests) 108ms
- ✓ src/test/argument_extraction.test.ts  (6 tests) 125ms
- ✓ src/test/merge_cluster_extraction.test.ts  (4 tests) 225ms
- ✓ src/test/count_tokens.test.ts  (2 tests) 249ms
- ✓ src/test/merge.test.ts  (5 tests) 4ms
- ✓ src/test/jsonata.test.ts  (3 tests) 9ms
- ✓ src/test/jq_v1.test.ts  (2 tests) 275ms
- ✓ src/test/grid.test.ts  (1 test) 2ms
- ✓ src/test/jq_v0.test.ts  (2 tests) 5ms
- ✓ src/test/report.test.ts  (3 tests) 2ms
- ✓ src/test/register.test.ts  (1 test) 3ms
- ✓ src/test/json.test.ts  (3 tests) 4ms
- ✓ src/test/stringify.test.ts  (4 tests) 3ms
- ✓ src/test/open_ai_key.test.ts  (4 tests) 2ms
- ✓ src/test/edit_csv.test.ts  (7 tests) 3ms
- ✓ src/test/translate.test.ts  (2 tests) 4ms
- ✓ src/test/dataset.test.ts  (1 test) 400ms
+### `[1]` [argument_extraction.test.ts](./src/test//argument_extraction.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *extract the given arguments* | **passed** | `134` |
+| *should not extract the arguments if no csv* | **passed** | `0` |
+| *should not extract the arguments if no open_ai_key and no GCS* | **passed** | `0` |
+| *should extract the arguments if no open_ai_key and GCS* | **passed** | `0` |
+| *should not extract the arguments if no prompt and no system prompt* | **passed** | `1` |
+| *test GCS caching* | **passed** | `0` |
 
- Test Files  22 passed (22)
-      Tests  78 passed (78)
-   Start at  10:48:39
-   Duration  2.89s (transform 2.41s, setup 0ms, collect 4.74s, tests 1.57s, environment 17ms, prepare 1.70s)
+### `[2]` [cluster_extraction.test.ts](./src/test//cluster_extraction.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *extract the cluster* | **passed** | `137` |
+| *should not extract the cluster if no csv* | **passed** | `0` |
+| *should not extract the cluster if no open_ai_key* | **passed** | `0` |
+| *should not extract the cluster if no prompt and no system prompt* | **passed** | `0` |
+| *test GCS caching* | **passed** | `1` |
 
- % Coverage report from v8
--------------------|---------|----------|---------|---------|-------------------
-File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
--------------------|---------|----------|---------|---------|-------------------
-All files          |   71.63 |    79.31 |   36.87 |   71.63 |                   
- components        |     100 |      100 |     100 |     100 |                   
-  Grid.svelte      |     100 |      100 |     100 |     100 |                   
-  ...Nested.svelte |     100 |      100 |     100 |     100 |                   
- ...ts/graph/nodes |     100 |      100 |     100 |     100 |                   
-  CSVNode.svelte   |     100 |      100 |     100 |     100 |                   
-  DGNode.svelte    |     100 |      100 |     100 |     100 |                   
-  ...SVNode.svelte |     100 |      100 |     100 |     100 |                   
-  GridNode.svelte  |     100 |      100 |     100 |     100 |                   
-  JSONNode.svelte  |     100 |      100 |     100 |     100 |                   
-  ...wnNode.svelte |     100 |      100 |     100 |     100 |                   
-  ...utNode.svelte |     100 |      100 |     100 |     100 |                   
-  ...ptNode.svelte |     100 |      100 |     100 |     100 |                   
-  ...utNode.svelte |     100 |      100 |     100 |     100 |                   
-  ...teNode.svelte |     100 |      100 |     100 |     100 |                   
-  ...leNode.svelte |     100 |      100 |     100 |     100 |                   
- components/toast  |   60.86 |      100 |      50 |   60.86 |                   
-  theme.ts         |   60.86 |      100 |      50 |   60.86 | 27-35,38-46       
- lib               |    46.8 |     68.5 |   18.91 |    46.8 |                   
-  dataset.ts       |   41.98 |    88.88 |   21.42 |   41.98 | ...10-226,229-261 
-  firebase.js      |     100 |      100 |       0 |     100 |                   
-  graph.ts         |    53.7 |      100 |   42.85 |    53.7 | ...32,35-41,44-53 
-  jq.js            |   37.86 |    63.09 |   15.13 |   37.86 | ...2157,2169-2200 
-  mock_open_ai.ts  |     100 |      100 |     100 |     100 |                   
-  node.ts          |    37.5 |      100 |      40 |    37.5 | 17-23,26-37,40-55 
-  ...categories.ts |     100 |      100 |     100 |     100 |                   
-  node_register.ts |   89.47 |      100 |      75 |   89.47 | 13-14             
-  node_types.ts    |     100 |      100 |     100 |     100 |                   
-  prompts.ts       |     100 |      100 |     100 |     100 |                   
-  store.ts         |     100 |      100 |     100 |     100 |                   
-  utils.ts         |      50 |      100 |   33.33 |      50 | ...43,80-81,84-86 
- lib/compute       |   94.97 |    89.55 |   97.26 |   94.97 |                   
-  ...extraction.ts |   98.71 |     87.5 |     100 |   98.71 | 116-117           
-  ...extraction.ts |   97.85 |       90 |     100 |   97.85 | 38-40             
-  count_tokens.ts  |   97.33 |    83.33 |     100 |   97.33 | 46-47             
-  csv.ts           |   96.18 |    78.57 |   85.71 |   96.18 | 42-43,75-77       
-  edit_csv.ts      |     100 |      100 |     100 |     100 |                   
-  grid.ts          |   97.01 |       60 |     100 |   97.01 | 35-36             
-  jq_v0.ts         |   97.36 |    83.33 |     100 |   97.36 | 38-39             
-  jq_v1.ts         |     100 |      100 |     100 |     100 |                   
-  json.ts          |   97.14 |    71.42 |     100 |   97.14 | 30-31             
-  jsonata.ts       |     100 |      100 |     100 |     100 |                   
-  limit_csv.ts     |   96.92 |    83.33 |     100 |   96.92 | 35-36             
-  markdown.ts      |     100 |      100 |     100 |     100 |                   
-  merge.ts         |     100 |    94.11 |     100 |     100 | 59                
-  ...extraction.ts |   97.97 |    83.33 |     100 |   97.97 | 41-43             
-  open_ai_key.ts   |     100 |      100 |     100 |     100 |                   
-  ...ant_filter.ts |     100 |      100 |     100 |     100 |                   
-  report.ts        |     100 |      100 |     100 |     100 |                   
-  ..._relevance.ts |     100 |    94.73 |     100 |     100 | 99                
-  stringify.ts     |   96.77 |       75 |     100 |   96.77 | 32-33             
-  translate.ts     |   42.97 |      100 |   66.66 |   42.97 | 27-95             
- lib/docs          |     100 |      100 |     100 |     100 |                   
-  ...extraction.ts |     100 |      100 |     100 |     100 |                   
-  ...extraction.ts |     100 |      100 |     100 |     100 |                   
-  csv.ts           |     100 |      100 |     100 |     100 |                   
-  edit_csv.ts      |     100 |      100 |     100 |     100 |                   
-  grid.ts          |     100 |      100 |     100 |     100 |                   
-  jq.ts            |     100 |      100 |     100 |     100 |                   
-  json.ts          |     100 |      100 |     100 |     100 |                   
-  jsonata.ts       |     100 |      100 |     100 |     100 |                   
-  limit_csv.ts     |     100 |      100 |     100 |     100 |                   
-  markdown.ts      |     100 |      100 |     100 |     100 |                   
-  ...extraction.ts |     100 |      100 |     100 |     100 |                   
-  open_ai_key.ts   |     100 |      100 |     100 |     100 |                   
-  ...ant_filter.ts |     100 |      100 |     100 |     100 |                   
-  stringify.ts     |     100 |      100 |     100 |     100 |                   
-  translate.ts     |     100 |      100 |     100 |     100 |                   
- lib/icons         |     100 |      100 |     100 |     100 |                   
-  ...ection.svelte |     100 |      100 |     100 |     100 |                   
-  ...Circle.svelte |     100 |      100 |     100 |     100 |                   
-  ...utline.svelte |     100 |      100 |     100 |     100 |                   
- test/test/mocks   |     100 |      100 |     100 |     100 |                   
-  js-cookie.ts     |     100 |      100 |     100 |     100 |                   
--------------------|---------|----------|---------|---------|-------------------
-```
+### `[3]` [count_tokens.test.ts](./src/test//count_tokens.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *should correctly count tokens in input data* | **passed** | `290` |
+| *should not count tokens if input data length matches and node is not dirty* | **passed** | `0` |
+
+### `[4]` [csv.test.ts](./src/test//csv.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *should process CSV data correctly from GCS* | **passed** | `6` |
+| *should handle empty CSV data from GCS* | **passed** | `2` |
+| *should handle rows with uneven columns from GCS* | **passed** | `3` |
+
+### `[5]` [dataset.test.ts](./src/test//dataset.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *CSV JQ test* | **passed** | `320` |
+
+### `[6]` [edit_csv.test.ts](./src/test//edit_csv.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *generates new columns* | **passed** | `2` |
+| *deletes columns* | **passed** | `1` |
+| *renames columns* | **passed** | `0` |
+| *returns undefined if input is undefined* | **passed** | `0` |
+| *handles multiple operations* | **passed** | `0` |
+| *does not modify input if no operations are specified* | **passed** | `0` |
+| *does not crash if input is empty* | **passed** | `1` |
+
+### `[7]` [grid.test.ts](./src/test//grid.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *sets the output of the node to the input data* | **passed** | `1` |
+
+### `[8]` [jq_v0.test.ts](./src/test//jq_v0.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *should process data correctly with JQ filter* | **passed** | `2` |
+| *should handle invalid JQ filter* | **passed** | `2` |
+
+### `[9]` [jq_v1.test.ts](./src/test//jq_v1.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *should process data correctly with JQ filter* | **passed** | `171` |
+| *should handle invalid JQ filter* | **passed** | `3` |
+
+### `[10]` [json.test.ts](./src/test//json.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *should process JSON data correctly from GCS* | **passed** | `1` |
+| *should handle invalid JSON data from GCS* | **passed** | `1` |
+| *should update dirty state correctly* | **passed** | `0` |
+
+### `[11]` [jsonata.test.ts](./src/test//jsonata.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *evaluates JSONata expressions* | **passed** | `2` |
+| *returns undefined if no expression is provided* | **passed** | `0` |
+| *catches errors when evaluating expressions* | **passed** | `5` |
+
+### `[12]` [limit_csv.test.ts](./src/test//limit_csv.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *should limit the number of rows correctly* | **passed** | `1` |
+| *should limit the number of rows correctly, for an object* | **passed** | `1` |
+| *should return all rows if limit is greater than number of rows* | **passed** | `0` |
+| *should return an empty array if input is empty* | **passed** | `0` |
+| *should not mutate the input node* | **passed** | `0` |
+
+### `[13]` [markdown.test.ts](./src/test//markdown.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *should set markdown data if input is a string* | **passed** | `2` |
+| *should not set markdown data if input is not a string* | **passed** | `0` |
+| *should not set markdown data if input is undefined* | **passed** | `1` |
+| *should not set markdown data if input is null* | **passed** | `0` |
+| *should not set markdown data if input is an object* | **passed** | `0` |
+
+### `[14]` [merge.test.ts](./src/test//merge.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *merges cluster_extraction and argument_extraction data* | **passed** | `2` |
+| *does not merge if cluster_extraction data is missing* | **passed** | `0` |
+| *does not merge if argument_extraction data is missing* | **passed** | `0` |
+| *does not merge if cluster_extraction data has no topics* | **passed** | `0` |
+| *sets node data output to the merged data and dirty to false after merge* | **passed** | `0` |
+
+### `[15]` [merge_cluster_extraction.test.ts](./src/test//merge_cluster_extraction.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *merges cluster extraction data* | **passed** | `120` |
+| *does not merge if cluster extractions are missing* | **passed** | `106` |
+| *uses cached data if available and not dirty* | **passed** | `2` |
+| *does not merge if no open_ai_key is provided* | **passed** | `0` |
+
+### `[16]` [open_ai_key.test.ts](./src/test//open_ai_key.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *should set the key in cookies if the UI key is valid* | **passed** | `1` |
+| *if ui key is set but invalid use local key* | **passed** | `1` |
+| *should set the node text to "Invalid key" if the UI key is not valid and there is no local key* | **passed** | `0` |
+| *should not mutate the node if the UI key and local key are both valid* | **passed** | `0` |
+
+### `[17]` [participant_filter.test.ts](./src/test//participant_filter.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *filters participants based on the provided name* | **passed** | `1` |
+| *removes subtopics with no claims after filtering* | **passed** | `0` |
+| *removes topics with no subtopics after filtering* | **passed** | `1` |
+| *returns undefined if input data does not contain topics* | **passed** | `0` |
+| *does not filter claims if interview key is missing* | **passed** | `0` |
+
+### `[18]` [register.test.ts](./src/test//register.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *test node registeration* | **passed** | `12` |
+
+### `[19]` [report.test.ts](./src/test//report.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *should set the output of the node to the input data* | **passed** | `1` |
+| *should handle empty input data* | **passed** | `0` |
+| *should not mutate the input node* | **passed** | `0` |
+
+### `[20]` [score_argument_relevance.test.ts](./src/test//score_argument_relevance.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *scores the relevance of arguments* | **passed** | `116` |
+| *uses cached data if available and not dirty* | **passed** | `1` |
+| *does not score if argument_extraction data is missing* | **passed** | `0` |
+| *does not score if open_ai_key is missing* | **passed** | `1` |
+| *does not score if prompts are missing* | **passed** | `0` |
+
+### `[21]` [stringify.test.ts](./src/test//stringify.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *should correctly stringify input data* | **passed** | `1` |
+| *should return input if it cannot be stringified* | **passed** | `1` |
+| *should handle different types of input* | **passed** | `0` |
+| *should not mutate the input node* | **passed** | `1` |
+
+### `[22]` [translate.test.ts](./src/test//translate.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *translates the input data* | **passed** | `0` |
+| *uses cached translations when available* | **passed** | `0` |

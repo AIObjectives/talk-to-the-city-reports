@@ -15,5 +15,11 @@
 		showDropdown = false;
 	}}
 >
-	<a href={path} class="block px-4 py-2 hover:bg-gray-300">{label}</a>
+	<a href={path} class="cursor-pointer block px-4 py-2 hover:bg-gray-300">{label}</a>
 </div>
+
+<style>
+	.cursor-pointer {
+		cursor: pointer;
+	}
+</style>

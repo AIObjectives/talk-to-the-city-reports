@@ -1,6 +1,6 @@
 import nodes from '$lib/node_register';
 import categories from '$lib/node_categories';
-import { readFileFromGCS, uploadDataToGCS } from '$lib/utils';
+import { readFileFromGCS, uploadJSONToGCS } from '$lib/utils';
 import { argument_extraction_prompt, argument_extraction_system_prompt } from '$lib/prompts';
 
 async function gpt(
@@ -111,12 +111,12 @@ export default class ArgumentExtractionNode {
 			let ids = Object.keys(csv_by_ids);
 
 			try {
-				await processInChunks(ids, extract_args.bind(this), 50);
+				await processInChunks(ids, extract_args.bind(this), 1000);
 			} catch (err) {
 				console.error(err);
 			}
 			this.data.dirty = false;
-			await uploadDataToGCS(this, this.data.output, slug);
+			await uploadJSONToGCS(this, this.data.output, slug);
 			return this.data.output;
 		}
 	}

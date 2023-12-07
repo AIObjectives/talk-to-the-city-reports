@@ -1,5 +1,5 @@
 import nodes from '$lib/node_register';
-import { readFileFromGCS, uploadDataToGCS } from '$lib/utils';
+import { readFileFromGCS, uploadJSONToGCS } from '$lib/utils';
 
 import categories from '$lib/node_categories';
 
@@ -86,7 +86,7 @@ export default class TranslateNode {
 
 			this.data.dirty = false;
 			this.data.output = translations;
-			await uploadDataToGCS(this, translations, this.id + '/translate');
+			await uploadJSONToGCS(this, translations, this.id + '/translate');
 
 			return translations.map((translatedItem, index) => {
 				return { ...data[index], ...translatedItem };
