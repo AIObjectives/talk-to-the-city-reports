@@ -23,7 +23,15 @@ export default class TranslateNode {
 		this.type = type;
 	}
 
-	async compute(inputData: object, context: string, info: (arg: string) => void) {
+	async compute(
+		inputData: object,
+		context: string,
+		info: (arg: string) => void,
+		error: (arg: string) => void,
+		success: (arg: string) => void,
+		slug: string,
+		Cookies: any
+	) {
 		const open_ai_key = inputData.open_ai_key || inputData[this.data.input_ids.open_ai_key];
 		const data = inputData.data || inputData[this.data.input_ids.data];
 		const target_language = this.data.target_language;
@@ -113,7 +121,8 @@ export let translate_node_data: TranslateNodeInterface = {
 		icon: 'translate_v0'
 	},
 	position: { x: 0, y: 0 },
-	type: 'translate_v0'
+	type: 'translate_v0',
+	show_in_ui: false
 };
 
 export let translate_node = new TranslateNode(translate_node_data);

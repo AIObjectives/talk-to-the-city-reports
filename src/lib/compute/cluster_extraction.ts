@@ -60,7 +60,8 @@ export default class ClusterExtractionNode {
 		info: (arg: string) => void,
 		error: (arg: string) => void,
 		success: (arg: string) => void,
-		slug: string
+		slug: string,
+		Cookies: any
 	) {
 		const csv = inputData.csv || inputData[this.data.input_ids.csv];
 		const open_ai_key = inputData.open_ai_key || inputData[this.data.input_ids.open_ai_key];
@@ -136,7 +137,8 @@ export let cluster_extraction_node_data: ClusterExtractionNodeInterface = {
 		compute_type: 'cluster_extraction_v0',
 		input_ids: { open_ai_key: '', csv: '' },
 		category: categories.llm.id,
-		icon: 'cluster_extraction_v0'
+		icon: 'cluster_extraction_v0',
+		show_in_ui: true
 	},
 	position: { x: 0, y: 0 },
 	type: 'prompt_v0'

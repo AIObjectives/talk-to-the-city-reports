@@ -29,7 +29,8 @@ export default class CountTokensNode {
 		info: (arg: string) => void,
 		error: (arg: string) => void,
 		success: (arg: string) => void,
-		slug: string
+		slug: string,
+		Cookies: any
 	) {
 		const inputArray = inputData[Object.keys(inputData)[0]];
 		const inputMatches = inputArray.length && this.data.csv_length === inputArray.length;
@@ -64,7 +65,8 @@ export let count_tokens_node_data: CountTokensNodeInterface = {
 		compute_type: 'count_tokens_v0',
 		input_ids: { csv: '' },
 		category: categories.llm.id,
-		icon: 'count_tokens_v0'
+		icon: 'count_tokens_v0',
+		show_in_ui: false
 	},
 	position: { x: 0, y: 0 },
 	type: 'text_input_v0'

@@ -21,7 +21,8 @@ export default class ReportNode {
 		info: (arg: string) => void,
 		error: (arg: string) => void,
 		success: (arg: string) => void,
-		slug: string
+		slug: string,
+		Cookies: any
 	) {
 		this.data.dirty = false;
 		const input = inputData[Object.keys(inputData)[0]];
@@ -50,7 +51,8 @@ export let report_node_data: ReportNodeInterface = {
 		icon: 'report_v0'
 	},
 	position: { x: 0, y: 0 },
-	type: 'default_v0'
+	type: 'default_v0',
+	show_in_ui: false
 };
 
 export let report_node = new ReportNode(report_node_data);

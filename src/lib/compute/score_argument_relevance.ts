@@ -24,7 +24,8 @@ export default class ScoreArgumentRelevanceNode {
 		info: (arg: string) => void,
 		error: (arg: string) => void,
 		success: (arg: string) => void,
-		slug: string
+		slug: string,
+		Cookies: any
 	) {
 		const { prompt, system_prompt } = this.data;
 		const argument_extraction =
@@ -137,7 +138,8 @@ export let score_argument_relevance_node_data: ScoreArgumentRelevanceNodeInterfa
 		compute_type: 'score_argument_relevance_v0',
 		input_ids: { open_ai_key: '', argument_extraction: '' },
 		category: categories.llm.id,
-		icon: 'score_argument_relevance_v0'
+		icon: 'score_argument_relevance_v0',
+		show_in_ui: false
 	},
 	position: { x: 0, y: 0 },
 	type: 'prompt_v0'

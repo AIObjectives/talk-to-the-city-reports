@@ -23,7 +23,8 @@ export default class MergeClusterExtractionNode {
 		info: (arg: string) => void,
 		error: (arg: string) => void,
 		success: (arg: string) => void,
-		slug: string
+		slug: string,
+		Cookies: any
 	) {
 		const csv_key = this.data.input_ids.csv;
 		const open_ai_key_key = this.data.input_ids.open_ai_key;
@@ -133,7 +134,8 @@ export let merge_cluster_extraction_node_data: MergeClusterExtractionNodeInterfa
 		compute_type: 'merge_cluster_extraction_v0',
 		input_ids: { csv: '', open_ai_key: '' },
 		category: categories.wrangling.id,
-		icon: 'merge_cluster_extraction_v0'
+		icon: 'merge_cluster_extraction_v0',
+		show_in_ui: false
 	},
 	position: { x: 0, y: 0 },
 	type: 'prompt_v0'

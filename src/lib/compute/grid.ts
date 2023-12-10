@@ -29,7 +29,8 @@ export default class GridNode {
 		info: (arg: string) => void,
 		error: (arg: string) => void,
 		success: (arg: string) => void,
-		slug: string
+		slug: string,
+		Cookies: any
 	) {
 		this.data.dirty = false;
 		const input = inputData[Object.keys(inputData)[0]];
@@ -58,7 +59,8 @@ export let grid_node_data: GridNodeInterface = {
 		category: categories.display.id,
 		icon: 'grid_v0',
 		width: 700,
-		height: 500
+		height: 500,
+		show_in_ui: false
 	},
 	position: { x: 0, y: 0 },
 	type: 'grid_v0'

@@ -54,7 +54,8 @@ export let limit_csv_node_data: LimitCSVNodeInterface = {
 		compute_type: 'limit_csv_v0',
 		input_ids: { csv: '' },
 		category: categories.wrangling.id,
-		icon: 'limit_csv_v0'
+		icon: 'limit_csv_v0',
+		show_in_ui: true
 	},
 	position: { x: 0, y: 0 },
 	type: 'number_input_v0'

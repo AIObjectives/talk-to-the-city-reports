@@ -22,7 +22,8 @@ export default class MergeNode {
 		info: (arg: string) => void,
 		error: (arg: string) => void,
 		success: (arg: string) => void,
-		slug: string
+		slug: string,
+		Cookies: any
 	) {
 		let cluster_extraction =
 			inputData.cluster_extraction || inputData[this.data.input_ids.cluster_extraction];
@@ -90,7 +91,8 @@ export let merge_node_data: MergeNodeInterface = {
 		compute_type: 'merge_v0',
 		input_ids: { cluster_extraction: '', argument_extraction: '' },
 		category: categories.wrangling.id,
-		icon: 'merge_v0'
+		icon: 'merge_v0',
+		show_in_ui: false
 	},
 	position: { x: 0, y: 0 },
 	type: 'merge_v0'

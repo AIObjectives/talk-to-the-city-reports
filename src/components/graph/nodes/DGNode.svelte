@@ -71,7 +71,7 @@
 		{/if}
 
 		<div>
-			<!-- {#if !isStandardView}
+			{#if !isStandardView}
 				<FormField align="end">
 					<span
 						><Checkbox
@@ -82,7 +82,7 @@
 					>
 					<span slot="label">Show in standard view.</span>
 				</FormField>
-			{/if} -->
+			{/if}
 		</div>
 
 		<Handle type="source" position={Position.Bottom} on:connect={onConnect} />

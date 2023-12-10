@@ -146,16 +146,15 @@
 				<div class="exec-buttons-top" style="height:42px;">
 					<button
 						on:click={async () => {
-							await dataset.processNodes('run', $user);
-						}}><RobotOutline size={30} /></button
+							await dataset.updateDataset($user);
+						}}><ContentSaveOutline size={30} /></button
 					>
 				</div>
-
 				<div class="exec-buttons-bottom" style="height:42px;">
 					<button
 						on:click={async () => {
-							await dataset.updateDataset($user);
-						}}><ContentSaveOutline size={30} /></button
+							await dataset.processNodes('run', $user);
+						}}><RobotOutline size={30} /></button
 					>
 				</div>
 			</Panel>

@@ -29,7 +29,6 @@ export default class CSVNode {
 
 	// these are the arguments that are passed to the compute function
 	async compute(
-		node: CSVNodeInterface,
 		inputData: object,
 		context: string,
 		info: (arg: string) => void,
@@ -44,6 +43,7 @@ export default class CSVNode {
 
 		let contents;
 		if (this.data.gcs_path) {
+			// info('Loading ' + this.data.gcs_path.split('/').pop());
 			contents = await readFileFromGCS(this);
 			let parsedData = '';
 			if (browser) parsedData = this.paparseCSV(contents);
@@ -113,7 +113,8 @@ export let csv_node_data: CSVNodeInterface = {
 		compute_type: 'csv_v0',
 		input_ids: {},
 		category: categories.input.id,
-		icon: 'csv_v0'
+		icon: 'csv_v0',
+		show_in_ui: true
 	},
 	position: { x: 0, y: 0 },
 	type: 'csv_v0'

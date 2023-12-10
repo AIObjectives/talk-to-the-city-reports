@@ -21,7 +21,8 @@ export default class MarkdownNode {
 		info: (arg: string) => void,
 		error: (arg: string) => void,
 		success: (arg: string) => void,
-		slug: string
+		slug: string,
+		Cookies: any
 	) {
 		this.data.dirty = false;
 		const input = inputData[Object.keys(inputData)[0]];
@@ -49,7 +50,8 @@ export let markdown_node_data: MarkdownNodeInterface = {
 		compute_type: 'markdown_v0',
 		input_ids: { markdown: '' },
 		category: categories.display.id,
-		icon: 'markdown_v0'
+		icon: 'markdown_v0',
+		show_in_ui: false
 	},
 	position: { x: 0, y: 0 },
 	type: 'markdown_v0'

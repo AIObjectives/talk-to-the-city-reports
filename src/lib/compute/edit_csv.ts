@@ -30,7 +30,8 @@ class EditCSVNode {
 		info: (arg: string) => void,
 		error: (arg: string) => void,
 		success: (arg: string) => void,
-		slug: string
+		slug: string,
+		Cookies: any
 	) {
 		const input = inputData[Object.keys(inputData)[0]];
 		if (!input) {
@@ -80,7 +81,8 @@ export let edit_csv_node_data: EditCSVNodeInterface = {
 		compute_type: 'edit_csv_v0',
 		input_ids: { csv: '' },
 		category: categories.wrangling.id,
-		icon: 'edit_csv_v0'
+		icon: 'edit_csv_v0',
+		show_in_ui: false
 	},
 	position: { x: 0, y: 0 },
 	type: 'edit_csv_v0'

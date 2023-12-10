@@ -22,7 +22,8 @@ export default class JqNodeV0 {
 		info: (arg: string) => void,
 		error: (arg: string) => void,
 		success: (arg: string) => void,
-		slug: string
+		slug: string,
+		Cookies: any
 	) {
 		this.data.dirty = false;
 		const input = inputData[Object.keys(inputData)[0]];
@@ -65,7 +66,8 @@ export let jq_v0_node_data: JqNodeV0Interface = {
 		compute_type: 'jq_v0',
 		input_ids: {},
 		category: categories.wrangling.id,
-		icon: 'jq_v0'
+		icon: 'jq_v0',
+		show_in_ui: false
 	},
 	position: { x: 0, y: 0 },
 	type: 'text_input_v0'

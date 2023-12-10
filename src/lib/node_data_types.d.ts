@@ -6,6 +6,7 @@ export interface BaseData {
 	category: string;
 	icon: string;
 	output?: any;
+	show_in_ui: true;
 }
 
 export interface DGEdgeInterface {

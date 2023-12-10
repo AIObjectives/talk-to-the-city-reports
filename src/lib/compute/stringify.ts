@@ -21,7 +21,8 @@ export default class StringifyNode {
 		info: (arg: string) => void,
 		error: (arg: string) => void,
 		success: (arg: string) => void,
-		slug: string
+		slug: string,
+		Cookies: any
 	) {
 		this.data.dirty = false;
 		const input = inputData[Object.keys(inputData)[0]];
@@ -51,7 +52,8 @@ export let stringify_node_data: StringifyNodeInterface = {
 		compute_type: 'stringify_v0',
 		input_ids: {},
 		category: categories.wrangling.id,
-		icon: 'stringify_v0'
+		icon: 'stringify_v0',
+		show_in_ui: false
 	},
 	position: { x: 0, y: 0 },
 	type: 'default'
