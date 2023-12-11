@@ -2,44 +2,8 @@ import nodes from '$lib/node_register';
 import categories from '$lib/node_categories';
 import { readFileFromGCS, uploadJSONToGCS } from '$lib/utils';
 import { argument_extraction_prompt, argument_extraction_system_prompt } from '$lib/prompts';
-
-async function gpt(
-	apiKey: string,
-	systemPrompt: string,
-	promptTemplate: string,
-	replacements: { [key: string]: string },
-	info: (arg: string) => void,
-	error: (arg: string) => void,
-	success: (arg: string) => void
-) {
-	let vitest = import.meta.env.VITEST == 'true';
-	let openai = (await import(vitest ? '$lib/mock_open_ai' : 'openai')).default;
-	info('Calling OpenAI');
-	let prompt = promptTemplate;
-	for (const [key, value] of Object.entries(replacements)) {
-		prompt = prompt.replace(`{${key}}`, value);
-	}
-	const OpenAI = new openai({ apiKey, dangerouslyAllowBrowser: true });
-	const messages = [
-		{ role: 'system', content: systemPrompt },
-		{ role: 'user', content: prompt }
-	];
-	const res = await OpenAI.chat.completions.create({
-		messages,
-		model: 'gpt-4-1106-preview',
-		response_format: { type: 'json_object' },
-		temperature: 0.1
-	});
-	const resp = res.choices[0].message.content!;
-	return resp;
-}
-
-async function processInChunks(array, handler, chunkSize) {
-	for (let i = 0; i < array.length; i += chunkSize) {
-		const chunk = array.slice(i, i + chunkSize);
-		await Promise.all(chunk.map((item) => handler(item)));
-	}
-}
+import gpt from '$lib/gpt';
+import _ from 'lodash';
 
 export default class ArgumentExtractionNode {
 	id: string;
@@ -87,35 +51,58 @@ export default class ArgumentExtractionNode {
 
 		if (context == 'run' && open_ai_key && (prompt || system_prompt)) {
 			this.data.output = {};
+			const clusters = JSON.stringify(cluster_extraction);
 
-			const csv_by_ids = Object.fromEntries(csv.map((item) => [item['comment-id'], item]));
-			async function extract_args(id) {
-				const comment = csv_by_ids[id]['comment-body'];
-				const interview = csv_by_ids[id]['interview'];
-				const response = await gpt(
-					open_ai_key,
-					system_prompt,
-					prompt,
-					{
-						comment,
-						clusters: JSON.stringify(cluster_extraction)
-					},
-					info,
-					error,
-					success
+			const todo = new Set(_.range(0, csv.length));
+
+			let gptPromises = [];
+			for (let i = 0; i < csv.length; i++) {
+				gptPromises.push(
+					(async () => {
+						try {
+							const comment = csv[i]['comment-body'];
+							const interview = csv[i]['interview'];
+							const replacements = {
+								comment: comment,
+								clusters: clusters
+							};
+							const response = await gpt(
+								open_ai_key,
+								replacements,
+								prompt,
+								system_prompt,
+								info,
+								error,
+								success,
+								i,
+								csv.length,
+								todo
+							);
+							return { id: csv[i]['comment-id'], ...JSON.parse(response), comment, interview };
+						} catch (err) {
+							error(err.message);
+							// Return null or handle the error as desired
+							return null;
+						}
+					})()
 				);
-				this.data.output[id] = { id, comment, interview, ...JSON.parse(response) };
 			}
+
+			info(`Calling OpenAI with ${csv.length} request${csv.length > 1 ? 's' : ''}`);
+			let startTime = performance.now();
+			console.time('OpenAI Call');
+			const results = await Promise.all(gptPromises);
+			console.timeEnd('OpenAI Call');
+			let endTime = performance.now();
+			let timeTaken = endTime - startTime;
+			success(`Done extracting arguments in ${Math.floor(timeTaken / 1000)} seconds`);
+
+			results.forEach((result) => {
+				this.data.output[result.id] = result;
+			});
 
 			this.data.csv_length = csv.length;
 
-			let ids = Object.keys(csv_by_ids);
-
-			try {
-				await processInChunks(ids, extract_args.bind(this), 1000);
-			} catch (err) {
-				console.error(err);
-			}
 			this.data.dirty = false;
 			await uploadJSONToGCS(this, this.data.output, slug);
 			return this.data.output;
@@ -144,8 +131,7 @@ export let argument_extraction_node_data: ArgumentExtractionNodeInterface = {
 		compute_type: 'argument_extraction_v0',
 		input_ids: { open_ai_key: '', csv: '', cluster_extraction: '' },
 		category: categories.llm.id,
-		icon: 'argument_extraction_v0',
-		show_in_ui: true
+		icon: 'argument_extraction_v0'
 	},
 	position: { x: 0, y: 0 },
 	type: 'prompt_v0'

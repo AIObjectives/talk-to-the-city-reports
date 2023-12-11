@@ -159,7 +159,7 @@
 					: '100%'
 				: '0vw'};"
 		>
-			<PipelineGraph {nodes} {edges} {dataset} />
+			<PipelineGraph {nodes} {edges} bind:dataset />
 		</div>
 
 		{#if $viewMode == 'dual'}

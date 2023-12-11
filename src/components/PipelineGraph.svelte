@@ -157,6 +157,7 @@
 						on:click={async () => {
 							await dataset.processNodes('run', $user);
 							setTimeout(() => {
+								dataset = dataset;
 								console.log('refresh');
 								$n = $n;
 								for (const node of $n) {
