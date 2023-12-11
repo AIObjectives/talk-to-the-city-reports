@@ -3,6 +3,7 @@ import { readFileFromGCS, uploadJSONToGCS } from '$lib/utils';
 import { cluster_extraction_system_prompt, score_claim_relevance_prompt } from '$lib/prompts';
 import deepCopy from 'deep-copy';
 import categories from '$lib/node_categories';
+import CryptoJS from 'crypto-js';
 
 export default class ScoreArgumentRelevanceNode {
 	id: string;
@@ -107,6 +108,7 @@ export default class ScoreArgumentRelevanceNode {
 			{ role: 'system', content: systemPrompt },
 			{ role: 'user', content: prompt }
 		];
+		console.log(CryptoJS.SHA256(JSON.stringify(messages)).toString());
 		const res = await OpenAI.chat.completions.create({
 			messages,
 			model: 'gpt-4',

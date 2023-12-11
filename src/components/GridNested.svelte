@@ -12,47 +12,41 @@
 	const itemsPerPage = 10;
 	let editing = false;
 
-	function hasNestedData(item) {
-		return Object.values(item).some((value) => Array.isArray(value));
-	}
-
-	function getNestedData(item) {
-		return Object.values(item).find((value) => Array.isArray(value)) || [];
-	}
-	function isPlainObject(obj) {
-		return typeof obj === 'object' && obj !== null && !Array.isArray(obj);
-	}
-
-	function convertData(d) {
-		if (Array.isArray(d) && d.length > 0 && typeof d[0] === 'string') {
-			d = d.map((item) => [item]);
-		} else if (isPlainObject(d)) {
-			const values = Object.values(d);
+	const convertData = (d) => {
+		if (_.isString(_.head(d))) {
+			d = _.map(d, (item) => [item]);
+		} else if (_.isPlainObject(d)) {
+			const values = _.values(d);
 			if (values.length === 1) {
-				if (Array.isArray(values[0])) {
+				if (_.isArray(values[0])) {
 					d = values[0];
-				} else if (isPlainObject(values[0])) {
+				} else if (_.isPlainObject(values[0])) {
 					d = [values[0]];
 				}
 			} else if (values.length > 1) {
-				d = Object.values(values);
+				d = _.values(values);
 			}
 		}
 
 		let mData = [];
 		let iWn = [];
-		if (!Array.isArray(d)) {
+		if (!_.isArray(d)) {
 			return mData;
 		}
-		d.forEach((row) => {
-			if (hasNestedData(row)) {
+		_.forEach(d, (row) => {
+			if (_.some(_.values(row), _.isArray)) {
 				if (iWn.length > 0) {
 					mData.push({ data: iWn, indent: false });
 					iWn = [];
 				}
-				let rowItems = _.pickBy(row, (value) => !_.isArray(value));
-				mData.push({ data: [rowItems], indent: false });
-				mData.push({ data: getNestedData(row), indent: true });
+				mData.push({
+					data: [_.omitBy(row, _.isArray)],
+					indent: false
+				});
+				mData.push({
+					data: _.find(_.values(row), _.isArray) || [],
+					indent: true
+				});
 			} else {
 				iWn.push(row);
 			}
@@ -61,7 +55,7 @@
 			mData.push({ data: iWn, indent: false });
 		}
 		return mData;
-	}
+	};
 
 	$: modData = convertData(data);
 	$: totalPages = Math.ceil(modData.length / itemsPerPage);
@@ -97,10 +91,10 @@
 				{#if index >= (currentPage - 1) * itemsPerPage && index < currentPage * itemsPerPage}
 					{#if item.indent}
 						<div class={item.indent ? 'ml-5' : ''}>
-							<svelte:self data={item.data} {id} />
+							<svelte:self data={item.data} {id} {isStandardView} />
 						</div>
 					{:else}
-						<Grid data={item.data} {id} />
+						<Grid data={item.data} {id} {isStandardView} />
 					{/if}
 				{/if}
 			{/each}

@@ -15,6 +15,7 @@
     "developed_by": "Developed by",
     "logged_in_as": "Logged in as",
     "help": "Help",
-    "are_you_sure_delete_dataset": "Are you sure? This will also delete assets:"
+    "are_you_sure_delete_dataset": "Are you sure? This will also delete assets:",
+    "open_questions": "Open questions"
 }
   

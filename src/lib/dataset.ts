@@ -89,15 +89,20 @@ export class Dataset {
 
 			save = save || node.data.dirty;
 			const node_impl = nodes.init(node.data.compute_type, node);
-			nodeOutputs[node.id] = await node_impl.compute(
-				inputData,
-				context,
-				info,
-				error,
-				success,
-				this.slug,
-				Cookies
-			);
+			try {
+				nodeOutputs[node.id] = await node_impl.compute(
+					inputData,
+					context,
+					info,
+					error,
+					success,
+					this.slug,
+					Cookies
+				);
+			} catch (e) {
+				console.error(e);
+				error('Error running ' + node.id + ' please view console for more details');
+			}
 			this.graph.nodes.update((node) => node);
 			this.graph.nodes = this.graph.nodes;
 		}

@@ -88,6 +88,10 @@ Your response is in the form:
   "score": number
 }
 
+Here are the claims:
+
+{claims}
+
 `;
 
 export const argument_extraction_llama_system_prompt = `\

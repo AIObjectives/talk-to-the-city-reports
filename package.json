@@ -20,6 +20,8 @@
 	"devDependencies": {
 		"@fontsource/fira-mono": "^4.5.10",
 		"@neoconfetti/svelte": "^1.0.0",
+		"@smui-extra/badge": "^7.0.0-beta.15",
+		"@smui/tooltip": "^7.0.0-beta.15",
 		"@sveltejs/adapter-auto": "^2.0.0",
 		"@sveltejs/kit": "^1.27.4",
 		"@types/cookie": "^0.5.1",
@@ -44,12 +46,13 @@
 	"type": "module",
 	"dependencies": {
 		"@google-cloud/storage": "^7.6.0",
-		"@smui/checkbox": "^7.0.0-beta.15",
-		"@smui/common": "^7.0.0-beta.15",
-		"@smui/form-field": "^7.0.0-beta.15",
+		"@jq-tools/jq": "^0.0.10",
 		"@smui/button": "^7.0.0-beta.15",
 		"@smui/card": "^7.0.0-beta.15",
+		"@smui/checkbox": "^7.0.0-beta.15",
+		"@smui/common": "^7.0.0-beta.15",
 		"@smui/dialog": "^7.0.0-beta.15",
+		"@smui/form-field": "^7.0.0-beta.15",
 		"@smui/list": "^7.0.0-beta.15",
 		"@smui/paper": "^7.0.0-beta.15",
 		"@smui/select": "^7.0.0-beta.15",
@@ -63,12 +66,14 @@
 		"@zerodevx/svelte-toast": "^0.9.5",
 		"ag-grid-community": "^30.2.1",
 		"ag-grid-svelte": "^0.3.0",
+		"crypto-js": "^4.2.0",
 		"csv-parser": "^3.0.0",
 		"deep-copy": "^1.4.2",
 		"firebase": "^10.6.0",
 		"firebase-admin": "^11.11.1",
 		"html-to-image": "^1.11.11",
 		"jq-web": "^0.5.1",
+		"js-cookie": "^3.0.5",
 		"js-tiktoken": "^1.0.8",
 		"jsonata": "^2.0.3",
 		"layerchart": "^0.25.1",
@@ -79,8 +84,6 @@
 		"svelte-carousel": "^1.0.25",
 		"svelte-i18n": "^4.0.0",
 		"tailwindcss": "^3.3.5",
-		"workerpool": "^8.0.0",
-		"crypto-js": "^4.2.0",
-		"js-cookie": "^3.0.5"
+		"workerpool": "^8.0.0"
 	}
 }

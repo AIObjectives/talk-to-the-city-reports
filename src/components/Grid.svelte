@@ -4,6 +4,7 @@
 
 	import _ from 'lodash';
 
+	export let isStandardView: boolean;
 	export let data: Array<{ [key: string]: any }>;
 	export let depth = 0;
 	export let id;
@@ -29,7 +30,7 @@
 		}
 	}
 	let columnWidths = writable({});
-	let storage_key = 'columnWidths' + id;
+	let storage_key = 'columnWidths' + id + '_' + isStandardView;
 
 	if (localStorage.getItem(storage_key)) {
 		columnWidths.set(JSON.parse(localStorage.getItem(storage_key)));
@@ -79,7 +80,7 @@
 			rowData={gridData}
 			{columnDefs}
 			defaultColDef={{ flex: 0, resizable: true }}
-			domLayout="print"
+			domLayout={isStandardView ? 'autoHeight' : 'print'}
 			alwaysShowHorizontalScroll={false}
 			suppressHorizontalScroll={true}
 			scrollbarWidth={0}
@@ -91,3 +92,12 @@
 		/>
 	</div>
 {/if}
+
+<style>
+	:root {
+		width: 100%;
+	}
+	.grid-container {
+		width: 100%;
+	}
+</style>

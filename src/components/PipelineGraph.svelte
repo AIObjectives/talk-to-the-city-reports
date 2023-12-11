@@ -12,6 +12,8 @@
 	import { viewMode } from '$lib/store';
 	import ContentSaveOutline from '$lib/icons/ContentSaveOutline.svelte';
 	import RobotOutline from '$lib/icons/RobotOutline.svelte';
+	import { useNodes } from '@xyflow/svelte';
+	const n = useNodes();
 
 	import { Panel } from '@xyflow/svelte';
 	import DownloadImage from '$components/graph/DownloadImage.svelte';
@@ -154,6 +156,13 @@
 					<button
 						on:click={async () => {
 							await dataset.processNodes('run', $user);
+							setTimeout(() => {
+								console.log('refresh');
+								$n = $n;
+								for (const node of $n) {
+									node.data = { ...node.data };
+								}
+							}, 500);
 						}}><RobotOutline size={30} /></button
 					>
 				</div>

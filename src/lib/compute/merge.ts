@@ -1,6 +1,7 @@
 import nodes from '$lib/node_register';
 import categories from '$lib/node_categories';
 import deepCopy from 'deep-copy';
+import _ from 'lodash';
 
 export default class MergeNode {
 	id: string;
@@ -38,39 +39,30 @@ export default class MergeNode {
 		cluster_extraction = deepCopy(cluster_extraction);
 		argument_extraction = deepCopy(argument_extraction);
 
-		const findClaimsForSubtopic = (topicName, subtopicName) => {
-			const claims = [];
-			Object.values(argument_extraction).forEach((argument) => {
-				argument.claims.forEach((claim) => {
-					if (claim.topicName === topicName && claim.subtopicName === subtopicName) {
-						claim.interview = argument.interview;
-						claim.id = argument.id;
-						claims.push(claim);
-					}
-				});
+		const lookup = {};
+
+		_.forOwn(argument_extraction, (v, k) => {
+			_.forEach(v['claims'], (claim) => {
+				const combinedClaim = _.assign({}, claim, { interview: v['interview'], id: v['id'] });
+				const key = `${combinedClaim['topicName']}::${combinedClaim['subtopicName']}`;
+
+				if (!_.has(lookup, key)) {
+					lookup[key] = [];
+				}
+				lookup[key].push(combinedClaim);
 			});
-			return claims;
-		};
+		});
 
-		const mergedData = {
-			topics: cluster_extraction.topics.map((topic) => {
-				const filteredSubtopics = topic.subtopics
-					.map((subtopic) => {
-						const claims = findClaimsForSubtopic(topic.topicName, subtopic.subtopicName);
-						return claims.length > 0 ? { ...subtopic, claims } : null;
-					})
-					.filter((subtopic) => subtopic !== null);
+		_.forEach(cluster_extraction['topics'], (topic) => {
+			_.forEach(topic['subtopics'], (subtopic) => {
+				const key = `${topic['topicName']}::${subtopic['subtopicName']}`;
+				subtopic['claims'] = _.get(lookup, key, []);
+			});
+		});
 
-				return {
-					...topic,
-					subtopics: filteredSubtopics
-				};
-			})
-		};
-
-		this.data.output = mergedData;
+		this.data.output = cluster_extraction;
 		this.data.dirty = false;
-		return mergedData;
+		return cluster_extraction;
 	}
 }
 

@@ -52,7 +52,6 @@ h4,
 h5,
 h6 {
 	font-family: var(--font-heading);
-	font-weight: 400;
 }
 
 p {
@@ -69,12 +68,31 @@ a:hover {
 }
 
 h1 {
-	font-size: 4rem;
 	text-align: center;
 }
 
+h1 {
+	font-size: 2.5em !important; /* Largest size */
+}
+
 h2 {
-	font-size: 1rem;
+	font-size: 2em !important;
+}
+
+h3 {
+	font-size: 1.75em !important;
+}
+
+h4 {
+	font-size: 1.5em !important;
+}
+
+h5 {
+	font-size: 1.25em !important;
+}
+
+h6 {
+	font-size: 1em !important; /* Least emphasis, similar size to regular paragraph text */
 }
 
 pre {

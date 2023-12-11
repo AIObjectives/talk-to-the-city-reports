@@ -7,12 +7,13 @@
 
 	export let data: $$Props['data'];
 	export let id: $$Props['id'];
+	export let isStandardView: $$Props['isStandardView'];
 </script>
 
 <DGNode {id} {data} {...$$restProps} style="">
 	<div>{data.label}</div>
 	{#if data && data.output}
-		<GridNested data={data.output} {id} />
+		<GridNested data={data.output} {id} {isStandardView} />
 	{/if}
 </DGNode>
 

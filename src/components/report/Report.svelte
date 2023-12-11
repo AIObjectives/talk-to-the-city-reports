@@ -1,4 +1,5 @@
 <script lang="ts">
+	import _ from 'lodash';
 	import { get } from 'svelte/store';
 	import { findAncestor } from '$lib/hierarchy';
 	import { hierarchy } from 'd3-hierarchy';
@@ -10,43 +11,30 @@
 	import Claims from '$components/report/Claims.svelte';
 	import Tooltip from '$components/report/Tooltip.svelte';
 	import InfoPanel from '$components/report/InfoPanel.svelte';
-	import DebugReport from '$components/report/debug_report.svelte';
 	export let dataset: any;
 
 	let report: any;
 	let csv: any;
 
 	function transformData(originalData) {
-		const transformed = {
+		return {
 			name: 'heal michigan',
-			children: []
-		};
-		originalData.topics.forEach((topic) => {
-			const topicEntry = {
+			children: _.map(originalData.topics, (topic) => ({
 				name: topic.topicName,
-				children: []
-			};
-			topic.subtopics.forEach((subtopic) => {
-				const claims = subtopic.claims.map((claim) => {
+				children: _.map(topic.subtopics, (subtopic) => {
+					const groupedClaims = _.groupBy(subtopic.claims, 'claim');
+					const claims = _.map(groupedClaims, (claimGroup, claimName) => ({
+						name: claimName,
+						claims: claimGroup,
+						value: claimGroup.length
+					}));
 					return {
-						name: claim.claim,
-						claim: claim,
-						value: 1
+						name: subtopic.subtopicName,
+						...(claims.length > 0 ? { children: claims } : { value: 1 })
 					};
-				});
-				const subtopicEntry = {
-					name: subtopic.subtopicName
-				};
-				if (claims.length > 0) {
-					subtopicEntry.children = claims;
-				} else {
-					subtopicEntry.value = 1;
-				}
-				topicEntry.children.push(subtopicEntry);
-			});
-			transformed.children.push(topicEntry);
-		});
-		return transformed;
+				})
+			}))
+		};
 	}
 
 	let complexHierarchy: any;
@@ -96,7 +84,7 @@
 	}
 </script>
 
-<h1 class="text-3xl uppercase">{dataset.title}</h1>
+<h1 class="text-3xl uppercase my-10">{dataset.title}</h1>
 
 <!-- <DebugReport {dataset} {report_node} {csv_node} {report} {csv} /> -->
 
@@ -124,33 +112,33 @@
 		{#each report.topics as topic}
 			<Paper square>
 				<div class="p-4 rounded">
-					<h2
-						class="text-2xl font-bold"
-						style="color: {hsl(ordinalColor(topic.topicName)).brighter(-1)}"
-					>
-						{topic.topicName}
-						<small style="color: {hsl(ordinalColor(topic.topicName)).brighter(-2)}"
-							>{topic.subtopics.length} subtopics
-							{topic.subtopics.reduce((total, x) => total + x.claims.length, 0)} claims</small
+					<div style="display: flex; justify-content: space-between; align-items: center;">
+						<h3
+							class="text-2xl font-bold"
+							style="color: {hsl(ordinalColor(topic.topicName)).brighter(-1)}"
 						>
-					</h2>
+							{topic.topicName}
+						</h3>
+						<small style="color: {hsl(ordinalColor(topic.topicName)).brighter(-2)}">
+							{topic.subtopics.length} subtopics
+							{_.sumBy(topic.subtopics, (subtopic) => _.uniqBy(subtopic.claims, 'claim').length)} claims
+						</small>
+					</div>
 
-					<h3 class="mt-4 mb-4">{topic.topicShortDescription}</h3>
+					<h6 class="mt-4 mb-4">{topic.topicShortDescription}</h6>
 					{#each topic.subtopics as subtopic}
 						<Paper square>
-							<div class="ml-3 items-center justify-between">
-								<div class="flex items-center mt-1">
-									<div class="w-1 h-1 mr-2 rounded-full" style="background-color: #bbbbff" />
-									<div class="text-lg" style="color: #555">
-										{subtopic.subtopicName}
-										<small>{subtopic.claims.length} claims</small>
-									</div>
-								</div>
-								<div class="ml-5 mt-2 mb-2" style="color: black">
-									<h3>{subtopic.subtopicShortDescription}</h3>
-								</div>
-								<Claims claims={subtopic.claims} />
+							<div
+								class="text-lg"
+								style="color: #555; display: flex; justify-content: space-between; align-items: center;"
+							>
+								<h5>{subtopic.subtopicName}</h5>
+								<small>{_.uniqBy(subtopic.claims, 'claim').length} claims</small>
 							</div>
+							<div class="ml-5 mt-2 mb-2" style="color: black">
+								<h7>{subtopic.subtopicShortDescription}</h7>
+							</div>
+							<Claims claims={subtopic.claims} />
 						</Paper>
 						<br />
 					{/each}

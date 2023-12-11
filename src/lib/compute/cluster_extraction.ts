@@ -106,7 +106,8 @@ export default class ClusterExtractionNode {
 			this.data.output = JSON.parse(result);
 			await uploadJSONToGCS(this, this.data.output, slug);
 			this.data.dirty = false;
-			success('Done computing ' + this.data.label);
+			this.data.message = 'Done computing ' + this.data.label;
+			success(this.data.message);
 			return this.data.output;
 		}
 	}

@@ -94,7 +94,7 @@ export default class OpenAI {
 				]
 			},
 			ab2c974812cfbc6ffe18d755100b22f063794b5e4f41f2c4cfa27c075c5e6823: merged_clusters,
-			'7785a959baf7ddc5e7b9a7def06a69f678623f3d6296aeb9b9921c6cedf7ed40': {
+			'80e0e107ae12a48f2f643f6e9ea0bd78ca2afd6161d89f39043f80db3413d94d': {
 				score: 0.5,
 				explanation: 'This is a test explanation.'
 			}
