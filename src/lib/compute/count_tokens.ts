@@ -33,6 +33,7 @@ export default class CountTokensNode {
 		Cookies: any
 	) {
 		const inputArray = inputData[Object.keys(inputData)[0]];
+		if (!inputArray) return;
 		const inputMatches = inputArray.length && this.data.csv_length === inputArray.length;
 		if (!this.data.dirty && inputMatches) return this.data.num_tokens;
 		const joinedInput = inputArray.map((entry: any) => entry['comment-body']).join(' ');
@@ -56,7 +57,7 @@ type CountTokensNodeInterface = DGNodeInterface & {
 export let count_tokens_node_data: CountTokensNodeInterface = {
 	id: 'count_tokens',
 	data: {
-		label: 'Count Tokens',
+		label: 'count_tokens',
 		dirty: false,
 		text: 'cl100k_base',
 		num_tokens: 0,

@@ -3,6 +3,7 @@
 	import TextField from '@smui/textfield';
 	import DGNode from './DGNode.svelte';
 	import _ from 'lodash';
+	import { _ as __ } from 'svelte-i18n';
 
 	type $$Props = NodeProps;
 
@@ -13,7 +14,6 @@
 </script>
 
 <DGNode {data} {id} {...$$restProps}>
-	<div>{data.label}</div>
 	{#if _.includes(['jq_v1', 'jsonata_v0'], data.compute_type)}
 		<TextField
 			style="width: 100%; min-width: 400px;"

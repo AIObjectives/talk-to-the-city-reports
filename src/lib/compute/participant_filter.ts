@@ -56,7 +56,7 @@ type ParticipantFilterNodeInterface = DGNodeInterface & {
 export let participant_filter_node_data: ParticipantFilterNodeInterface = {
 	id: 'participant_filter',
 	data: {
-		label: 'Participant filter',
+		label: 'participant_filter',
 		text: '',
 		dirty: false,
 		output: {},

@@ -2,6 +2,9 @@ import nodes from '$lib/node_register';
 import categories from '$lib/node_categories';
 import { readFileFromGCS, uploadJSONToGCS } from '$lib/utils';
 import { cluster_extraction_prompt, cluster_extraction_system_prompt } from '$lib/prompts';
+import { format, unwrapFunctionStore } from 'svelte-i18n';
+
+const $__ = unwrapFunctionStore(format);
 
 async function gpt(
 	apiKey: string,
@@ -20,7 +23,7 @@ async function gpt(
 		prompt = prompt.replace(`{${key}}`, value);
 	}
 	const OpenAI = new openai({ apiKey, dangerouslyAllowBrowser: true });
-	info('Calling OpenAI');
+	info($__('calling_openai'));
 	try {
 		const messages = [
 			{ role: 'system', content: systemPrompt },
@@ -82,12 +85,12 @@ export default class ClusterExtractionNode {
 		}
 
 		if (context == 'run' && open_ai_key && csv && csv.length > 0) {
-			info('Computing ' + this.data.label);
+			info(`${$__('computing')} ${$__(this.data.label)}`);
 			this.data.csv_length = csv.length;
 			const { prompt, system_prompt } = this.data;
 			let i = 0;
 			const interval = setInterval(() => {
-				this.data.message = 'Computing ' + this.data.label + '.'.repeat(i % 4);
+				this.data.message = `${$__('computing')} ${$__(this.data.label)} ${'.'.repeat(i % 4)}`;
 				info(this.data.message);
 				i++;
 			}, 5000);
@@ -106,7 +109,7 @@ export default class ClusterExtractionNode {
 			this.data.output = JSON.parse(result);
 			await uploadJSONToGCS(this, this.data.output, slug);
 			this.data.dirty = false;
-			this.data.message = 'Done computing ' + this.data.label;
+			this.data.message = `${$__('done_computing')} ${$__(this.data.label)}`;
 			success(this.data.message);
 			return this.data.output;
 		}
@@ -128,7 +131,7 @@ type ClusterExtractionNodeInterface = DGNodeInterface & {
 export let cluster_extraction_node_data: ClusterExtractionNodeInterface = {
 	id: 'cluster_extraction',
 	data: {
-		label: 'Cluster Extraction',
+		label: 'cluster_extraction',
 		output: {},
 		text: '',
 		system_prompt: cluster_extraction_system_prompt,

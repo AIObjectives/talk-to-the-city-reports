@@ -1,22 +1,22 @@
 <script>
-	import { _ } from 'svelte-i18n';
+	import { _ as __ } from 'svelte-i18n';
 </script>
 
 <svelte:head>
-	<title>{$_('about')}</title>
+	<title>{$__('about')}</title>
 	<meta name="description" content="About this app" />
 </svelte:head>
 
 <div class="text-column">
 	<h1>
-		{@html $_('about_section_p')}
+		{@html $__('about_section_p')}
 	</h1>
 	<p>
-		{@html $_('about_section_h1')}
+		{@html $__('about_section_h1')}
 	</p>
 
 	<br />
 	<br />
 	<br />
-	<a href="/help">API Documentation</a>
+	<a href="/help">{$__('api_documentation')}</a>
 </div>

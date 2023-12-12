@@ -5,6 +5,7 @@
 	import ProjectCard from '$components/ProjectCard.svelte';
 	import { user } from '$lib/store';
 	import { Dataset } from '$lib/dataset';
+	import { _ as __ } from 'svelte-i18n';
 
 	let datasets: Dataset[] = [];
 	let loading = true;
@@ -33,10 +34,9 @@
 
 <div class="flex flex-wrap justify-center">
 	{#if loading}
-		<p class="text-center text-lg text-gray-500">Loading...</p>
-	{:else}
-		{#each datasets as dataset}
-			<ProjectCard {dataset} {loadDatasets} />
-		{/each}
+		<p class="text-center text-lg text-gray-500">{$__('loading')}</p>
 	{/if}
+	{#each datasets as dataset}
+		<ProjectCard {dataset} {loadDatasets} />
+	{/each}
 </div>

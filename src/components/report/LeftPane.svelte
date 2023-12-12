@@ -4,7 +4,7 @@
 	import Close from '$lib/icons/Close.svelte';
 	import ChevronRight from '$lib/icons/ChevronRight.svelte';
 	import { viewMode } from '$lib/store';
-	import { _ } from 'svelte-i18n';
+	import { _ as __ } from 'svelte-i18n';
 	import { onMount } from 'svelte';
 
 	let isPaneVisible = true;
@@ -33,7 +33,7 @@
 	>
 		{#if dataset}
 			<h2 class="text-2xl font-bold text-gray-600 py-3">{dataset.title}</h2>
-			<h2 class="text-lg font-bold text-gray-600 py-3">{$_('description')}:</h2>
+			<h2 class="text-lg font-bold text-gray-600 py-3">{$__('description')}:</h2>
 			<p class="text-gray-500 py-3">{dataset.description}</p>
 			{#if dataset.projectParent}
 				<p class="text-gray-500">Forked from:</p>

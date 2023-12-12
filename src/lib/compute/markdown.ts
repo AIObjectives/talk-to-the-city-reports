@@ -43,7 +43,7 @@ type MarkdownNodeInterface = DGNodeInterface & {
 export let markdown_node_data: MarkdownNodeInterface = {
 	id: 'markdown',
 	data: {
-		label: 'Markdown',
+		label: 'markdown',
 		output: {},
 		markdown: '',
 		dirty: false,

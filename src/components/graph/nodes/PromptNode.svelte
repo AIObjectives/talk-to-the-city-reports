@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { type NodeProps } from '@xyflow/svelte';
 	import TextField from '@smui/textfield';
-	import HelperText from '@smui/textfield/helper-text';
 	import DGNode from './DGNode.svelte';
 	import Checkbox from '@smui/checkbox';
 	import FormField from '@smui/form-field';
+	import HelperText from '@smui/textfield/helper-text';
+	import { _ as __ } from 'svelte-i18n';
 
 	type $$Props = NodeProps;
 
@@ -24,10 +25,9 @@
 	{isStandardView}
 	style={isStandardView ? '' : 'min-width: 500px; min-height: 400px;'}
 >
-	<div>{data.label}</div>
 	<FormField align="end">
 		<span><Checkbox bind:checked={showSystemPrompt} /></span>
-		<span slot="label">Show system prompt.</span>
+		<span slot="label">{$__('show_system_prompt')}</span>
 	</FormField>
 	{#if showSystemPrompt}
 		<TextField
@@ -47,7 +47,7 @@
 				data.dirty = true;
 			}}
 		>
-			<HelperText slot="helper">System extraction prompt</HelperText>
+			<HelperText slot="helper">{$__('system_extraction_prompt')}</HelperText>
 		</TextField>
 	{/if}
 	<TextField
@@ -67,9 +67,9 @@
 			}
 		}}
 	>
-		<HelperText slot="helper">Primary extraction prompt</HelperText>
+		<HelperText slot="helper">{$__('primary_extraction_prompt')}</HelperText>
 	</TextField>
 	{#if output && Object.keys(output).length}
-		<div>Objects: {Object.keys(output).length}: {Object.keys(output)[0]} ...</div>
+		<div>{$__('objects')}: {Object.keys(output).length}: {Object.keys(output)[0]} ...</div>
 	{/if}
 </DGNode>

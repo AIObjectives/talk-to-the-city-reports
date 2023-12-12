@@ -1,7 +1,11 @@
 import nodes from '$lib/node_register';
-import { collection, addDoc, getDocs, query, where, updateDoc, doc } from 'firebase/firestore/lite';
+import { collection, getDocs, query, where } from 'firebase/firestore/lite';
 import { db } from '$lib/firebase';
 import categories from '$lib/node_categories';
+import { format, unwrapFunctionStore } from 'svelte-i18n';
+import type { BaseData } from '$lib/node_data_types';
+
+const $__ = unwrapFunctionStore(format);
 
 interface OpenQuestionsData extends BaseData {
 	comments: { [claimId: string]: string[] };
@@ -44,10 +48,10 @@ export default class OpenQuestionsNode {
 					user: 'John Doe'
 				}
 			];
-			success('Comments loaded successfully');
+			success($__('comments_loaded_successfully'));
 			return this.data.output;
 		} catch (e) {
-			error(`Error loading comments: ${e}`);
+			error($__('error_loading_comments') + `: ${e}`);
 		}
 	}
 
@@ -71,7 +75,7 @@ type OpenQuestionsNodeInterface = DGNodeInterface & {
 export let open_questions_node_data: OpenQuestionsNodeInterface = {
 	id: 'open_questions',
 	data: {
-		label: 'Open Questions',
+		label: $__('open_questions'),
 		dirty: false,
 		output: {},
 		compute_type: 'open_questions_v0',

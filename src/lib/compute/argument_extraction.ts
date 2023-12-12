@@ -4,6 +4,9 @@ import { readFileFromGCS, uploadJSONToGCS } from '$lib/utils';
 import { argument_extraction_prompt, argument_extraction_system_prompt } from '$lib/prompts';
 import gpt from '$lib/gpt';
 import _ from 'lodash';
+import { format, unwrapFunctionStore } from 'svelte-i18n';
+
+const $__ = unwrapFunctionStore(format);
 
 export default class ArgumentExtractionNode {
 	id: string;
@@ -87,15 +90,14 @@ export default class ArgumentExtractionNode {
 					})()
 				);
 			}
-
-			info(`Calling OpenAI with ${csv.length} request${csv.length > 1 ? 's' : ''}`);
+			info(`${$__('calling_openai')}: [${csv.length}]`);
 			let startTime = performance.now();
-			console.time('OpenAI Call');
+			console.time($__('calling_openai'));
 			const results = await Promise.all(gptPromises);
-			console.timeEnd('OpenAI Call');
+			console.timeEnd($__('calling_openai'));
 			let endTime = performance.now();
 			let timeTaken = endTime - startTime;
-			success(`Done extracting arguments in ${Math.floor(timeTaken / 1000)} seconds`);
+			success(`${$__('calling_openai')}: ${Math.floor(timeTaken / 1000)} ${$__('seconds')}`);
 
 			results.forEach((result) => {
 				this.data.output[result.id] = result;
@@ -121,7 +123,7 @@ type ArgumentExtractionNodeInterface = DGNodeInterface & {
 export let argument_extraction_node_data: ArgumentExtractionNodeInterface = {
 	id: 'argument_extraction',
 	data: {
-		label: 'Argument Extraction',
+		label: 'argument_extraction',
 		output: {},
 		text: '',
 		system_prompt: argument_extraction_system_prompt,

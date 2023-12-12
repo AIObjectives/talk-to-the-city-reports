@@ -130,7 +130,7 @@ type ScoreArgumentRelevanceNodeInterface = DGNodeInterface & {
 export let score_argument_relevance_node_data: ScoreArgumentRelevanceNodeInterface = {
 	id: 'score_argument_relevance',
 	data: {
-		label: 'Score Argument Relevance',
+		label: 'score_argument_relevance',
 		output: {},
 		text: '',
 		system_prompt: cluster_extraction_system_prompt,

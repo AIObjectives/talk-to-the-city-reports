@@ -22,7 +22,11 @@ export const nodeTypes = {
 	jq_v0: TextInputNode,
 	grid_v0: GridNode,
 	markdown_v0: MarkdownNode,
-	default_v0: DefaultNode
+	default_v0: DefaultNode,
+	default: DefaultNode,
+	merge_v0: DefaultNode,
+	stringify_v0: DefaultNode,
+	open_questions_v0: DefaultNode
 };
 
 import '$lib/compute/csv';

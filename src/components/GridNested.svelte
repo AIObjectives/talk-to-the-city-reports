@@ -3,7 +3,6 @@
 	import Pencil from '$lib/icons/PencilOutline.svelte';
 	import Grid from '$components/Grid.svelte';
 	import _ from 'lodash';
-
 	export let id;
 	export let data: Array<{ [key: string]: any }>;
 	export let isStandardView: boolean;

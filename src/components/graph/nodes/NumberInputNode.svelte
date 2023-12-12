@@ -12,7 +12,6 @@
 </script>
 
 <DGNode {data} {id} {...$$restProps}>
-	<div>{data.label}</div>
 	<TextField
 		style="width: 100%;"
 		helperLine$style="width: 100%;"

@@ -8,8 +8,8 @@
 	export let complexHierarchy;
 	export let getNodeColor;
 	export let onSelect;
-	let padding = 3;
 
+	let padding = 3;
 	let zoom;
 	let selected;
 

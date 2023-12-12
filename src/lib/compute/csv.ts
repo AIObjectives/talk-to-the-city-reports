@@ -105,7 +105,7 @@ export default class CSVNode {
 export let csv_node_data: CSVNodeInterface = {
 	id: 'csv',
 	data: {
-		label: 'CSV',
+		label: 'csv',
 		filename: '',
 		size_kb: 0,
 		dirty: false,

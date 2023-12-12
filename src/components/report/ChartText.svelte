@@ -1,7 +1,9 @@
 <script>
+	import { fade } from 'svelte/transition';
+	import { _ as __ } from 'svelte-i18n';
+	import _ from 'lodash';
 	export let node;
 	export let scale = 1;
-	import { fade } from 'svelte/transition';
 
 	function splitToLines(text, width) {
 		const words = text.split(' ');
@@ -30,7 +32,7 @@
 
 	let text = node.data.name;
 	if (node.children) {
-		text = node.data.name + ' (' + node.children.length + ')';
+		text = node.data.name + ' (' + _.map(node.children.length.toString(), (c) => $__(c)) + ')';
 	}
 	let lines = splitToLines(text, 20);
 </script>

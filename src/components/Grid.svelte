@@ -3,7 +3,6 @@
 	import { writable, get } from 'svelte/store';
 
 	import _ from 'lodash';
-
 	export let isStandardView: boolean;
 	export let data: Array<{ [key: string]: any }>;
 	export let depth = 0;

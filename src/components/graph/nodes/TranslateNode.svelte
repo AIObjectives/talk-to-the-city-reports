@@ -4,22 +4,12 @@
 	import TextField from '@smui/textfield';
 	import Button from '@smui/button';
 	import DGNode from './DGNode.svelte';
+	import { _ as __ } from 'svelte-i18n';
 
 	type $$Props = NodeProps;
 
 	export let data: $$Props['data'];
 	export let id: $$Props['id'];
-	export let zIndex: $$Props['zIndex'];
-	export let dragging: $$Props['dragging'];
-	export let dragHandle: $$Props['dragHandle'];
-	export let isConnectable: $$Props['isConnectable'];
-	export let type: $$Props['type'];
-	export let positionAbsolute: $$Props['positionAbsolute'];
-	export let width: $$Props['width'];
-	export let height: $$Props['height'];
-	export let selected: $$Props['selected'];
-	export let sourcePosition: $$Props['sourcePosition'];
-	export let targetPosition: $$Props['targetPosition'];
 
 	const updateNodeInternals = useUpdateNodeInternals();
 	const nodes = useNodes();
@@ -53,11 +43,10 @@
 	}
 </script>
 
-<DGNode {id} {data} {selected}>
-	<div>{data.label}</div>
+<DGNode {id} {data} {...$$restProps}>
 	<TextField
 		style="width: 100%;"
-		label="Target Language"
+		label={$__('target_language')}
 		helperLine$style="width: 100%;"
 		class="nodrag"
 		type="text"
@@ -74,7 +63,7 @@
 		value={data.target_language}
 	/>
 	<br /><br /><br />
-	<p>Columns to translate</p>
+	<p>{$__('columns_to_translate')}</p>
 	{#each $keysStore as key, index}
 		<div class="key-item">
 			<TextField
@@ -90,14 +79,11 @@
 				on:input={(evt) => updateKey(index, evt.target?.value)}
 				value={key}
 			/>
-			<Button on:click={() => removeKey(index)}>Remove</Button>
+			<Button on:click={() => removeKey(index)}>{$__('remove')}</Button>
 		</div>
 	{/each}
-	<Button on:click={addKey}>Add Key</Button>
+	<Button on:click={addKey}>{$__('add_key')}</Button>
 	<small style="color: gray">{data.gcs_path}</small>
-	{#if data.dirty}
-		<div class="text-sm text-gray-500">Unsaved changes</div>
-	{/if}
 </DGNode>
 
 <style>

@@ -1,8 +1,8 @@
 <script lang="ts">
 	import Paper from '@smui/paper';
-	import { _ } from 'svelte-i18n';
-	import OpenQuestionsPanel from '$components/report/OpenQuestionsPanel.svelte';
+	import { _ as __ } from 'svelte-i18n';
 	import type { Dataset } from '$lib/dataset';
+	import OpenQuestionsPanel from '$components/report/OpenQuestionsPanel.svelte';
 
 	export let claim: any;
 	export let csv: any;
@@ -29,16 +29,16 @@
 <Paper square>
 	<div class="inner-div p-2">
 		{#if showClaims}
-			<h5>{$_('claim')}:</h5>
+			<h5>{$__('claim')}:</h5>
 			<i>{claim.claim}</i>
 			<br />
 			<br />
-			<h5>{$_('quote')}:</h5>
+			<h5>{$__('quote')}:</h5>
 		{/if}
 		<i>"{claim.quote}"</i>
 		<br />
 		{#if claim.interview}
-			<h5>{$_('interview')}:</h5>
+			<h5>{$__('interview')}:</h5>
 			{claim.interview}
 			<br />
 		{/if}

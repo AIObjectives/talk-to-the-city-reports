@@ -123,7 +123,7 @@ type MergeClusterExtractionNodeInterface = DGNodeInterface & {
 export let merge_cluster_extraction_node_data: MergeClusterExtractionNodeInterface = {
 	id: 'merge_cluster_extraction',
 	data: {
-		label: 'Merge Cluster Extraction',
+		label: 'merge_cluster_extraction',
 		output: {},
 		text: '',
 		system_prompt:

@@ -5,12 +5,14 @@
 	import { hierarchy } from 'd3-hierarchy';
 	import { scaleOrdinal } from 'd3-scale';
 	import Paper from '@smui/paper';
+	import { _ as __ } from 'svelte-i18n';
 	import { hsl } from 'd3-color';
 	import { sortFunc } from 'svelte-ux';
 	import Chart from '$components/report/Chart.svelte';
 	import Claims from '$components/report/Claims.svelte';
 	import Tooltip from '$components/report/Tooltip.svelte';
 	import InfoPanel from '$components/report/InfoPanel.svelte';
+
 	export let dataset: any;
 
 	let report: any;
@@ -120,8 +122,16 @@
 							{topic.topicName}
 						</h3>
 						<small style="color: {hsl(ordinalColor(topic.topicName)).brighter(-2)}">
-							{topic.subtopics.length} subtopics
-							{_.sumBy(topic.subtopics, (subtopic) => _.uniqBy(subtopic.claims, 'claim').length)} claims
+							{_.map(topic.subtopics.length.toString(), (c) => $__(c))}
+							{$__('subtopics')}
+							{_.map(
+								_.sumBy(
+									topic.subtopics,
+									(subtopic) => _.uniqBy(subtopic.claims, 'claim').length
+								).toString(),
+								(c) => $__(c)
+							)}
+							{$__('claims')}
 						</small>
 					</div>
 
@@ -133,7 +143,10 @@
 								style="color: #555; display: flex; justify-content: space-between; align-items: center;"
 							>
 								<h5>{subtopic.subtopicName}</h5>
-								<small>{_.uniqBy(subtopic.claims, 'claim').length} claims</small>
+								<small>
+									{_.map(_.uniqBy(subtopic.claims, 'claim').length.toString(), (c) => $__(c))}
+									{$__('claims')}</small
+								>
 							</div>
 							<div class="ml-5 mt-2 mb-2" style="color: black">
 								<h7>{subtopic.subtopicShortDescription}</h7>

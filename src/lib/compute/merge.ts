@@ -2,7 +2,6 @@ import nodes from '$lib/node_register';
 import categories from '$lib/node_categories';
 import deepCopy from 'deep-copy';
 import _ from 'lodash';
-
 export default class MergeNode {
 	id: string;
 	data: MergeData;
@@ -77,7 +76,7 @@ type MergeNodeInterface = DGNodeInterface & {
 export let merge_node_data: MergeNodeInterface = {
 	id: 'merge',
 	data: {
-		label: 'Merge',
+		label: 'merge',
 		output: {},
 		dirty: false,
 		compute_type: 'merge_v0',

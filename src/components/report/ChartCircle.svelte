@@ -8,7 +8,6 @@
 	export let getNodeColor;
 
 	const dispatch = createEventDispatcher();
-
 	let nodeColor = getNodeColor(node);
 </script>
 

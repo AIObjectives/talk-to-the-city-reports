@@ -5,16 +5,19 @@
 	import { page } from '$app/stores';
 	import { dataset } from '$lib/store';
 	import { Dataset } from '$lib/dataset';
+	import { _ as __ } from 'svelte-i18n';
+
+	export let modalShowing: boolean = false;
+	export let showDropdown: boolean = false;
 
 	let message = '';
 	let focused = false;
 	let value: string = '';
 	let dirty = false;
 	let invalid = false;
-	export let modalShowing: boolean = false;
-	export let showDropdown: boolean = false;
-	$: disabled = focused || !value || !dirty || invalid;
 	let reportPath: string;
+
+	$: disabled = focused || !value || !dirty || invalid;
 	$: {
 		reportPath = $page.route.id?.startsWith('/report/');
 	}
@@ -23,11 +26,11 @@
 		message = '';
 		const exists = await Dataset.exists(value);
 		if (exists) {
-			message = 'A report with this name already exists.';
+			message = $__('a_report_with_this_name_already_exists');
 			invalid = true;
 		} else {
 			await $dataset!.fork(value);
-			message = 'forking report';
+			message = $__('forking_report');
 			modalShowing = false;
 			showDropdown = false;
 		}
@@ -41,9 +44,9 @@
 
 {#if reportPath}
 	<Dialog open={modalShowing} aria-labelledby="simple-title" aria-describedby="simple-content">
-		<Title id="simple-title">Fork Report</Title>
+		<Title id="simple-title">{$__('fork_report')}</Title>
 		<Content id="simple-content">
-			<p>You are about to create a fork of this report. Please enter a name for the new report:</p>
+			<p>{$__('you_are_about_to_create_a_fork_of_this_report')}</p>
 			<br />
 			<Textfield
 				type="text"
@@ -52,7 +55,7 @@
 				updateInvalid
 				value={$page.params.report}
 				on:change={(e) => (value = e.target.value)}
-				label="Fork"
+				label={$__('fork')}
 				style="min-width: 100%;"
 				on:focus={() => (focused = true)}
 				on:blur={() => (focused = false)}
@@ -62,10 +65,10 @@
 		</Content>
 		<p class="ml-5 mb-2">{message}</p>
 		<Button on:click={handleOk}>
-			<Label>OK</Label>
+			<Label>{$__('ok')}</Label>
 		</Button>
 		<Button on:click={handleCancel}>
-			<Label>Cancel</Label>
+			<Label>{$__('cancel')}</Label>
 		</Button>
 	</Dialog>
 {/if}

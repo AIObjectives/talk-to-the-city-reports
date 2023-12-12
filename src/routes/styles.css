@@ -241,3 +241,33 @@ button:focus:not(:focus-visible) {
 	border-right: solid;
 	border-color: #eee;
 }
+
+.exec-buttons-top {
+	background-color: #f8f8f8;
+	border: solid;
+	border-width: 1px;
+	border-bottom-width: 0.5px;
+	border-radius: 2%;
+	border-color: #ddd;
+	padding: 4px;
+	margin: 0px;
+}
+.exec-buttons {
+	background-color: #f8f8f8;
+	border: solid;
+	border-top-width: 1px;
+	border-radius: 2%;
+	border-color: #ddd;
+	padding: 4px;
+	margin: 0px;
+}
+.exec-buttons-bottom {
+	background-color: #f8f8f8;
+	border: solid;
+	border-top-width: 0.5px;
+	border-width: 1px;
+	border-radius: 2%;
+	border-color: #ddd;
+	padding: 4px;
+	margin: 0px;
+}

@@ -19,6 +19,8 @@ import {
 import { auth, datasetCollection } from '$lib/firebase';
 import { success, error, info } from '$components/toast/theme';
 import { DependencyGraph } from '$lib/graph';
+import { format, unwrapFunctionStore } from 'svelte-i18n';
+const $__ = unwrapFunctionStore(format);
 
 export class Dataset {
 	title: string;
@@ -101,7 +103,9 @@ export class Dataset {
 				);
 			} catch (e) {
 				console.error(e);
-				error('Error running ' + node.id + ' please view console for more details');
+				error(
+					$__('error_running') + ' ' + node.id + ' ' + $__('please_view_console_for_more_details')
+				);
 			}
 			this.graph.nodes.update((node) => node);
 			this.graph.nodes = this.graph.nodes;
@@ -110,9 +114,10 @@ export class Dataset {
 	}
 
 	async updateDataset(user: User) {
+		console.log('Saving');
 		if (user && user.uid === this.owner) {
 			try {
-				info('Updating dataset...');
+				info($__('updating_dataset'));
 				const copy = JSON.parse(
 					JSON.stringify({
 						graph: { nodes: get(this.graph.nodes), edges: get(this.graph.edges) }
@@ -122,11 +127,11 @@ export class Dataset {
 					x.data.output = null;
 					return x;
 				});
+				console.log(copy.graph.nodes);
 				await updateDoc(doc(datasetCollection, this.id), copy);
-				success('Dataset updated');
+				success($__('dataset_updated'));
 			} catch (err) {
-				console.error('Error updating dataset: ', err);
-				error('Error updating dataset');
+				error($__('error_updating_dataset'));
 			}
 		}
 	}
@@ -144,7 +149,7 @@ export class Dataset {
 
 	async fork(slug: string): Promise<boolean> {
 		try {
-			info('Forking dataset...');
+			info($__('forking_dataset'));
 			const dataset = new Dataset(
 				this.title,
 				slug,
@@ -158,19 +163,18 @@ export class Dataset {
 
 			await dataset.sanitize();
 			await dataset.addDatasetToFirebase();
-			info('Copying assets...');
+			info($__('copying_assets'));
 			await dataset.graph.copyAssets();
-			info('Saving dataset with new asset paths...');
+			info($__('saving_dataset_with_new_asset_paths'));
 			await dataset.updateDataset(auth.currentUser);
-			success('Dataset forked');
+			success($__('dataset_forked'));
 			goto(`/report/${slug}`);
 			setTimeout(() => {
 				if (window) window.location.reload();
 			}, 3000);
 			return true;
 		} catch (err) {
-			console.error('Error forking dataset: ', err);
-			error('Error forking dataset');
+			error($__('error_forking_dataset'));
 			return false;
 		}
 	}
@@ -198,8 +202,7 @@ export class Dataset {
 		const q = query(datasetCollection, where('slug', '==', slug));
 		const querySnapshot = await getDocs(q);
 		if (querySnapshot.empty) {
-			console.error('No dataset found with the provided slug');
-			error('No dataset found with the provided slug');
+			error($__('no_dataset_was_found_with_the_provided_slug'));
 			return null;
 		}
 		const doc = querySnapshot.docs[0].data();
@@ -233,7 +236,6 @@ export class Dataset {
 	}
 
 	static async loadDataset(slug: string): Promise<Dataset | null> {
-		console.log('loading dataset', slug);
 		try {
 			const { doc, id } = await this.loadDoc(slug);
 			return new Dataset(
@@ -247,7 +249,7 @@ export class Dataset {
 				doc.projectParent
 			);
 		} catch (e) {
-			error('An error occurred while loading the dataset');
+			error($__('an_error_occurred_while_loading_the_dataset'));
 			console.error(e);
 			return null;
 		}
@@ -255,14 +257,14 @@ export class Dataset {
 
 	async addDatasetToFirebase(): Promise<boolean> {
 		if (!this.title || !this.slug || !this.description || !this.template) {
-			error('Please fill all fields');
+			error($__('please_fill_all_fields'));
 			return false;
 		}
 
 		const q = query(datasetCollection, where('slug', '==', this.slug));
 		const querySnapshot = await getDocs(q);
 		if (!querySnapshot.empty) {
-			error('Project slug already exists');
+			error($__('project_slug_already_exists'));
 			return false;
 		}
 
@@ -280,10 +282,10 @@ export class Dataset {
 
 			this.id = docs.id;
 
-			success('Project added successfully');
+			success($__('project_added_successfully'));
 			return true;
 		} catch (e) {
-			error('An error occurred while adding the project');
+			error($__('an_error_occurred_while_adding_the_project'));
 			console.error(e);
 			return false;
 		}

@@ -1,8 +1,10 @@
 <script>
-	import Cookies from 'js-cookie';
 	import _ from 'lodash';
+	import Cookies from 'js-cookie';
 	import MenuItem from './menu/menu_item.svelte';
 	import { viewMode, fitViewStore } from '$lib/store';
+	import { _ as __ } from 'svelte-i18n';
+
 	let modes = ['standard', 'dual', 'graph'];
 	let i = modes.indexOf($viewMode);
 </script>
@@ -14,5 +16,5 @@
 		Cookies.set('viewMode', $viewMode);
 		$fitViewStore += 1;
 	}}
-	label={`${_.capitalize(modes[(i + 1) % modes.length])} view`}
+	label={`${$__(modes[(i + 1) % modes.length])} ${$__('view')}`}
 />

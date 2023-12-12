@@ -55,7 +55,7 @@ type JsonataNodeInterface = DGNodeInterface & {
 export let jsonata_node_data: JsonataNodeInterface = {
 	id: 'jsonata',
 	data: {
-		label: 'JSONata',
+		label: 'jsonata',
 		text: '',
 		dirty: false,
 		output: {},

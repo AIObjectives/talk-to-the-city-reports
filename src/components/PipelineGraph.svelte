@@ -13,6 +13,7 @@
 	import ContentSaveOutline from '$lib/icons/ContentSaveOutline.svelte';
 	import RobotOutline from '$lib/icons/RobotOutline.svelte';
 	import { useNodes } from '@xyflow/svelte';
+	import ToolbarNode from './ToolbarNode.svelte';
 	const n = useNodes();
 
 	import { Panel } from '@xyflow/svelte';
@@ -20,9 +21,11 @@
 
 	const { screenToFlowPosition } = useSvelteFlow();
 
+	let resetTimeout;
 	export let dataset: Dataset;
 	export let nodes;
 	export let edges;
+	let active = { nodes: [] };
 
 	const onDragOver = (event: DragEvent) => {
 		event.preventDefault();
@@ -105,7 +108,7 @@
 
 <div>
 	{#if $viewMode == 'graph' || $viewMode == 'dual'}
-		<PipelineCreateNodesToolbar on:click={(x) => addNode(x.detail)} />
+		<PipelineCreateNodesToolbar bind:resetTimeout bind:active on:click={(x) => addNode(x.detail)} />
 	{/if}
 	<div
 		style:width={$viewMode == 'graph' || $viewMode == 'dual' ? '100%' : '0vw'}
@@ -154,11 +157,11 @@
 				</div>
 				<div class="exec-buttons-bottom" style="height:42px;">
 					<button
+						class="glow-button"
 						on:click={async () => {
 							await dataset.processNodes('run', $user);
 							setTimeout(() => {
 								dataset = dataset;
-								console.log('refresh');
 								$n = $n;
 								for (const node of $n) {
 									node.data = { ...node.data };
@@ -171,6 +174,12 @@
 
 			<Panel position="bottom-right">
 				<div class="exec-buttons" style="height:42px;"><DownloadImage /></div>
+			</Panel>
+
+			<Panel position="top-left">
+				{#each active.nodes as node (node.id)}
+					<ToolbarNode {node} {resetTimeout} />
+				{/each}
 			</Panel>
 		</SvelteFlow>
 		{#if menu}
@@ -189,33 +198,14 @@
 </div>
 
 <style>
-	.exec-buttons-top {
-		background-color: #f8f8f8;
-		border: solid;
-		border-width: 1px;
-		border-bottom-width: 0.5px;
-		border-radius: 2%;
-		border-color: #ddd;
-		padding: 4px;
-		margin: 0px;
+	.glow-button {
+		border: none;
+		outline: none;
+		cursor: pointer;
+		transition: box-shadow 0.3s ease;
 	}
-	.exec-buttons {
-		background-color: #f8f8f8;
-		border: solid;
-		border-top-width: 1px;
-		border-radius: 2%;
-		border-color: #ddd;
-		padding: 4px;
-		margin: 0px;
-	}
-	.exec-buttons-bottom {
-		background-color: #f8f8f8;
-		border: solid;
-		border-top-width: 0.5px;
-		border-width: 1px;
-		border-radius: 2%;
-		border-color: #ddd;
-		padding: 4px;
-		margin: 0px;
+
+	.glow-button:hover {
+		box-shadow: 0 0 10px #ffffff, 0 0 20px #ffffff, 0 0 30px #ffffff, 0 0 20px #ffffff;
 	}
 </style>

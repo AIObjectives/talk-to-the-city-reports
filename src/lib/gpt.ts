@@ -1,8 +1,11 @@
 import CryptoJS from 'crypto-js';
 import workerpool from 'workerpool';
 import responses from '$lib/mock_data/gpt_responses';
+import { format, unwrapFunctionStore } from 'svelte-i18n';
 
-let pool = workerpool.pool({ maxWorkers: 1000 });
+const $__ = unwrapFunctionStore(format);
+
+let pool = workerpool.pool({ maxWorkers: 100 });
 
 async function openai(
 	apiKey: string,
@@ -38,6 +41,7 @@ async function openai(
 				},
 				body: JSON.stringify({
 					model: 'gpt-4-1106-preview',
+					response_format: { type: 'json_object' },
 					messages: messages,
 					temperature: 0.1
 				})
@@ -100,10 +104,10 @@ export default async function gpt(
 			responses
 		]);
 		todo.delete(i);
-		info(`Done calling OpenAI. Calls left: ${todo.size}`);
+		info(`${$__('done_calling_openai')}. ${$__('calls_left')}: ${todo.size}`);
 		return result;
 	} catch (e) {
 		console.error(e);
-		error(`Error calling OpenAI ${i + 1}/${total} {error.message}`);
+		error(`${$__('error_calling_openai')} ${i + 1}/${total} {error.message}`);
 	}
 }

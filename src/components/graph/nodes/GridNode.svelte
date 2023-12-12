@@ -11,7 +11,6 @@
 </script>
 
 <DGNode {id} {data} {...$$restProps} style="">
-	<div>{data.label}</div>
 	{#if data && data.output}
 		<GridNested data={data.output} {id} {isStandardView} />
 	{/if}

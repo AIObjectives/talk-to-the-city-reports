@@ -1,6 +1,8 @@
 import nodes from '$lib/node_register';
 import categories from '$lib/node_categories';
 import _ from 'lodash';
+import { format, unwrapFunctionStore } from 'svelte-i18n';
+const $__ = unwrapFunctionStore(format);
 
 export default class LimitCSVNode {
 	id: string;
@@ -48,7 +50,7 @@ type LimitCSVNodeInterface = DGNodeInterface & {
 export let limit_csv_node_data: LimitCSVNodeInterface = {
 	id: 'limit_csv',
 	data: {
-		label: 'Max CSV',
+		label: 'limit_csv',
 		dirty: false,
 		number: 2,
 		compute_type: 'limit_csv_v0',

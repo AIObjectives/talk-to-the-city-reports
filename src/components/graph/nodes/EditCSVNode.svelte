@@ -5,6 +5,7 @@
 	import Button from '@smui/button';
 	import { useUpdateNodeInternals } from '@xyflow/svelte';
 	import DGNode from './DGNode.svelte';
+	import { _ as __ } from 'svelte-i18n';
 
 	type $$Props = NodeProps;
 
@@ -54,9 +55,7 @@
 </script>
 
 <DGNode {id} {data} {...$$restProps}>
-	<div>{data.label}</div>
-	<br /><br />
-	<p>Generate Columns</p>
+	<p>{$__('generate_columns')}</p>
 	{#each $generateStore as item, index}
 		<div class="csv-action-item">
 			<TextField
@@ -89,13 +88,17 @@
 				value={item[1]}
 				placeholder="Value"
 			/>
-			<Button on:click={() => updateCSVAction(generateStore, 'remove', index)}>Remove</Button>
+			<Button on:click={() => updateCSVAction(generateStore, 'remove', index)}
+				>{$__('remove')}</Button
+			>
 		</div>
 	{/each}
-	<Button on:click={() => updateCSVAction(generateStore, 'add')}>Add Generate Column</Button>
+	<Button on:click={() => updateCSVAction(generateStore, 'add')}
+		>{$__('add_generate_column')}</Button
+	>
 
 	<br /><br />
-	<p>Delete Columns</p>
+	<p>{$__('delete_columns')}</p>
 	{#each $deleteStore as item, index}
 		<div class="csv-action-item">
 			<TextField
@@ -111,13 +114,14 @@
 				on:input={(evt) => updateCSVAction(deleteStore, 'update', index, evt.target?.value)}
 				value={item}
 			/>
-			<Button on:click={() => updateCSVAction(deleteStore, 'remove', index)}>Remove</Button>
+			<Button on:click={() => updateCSVAction(deleteStore, 'remove', index)}>{$__('remove')}</Button
+			>
 		</div>
 	{/each}
-	<Button on:click={() => updateCSVAction(deleteStore, 'add')}>Add Delete Column</Button>
+	<Button on:click={() => updateCSVAction(deleteStore, 'add')}>{$__('add_delete_column')}</Button>
 
 	<br /><br />
-	<p>Rename Columns</p>
+	<p>{$__('rename_columns')}</p>
 	{#each $renameStore as item, index}
 		<div class="csv-action-item">
 			<TextField
@@ -150,10 +154,11 @@
 				value={item[1]}
 				placeholder="New Name"
 			/>
-			<Button on:click={() => updateCSVAction(renameStore, 'remove', index)}>Remove</Button>
+			<Button on:click={() => updateCSVAction(renameStore, 'remove', index)}>{$__('remove')}</Button
+			>
 		</div>
 	{/each}
-	<Button on:click={() => updateCSVAction(renameStore, 'add')}>Add Rename Column</Button>
+	<Button on:click={() => updateCSVAction(renameStore, 'add')}>{$__('add_rename_column')}</Button>
 </DGNode>
 
 <style>

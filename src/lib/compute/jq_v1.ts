@@ -2,7 +2,6 @@ import nodes from '$lib/node_register';
 import categories from '$lib/node_categories';
 import * as jq_web from 'jq-web/jq.asm.bundle.js';
 import _ from 'lodash';
-
 interface BaseData {}
 
 interface JqData extends BaseData {
@@ -57,7 +56,7 @@ type JqNodeInterface = DGNodeInterface & {
 export let jq_node_data: JqNodeInterface = {
 	id: 'jq_v1',
 	data: {
-		label: 'JQ',
+		label: 'jq',
 		text: '',
 		dirty: false,
 		output: {},

@@ -10,6 +10,8 @@
 	import { dataset } from '$lib/store';
 	import Connection from '$lib/icons/Connection.svelte';
 	import { useNodes } from '@xyflow/svelte';
+	import { _ as __ } from 'svelte-i18n';
+
 	const nodes = useNodes();
 
 	export let data: BaseData;
@@ -43,11 +45,12 @@
 			<div style="float: left; margin-right: 0.5rem;" class="w-6 h-6">
 				<img
 					style="width: 100%; height: 100%; object-fit: contain;"
-					src="https://talktothecity.s3.us-west-1.amazonaws.com/tttc-turbo/static/{data.icon}.png"
+					src="/{data.icon}.png"
 					class="w-6 h-6"
 				/>
 			</div>
 		{/if}
+		<div class="mb-4">{$__(data.label)}</div>
 
 		<div style="float: right; display: flex; justify-content: flex-end;">
 			{#if !has_all_inputs}
@@ -64,7 +67,7 @@
 		{/if}
 		<slot />
 		{#if data?.dirty}
-			<div class="text-sm text-gray-500">Unsaved changes</div>
+			<div class="text-sm text-gray-500">{$__('unsaved_changes')}</div>
 		{/if}
 		{#if data?.message}
 			<div class="text-sm text-gray-500">{data?.message}</div>
@@ -80,7 +83,7 @@
 							}}
 						/></span
 					>
-					<span slot="label">Show in standard view.</span>
+					<span slot="label">{$__('show_in_standard_view')}</span>
 				</FormField>
 			{/if}
 		</div>

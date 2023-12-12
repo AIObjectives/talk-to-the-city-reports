@@ -2,6 +2,7 @@
 	import { Dataset } from '$lib/dataset';
 	import Report from '$components/report/Report.svelte';
 	import LeftPane from '$components/report/LeftPane.svelte';
+	import { _ as __ } from 'svelte-i18n';
 
 	export let data;
 	const dataset = Dataset.loadDatasetFromDoc(data.doc, data.id);
@@ -11,7 +12,7 @@
 
 <main>
 	{#if !dataset}
-		<p class="text-center text-lg text-gray-500">Loading...</p>
+		<p class="text-center text-lg text-gray-500">{$__('loading')}</p>
 	{:else}
 		<h1 class="text-3xl uppercase">{dataset.title}</h1>
 		<Report {dataset} />

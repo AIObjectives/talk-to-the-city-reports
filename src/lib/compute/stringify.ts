@@ -46,7 +46,7 @@ type StringifyNodeInterface = DGNodeInterface & {
 export let stringify_node_data: StringifyNodeInterface = {
 	id: 'stringify',
 	data: {
-		label: 'Stringify',
+		label: 'stringify',
 		dirty: false,
 		output: {},
 		compute_type: 'stringify_v0',

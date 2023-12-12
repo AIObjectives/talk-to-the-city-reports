@@ -3,7 +3,6 @@
 	export let claims;
 	import { _ as __ } from 'svelte-i18n';
 	import _ from 'lodash';
-
 	let uniqueClaims = _.uniqBy(claims, 'claim');
 	let duplicateClaims = _.countBy(claims, 'claim');
 	let sortedClaims = _.orderBy(uniqueClaims, (claim) => duplicateClaims[claim.claim], 'desc');
@@ -17,7 +16,9 @@
 				<i>• {claim.claim}</i>
 				{#if duplicateClaims[claim.claim] > 1}
 					<small class="repeated">
-						({$__('repeated')} {duplicateClaims[claim.claim]} {$__('times')})</small
+						({$__('repeated')}
+						{_.map(duplicateClaims[claim.claim].toString(), (c) => $__(c))}
+						{$__('times')})</small
 					>
 				{/if}
 			</div>

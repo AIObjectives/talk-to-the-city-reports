@@ -53,7 +53,7 @@ type LlamaNodeInterface = DGNodeInterface & {
 export let llama_node_data: LlamaNodeInterface = {
 	id: 'llama',
 	data: {
-		label: 'Llama',
+		label: 'llama',
 		text: 'http://localhost:10000/v1/chat/completions',
 		dirty: false,
 		compute_type: 'llama_v0',

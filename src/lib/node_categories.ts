@@ -1,22 +1,31 @@
-const categories = {
+export type Category = {
+	label: string;
+	id: string;
+};
+
+interface CategoriesDictionary {
+	[categoryName: string]: Category;
+}
+
+const categories: CategoriesDictionary = {
 	input: {
-		label: 'Input',
+		label: 'input',
 		id: 'input'
 	},
 	llm: {
-		label: 'LLM',
+		label: 'llm',
 		id: 'llm'
 	},
 	// llama: {
-	// 	label: 'LLAMA',
-	// 	id: 'llama'
+	//   label: 'llama',
+	//   id: 'llama'
 	// },
 	wrangling: {
-		label: 'Wrangling',
+		label: 'wrangling',
 		id: 'wrangling'
 	},
 	display: {
-		label: 'Display',
+		label: 'display',
 		id: 'display'
 	}
 };

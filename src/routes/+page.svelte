@@ -1,8 +1,13 @@
-<script>
+<script lang="ts">
+	import { onMount } from 'svelte';
 	import Button from '@smui/button';
 	import { user } from '$lib/store';
 	import Projects from '$components/Projects.svelte';
 	import { _ as __ } from 'svelte-i18n';
+
+	let mounted = false;
+
+	onMount(() => (mounted = true));
 </script>
 
 <svelte:head>
@@ -15,8 +20,8 @@
 
 	{#if $user}
 		<Projects />
-		<Button href="/report/new" class="mt-10">New report</Button>
-	{:else}
+		<Button href="/report/new" class="mt-10">{$__('new_report')}</Button>
+	{:else if mounted}
 		{$__('sign_in_to_continue')}
 	{/if}
 </section>

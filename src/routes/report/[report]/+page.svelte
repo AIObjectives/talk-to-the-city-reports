@@ -1,33 +1,30 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { Dataset } from '$lib/dataset';
-	import { onMount } from 'svelte';
 	import { SvelteFlowProvider } from '@xyflow/svelte';
 	import Pipeline from '$components/Pipeline.svelte';
 	import Report from '$components/report/Report.svelte';
 	import LeftPane from '$components/report/LeftPane.svelte';
 	import { error } from '$components/toast/theme';
+	import { _ as __ } from 'svelte-i18n';
 
 	let dataset: Dataset | null = null;
 	let dataset_refresh: number = 0;
 
 	const loadDataset = async (slug: string) => {
-		console.log('Loading dataset: ', slug);
 		dataset = await Dataset.loadDataset(slug);
 		dataset_refresh++;
 		if (!dataset) {
-			console.log('Dataset not found');
-			error('Dataset not found');
+			error($__('dataset_not_found'));
 		}
 	};
 
 	$: {
+		// discovered a weird bug. Don't use i18n in
+		// these reactive statements
 		const slug = $page.params.report;
 		if (slug) {
 			loadDataset(slug);
-		} else {
-			console.log('No slug provided');
-			error('No slug provided');
 		}
 	}
 </script>
@@ -36,7 +33,7 @@
 
 <main>
 	{#if !dataset}
-		<p class="text-center text-lg text-gray-500">Loading...</p>
+		<p class="text-center text-lg text-gray-500">{$__('loading')}</p>
 	{:else}
 		<SvelteFlowProvider>
 			<Pipeline bind:dataset {dataset_refresh} />

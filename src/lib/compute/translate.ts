@@ -110,7 +110,7 @@ type TranslateNodeInterface = DGNodeInterface & {
 export let translate_node_data: TranslateNodeInterface = {
 	id: 'translate',
 	data: {
-		label: 'Translate',
+		label: 'translate',
 		target_language: 'English',
 		keys: [],
 		dirty: false,

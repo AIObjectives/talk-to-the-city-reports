@@ -59,7 +59,7 @@ type JqNodeV0Interface = DGNodeInterface & {
 export let jq_v0_node_data: JqNodeV0Interface = {
 	id: 'jq_v0',
 	data: {
-		label: 'JQ',
+		label: 'jq',
 		text: '',
 		dirty: false,
 		output: {},

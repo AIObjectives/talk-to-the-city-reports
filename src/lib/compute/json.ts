@@ -48,7 +48,7 @@ export default JSONNode;
 export let json_node_data: JSONNodeInterface = {
 	id: 'json',
 	data: {
-		label: 'JSON',
+		label: 'json',
 		filename: '',
 		size_kb: 0,
 		dirty: false,

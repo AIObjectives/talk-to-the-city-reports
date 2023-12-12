@@ -5,6 +5,7 @@
 	import MenuItem from './menu_item.svelte';
 	import { dataset } from '$lib/store';
 	import ToggleView from '$components/ToggleView.svelte';
+	import { _ as __ } from 'svelte-i18n';
 
 	let showDropdown: boolean = false;
 	let modalShowing: boolean = false;
@@ -30,15 +31,15 @@
 						on:click={(e) => {
 							modalShowing = true;
 						}}
-						label={'Fork report'}
+						label={$__('fork_report')}
 					/>
 					{#if $user.uid == 'H6U6UUpCtqb5pRvRc9BalA5eNWP2'}
 						<MenuItem
 							on:click={(e) => {
-								const name = prompt('Enter name of template');
+								const name = prompt($__('enter_name_of_template'));
 								$dataset.saveAsTemplate(name);
 							}}
-							label={'Save as template'}
+							label={$__('save_as_template')}
 						/>
 					{/if}
 				{/if}

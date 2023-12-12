@@ -1,5 +1,6 @@
 <script>
 	import Header from './Header.svelte';
+	import Footer from '$components/Footer.svelte';
 	import './styles.css';
 	import { SvelteToast } from '@zerodevx/svelte-toast';
 	import { onMount } from 'svelte';
@@ -7,7 +8,7 @@
 	import { user } from '$lib/store';
 	import { auth } from '$lib/firebase';
 	import '/src/app.css';
-	import { _ } from 'svelte-i18n';
+	import { _ as __ } from 'svelte-i18n';
 	import Cookies from 'js-cookie';
 
 	onMount(() => {
@@ -28,12 +29,7 @@
 		<slot />
 	</main>
 
-	<footer>
-		{$_('developed_by')} <a href="https://objective.is">AI Objectives Institute</a>
-		{#if $user}
-			{$_('logged_in_as')} {$user.displayName}
-		{/if}
-	</footer>
+	<Footer />
 </div>
 
 <style>
@@ -51,23 +47,5 @@
 		width: 100%;
 		margin: 0 auto;
 		box-sizing: border-box;
-	}
-
-	footer {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		padding: 12px;
-	}
-
-	footer a {
-		font-weight: bold;
-	}
-
-	@media (min-width: 480px) {
-		footer {
-			padding: 12px 0;
-		}
 	}
 </style>

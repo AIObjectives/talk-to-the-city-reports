@@ -3,7 +3,7 @@
 	import { user } from '$lib/store';
 	import { goto } from '$app/navigation';
 	import { auth } from '$lib/firebase';
-	import { _ } from 'svelte-i18n';
+	import { _ as __ } from 'svelte-i18n';
 
 	let error;
 
@@ -14,7 +14,6 @@
 			provider.addScope('email');
 			const result = await signInWithPopup(auth, provider);
 			const credential = GoogleAuthProvider.credentialFromResult(result);
-			const token = credential.accessToken;
 			await goto('/');
 		} catch (e) {
 			error = e;
@@ -23,7 +22,7 @@
 </script>
 
 {#if !$user}
-	<button on:click={signInWithGoogle}>{$_('sign_in_with_google')}</button>
+	<button on:click={signInWithGoogle}>{$__('sign_in_with_google')}</button>
 {/if}
 
 {#if error}

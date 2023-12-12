@@ -73,7 +73,7 @@ type EditCSVNodeInterface = DGNodeInterface & {
 export let edit_csv_node_data: EditCSVNodeInterface = {
 	id: 'edit_csv',
 	data: {
-		label: 'Edit CSV',
+		label: 'edit_csv',
 		dirty: false,
 		generate: {},
 		delete: [],

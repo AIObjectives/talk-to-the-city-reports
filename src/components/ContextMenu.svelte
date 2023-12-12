@@ -2,6 +2,7 @@
 	import { useEdges, useNodes } from '@xyflow/svelte';
 	import Select, { Option } from '@smui/select';
 	import { Dataset } from '$lib/dataset';
+	import { _ as __ } from 'svelte-i18n';
 
 	export let onClick: () => void;
 	export let edge_id: string | undefined;
@@ -45,10 +46,10 @@
 	<p style="margin: 0.5em;">
 		<small
 			>{#if node}
-				node: {node_id}
+				{$__('node')}: {node_id}
 			{/if}
 			{#if edge}
-				edge: {edge_id}
+				$__('edge'): {edge_id}
 			{/if}
 		</small>
 	</p>
@@ -67,11 +68,11 @@
 		{/each}
 
 		<hr />
-		<button on:click={deleteNode}>delete node</button>
+		<button on:click={deleteNode}>{$__('delete_node')}</button>
 	{/if}
 	{#if edge}
 		<hr />
-		<button on:click={deleteEdge}>delete edge</button>
+		<button on:click={deleteEdge}>{$__('delete_edge')}</button>
 	{/if}
 </div>
 

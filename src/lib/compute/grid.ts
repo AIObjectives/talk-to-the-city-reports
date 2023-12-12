@@ -50,7 +50,7 @@ type GridNodeInterface = DGNodeInterface & {
 export let grid_node_data: GridNodeInterface = {
 	id: 'grid',
 	data: {
-		label: 'Grid Node',
+		label: 'grid',
 		text: '',
 		dirty: false,
 		output: {},

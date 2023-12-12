@@ -14,6 +14,7 @@
 	import { viewMode } from '$lib/store';
 	import { useSvelteFlow } from '@xyflow/svelte';
 	import DragVertical from '$lib/icons/DragVertical.svelte';
+	import { _ as __ } from 'svelte-i18n';
 
 	const { fitView } = useSvelteFlow();
 	const updateNodeInternals = useUpdateNodeInternals();
@@ -188,7 +189,7 @@
 				refreshData();
 			}}
 		>
-			Generate Report
+			{$__('generate_report')}
 		</Button>
 
 		{#if $user && $user.uid === dataset.owner}
@@ -197,7 +198,7 @@
 					await dataset.updateDataset($user);
 				}}
 			>
-				Save
+				{$__('save')}
 			</Button>
 		{/if}
 	</div>

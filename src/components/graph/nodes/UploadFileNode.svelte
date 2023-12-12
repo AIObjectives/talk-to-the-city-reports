@@ -5,32 +5,24 @@
 		uploadBytesResumable,
 		getDownloadURL
 	} from 'firebase/storage';
-	import { useEdges, useNodes } from '@xyflow/svelte';
+	import { useNodes } from '@xyflow/svelte';
 	import { getAuth } from 'firebase/auth';
 	import Button from '@smui/button';
 	import { type NodeProps } from '@xyflow/svelte';
 	import { page } from '$app/stores';
 	import DGNode from './DGNode.svelte';
-	import { dataset } from '$lib/store';
-	import { get } from 'svelte/store';
+	import { _ as __ } from 'svelte-i18n';
 
 	type $$Props = NodeProps;
 
 	export let data: $$Props['data'];
 	export let id: $$Props['id'];
-
 	export let fileType = 'CSV';
 
 	const nodes = useNodes();
-	const edges = useEdges();
-
 	let fileInput;
 	const storage = getStorage();
 	const auth = getAuth();
-
-	function triggerFileSelect() {
-		fileInput.click();
-	}
 
 	async function handleFileChange(event: Event) {
 		const uploadedFile = (event.target as HTMLInputElement).files[0];
@@ -69,7 +61,7 @@
 </script>
 
 <DGNode {data} {id} {...$$restProps} }>
-	<div>{fileType} data</div>
+	<div>{fileType} {$__('data')}</div>
 	{#if data?.filename}
 		<div>{data?.filename}</div>
 		<div>{data?.size_kb} KB</div>
@@ -82,6 +74,6 @@
 			on:change={handleFileChange}
 			style="display: none;"
 		/>
-		<Button on:click={triggerFileSelect}>Upload {fileType}</Button>
+		<Button on:click={() => fileInput.click()}>{$__('upload')} {fileType}</Button>
 	{/if}
 </DGNode>
