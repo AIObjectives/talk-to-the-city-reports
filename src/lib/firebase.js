@@ -26,7 +26,7 @@ let db = getFirestore(app);
 const storage = getStorage(app);
 
 const datasetCollection = collection(db, "datasets");
-const openQuestionsCollection = collection(db, "open_questions");
+const feedbackCollection = collection(db, "feedback");
 const templatesCollection = collection(db, "templates");
 const userDoc = (userId) => doc(db, "users", userId);
 const datasetDoc = (datasetId) => doc(db, "datasets", datasetId)
@@ -38,6 +38,6 @@ export {
     userDoc,
     datasetDoc,
     templatesCollection,
-    openQuestionsCollection,
+    feedbackCollection,
     storage
 }

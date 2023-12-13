@@ -23,7 +23,7 @@ describe('ArgumentExtractionNode class', function () {
 	beforeEach(() => {
 		node = new ArgumentExtractionNode(deepCopy(argument_extraction_node_data));
 		inputData = {
-			open_ai_key: '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',
+			open_ai_key: 'sk-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
 			csv: csv_data,
 			cluster_extraction: mock_cluster_extraction_data
 		};

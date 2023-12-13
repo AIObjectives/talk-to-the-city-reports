@@ -127,7 +127,6 @@ export class Dataset {
 					x.data.output = null;
 					return x;
 				});
-				console.log(copy.graph.nodes);
 				await updateDoc(doc(datasetCollection, this.id), copy);
 				success($__('dataset_updated'));
 			} catch (err) {

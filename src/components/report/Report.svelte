@@ -12,6 +12,7 @@
 	import Claims from '$components/report/Claims.svelte';
 	import Tooltip from '$components/report/Tooltip.svelte';
 	import InfoPanel from '$components/report/InfoPanel.svelte';
+	import FeedbackDialog from './FeedbackDialog.svelte';
 
 	export let dataset: any;
 
@@ -20,7 +21,7 @@
 
 	function transformData(originalData) {
 		return {
-			name: 'heal michigan',
+			name: '',
 			children: _.map(originalData.topics, (topic) => ({
 				name: topic.topicName,
 				children: _.map(topic.subtopics, (subtopic) => {
@@ -43,11 +44,13 @@
 
 	let report_node;
 	let csv_node;
+	let feedbackNode;
 
 	$: {
 		if (dataset) {
 			report_node = get(dataset.graph.nodes).find((n) => n.data?.compute_type === 'report_v0');
 			csv_node = get(dataset.graph.nodes).find((n) => n.data?.compute_type === 'csv_v0');
+			feedbackNode = get(dataset.graph.nodes).find((n) => n.data?.compute_type === 'feedback_v0');
 			if (report_node && report_node.data && csv_node && csv_node.data) {
 				report = report_node.data.output;
 				csv = csv_node.data.output;
@@ -63,6 +66,7 @@
 
 	let tooltipEvent: any;
 	let clickEvent: any;
+	let feedbackEvent: any;
 
 	const customColors = [
 		'#005F73',
@@ -86,9 +90,9 @@
 	}
 </script>
 
-<h1 class="text-3xl uppercase my-10">{dataset.title}</h1>
+<FeedbackDialog {dataset} claims={feedbackEvent} />
 
-<!-- <DebugReport {dataset} {report_node} {csv_node} {report} {csv} /> -->
+<h1 class="text-3xl uppercase my-10">{dataset.title}</h1>
 
 <div class="graph-container">
 	{#if complexHierarchy}
@@ -103,7 +107,15 @@
 					on:mouseleave={(e) => (tooltipEvent = null)}
 				/>
 			</div>
-			<InfoPanel {clickEvent} {csv} />
+			<InfoPanel
+				showFeedback={!!feedbackNode}
+				{dataset}
+				{clickEvent}
+				{csv}
+				on:feedback={(e) => {
+					feedbackEvent = e.detail;
+				}}
+			/>
 		</div>
 	{/if}
 </div>
@@ -122,7 +134,7 @@
 							{topic.topicName}
 						</h3>
 						<small style="color: {hsl(ordinalColor(topic.topicName)).brighter(-2)}">
-							{_.map(topic.subtopics.length.toString(), (c) => $__(c))}
+							{_.map(topic.subtopics.length.toString(), (c) => $__(c)).join('')}
 							{$__('subtopics')}
 							{_.map(
 								_.sumBy(
@@ -130,7 +142,7 @@
 									(subtopic) => _.uniqBy(subtopic.claims, 'claim').length
 								).toString(),
 								(c) => $__(c)
-							)}
+							).join('')}
 							{$__('claims')}
 						</small>
 					</div>
@@ -144,14 +156,24 @@
 							>
 								<h5>{subtopic.subtopicName}</h5>
 								<small>
-									{_.map(_.uniqBy(subtopic.claims, 'claim').length.toString(), (c) => $__(c))}
+									{_.map(_.uniqBy(subtopic.claims, 'claim').length.toString(), (c) => $__(c)).join(
+										''
+									)}
 									{$__('claims')}</small
 								>
 							</div>
 							<div class="ml-5 mt-2 mb-2" style="color: black">
 								<h7>{subtopic.subtopicShortDescription}</h7>
 							</div>
-							<Claims claims={subtopic.claims} />
+							<Claims
+								{dataset}
+								{csv}
+								claims={subtopic.claims}
+								on:feedback={(e) => {
+									feedbackEvent = e.detail;
+								}}
+								showFeedback={!!feedbackNode}
+							/>
 						</Paper>
 						<br />
 					{/each}

@@ -5,7 +5,7 @@
 	import { viewMode, fitViewStore } from '$lib/store';
 	import { _ as __ } from 'svelte-i18n';
 
-	let modes = ['standard', 'dual', 'graph'];
+	let modes = ['standard', 'graph'];
 	let i = modes.indexOf($viewMode);
 </script>
 

@@ -64,7 +64,7 @@ type OpenAIKeyNodeInterface = DGNodeInterface & {
 export let open_ai_key_node_data: OpenAIKeyNodeInterface = {
 	id: 'open_ai_key',
 	data: {
-		label: 'OpenAI Key',
+		label: 'open_ai_key',
 		text: 'sk-...',
 		dirty: false,
 		compute_type: 'open_ai_key_v0',

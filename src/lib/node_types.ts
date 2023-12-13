@@ -26,7 +26,7 @@ export const nodeTypes = {
 	default: DefaultNode,
 	merge_v0: DefaultNode,
 	stringify_v0: DefaultNode,
-	open_questions_v0: DefaultNode
+	feedback_v0: DefaultNode
 };
 
 import '$lib/compute/csv';

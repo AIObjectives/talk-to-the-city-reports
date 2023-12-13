@@ -20,7 +20,7 @@ import { markdown_node } from './compute/markdown';
 import { jq_v1_node } from './compute/jq_v1';
 import { stringify_node } from './compute/stringify';
 import { score_argument_relevance_node } from './compute/score_argument_relevance';
-import { open_questions_node } from './compute/open_questions';
+import { feedback_node } from './compute/feedback';
 // import { llama_node } from './compute/llama';
 // import { argument_extraction_llama_node } from './compute/argument_extraction_llama';
 
@@ -44,7 +44,7 @@ export let node_register = [
 	markdown_node,
 	stringify_node,
 	score_argument_relevance_node,
-	open_questions_node
+	feedback_node
 	// llama_node,
 	// argument_extraction_llama_node
 ];

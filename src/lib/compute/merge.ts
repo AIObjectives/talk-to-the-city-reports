@@ -38,11 +38,20 @@ export default class MergeNode {
 		cluster_extraction = deepCopy(cluster_extraction);
 		argument_extraction = deepCopy(argument_extraction);
 
+		_.forOwn(argument_extraction, (v, k) => {
+			_.forEach(v['claims'], (claim, i) => {
+				claim['id'] = `${k}-${i}`;
+			});
+		});
+
 		const lookup = {};
 
 		_.forOwn(argument_extraction, (v, k) => {
 			_.forEach(v['claims'], (claim) => {
-				const combinedClaim = _.assign({}, claim, { interview: v['interview'], id: v['id'] });
+				const combinedClaim = _.assign({}, claim, {
+					interview: v['interview'],
+					commentId: v['id']
+				});
 				const key = `${combinedClaim['topicName']}::${combinedClaim['subtopicName']}`;
 
 				if (!_.has(lookup, key)) {

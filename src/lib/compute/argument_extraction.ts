@@ -100,7 +100,7 @@ export default class ArgumentExtractionNode {
 			success(`${$__('calling_openai')}: ${Math.floor(timeTaken / 1000)} ${$__('seconds')}`);
 
 			results.forEach((result) => {
-				this.data.output[result.id] = result;
+				if (result) this.data.output[result.id] = result;
 			});
 
 			this.data.csv_length = csv.length;

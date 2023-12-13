@@ -1,48 +1,30 @@
-<script lang="ts">
-	import _ from 'lodash';
-	import en from '$lib/i18n/en.json';
-	import zhTW from '$lib/i18n/zh-TW.json';
-	import Paper from '@smui/paper';
-	import { marked } from 'marked';
+<script>
+	import Textfield from '@smui/textfield';
+	import Tooltip, { Wrapper, Title, Content, Link, RichActions } from '@smui/tooltip';
 
-	console.log('checking lang files');
+	let showTooltip = false;
 
-	const languages = {
-		en,
-		'zh-TW': zhTW
-	};
+	function show() {
+		showTooltip = true;
+	}
 
-	const langKeys = _.keys(languages);
-	let missing = [];
-	let files = [];
-
-	langKeys.forEach((lang, index) => {
-		const baseLang = _.cloneDeep(languages[lang]);
-		langKeys.forEach((compareLang, compareIndex) => {
-			if (index !== compareIndex) {
-				const missingKeys = _.difference(_.keys(languages[compareLang]), _.keys(baseLang));
-				if (missingKeys.length > 0) {
-					missing = [...missing, `Keys missing in ${lang}: ${missingKeys.join(', ')}`];
-					missingKeys.forEach((key) => {
-						baseLang[key] = '';
-					});
-				}
-			}
-		});
-		files = [
-			...files,
-			{ lang, content: marked(`\`\`\`\n${JSON.stringify(baseLang, null, 2)}\n\`\`\``) }
-		];
-	});
+	function hide() {
+		showTooltip = false;
+	}
 </script>
 
-<Paper class="m-5 p-5">
-	<h3>Lang</h3>
-	{#each missing as m}
-		<p>{@html marked(m)}</p>
-	{/each}
-	{#each files as file}
-		<h4>{file.lang}</h4>
-		<pre>{@html file.content}</pre>
-	{/each}
-</Paper>
+<div class="trigger" on:mouseenter={show} on:mouseleave={hide}>
+	Hover over me
+	{#if showTooltip}
+		<Tooltip persistent={true}>
+			<Content>blah</Content>
+		</Tooltip>
+	{/if}
+</div>
+
+<style>
+	.trigger {
+		/* Style for your trigger element */
+		cursor: pointer;
+	}
+</style>

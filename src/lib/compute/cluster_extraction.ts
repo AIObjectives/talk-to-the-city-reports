@@ -3,6 +3,7 @@ import categories from '$lib/node_categories';
 import { readFileFromGCS, uploadJSONToGCS } from '$lib/utils';
 import { cluster_extraction_prompt, cluster_extraction_system_prompt } from '$lib/prompts';
 import { format, unwrapFunctionStore } from 'svelte-i18n';
+import _ from 'lodash';
 
 const $__ = unwrapFunctionStore(format);
 

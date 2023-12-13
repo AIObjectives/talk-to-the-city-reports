@@ -26,7 +26,7 @@
     "logged_in_as": "已登入為",
     "help": "幫忙",
     "are_you_sure_delete_dataset": "確定嗎？這也將刪除資產：",
-    "open_questions": "公開問題",
+    "feedback": "反饋",
     "generate_report": "生成報告",
     "save": "保存",
     "standard": "標準",
@@ -134,5 +134,16 @@
     "seconds": "秒",
     "done_calling_openai": "呼叫 OpenAI 完成",
     "calls_left": "剩餘呼叫次數",
-    "error_calling_openai": "呼叫 OpenAI 時出錯"
-  }
+    "error_calling_openai": "呼叫 OpenAI 時出錯",
+    "i_think_the_claim_is_micategorized": "我認為這個主張分類錯誤",
+    "which_topic_does_the_claim_belong_to": "這個主張屬於哪個主題？",
+    "i_think_the_claim_is_inaccurate": "我認為這個主張不準確",
+    "i_think_the_claim_does_not_belong_to_the_dataset": "我認為這個主張不屬於這個數據集",
+    "what_should_the_claim_be": "這個主張應該是什麼？",
+    "please_tell_us_a_subtopic_name": "請告訴我們一個子主題名稱",
+    "please_tell_us_a_topic_name": "請告訴我們一個子主題名稱",
+    "cancel": "取消",
+    "submit": "提交",
+    "success": "成功",
+    "error": "錯誤"
+}

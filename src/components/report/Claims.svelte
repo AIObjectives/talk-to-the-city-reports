@@ -1,9 +1,16 @@
 <script lang="ts">
-	let showMoreClaims = false;
-	export let claims;
 	import { _ as __ } from 'svelte-i18n';
 	import _ from 'lodash';
+	import Claim from './Claim.svelte';
+
+	export let dataset: any;
+	export let csv: any;
+	export let claims;
+	export let showFeedback: boolean = false;
+
+	let showMoreClaims = false;
 	let uniqueClaims = _.uniqBy(claims, 'claim');
+	let grouped = _.groupBy(claims, 'claim');
 	let duplicateClaims = _.countBy(claims, 'claim');
 	let sortedClaims = _.orderBy(uniqueClaims, (claim) => duplicateClaims[claim.claim], 'desc');
 </script>
@@ -13,14 +20,7 @@
 	{#each showMoreClaims ? sortedClaims : sortedClaims.slice(0, 5) as claim (claim.claim)}
 		<div class="flex items-center" style="color: black">
 			<div class="text-sm">
-				<i>• {claim.claim}</i>
-				{#if duplicateClaims[claim.claim] > 1}
-					<small class="repeated">
-						({$__('repeated')}
-						{_.map(duplicateClaims[claim.claim].toString(), (c) => $__(c))}
-						{$__('times')})</small
-					>
-				{/if}
+				<Claim {dataset} {csv} claims={grouped[claim.claim]} on:feedback {showFeedback} />
 			</div>
 		</div>
 	{/each}
@@ -30,9 +30,3 @@
 		</button>
 	{/if}
 </div>
-
-<style>
-	.repeated {
-		background-color: #eeeeff;
-	}
-</style>

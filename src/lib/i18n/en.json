@@ -26,7 +26,7 @@
   "logged_in_as": "Logged in as",
   "help": "Help",
   "are_you_sure_delete_dataset": "Are you sure? This will also delete assets:",
-  "open_questions": "Open questions",
+  "feedback": "Feedback",
   "generate_report": "Generate Report",
   "save": "Save",
   "standard": "Standard",
@@ -134,5 +134,16 @@
   "seconds": "Seconds",
   "done_calling_openai": "Done calling OpenAI",
   "calls_left": "calls left",
-  "error_calling_openai": "Error calling OpenAI"
+  "error_calling_openai": "Error calling OpenAI",
+  "i_think_the_claim_is_micategorized": "I think the claim is miscategorized",
+  "which_topic_does_the_claim_belong_to": "Which topic does the claim belong to?",
+  "i_think_the_claim_is_inaccurate": "I think the claim is inaccurate",
+  "i_think_the_claim_does_not_belong_to_the_dataset": "I think the claim doesn't belong to the dataset",
+  "what_should_the_claim_be": "What should the claim be?",
+  "please_tell_us_a_subtopic_name": "Please tell us a subtopic name",
+  "please_tell_us_a_topic_name": "Please tell us a subtopic name",
+  "cancel": "Cancel",
+  "submit": "Submit",
+  "success": "Success",
+  "error": "Error"
 }

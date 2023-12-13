@@ -61,8 +61,10 @@
 			{/if}
 		</div>
 		{#if show_help}
-			<Paper class="mb-5">
-				<div class="docs">{@html marked.parse(docs[data?.compute_type])}</div>
+			<Paper class="mb-5" style="min-width: 500px;">
+				<div class="docs">
+					{@html marked.parse(docs[data?.compute_type])}
+				</div>
 			</Paper>
 		{/if}
 		<slot />

@@ -2,8 +2,8 @@
 	import Paper from '@smui/paper';
 	import { _ as __ } from 'svelte-i18n';
 	import type { Dataset } from '$lib/dataset';
-	import OpenQuestionsPanel from '$components/report/OpenQuestionsPanel.svelte';
 
+	export let showVideo: boolean;
 	export let claim: any;
 	export let csv: any;
 	export let dataset: Dataset;
@@ -11,10 +11,10 @@
 
 	let video: string;
 	let newIframeSrc: string;
-	let claimId: string = claim.id;
+	let claimCommentId: string = claim.commentId;
 
-	$: if (claimId) {
-		let entry = csv.find((entry: any) => entry['comment-id'] === claimId);
+	$: if (claimCommentId && showVideo && csv) {
+		let entry = csv.find((entry: any) => entry['comment-id'] === claimCommentId);
 		if (entry && entry.video && entry.timestamp) {
 			video = entry.video;
 			let [hours, minutes, seconds] = entry.timestamp.split(':').map(Number);
@@ -26,23 +26,24 @@
 	}
 </script>
 
-<Paper square>
+<Paper class="m-0 p-0" square>
 	<div class="inner-div p-2">
 		{#if showClaims}
 			<h5>{$__('claim')}:</h5>
 			<i>{claim.claim}</i>
 			<br />
 			<br />
-			<h5>{$__('quote')}:</h5>
 		{/if}
+		<h5>{$__('quote')}:</h5>
 		<i>"{claim.quote}"</i>
+		<br />
 		<br />
 		{#if claim.interview}
 			<h5>{$__('interview')}:</h5>
 			{claim.interview}
 			<br />
 		{/if}
-		{#if newIframeSrc}
+		{#if showVideo && newIframeSrc}
 			<div class="iframe-container mt-3">
 				<iframe
 					class="responsive-iframe"
@@ -54,8 +55,6 @@
 				/>
 			</div>
 		{/if}
-
-		<OpenQuestionsPanel {dataset} {claimId} />
 	</div>
 </Paper>
 

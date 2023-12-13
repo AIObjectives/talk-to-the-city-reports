@@ -149,6 +149,7 @@ button:focus:not(:focus-visible) {
 
 .dg-node {
 	opacity: 1 !important;
+	overflow-x: auto;
 }
 
 .svelte-flow__node {
