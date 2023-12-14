@@ -69,7 +69,4 @@
 	>
 		<HelperText slot="helper">{$__('primary_extraction_prompt')}</HelperText>
 	</TextField>
-	{#if output && Object.keys(output).length}
-		<div>{$__('objects')}: {Object.keys(output).length}: {Object.keys(output)[0]} ...</div>
-	{/if}
 </DGNode>

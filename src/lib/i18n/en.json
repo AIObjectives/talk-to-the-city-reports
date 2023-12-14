@@ -145,5 +145,8 @@
   "cancel": "Cancel",
   "submit": "Submit",
   "success": "Success",
-  "error": "Error"
+  "error": "Error",
+  "loaded_from_gcs": "Loaded from GCS",
+  "comments": "Comments",
+  "missing_input_data": "Missing Input Data"
 }

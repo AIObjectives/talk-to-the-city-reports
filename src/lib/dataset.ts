@@ -114,7 +114,6 @@ export class Dataset {
 	}
 
 	async updateDataset(user: User) {
-		console.log('Saving');
 		if (user && user.uid === this.owner) {
 			try {
 				info($__('updating_dataset'));

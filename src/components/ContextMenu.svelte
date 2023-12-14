@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Checkbox from '@smui/checkbox';
+	import FormField from '@smui/form-field';
 	import { useEdges, useNodes } from '@xyflow/svelte';
 	import Select, { Option } from '@smui/select';
 	import { Dataset } from '$lib/dataset';
@@ -66,7 +68,19 @@
 				{/each}
 			</Select>
 		{/each}
-
+		<div>
+			<FormField align="end">
+				<div>
+					<Checkbox
+						checked={node.data.show_in_ui}
+						on:change={(x) => {
+							node.data.show_in_ui = x.target.checked;
+						}}
+					/>
+				</div>
+				<span slot="label">{$__('show_in_standard_view')}</span>
+			</FormField>
+		</div>
 		<hr />
 		<button on:click={deleteNode}>{$__('delete_node')}</button>
 	{/if}

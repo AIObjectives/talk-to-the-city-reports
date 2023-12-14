@@ -67,8 +67,9 @@
 </script>
 
 {#if modData && modData.length}
-	<div class="nowheel nodrag">
+	<div class="nowheel nodrag" style="position: relative;">
 		<button
+			style="position: absolute; z-index: 10000;"
 			on:click={() => {
 				editing = !editing;
 			}}><Pencil /></button

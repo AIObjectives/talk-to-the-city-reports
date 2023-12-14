@@ -145,5 +145,8 @@
     "cancel": "取消",
     "submit": "提交",
     "success": "成功",
-    "error": "錯誤"
+    "error": "錯誤",
+    "loaded_from_gcs": "從 GCS 加載",
+    "comments": "評論",
+    "missing_input_data": "缺少輸入資料"
 }

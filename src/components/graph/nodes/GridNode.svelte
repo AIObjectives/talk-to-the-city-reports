@@ -15,11 +15,3 @@
 		<GridNested data={data.output} {id} {isStandardView} />
 	{/if}
 </DGNode>
-
-<style>
-	.grid {
-		min-width: 500px;
-		min-height: 300px;
-		max-height: 300px;
-	}
-</style>

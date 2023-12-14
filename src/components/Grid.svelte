@@ -1,8 +1,8 @@
 <script lang="ts">
+	import _ from 'lodash';
 	import AgGridSvelte from 'ag-grid-svelte';
 	import { writable, get } from 'svelte/store';
 
-	import _ from 'lodash';
 	export let isStandardView: boolean;
 	export let data: Array<{ [key: string]: any }>;
 	export let depth = 0;
@@ -11,7 +11,7 @@
 	let columnApi: any;
 	let gridApi: any;
 	let columnDefs: Array<{ [key: string]: any }> = [];
-	let gridData;
+	let gridData: any;
 
 	$: {
 		if (data) {
@@ -51,14 +51,6 @@
 		}
 	}
 
-	function autoSizeColumns(): void {
-		if (columnApi) {
-			setTimeout(() => {
-				columnApi.sizeColumnsToFit(800 - 50);
-			}, 100);
-		}
-	}
-
 	function onGridReady(event: { columnApi: any; api: any }): void {
 		columnApi = event.columnApi;
 		gridApi = event.api;
@@ -66,7 +58,6 @@
 		for (const colId in storedColumnWidths) {
 			columnApi.setColumnWidth(colId, Math.min(storedColumnWidths[colId], 1000), true);
 		}
-		// autoSizeColumns();
 	}
 </script>
 
@@ -98,5 +89,17 @@
 	}
 	.grid-container {
 		width: 100%;
+	}
+	:global(
+			.ag-theme-alpine .ag-layout-auto-height .ag-center-cols-clipper,
+			.ag-theme-alpine .ag-layout-auto-height .ag-center-cols-container,
+			.ag-theme-alpine .ag-layout-print .ag-center-cols-clipper,
+			.ag-theme-alpine .ag-layout-print .ag-center-cols-container,
+			.ag-theme-alpine-dark .ag-layout-auto-height .ag-center-cols-clipper,
+			.ag-theme-alpine-dark .ag-layout-auto-height .ag-center-cols-container,
+			.ag-theme-alpine-dark .ag-layout-print .ag-center-cols-clipper,
+			.ag-theme-alpine-dark .ag-layout-print .ag-center-cols-container
+		) {
+		min-height: auto !important; /* Clears out any previously set min-height */
 	}
 </style>

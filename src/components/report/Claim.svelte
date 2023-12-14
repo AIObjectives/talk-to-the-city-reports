@@ -23,7 +23,7 @@
 		{/if}
 	</span>
 
-	<Tooltip style="min-width: 300px; background-color: white;">
+	<Tooltip style="min-width: 300px; background-color: white;" persistent>
 		<Content>
 			<InfoPanel
 				{dataset}

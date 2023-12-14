@@ -7,7 +7,7 @@
 	import '$lib/i18n';
 	import { _ as __ } from 'svelte-i18n';
 	import _ from 'lodash';
-	$: isReport = $page.route.id.startsWith('/report/[report]');
+	$: isReport = $page?.route?.id?.startsWith('/report/[report]');
 	$: isStandard = $viewMode == 'standard';
 	$: showMenu = (isReport && isStandard) || !isReport;
 </script>

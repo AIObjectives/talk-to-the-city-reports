@@ -1,6 +1,4 @@
 <script lang="ts">
-	import Checkbox from '@smui/checkbox';
-	import FormField from '@smui/form-field';
 	import Paper from '@smui/paper';
 	import { marked } from 'marked';
 	import { docs } from '$lib/node_types';
@@ -40,7 +38,7 @@
 </script>
 
 {#if data && show}
-	<Paper title={id} class={selected ? 'selected-dg-node' : 'dg-node'} {style}>
+	<Paper title={id} class={selected ? 'selected-dg-node' : 'dg-node'} style="position: relative;">
 		{#if data?.icon}
 			<div style="float: left; margin-right: 0.5rem;" class="w-6 h-6">
 				<img
@@ -52,7 +50,7 @@
 		{/if}
 		<div class="mb-4">{$__(data.label)}</div>
 
-		<div style="float: right; display: flex; justify-content: flex-end;">
+		<div class="help-icon-wrapper">
 			{#if !has_all_inputs}
 				<Connection color="#ffaaaa" class="mr-2" />
 			{/if}
@@ -74,30 +72,15 @@
 		{#if data?.message}
 			<div class="text-sm text-gray-500">{data?.message}</div>
 		{/if}
-
-		<div>
-			{#if !isStandardView}
-				<FormField align="end">
-					<span
-						><Checkbox
-							on:change={(x) => {
-								data.show_in_ui = x.target.checked;
-							}}
-						/></span
-					>
-					<span slot="label">{$__('show_in_standard_view')}</span>
-				</FormField>
-			{/if}
-		</div>
-
-		<Handle type="source" position={Position.Bottom} on:connect={onConnect} />
-		<Handle
-			type="target"
-			position={Position.Top}
-			on:connect={onConnect}
-			style={'background-color: ' + (has_all_inputs ? 'rgb(200, 203, 223)' : '#ffaaaa')}
-		/>
 	</Paper>
+
+	<Handle type="source" position={Position.Bottom} on:connect={onConnect} />
+	<Handle
+		type="target"
+		position={Position.Top}
+		on:connect={onConnect}
+		style={'background-color: ' + (has_all_inputs ? 'rgb(200, 203, 223)' : '#ffaaaa')}
+	/>
 {/if}
 
 <style>
@@ -130,5 +113,16 @@
 	:global(.svelte-flow .svelte-flow__edge path, .svelte-flow__connectionline path) {
 		stroke-width: 3;
 		stroke: rgb(185, 191, 220);
+	}
+	.paper {
+		position: relative;
+	}
+
+	.help-icon-wrapper {
+		position: absolute;
+		top: 10px;
+		right: 10px;
+		display: flex;
+		align-items: center;
 	}
 </style>

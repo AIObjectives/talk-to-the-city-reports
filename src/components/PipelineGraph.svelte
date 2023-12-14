@@ -111,7 +111,7 @@
 		<PipelineCreateNodesToolbar bind:resetTimeout bind:active on:click={(x) => addNode(x.detail)} />
 	{/if}
 	<div
-		style:width={$viewMode == 'graph' || $viewMode == 'dual' ? '100%' : '0vw'}
+		style:visibility={$viewMode == 'graph' || $viewMode == 'dual' ? 'visible' : 'hidden'}
 		style:height={'97vh'}
 		class="flow-container"
 	>

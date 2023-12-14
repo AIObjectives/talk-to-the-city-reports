@@ -8,6 +8,9 @@ import mock_cluster_extraction_data from '$lib/mock_data/cluster_extraction/clus
 import csv_data from '$lib/mock_data/csv/csv.json';
 import prompt from '$lib/mock_data/cluster_extraction/prompt.txt?raw';
 import system_prompt from '$lib/mock_data/cluster_extraction/system_prompt.txt?raw';
+import { format, unwrapFunctionStore } from 'svelte-i18n';
+
+const $__ = unwrapFunctionStore(format);
 
 vi.mock('$lib/utils', () => ({
 	readFileFromGCS: vi.fn(() => Promise.resolve(JSON.stringify(mock_cluster_extraction_data))),
@@ -29,9 +32,11 @@ describe('ClusterExtractionNode class', () => {
 			console.log,
 			console.error,
 			console.log,
-			'test_slug'
+			'test_slug',
+			null
 		);
 		expect(output).toEqual(mock_cluster_extraction_data);
+		expect(node.data.message).toEqual(`topics: 2 subtopics: 2.`);
 	});
 
 	it('should not extract the cluster if no csv', async () => {
@@ -47,9 +52,11 @@ describe('ClusterExtractionNode class', () => {
 			console.log,
 			console.error,
 			console.log,
-			'test_slug'
+			'test_slug',
+			null
 		);
 		expect(output).toEqual(undefined);
+		expect(node.data.message).toEqual(`missing_input_data`);
 	});
 
 	it('should not extract the cluster if no open_ai_key', async () => {
@@ -65,9 +72,11 @@ describe('ClusterExtractionNode class', () => {
 			console.log,
 			console.error,
 			console.log,
-			'test_slug'
+			'test_slug',
+			null
 		);
 		expect(output).toEqual(undefined);
+		expect(node.data.message).toEqual(`missing_input_data`);
 	});
 
 	it('should not extract the cluster if no prompt and no system prompt', async () => {
@@ -84,9 +93,11 @@ describe('ClusterExtractionNode class', () => {
 			console.log,
 			console.error,
 			console.log,
-			'test_slug'
+			'test_slug',
+			null
 		);
 		expect(output).toEqual(undefined);
+		expect(node.data.message).toEqual(`missing_input_data`);
 	});
 
 	it('test GCS caching', async () => {
@@ -109,8 +120,10 @@ describe('ClusterExtractionNode class', () => {
 			},
 			console.error,
 			console.log,
-			'test_slug'
+			'test_slug',
+			null
 		);
 		expect(output).toEqual(mock_cluster_extraction_data);
+		expect(node.data.message).toEqual(`loaded_from_gcs. topics: 2 subtopics: 2.`);
 	});
 });

@@ -14,7 +14,7 @@
 </script>
 
 <DGNode {data} {id} {...$$restProps}>
-	{#if _.includes(['jq_v1', 'jsonata_v0'], data.compute_type)}
+	{#if _.includes(['jq_v1', 'jsonata_v0', 'brython_v0'], data.compute_type)}
 		<TextField
 			style="width: 100%; min-width: 400px;"
 			helperLine$style="width: 100%;"

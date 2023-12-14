@@ -43,100 +43,106 @@ describe('ArgumentExtractionNode class', function () {
 				'test_slug'
 			);
 			expect(output).toEqual(mock_argument_extraction_data);
+			expect(node.data.message).toEqual(`comments: 2 claims: 2.`);
 		},
 		timeout
 	);
 
-	// it(
-	// 	'should not extract the arguments if no csv',
-	// 	async () => {
-	// 		delete inputData.csv;
-	// 		const output = await node.compute(
-	// 			inputData,
-	// 			'run',
-	// 			console.log,
-	// 			console.error,
-	// 			console.log,
-	// 			'test_slug'
-	// 		);
-	// 		expect(output).toEqual(undefined);
-	// 	},
-	// 	timeout
-	// );
+	it(
+		'should not extract the arguments if no csv',
+		async () => {
+			delete inputData.csv;
+			const output = await node.compute(
+				inputData,
+				'run',
+				console.log,
+				console.error,
+				console.log,
+				'test_slug'
+			);
+			expect(output).toEqual(undefined);
+			expect(node.data.message).toEqual(`missing_input_data`);
+		},
+		timeout
+	);
 
-	// it(
-	// 	'should not extract the arguments if no open_ai_key and no GCS',
-	// 	async () => {
-	// 		delete inputData.open_ai_key;
-	// 		const output = await node.compute(
-	// 			inputData,
-	// 			'run',
-	// 			console.log,
-	// 			console.error,
-	// 			console.log,
-	// 			'test_slug'
-	// 		);
-	// 		expect(output).toEqual(undefined);
-	// 	},
-	// 	timeout
-	// );
+	it(
+		'should not extract the arguments if no open_ai_key and no GCS',
+		async () => {
+			delete inputData.open_ai_key;
+			const output = await node.compute(
+				inputData,
+				'run',
+				console.log,
+				console.error,
+				console.log,
+				'test_slug'
+			);
+			expect(output).toEqual(undefined);
+			expect(node.data.message).toEqual(`missing_input_data`);
+		},
+		timeout
+	);
 
-	// it(
-	// 	'should extract the arguments if no open_ai_key and GCS',
-	// 	async () => {
-	// 		delete inputData.open_ai_key;
-	// 		node.data.gcs_path = 'gs://test_bucket/test_path';
-	// 		node.data.csv_length = csv_data.length;
-	// 		const output = await node.compute(
-	// 			inputData,
-	// 			'run',
-	// 			console.log,
-	// 			console.error,
-	// 			console.log,
-	// 			'test_slug'
-	// 		);
-	// 		expect(output).toEqual(mock_argument_extraction_data);
-	// 	},
-	// 	timeout
-	// );
+	it(
+		'should load from GCS if no open ai key',
+		async () => {
+			delete inputData.open_ai_key;
+			node.data.gcs_path = 'gs://test_bucket/test_path';
+			node.data.csv_length = csv_data.length;
+			const output = await node.compute(
+				inputData,
+				'run',
+				console.log,
+				console.error,
+				console.log,
+				'test_slug'
+			);
+			expect(output).toEqual(mock_argument_extraction_data);
+			expect(node.data.message).toEqual(`loaded_from_gcs. comments: 2 claims: 2.`);
+		},
+		timeout
+	);
 
-	// it(
-	// 	'should not extract the arguments if no prompt and no system prompt',
-	// 	async () => {
-	// 		node.data.system_prompt = undefined;
-	// 		node.data.prompt = undefined;
-	// 		const output = await node.compute(
-	// 			inputData,
-	// 			'run',
-	// 			console.log,
-	// 			console.error,
-	// 			console.log,
-	// 			'test_slug'
-	// 		);
-	// 		expect(output).toEqual(undefined);
-	// 	},
-	// 	timeout
-	// );
+	it(
+		'should not extract the arguments if no prompt and no system prompt',
+		async () => {
+			node.data.system_prompt = undefined;
+			node.data.prompt = undefined;
+			const output = await node.compute(
+				inputData,
+				'run',
+				console.log,
+				console.error,
+				console.log,
+				'test_slug'
+			);
+			expect(output).toEqual(undefined);
+			expect(node.data.message).toEqual(`missing_input_data`);
+		},
+		timeout
+	);
 
-	// it(
-	// 	'test GCS caching',
-	// 	async () => {
-	// 		node.data.gcs_path = 'gs://test_bucket/test_path';
-	// 		node.data.dirty = false;
-	// 		node.data.csv_length = csv_data.length;
-	// 		const output = await node.compute(
-	// 			inputData,
-	// 			'run',
-	// 			(x) => {
-	// 				console.log(x);
-	// 				expect(x == 'Calling OpenAI').toEqual(false);
-	// 			},
-	// 			console.error,
-	// 			console.log,
-	// 			'test_slug'
-	// 		);
-	// 		expect(output).toEqual(mock_argument_extraction_data);
-	// 	},
-	// 	timeout
-	// );
+	it(
+		'test GCS caching',
+		async () => {
+			node.data.gcs_path = 'gs://test_bucket/test_path';
+			node.data.dirty = false;
+			node.data.csv_length = csv_data.length;
+			const output = await node.compute(
+				inputData,
+				'run',
+				(x) => {
+					console.log(x);
+					expect(x == 'Calling OpenAI').toEqual(false);
+				},
+				console.error,
+				console.log,
+				'test_slug'
+			);
+			expect(output).toEqual(mock_argument_extraction_data);
+			expect(node.data.message).toEqual(`loaded_from_gcs. comments: 2 claims: 2.`);
+		},
+		timeout
+	);
 });

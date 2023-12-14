@@ -38,6 +38,7 @@ export default class ArgumentExtractionNode {
 			inputData.cluster_extraction || inputData[this.data.input_ids.cluster_extraction];
 
 		if (!csv || csv.length == 0 || !cluster_extraction) {
+			this.data.message = `${$__('missing_input_data')}`;
 			this.data.dirty = false;
 			return;
 		}
@@ -47,6 +48,10 @@ export default class ArgumentExtractionNode {
 			if (typeof doc === 'string') {
 				doc = JSON.parse(doc);
 			}
+			const numClaims = _.reduce(doc, (sum, value) => sum + value.claims.length, 0);
+			this.data.message = `${$__('loaded_from_gcs')}. ${$__('comments')}: ${
+				_.keys(doc).length
+			} ${$__('claims')}: ${numClaims}.`;
 			this.data.output = doc;
 			this.data.dirty = false;
 			return this.data.output;
@@ -103,11 +108,20 @@ export default class ArgumentExtractionNode {
 				if (result) this.data.output[result.id] = result;
 			});
 
+			const numClaims = _.reduce(this.data.output, (sum, value) => sum + value.claims.length, 0);
+			this.data.message = `${$__('comments')}: ${_.keys(this.data.output).length} ${$__(
+				'claims'
+			)}: ${numClaims}.`;
+
 			this.data.csv_length = csv.length;
 
 			this.data.dirty = false;
 			await uploadJSONToGCS(this, this.data.output, slug);
 			return this.data.output;
+		} else {
+			this.data.message = `${$__('missing_input_data')}`;
+			this.data.dirty = false;
+			return;
 		}
 	}
 }

@@ -1,30 +1,37 @@
 <script>
-	import Textfield from '@smui/textfield';
-	import Tooltip, { Wrapper, Title, Content, Link, RichActions } from '@smui/tooltip';
+	import { onMount } from 'svelte';
 
-	let showTooltip = false;
+	let pythonCode = '';
+	let dataToPass = {
+		foo: 'bar'
+	};
 
-	function show() {
-		showTooltip = true;
-	}
+	const runPython = () => {
+		if (typeof window !== 'undefined') {
+			window.dataToPass = dataToPass;
+			const script = document.createElement('script');
+			script.type = 'text/python';
+			script.text = `
+				import sys
+				print(sys.argv)
+                ${pythonCode}
+            `;
+			document.body.appendChild(script);
+			__BRYTHON__.use_VFS = false;
+			brython();
+		}
+	};
 
-	function hide() {
-		showTooltip = false;
-	}
+	onMount(() => {
+		const script = document.createElement('script');
+		script.src = 'https://cdnjs.cloudflare.com/ajax/libs/brython/3.8.8/brython.min.js';
+		document.body.appendChild(script);
+
+		script.onload = () => {
+			brython();
+		};
+	});
 </script>
 
-<div class="trigger" on:mouseenter={show} on:mouseleave={hide}>
-	Hover over me
-	{#if showTooltip}
-		<Tooltip persistent={true}>
-			<Content>blah</Content>
-		</Tooltip>
-	{/if}
-</div>
-
-<style>
-	.trigger {
-		/* Style for your trigger element */
-		cursor: pointer;
-	}
-</style>
+<textarea bind:value={pythonCode} />
+<button on:click={runPython}>Run Python Code</button>

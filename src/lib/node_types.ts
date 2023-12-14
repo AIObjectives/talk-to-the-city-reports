@@ -26,7 +26,8 @@ export const nodeTypes = {
 	default: DefaultNode,
 	merge_v0: DefaultNode,
 	stringify_v0: DefaultNode,
-	feedback_v0: DefaultNode
+	feedback_v0: DefaultNode,
+	brython_v0: TextInputNode
 };
 
 import '$lib/compute/csv';
@@ -48,7 +49,8 @@ import '$lib/compute/merge_cluster_extraction';
 import '$lib/compute/json';
 import '$lib/compute/markdown';
 import '$lib/compute/stringify';
-import './compute/score_argument_relevance';
+import '$lib/compute/score_argument_relevance';
+import '$lib/compute/brython';
 // import './compute/llama';
 // import './compute/argument_extraction_llama';
 

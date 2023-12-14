@@ -3,46 +3,10 @@ import categories from '$lib/node_categories';
 import { readFileFromGCS, uploadJSONToGCS } from '$lib/utils';
 import { cluster_extraction_prompt, cluster_extraction_system_prompt } from '$lib/prompts';
 import { format, unwrapFunctionStore } from 'svelte-i18n';
+import gpt from '$lib/gpt';
 import _ from 'lodash';
 
 const $__ = unwrapFunctionStore(format);
-
-async function gpt(
-	apiKey: string,
-	systemPrompt: string,
-	promptTemplate: string,
-	replacements: { [key: string]: string },
-	info,
-	error,
-	success
-) {
-	let vitest = import.meta.env.VITEST == 'true';
-	let openai = (await import(vitest ? '$lib/mock_open_ai' : 'openai')).default;
-
-	let prompt = promptTemplate;
-	for (const [key, value] of Object.entries(replacements)) {
-		prompt = prompt.replace(`{${key}}`, value);
-	}
-	const OpenAI = new openai({ apiKey, dangerouslyAllowBrowser: true });
-	info($__('calling_openai'));
-	try {
-		const messages = [
-			{ role: 'system', content: systemPrompt },
-			{ role: 'user', content: prompt }
-		];
-		const res = await OpenAI.chat.completions.create({
-			messages: messages,
-			model: 'gpt-4-1106-preview',
-			response_format: { type: 'json_object' },
-			temperature: 0.1
-		});
-		const resp = res.choices[0].message.content!;
-		return resp;
-	} catch (e) {
-		error('Error calling OpenAI: ' + e.error.message);
-		console.log('Error calling openai...', e.error.message);
-	}
-}
 
 export default class ClusterExtractionNode {
 	id: string;
@@ -71,6 +35,7 @@ export default class ClusterExtractionNode {
 		const open_ai_key = inputData.open_ai_key || inputData[this.data.input_ids.open_ai_key];
 
 		if (!csv || csv.length == 0 || !(this.data.prompt || this.data.system_prompt)) {
+			this.data.message = `${$__('missing_input_data')}`;
 			this.data.dirty = false;
 			return;
 		}
@@ -81,6 +46,9 @@ export default class ClusterExtractionNode {
 				doc = JSON.parse(doc);
 			}
 			this.data.output = doc;
+			this.data.message = `${$__('loaded_from_gcs')}. ${$__('topics')}: ${
+				doc?.topics?.length
+			} ${$__('subtopics')}: ${_.sumBy(doc?.topics, (topic) => topic?.subtopics?.length)}.`;
 			this.data.dirty = false;
 			return this.data.output;
 		}
@@ -95,24 +63,34 @@ export default class ClusterExtractionNode {
 				info(this.data.message);
 				i++;
 			}, 5000);
+			const todo = new Set(_.range(0, csv.length));
 			const result = await gpt(
 				open_ai_key,
-				system_prompt,
-				prompt,
 				{
 					comments: csv.map((x: any) => x['comment-body']).join('\n')
 				},
+				prompt,
+				system_prompt,
 				info,
 				error,
-				success
+				success,
+				0,
+				1,
+				todo
 			);
 			clearInterval(interval);
 			this.data.output = JSON.parse(result);
 			await uploadJSONToGCS(this, this.data.output, slug);
 			this.data.dirty = false;
-			this.data.message = `${$__('done_computing')} ${$__(this.data.label)}`;
+			this.data.message = `${$__('topics')}: ${this.data.output?.topics?.length} ${$__(
+				'subtopics'
+			)}: ${_.sumBy(this.data.output?.topics, (topic) => topic?.subtopics?.length)}.`;
 			success(this.data.message);
 			return this.data.output;
+		} else {
+			this.data.message = `${$__('missing_input_data')}`;
+			this.data.dirty = false;
+			return;
 		}
 	}
 }
