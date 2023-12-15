@@ -6,6 +6,7 @@ import '$lib/node_types';
 import { saveTemplate } from '$lib/templates';
 import nodes from '$lib/node_register';
 import { topologicalSort } from '$lib/utils';
+import _ from 'lodash';
 import {
 	query,
 	where,
@@ -117,15 +118,8 @@ export class Dataset {
 		if (user && user.uid === this.owner) {
 			try {
 				info($__('updating_dataset'));
-				const copy = JSON.parse(
-					JSON.stringify({
-						graph: { nodes: get(this.graph.nodes), edges: get(this.graph.edges) }
-					})
-				);
-				copy.graph.nodes = copy.graph.nodes.map((x) => {
-					x.data.output = null;
-					return x;
-				});
+				const copy = Deepcopy(this.datasetToDoc());
+				this.sanitizeNodes(copy.graph.nodes);
 				await updateDoc(doc(datasetCollection, this.id), copy);
 				success($__('dataset_updated'));
 			} catch (err) {
@@ -177,18 +171,20 @@ export class Dataset {
 		}
 	}
 
+	sanitizeNodes(nodes) {
+		return nodes.map((node) => {
+			for (const key in node) {
+				if (!_.includes(['id', 'position', 'type', 'data', 'width', 'height'], key))
+					delete node[key];
+				node.data.message = '';
+			}
+			node.data.output = {};
+			return node;
+		});
+	}
+
 	sanitize() {
-		this.graph.nodes.update((nodes) =>
-			nodes.map((node) => {
-				for (const key in node) {
-					if (key !== 'id' && key !== 'position' && key !== 'type' && key !== 'data') {
-						delete node[key];
-					}
-				}
-				delete node.data.output;
-				return node;
-			})
-		);
+		this.graph.nodes.update((nodes) => this.sanitizeNodes(nodes));
 	}
 
 	async deleteDataset(): Promise<boolean> {
@@ -197,14 +193,16 @@ export class Dataset {
 	}
 
 	static async loadDoc(slug: string) {
-		const q = query(datasetCollection, where('slug', '==', slug));
-		const querySnapshot = await getDocs(q);
-		if (querySnapshot.empty) {
-			error($__('no_dataset_was_found_with_the_provided_slug'));
-			return null;
+		if (slug) {
+			const q = query(datasetCollection, where('slug', '==', slug));
+			const querySnapshot = await getDocs(q);
+			if (querySnapshot.empty) {
+				error(`${$__('no_dataset_was_found_with_the_provided_slug')} ${slug}`);
+				return null;
+			}
+			const doc = querySnapshot.docs[0].data();
+			return { doc: doc, id: querySnapshot.docs[0].id };
 		}
-		const doc = querySnapshot.docs[0].data();
-		return { doc: doc, id: querySnapshot.docs[0].id };
 	}
 
 	static loadDatasetFromDoc(doc: Object, id: string): Promise<Dataset | null> {
@@ -234,23 +232,26 @@ export class Dataset {
 	}
 
 	static async loadDataset(slug: string): Promise<Dataset | null> {
-		try {
-			const { doc, id } = await this.loadDoc(slug);
-			return new Dataset(
-				doc.title,
-				doc.slug,
-				doc.owner,
-				doc.template,
-				doc.description,
-				doc.graph,
-				id,
-				doc.projectParent
-			);
-		} catch (e) {
-			error($__('an_error_occurred_while_loading_the_dataset'));
-			console.error(e);
-			return null;
-		}
+		if (slug)
+			try {
+				const { doc, id } = await this.loadDoc(slug);
+				const dataset = new Dataset(
+					doc.title,
+					doc.slug,
+					doc.owner,
+					doc.template,
+					doc.description,
+					doc.graph,
+					id,
+					doc.projectParent
+				);
+				dataset.sanitize();
+				return dataset;
+			} catch (e) {
+				error($__('an_error_occurred_while_loading_the_dataset'));
+				console.error(e);
+				return null;
+			}
 	}
 
 	async addDatasetToFirebase(): Promise<boolean> {

@@ -20,7 +20,7 @@
 	}
 </script>
 
-<DGNode {data} {id} {...$$restProps}>
+<DGNode {data} {id} color={'primary'} variant={'outlined'} {...$$restProps}>
 	<button
 		on:click={() => {
 			editing = !editing;

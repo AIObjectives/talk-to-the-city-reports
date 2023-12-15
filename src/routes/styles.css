@@ -160,8 +160,7 @@ button:focus:not(:focus-visible) {
 }
 
 .selected-dg-node {
-	border: 2px solid #aaaaff;
-	background-color: #e0e0ff;
+	border: 2px solid #aaaaff !important;
 }
 
 .docs p {

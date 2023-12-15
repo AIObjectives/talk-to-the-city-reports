@@ -62,12 +62,12 @@ export let jq_node_data: JqNodeInterface = {
 		output: {},
 		compute_type: 'jq_v1',
 		input_ids: {},
-		category: categories.wrangling.id,
+		category: categories.lang.id,
 		icon: 'jq_v0',
 		show_in_ui: false
 	},
 	position: { x: 0, y: 0 },
-	type: 'text_input_v0'
+	type: 'jq_v1'
 };
 
 export let jq_v1_node = new JqNodeV1(jq_node_data);

@@ -10,6 +10,7 @@ export const load: LayoutLoad = async () => {
 	if (browser) {
 		const outputData = document.createElement('div');
 		outputData.id = 'output';
+		outputData.style.display = 'none';
 		document.body.appendChild(outputData);
 		setTimeout(() => {
 			locale.set(Cookies.get('locale') || locale || window.navigator.language);

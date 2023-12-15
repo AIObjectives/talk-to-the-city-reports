@@ -1,8 +1,12 @@
 from browser import document
 import json
 
-inputData = json.loads({inputData})
+inputData = {inputData}
 outputData = None
 
+
+{script}
+
+
 if outputData is not None:
-    docment["output"].value = json.dumps(outputData)
+    document["output"].textContent = json.dumps(outputData)

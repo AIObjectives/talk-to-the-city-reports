@@ -17,28 +17,45 @@
 	export let selected: boolean;
 	export let style: string = '';
 	export let type: string = '';
+	export let width: number = 0;
+	export let height: number = 0;
 	export let isStandardView: boolean = false;
+	export let color = '';
+	export let variant = 'raised';
+	export let _class = '';
 
 	function onConnect(x) {
 		let { source, target } = x.detail.connection;
 		$dataset?.graph.onConnect(source, target);
 	}
 
+	$: variant = isStandardView ? 'raised' : 'outlined';
 	$: show = isStandardView ? data.show_in_ui === undefined || data.show_in_ui === true : true;
 	let dg_node = $dataset?.graph.find(id);
 	let show_help = false;
 	let has_all_inputs = true;
 	$: {
 		if (dg_node) {
-			$nodes; // trigger reactivity
-			selected; // trigger reactivity
+			$nodes;
+			selected;
 			has_all_inputs = dg_node.hasAllInputs;
 		}
+	}
+	let _style = `position: relative; ${style}; `;
+
+	if (width && height) {
+		_style += `min-width: ${width}px; min-height: ${height}px;`;
 	}
 </script>
 
 {#if data && show}
-	<Paper title={id} class={selected ? 'selected-dg-node' : 'dg-node'} style="position: relative;">
+	<Paper
+		color={isStandardView ? 'default' : color}
+		variant={isStandardView ? 'raised' : variant}
+		title={id}
+		class={(selected ? 'selected-dg-node' : 'dg-node') + ' ' + _class}
+		style={_style}
+	>
 		{#if data?.icon}
 			<div style="float: left; margin-right: 0.5rem;" class="w-6 h-6">
 				<img
@@ -48,7 +65,7 @@
 				/>
 			</div>
 		{/if}
-		<div class="mb-4">{$__(data.label)}</div>
+		<div>{$__(data.label)} <small class="mb-4 text-gray-400">{id}</small></div>
 
 		<div class="help-icon-wrapper">
 			{#if !has_all_inputs}
@@ -70,7 +87,7 @@
 			<div class="text-sm text-gray-500">{$__('unsaved_changes')}</div>
 		{/if}
 		{#if data?.message}
-			<div class="text-sm text-gray-500">{data?.message}</div>
+			<div class="text-sm text-gray-500">{@html data?.message}</div>
 		{/if}
 	</Paper>
 

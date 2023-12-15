@@ -16,6 +16,10 @@ const categories: CategoriesDictionary = {
 		label: 'llm',
 		id: 'llm'
 	},
+	lang: {
+		label: 'lang',
+		id: 'lang'
+	},
 	// llama: {
 	//   label: 'llama',
 	//   id: 'llama'

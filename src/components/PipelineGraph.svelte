@@ -11,6 +11,7 @@
 	import { useSvelteFlow } from '@xyflow/svelte';
 	import { viewMode } from '$lib/store';
 	import ContentSaveOutline from '$lib/icons/ContentSaveOutline.svelte';
+	import ContentDuplicate from '$lib/icons/ContentDuplicate.svelte';
 	import RobotOutline from '$lib/icons/RobotOutline.svelte';
 	import { useNodes } from '@xyflow/svelte';
 	import ToolbarNode from './ToolbarNode.svelte';
@@ -115,6 +116,7 @@
 		style:height={'97vh'}
 		class="flow-container"
 	>
+		<!-- deleteKey={{ key: 'Backspace', modifier: 'meta' }} -->
 		<SvelteFlow
 			{nodes}
 			{edges}
@@ -124,7 +126,7 @@
 			on:paneclick={handlePaneClick}
 			on:dragover={onDragOver}
 			on:drop={addNode}
-			deleteKey={{ key: 'Backspace', modifier: 'meta' }}
+			deleteKey={''}
 			ondelete={(e) => {
 				for (const node of e.nodes) {
 					const dg_node = new DGNode(node, dataset.graph);
@@ -173,6 +175,13 @@
 			</Panel>
 
 			<Panel position="bottom-right">
+				<div class="exec-buttons" style="height:42px;">
+					<button
+						on:click={() => {
+							dataset.graph.duplicateSelectedNodes();
+						}}><ContentDuplicate size="30px" /></button
+					>
+				</div>
 				<div class="exec-buttons" style="height:42px;"><DownloadImage /></div>
 			</Panel>
 

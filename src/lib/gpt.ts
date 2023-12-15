@@ -93,6 +93,7 @@ export default async function gpt(
 		{ role: 'system', content: system_prompt },
 		{ role: 'user', content: arg_prompt }
 	];
+	console.log(messages);
 	const stringified = JSON.stringify(messages);
 	const hash = CryptoJS.SHA256(stringified).toString();
 	try {
@@ -109,5 +110,6 @@ export default async function gpt(
 	} catch (e) {
 		console.error(e);
 		error(`${$__('error_calling_openai')} ${i + 1}/${total} {error.message}`);
+		return 'ERROR';
 	}
 }

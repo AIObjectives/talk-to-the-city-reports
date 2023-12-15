@@ -61,7 +61,7 @@ export let jsonata_node_data: JsonataNodeInterface = {
 		output: {},
 		compute_type: 'jsonata_v0',
 		input_ids: {},
-		category: categories.wrangling.id,
+		category: categories.lang.id,
 		icon: 'jsonata_v0',
 		show_in_ui: false
 	},

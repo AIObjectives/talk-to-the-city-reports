@@ -1,5 +1,7 @@
 import nodes from '$lib/node_register';
 import categories from '$lib/node_categories';
+import 'lodash';
+import _ from 'lodash';
 
 export default class MarkdownNode {
 	id: string;
@@ -15,19 +17,28 @@ export default class MarkdownNode {
 		this.type = type;
 	}
 
+	codeWrapper(code: string) {
+		return `\`\`\`\n${code}\n\`\`\``;
+	}
+
 	async compute(
-		inputData: object,
+		inputData: Record<string, any>,
 		context: string,
 		info: (arg: string) => void,
 		error: (arg: string) => void,
 		success: (arg: string) => void,
 		slug: string,
 		Cookies: any
-	) {
+	): Promise<string> {
 		this.data.dirty = false;
-		const input = inputData[Object.keys(inputData)[0]];
-		if (input && typeof input === 'string') this.data.markdown = input;
-		return input;
+		let inputs: string[] = [];
+		if (!_.isEmpty(inputData)) {
+			_.forEach(_.values(inputData), (val) => {
+				inputs.push(_.isString(val) ? val : this.codeWrapper(JSON.stringify(val, null, 2)));
+			});
+			this.data.markdown = inputs.join('\n\n');
+		}
+		return this.data.markdown;
 	}
 }
 

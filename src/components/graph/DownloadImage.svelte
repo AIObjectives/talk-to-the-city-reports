@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { toPng } from 'html-to-image';
+	import { toJpeg } from 'html-to-image';
 	import { getNodesBounds, getViewportForBounds, useNodes } from '@xyflow/svelte';
 	import ImageOutline from '$lib/icons/ImageOutline.svelte';
 
@@ -15,12 +15,12 @@
 		const viewportDomNode = document.querySelector<HTMLElement>('.svelte-flow__viewport')!;
 
 		if (viewport) {
-			const zoomOutFactor = 1.1;
+			const zoomOutFactor = 0.7;
 			const adjustedZoom = viewport.zoom * zoomOutFactor;
 			const translateAdjustmentX = (imageWidth * (1 - zoomOutFactor)) / 2;
 			const translateAdjustmentY = (imageHeight * (1 - zoomOutFactor)) / 2;
 
-			toPng(viewportDomNode, {
+			toJpeg(viewportDomNode, {
 				backgroundColor: '#eff3f9',
 				width: imageWidth,
 				height: imageHeight,
@@ -33,7 +33,7 @@
 				}
 			}).then((dataUrl) => {
 				const link = document.createElement('a');
-				link.download = 'svelte-flow.png';
+				link.download = 'svelte-flow.jpg';
 				link.href = dataUrl;
 				link.click();
 			});

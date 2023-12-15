@@ -10,7 +10,8 @@ import { edit_csv_node } from './compute/edit_csv';
 import { cluster_extraction_node } from './compute/cluster_extraction';
 import { merge_cluster_extraction_node } from './compute/merge_cluster_extraction';
 import { argument_extraction_node } from './compute/argument_extraction';
-import { report_node } from './compute/report';
+import { report_node_v0 } from './compute/report_v0';
+import { report_node_v1 } from './compute/report_v1';
 import { participant_filter_node } from './compute/participant_filter';
 import { merge_node } from './compute/merge';
 import { jsonata_node } from './compute/jsonata';
@@ -21,7 +22,9 @@ import { jq_v1_node } from './compute/jq_v1';
 import { stringify_node } from './compute/stringify';
 import { score_argument_relevance_node } from './compute/score_argument_relevance';
 import { feedback_node } from './compute/feedback';
-import { brython_node } from './compute/brython';
+import { gpt_node } from './compute/gpt';
+import { python_node } from './compute/python';
+import { pyodide_node } from './compute/pyodide';
 // import { llama_node } from './compute/llama';
 // import { argument_extraction_llama_node } from './compute/argument_extraction_llama';
 
@@ -34,7 +37,8 @@ export let node_register = [
 	argument_extraction_node,
 	merge_node,
 	participant_filter_node,
-	report_node,
+	report_node_v0,
+	report_node_v1,
 	limit_csv_node,
 	translate_node,
 	jsonata_node,
@@ -45,8 +49,10 @@ export let node_register = [
 	markdown_node,
 	stringify_node,
 	score_argument_relevance_node,
+	gpt_node,
 	feedback_node,
-	brython_node
+	python_node,
+	pyodide_node
 	// llama_node,
 	// argument_extraction_llama_node
 ];

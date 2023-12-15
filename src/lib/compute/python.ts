@@ -1,6 +1,7 @@
 import nodes from '$lib/node_register';
 import categories from '$lib/node_categories';
 import _ from 'lodash';
+import deepCopy from 'deep-copy';
 // import brscript from '$lib/compute/brython.py?raw';
 
 let brscript = `\
@@ -20,14 +21,14 @@ if outputData is not None:\n\
 
 interface BaseData {}
 
-interface BrythonData extends BaseData {
+interface PythonData extends BaseData {
 	script: string;
 	output: object;
 }
 
-export default class BrythonNodeV0 {
+export default class PythonNodeV0 {
 	id: string;
-	data: BrythonData;
+	data: PythonData;
 	position: { x: number; y: number };
 	type: string;
 
@@ -48,20 +49,31 @@ export default class BrythonNodeV0 {
 		slug: string,
 		Cookies: any
 	) {
-		this.data.output = {};
 		try {
+			if (!_.isEmpty(this.data.output)) {
+				return this.data.output;
+			}
+			console.log('computing python node ' + this.id);
+			let input = {};
+			_.forEach(this.data.input_ids, (value, key) => {
+				input[key] = inputData[value];
+			});
+			this.data.dirty = false;
 			const script = document.createElement('script');
 			script.type = 'text/python';
 			let pyscript = brscript;
-			pyscript = brscript.replace(/{inputData}/g, JSON.stringify(inputData));
+			pyscript = brscript.replace(/{inputData}/g, JSON.stringify(input));
 			pyscript = pyscript.replace(/{script}/g, this.data.text);
 			script.text = pyscript;
 			document.body.appendChild(script);
 			brython();
+			script.remove();
+
+			let observer;
 
 			let outputPromise = new Promise((resolve, reject) => {
 				let outputElement = document.getElementById('output');
-				let observer = new MutationObserver((mutationsList, observer) => {
+				observer = new MutationObserver((mutationsList, observer) => {
 					for (let mutation of mutationsList) {
 						if (mutation.type === 'childList') {
 							resolve(outputElement.textContent);
@@ -72,14 +84,20 @@ export default class BrythonNodeV0 {
 				observer.observe(outputElement, { childList: true });
 			});
 
+			outputPromise.finally(() => {
+				if (observer) {
+					observer.disconnect();
+				}
+			});
+
 			try {
+				console.log('waiting for output');
 				let outputText = await outputPromise;
 				this.data.output = JSON.parse(outputText);
 			} catch (e) {
 				console.log(e);
 			}
 
-			script.remove();
 			return this.data.output;
 		} catch (e) {
 			console.error(e.toString());
@@ -90,26 +108,39 @@ export default class BrythonNodeV0 {
 	}
 }
 
-type BrythonNodeInterface = DGNodeInterface & {
-	data: BrythonData;
+type PythonNodeInterface = DGNodeInterface & {
+	data: PythonData;
 };
 
-export let brython_node_data: BrythonNodeInterface = {
-	id: 'brython_v0',
+export let python_node_data: PythonNodeInterface = {
+	id: 'python_v0',
 	data: {
 		label: 'Brython',
 		text: '',
 		output: {},
-		compute_type: 'brython_v0',
-		input_ids: {},
-		category: categories.wrangling.id,
-		icon: 'jq_v0',
+		compute_type: 'python_v0',
+		input_ids: {
+			input_0: '',
+			input_1: '',
+			input_2: '',
+			input_3: '',
+			input_4: '',
+			input_5: '',
+			input_6: '',
+			input_7: '',
+			input_8: '',
+			input_9: '',
+			input_10: '',
+			input_11: ''
+		},
+		category: categories.lang.id,
+		icon: 'python_v0',
 		show_in_ui: false
 	},
 	position: { x: 0, y: 0 },
 	type: 'text_input_v0'
 };
 
-export let brython_node = new BrythonNodeV0(brython_node_data);
+export let python_node = new PythonNodeV0(python_node_data);
 
-nodes.register(BrythonNodeV0, brython_node_data);
+nodes.register(PythonNodeV0, python_node_data);

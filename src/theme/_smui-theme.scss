@@ -10,6 +10,10 @@
   $error: color-palette.$red-900
 );
 
+@use '@smui/paper/mixins' as paper;
+@use '@material/theme/theme-color';
+
+
 html,
 body {
   background-color: theme.$surface;
@@ -23,3 +27,15 @@ a:visited {
   color: color.scale(#40b3ff, $lightness: -35%);
 }
 
+
+$custom-color: #76a99d;
+
+@include paper.paper-color(
+  aoi-green,
+  $custom-color,
+  theme-color.accessible-ink-color($custom-color)
+);
+
+.aoi-green {
+  color: $custom-color;
+}

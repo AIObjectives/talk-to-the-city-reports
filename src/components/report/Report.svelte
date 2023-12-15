@@ -18,6 +18,7 @@
 
 	let report: any;
 	let csv: any;
+	let timestamps;
 
 	function transformData(originalData) {
 		return {
@@ -48,18 +49,46 @@
 
 	$: {
 		if (dataset) {
-			report_node = get(dataset.graph.nodes).find((n) => n.data?.compute_type === 'report_v0');
-			csv_node = get(dataset.graph.nodes).find((n) => n.data?.compute_type === 'csv_v0');
-			feedbackNode = get(dataset.graph.nodes).find((n) => n.data?.compute_type === 'feedback_v0');
-			if (report_node && report_node.data && csv_node && csv_node.data) {
+			const report_node_v0 = get(dataset.graph.nodes).find(
+				(n) => n.data?.compute_type === 'report_v0'
+			);
+			const report_node_v1 = get(dataset.graph.nodes).find(
+				(n) => n.data?.compute_type === 'report_v1'
+			);
+			if (report_node_v0) {
+				csv_node =
+					get(dataset.graph.nodes).find((n) => n.data?.compute_type === 'csv_v0') ||
+					get(dataset.graph.nodes).find((n) => n.data?.compute_type === 'json_v0');
+				report_node = report_node_v0;
 				report = report_node.data.output;
 				csv = csv_node.data.output;
-				if (csv && report && report.topics && report.topics.length > 0) {
-					let transformedData = transformData(report);
-					complexHierarchy = hierarchy(transformedData)
-						.sum((d) => d.value)
-						.sort(sortFunc('value', 'desc'));
-				}
+			} else if (report_node_v1) {
+				csv = report_node_v1.data.output[report_node_v1.data.output_ids.csv];
+				report = report_node_v1.data.output[report_node_v1.data.output_ids.merge];
+				timestamps = report_node_v1.data.output[report_node_v1.data.output_ids.timestamps];
+				if (!_.isEmpty(timestamps))
+					timestamps = _.map(timestamps, (item) => {
+						const parts = item.timestamp.split(':').map(Number);
+						const totalSeconds = parts[0] * 3600 + parts[1] * 60 + parts[2];
+						return _.assign(item, { timestamp_seconds: totalSeconds });
+					});
+			}
+
+			feedbackNode = get(dataset.graph.nodes).find((n) => n.data?.compute_type === 'feedback_v0');
+			if (!_.isEmpty(report) && !_.isEmpty(csv)) {
+				if (!_.isEmpty(csv) && _.every(csv, (item) => item.timestamp))
+					csv = _.map(csv, (item) => {
+						if (item.timestamp) {
+							const parts = item.timestamp.split(':').map(Number);
+							const totalSeconds = parts[0] * 3600 + parts[1] * 60 + parts[2];
+							return _.assign(item, { timestamp_seconds: totalSeconds });
+						}
+					});
+
+				let transformedData = transformData(report);
+				complexHierarchy = hierarchy(transformedData)
+					.sum((d) => d.value)
+					.sort(sortFunc('value', 'desc'));
 			}
 		}
 	}
@@ -112,6 +141,7 @@
 				{dataset}
 				{clickEvent}
 				{csv}
+				{timestamps}
 				on:feedback={(e) => {
 					feedbackEvent = e.detail;
 				}}

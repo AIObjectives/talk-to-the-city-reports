@@ -1,5 +1,6 @@
 import type { Node, Edge } from '@xyflow/svelte';
 import { DGNode } from '$lib/node';
+import deepCopy from 'deep-copy';
 import type { Writable } from 'svelte/store';
 import { writable, get } from 'svelte/store';
 
@@ -17,6 +18,43 @@ export class DependencyGraph {
 	find = (id: string): DGNode => {
 		const node = get(this.nodes).find((node) => node.id === id);
 		if (node) return new DGNode(node, this);
+	};
+
+	duplicateSelectedNodes = () => {
+		const selectedNodes = get(this.nodes).filter((node) => node.selected);
+		const oldToNewIdMap = new Map();
+		const newNodes = selectedNodes.map((node) => {
+			const newNode = deepCopy(node);
+			const nodeNameParts = node.id.split('_');
+			const nodeName = nodeNameParts.slice(0, -1).join('_');
+			const newId = `${nodeName}_${Math.floor(Math.random() * 1000000)}`; // Generate a random number between 0 and 999999
+			newNode.id = newId;
+			newNode.position.x += 1000;
+			newNode.selected = false;
+			oldToNewIdMap.set(node.id, newNode.id);
+			return newNode;
+		});
+
+		const newEdges = get(this.edges)
+			.map((edge) => {
+				const sourceIsSelected = oldToNewIdMap.has(edge.source);
+				const targetIsSelected = oldToNewIdMap.has(edge.target);
+				if (sourceIsSelected || targetIsSelected) {
+					const newEdge = deepCopy(edge);
+					newEdge.id = Math.random().toString(36).substring(7);
+					if (sourceIsSelected) {
+						newEdge.source = oldToNewIdMap.get(edge.source);
+					}
+					if (targetIsSelected) {
+						newEdge.target = oldToNewIdMap.get(edge.target);
+					}
+					return newEdge;
+				}
+				return undefined;
+			})
+			.filter((edge) => edge !== undefined);
+		this.nodes.update(($nodes) => [...$nodes, ...newNodes]);
+		this.edges.update(($edges) => [...$edges, ...newEdges]);
 	};
 
 	listAssets = () => {

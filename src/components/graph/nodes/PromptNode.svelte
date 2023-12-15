@@ -24,6 +24,9 @@
 	{...$$restProps}
 	{isStandardView}
 	style={isStandardView ? '' : 'min-width: 500px; min-height: 400px;'}
+	variant="outlined"
+	color="aoi-green"
+	_class="aoi-green"
 >
 	<FormField align="end">
 		<span><Checkbox bind:checked={showSystemPrompt} /></span>

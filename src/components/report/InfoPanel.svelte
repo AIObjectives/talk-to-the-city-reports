@@ -12,6 +12,7 @@
 	export let showClaims: boolean = true;
 	export let clickEvent: any = undefined;
 	export let csv: any;
+	export let timestamps: any;
 	export let dataset: Dataset;
 	export let claims: any = undefined;
 	const dispatch = createEventDispatcher();
@@ -40,6 +41,8 @@
 			{/if}
 			{#each claims as claim (claim.id)}
 				<InfoPanelClaim
+					{clickEvent}
+					{timestamps}
 					{showVideo}
 					{claim}
 					{csv}
