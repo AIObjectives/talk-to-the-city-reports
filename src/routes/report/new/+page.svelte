@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import Button from '@smui/button';
 	import HelperText from '@smui/textfield/helper-text';
 	import TextField from '@smui/textfield';
@@ -10,10 +10,128 @@
 	import { _ as __ } from 'svelte-i18n';
 	import { onMount } from 'svelte';
 
+	function getRandomElement<T>(array: T[]): T {
+		return array[Math.floor(Math.random() * array.length)];
+	}
+
+	function generateReportName(): string {
+		const adjectives = [
+			'eager',
+			'funny',
+			'eccentric',
+			'interesting',
+			'innovative',
+			'dynamic',
+			'persistent',
+			'intelligent',
+			'curious',
+			'creative',
+			'ambitious',
+			'bold',
+			'charming',
+			'dazzling',
+			'enthusiastic',
+			'fearless',
+			'gentle',
+			'honest',
+			'inventive',
+			'joyful',
+			'kindhearted',
+			'lively',
+			'meticulous',
+			'nimble',
+			'optimistic',
+			'passionate',
+			'quick',
+			'rational',
+			'sensible',
+			'thoughtful',
+			'upbeat',
+			'vibrant',
+			'warm',
+			'xenodochial',
+			'youthful',
+			'zealous',
+			'able',
+			'breezy',
+			'brilliant',
+			'keen',
+			'devoted',
+			'earnest',
+			'fierce',
+			'glowing',
+			'harmonious',
+			'idealistic',
+			'jolly',
+			'luxurious',
+			'magnificent',
+			'noble'
+		];
+
+		const nouns = [
+			'scientist',
+			'scraper',
+			'coder',
+			'machine',
+			'algorithm',
+			'processor',
+			'system',
+			'engineer',
+			'developer',
+			'robot',
+			'network',
+			'interface',
+			'database',
+			'model',
+			'designer',
+			'administrator',
+			'consultant',
+			'analyst',
+			'architect',
+			'controller',
+			'director',
+			'educator',
+			'facilitator',
+			'guide',
+			'helper',
+			'innovator',
+			'manager',
+			'navigator',
+			'observer',
+			'planner',
+			'researcher',
+			'strategist',
+			'teacher',
+			'technician',
+			'thinker',
+			'utilizer',
+			'validator',
+			'visualizer',
+			'writer',
+			'explorer',
+			'creator',
+			'leader',
+			'originator',
+			'pioneer',
+			'quizmaster',
+			'reviewer',
+			'specialist',
+			'translator',
+			'upholder',
+			'virtuoso'
+		];
+
+		const adjective = getRandomElement(adjectives);
+		const noun = getRandomElement(nouns);
+
+		return `${adjective}-${noun}`;
+	}
+
+	const rand = generateReportName();
 	const defaultTemplate = 'heal_michigan_v0';
-	let projectTitle = '';
-	let projectSlug = '';
-	let projectDescription = '';
+	let projectTitle = rand;
+	let projectSlug = rand;
+	let projectDescription = rand;
 	let projectTemplate = defaultTemplate;
 	let templates;
 	let showTemplate = true;
@@ -56,7 +174,7 @@
 <div class="flex flex-col items-center justify-center min-h-screen">
 	<form on:submit={createNewProject} class="w-full max-w-sm mt-5">
 		<div class="flex flex-wrap -mx-3 mb-6">
-			<h2 class="px-3 w-full text-center text-xl font-bold mb-2">{$__('create_a_new_report')}</h2>
+			<h2 class="px-3 w-full text-center text-xl font-bold mb-6">{$__('create_a_new_report')}</h2>
 			<div class="w-full px-3">
 				<TextField
 					style="width: 100%;"

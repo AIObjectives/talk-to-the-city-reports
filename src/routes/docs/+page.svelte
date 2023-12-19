@@ -3,12 +3,11 @@
 	import { oneDark } from '@codemirror/theme-one-dark';
 	import { _ as __ } from 'svelte-i18n';
 	import { marked } from 'marked';
-	import Cookies from 'js-cookie';
 	import CodeMirror from 'svelte-codemirror-editor';
-	import { locale } from 'svelte-i18n';
 	import { python } from '@codemirror/lang-python';
-	import helpen from './help-en.txt?raw';
-	import helpzh from './help-zh-TW.txt?raw';
+	import { locale } from 'svelte-i18n';
+	import helpen from './docs-en.txt?raw';
+	import helpzh from './docs-zh-TW.txt?raw';
 
 	const helps = {
 		en: helpen,
@@ -16,8 +15,7 @@
 	};
 
 	$: help = helps[$locale || 'en'] || helps['en'];
-	$: userToken = Cookies.get('user_token');
-	$: helpText = userToken ? help?.replace(/<token>/g, userToken) : null;
+	$: helpText = help?.replace(/<token>/g);
 
 	let markedContent;
 
@@ -30,11 +28,11 @@
 
 	$: markedContent = helpText ? marked(helpText, { renderer }) : null;
 	$: {
-		if (markedContent && browser && userToken) {
+		if (markedContent && browser) {
 			setTimeout(() => {
 				document.querySelectorAll('.code-editor').forEach((el) => {
 					const codeContent = decodeURIComponent(el.getAttribute('data-code'));
-					new CodeMirror({
+					const cm = new CodeMirror({
 						target: el,
 						props: {
 							value: codeContent,
@@ -43,22 +41,24 @@
 							options: { autoresize: true, lineWrapping: true }
 						}
 					});
+					cm.root?.classList.add('custom-margin');
 				});
 			}, 100);
 		}
 	}
 </script>
 
-{#if userToken}
-	{#if markedContent}
-		<div class="text-column api-docs">
-			<br />
-			<br />
-			{@html markedContent}
-		</div>
-	{/if}
-{:else}
-	<div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
-		{$__('sign_in_to_continue')}
+{#if markedContent}
+	<div class="text-column docs">
+		<br />
+		<br />
+		{@html markedContent}
 	</div>
 {/if}
+
+<style>
+	.custom-margin {
+		margin-top: 0 !important;
+		margin-bottom: 0 !important;
+	}
+</style>

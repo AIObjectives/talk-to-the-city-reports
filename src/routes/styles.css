@@ -163,14 +163,20 @@ button:focus:not(:focus-visible) {
 	border: 2px solid #aaaaff !important;
 }
 
+.docs img {
+	border-style: solid;
+	border-width: 1px;
+	border-color: #888;
+}
+
 .docs p {
 	margin-top: 1em;
 	margin-bottom: 1em;
 	color: #333;
 }
 .docs div {
-	margin-top: 1em;
-	margin-bottom: 1em;
+	/* margin-top: 1em;
+	margin-bottom: 1em; */
 }
 .docs code {
 	line-height: 0.5;

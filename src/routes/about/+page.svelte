@@ -19,5 +19,8 @@
 	<br />
 	<br />
 	<br />
+	<a href="/docs">{$__('documentation')}</a>
+	<br />
+	<br />
 	<a href="/api-docs">{$__('api_documentation')}</a>
 </div>

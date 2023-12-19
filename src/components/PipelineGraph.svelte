@@ -145,7 +145,8 @@
 			panOnDrag={true}
 			autoPanOnNodeDrag={true}
 			zoomOnDoubleClick={false}
-			minZoom={0.1}
+			minZoom={0.001}
+			class="noSelect"
 			fitView
 		>
 			<Controls showLock={false} />
@@ -207,6 +208,12 @@
 </div>
 
 <style>
+	.noSelect {
+		user-select: none;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+	}
 	.glow-button {
 		border: none;
 		outline: none;

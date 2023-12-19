@@ -36,7 +36,12 @@
 		{/if}
 		<div class="scrollable-content">
 			{#if claims.length > 1}
-				<h4 class="mb-3">{$__('claims')}: {_.map(claims.length.toString(), (c) => $__(c))}</h4>
+				<h4 class="mb-3">
+					{$__('claims')}: {_.join(
+						_.map(claims.length.toString(), (c) => $__(c)),
+						''
+					)}
+				</h4>
 				<h5 class="mb-3">{claims[0].claim}</h5>
 			{/if}
 			{#each claims as claim (claim.id)}
