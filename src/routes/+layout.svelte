@@ -10,13 +10,26 @@
 	import '/src/app.css';
 	import { _ as __ } from 'svelte-i18n';
 	import Cookies from 'js-cookie';
+	import { KJUR } from 'jsrsasign';
+
+	export const generateJWT = (payload, secretKey) => {
+		const header = { alg: 'HS256', typ: 'JWT' };
+		const sHeader = JSON.stringify(header);
+		const sPayload = JSON.stringify(payload);
+		const sJWT = KJUR.jws.JWS.sign('HS256', sHeader, sPayload, secretKey);
+		return sJWT;
+	};
 
 	onMount(() => {
 		onAuthStateChanged(auth, (firebaseUser) => {
 			$user = firebaseUser;
-			firebaseUser.getIdToken().then((token) => {
-				Cookies.set('token', token);
-			});
+			if (firebaseUser)
+				firebaseUser.getIdToken().then((token) => {
+					if (!Cookies.get('user_token')) {
+						const userToken = generateJWT($user.uid, import.meta.env.VITE_APP_API_KEY);
+						Cookies.set('user_token', userToken);
+					}
+				});
 		});
 	});
 </script>

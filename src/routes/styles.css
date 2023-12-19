@@ -271,3 +271,18 @@ button:focus:not(:focus-visible) {
 	padding: 4px;
 	margin: 0px;
 }
+
+.api-docs a {
+	color: var(--color-theme-1) !important;
+	text-decoration: none;
+}
+
+.api-docs code {
+	color: #333;
+	font-size: 0.8em;
+	line-height: 0.5;
+	background-color: #fffcfc;
+	padding-top: 0em;
+	padding-bottom: 0em;
+	border-radius: 3px;
+}

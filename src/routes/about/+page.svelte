@@ -8,15 +8,16 @@
 </svelte:head>
 
 <div class="text-column">
-	<h1>
-		{@html $__('about_section_p')}
-	</h1>
-	<p>
+	<h3>
 		{@html $__('about_section_h1')}
+	</h3>
+	<br />
+	<p>
+		{@html $__('about_section_p')}
 	</p>
 
 	<br />
 	<br />
 	<br />
-	<a href="/help">{$__('api_documentation')}</a>
+	<a href="/api-docs">{$__('api_documentation')}</a>
 </div>

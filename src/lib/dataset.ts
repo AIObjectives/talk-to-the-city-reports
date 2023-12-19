@@ -231,6 +231,10 @@ export class Dataset {
 		};
 	}
 
+	getNodeById(id: string) {
+		return get(this.graph.nodes).find((node) => node.id === id);
+	}
+
 	static async loadDataset(slug: string): Promise<Dataset | null> {
 		if (slug)
 			try {
