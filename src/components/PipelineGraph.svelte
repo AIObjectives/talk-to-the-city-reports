@@ -44,7 +44,7 @@
 			y: event.clientY
 		});
 
-		let nodeToAdd = node_register.find((node) => node.id === type);
+		let nodeToAdd = node_register.find((node) => node.data.compute_type === type);
 
 		if (nodeToAdd) {
 			nodeToAdd = DeepCopy(nodeToAdd);
@@ -187,7 +187,7 @@
 			</Panel>
 
 			<Panel position="top-left">
-				{#each active.nodes as node (node.id)}
+				{#each active.nodes as node (node.data.compute_type)}
 					<ToolbarNode {node} {resetTimeout} />
 				{/each}
 			</Panel>

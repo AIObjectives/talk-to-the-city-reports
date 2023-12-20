@@ -1,8 +1,8 @@
 import { describe, it, vi } from 'vitest';
 import { expect } from 'vitest';
 import ClusterExtractionNode, {
-	cluster_extraction_node_data
-} from '$lib/compute/cluster_extraction';
+	cluster_extraction_node_data_v0
+} from '$lib/compute/cluster_extraction_v0';
 import deepCopy from 'deep-copy';
 import mock_cluster_extraction_data from '$lib/mock_data/cluster_extraction/cluster_extraction.json';
 import csv_data from '$lib/mock_data/csv/csv.json';
@@ -19,7 +19,7 @@ vi.mock('$lib/utils', () => ({
 
 describe('ClusterExtractionNode class', () => {
 	it('extract the cluster', async () => {
-		const node = new ClusterExtractionNode(deepCopy(cluster_extraction_node_data));
+		const node = new ClusterExtractionNode(deepCopy(cluster_extraction_node_data_v0));
 		node.data.prompt = prompt;
 		node.data.system_prompt = system_prompt;
 		const inputData = {
@@ -40,7 +40,7 @@ describe('ClusterExtractionNode class', () => {
 	});
 
 	it('should not extract the cluster if no csv', async () => {
-		const node = new ClusterExtractionNode(deepCopy(cluster_extraction_node_data));
+		const node = new ClusterExtractionNode(deepCopy(cluster_extraction_node_data_v0));
 		node.data.prompt = prompt;
 		node.data.system_prompt = system_prompt;
 		const inputData = {
@@ -60,7 +60,7 @@ describe('ClusterExtractionNode class', () => {
 	});
 
 	it('should not extract the cluster if no open_ai_key', async () => {
-		const node = new ClusterExtractionNode(deepCopy(cluster_extraction_node_data));
+		const node = new ClusterExtractionNode(deepCopy(cluster_extraction_node_data_v0));
 		node.data.prompt = prompt;
 		node.data.system_prompt = system_prompt;
 		const inputData = {
@@ -80,7 +80,7 @@ describe('ClusterExtractionNode class', () => {
 	});
 
 	it('should not extract the cluster if no prompt and no system prompt', async () => {
-		const node = new ClusterExtractionNode(deepCopy(cluster_extraction_node_data));
+		const node = new ClusterExtractionNode(deepCopy(cluster_extraction_node_data_v0));
 		node.data.system_prompt = undefined;
 		node.data.prompt = undefined;
 		const inputData = {
@@ -101,7 +101,7 @@ describe('ClusterExtractionNode class', () => {
 	});
 
 	it('test GCS caching', async () => {
-		const node = new ClusterExtractionNode(deepCopy(cluster_extraction_node_data));
+		const node = new ClusterExtractionNode(deepCopy(cluster_extraction_node_data_v0));
 		node.data.prompt = prompt;
 		node.data.system_prompt = system_prompt;
 		node.data.dirty = false;

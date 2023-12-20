@@ -65,10 +65,14 @@
 				/>
 			</div>
 		{/if}
-		<div>{$__(data.label)} <small class="mb-4 text-gray-400">{id}</small></div>
+
+		<div>
+			{$__(data.label)}
+			{#if !isStandardView}<small class="mb-4 text-gray-400">{id}</small>{/if}
+		</div>
 
 		<div class="help-icon-wrapper">
-			{#if !has_all_inputs}
+			{#if !isStandardView && !has_all_inputs}
 				<Connection color="#ffaaaa" class="mr-2" />
 			{/if}
 			{#if docs[data?.compute_type]}

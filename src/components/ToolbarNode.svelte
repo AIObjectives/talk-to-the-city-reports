@@ -32,7 +32,7 @@
 	style="height:42px;"
 	draggable={true}
 	role="button"
-	on:dragstart={(event) => onDragStart(event, node.id)}
+	on:dragstart={(event) => onDragStart(event, node.data.compute_type)}
 >
 	<!-- svelte-ignore a11y-missing-attribute -->
 	<img src="/{node.data.icon}.png" style="width: 100%; height: 100%; object-fit: contain;" />
@@ -43,6 +43,7 @@
 		style="position: fixed; top: {y + 30}px; left: {x +
 			30}px; transform: translateX(-50%); background: #333; color: #fff; padding: 5px; border-radius: 5px;"
 	>
-		{$__(node.data.label)}
+		{$__(node.data.label)}<br />
+		<small>({$__(node.data.compute_type)})</small>
 	</div>
 {/if}

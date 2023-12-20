@@ -1,6 +1,6 @@
 import ArgumentExtractionNode, {
-	argument_extraction_node_data
-} from '$lib/compute/argument_extraction';
+	argument_extraction_node_data_v0
+} from '$lib/compute/argument_extraction_v0';
 import deepCopy from 'deep-copy';
 import { describe, it, vi, beforeEach } from 'vitest';
 import { expect } from 'vitest';
@@ -21,7 +21,7 @@ describe('ArgumentExtractionNode class', function () {
 	let timeout = 60000;
 
 	beforeEach(() => {
-		node = new ArgumentExtractionNode(deepCopy(argument_extraction_node_data));
+		node = new ArgumentExtractionNode(deepCopy(argument_extraction_node_data_v0));
 		inputData = {
 			open_ai_key: 'sk-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
 			csv: csv_data,

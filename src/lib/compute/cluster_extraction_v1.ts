@@ -1,7 +1,11 @@
 import nodes from '$lib/node_register';
 import categories from '$lib/node_categories';
 import { readFileFromGCS, uploadJSONToGCS } from '$lib/utils';
-import { cluster_extraction_prompt, cluster_extraction_system_prompt } from '$lib/prompts';
+import {
+	cluster_extraction_prompt_v1,
+	cluster_extraction_system_prompt,
+	cluster_extraction_prompt_v1_suffix
+} from '$lib/prompts';
 import { format, unwrapFunctionStore } from 'svelte-i18n';
 import gpt from '$lib/gpt';
 import _ from 'lodash';
@@ -56,7 +60,7 @@ export default class ClusterExtractionNode {
 		if (context == 'run' && open_ai_key && csv && csv.length > 0) {
 			info(`${$__('computing')} ${$__(this.data.label)}`);
 			this.data.csv_length = csv.length;
-			const { prompt, system_prompt } = this.data;
+			const { prompt, system_prompt, prompt_suffix } = this.data;
 			let i = 0;
 			const interval = setInterval(() => {
 				this.data.message = `${$__('computing')} ${$__(this.data.label)} ${'.'.repeat(i % 4)}`;
@@ -69,7 +73,7 @@ export default class ClusterExtractionNode {
 				{
 					comments: csv.map((x: any) => x['comment-body']).join('\n')
 				},
-				prompt,
+				prompt + prompt_suffix,
 				system_prompt,
 				info,
 				error,
@@ -100,6 +104,7 @@ interface ClusterExtractionData extends BaseData {
 	text: string;
 	system_prompt: string;
 	prompt: string;
+	prompt_suffix: string;
 	csv_length: number;
 }
 
@@ -107,17 +112,18 @@ type ClusterExtractionNodeInterface = DGNodeInterface & {
 	data: ClusterExtractionData;
 };
 
-export let cluster_extraction_node_data: ClusterExtractionNodeInterface = {
+export let cluster_extraction_node_data_v1: ClusterExtractionNodeInterface = {
 	id: 'cluster_extraction',
 	data: {
 		label: 'cluster_extraction',
 		output: {},
 		text: '',
 		system_prompt: cluster_extraction_system_prompt,
-		prompt: cluster_extraction_prompt,
+		prompt: cluster_extraction_prompt_v1,
+		prompt_suffix: cluster_extraction_prompt_v1_suffix,
 		csv_length: 0,
 		dirty: false,
-		compute_type: 'cluster_extraction_v0',
+		compute_type: 'cluster_extraction_v1',
 		input_ids: { open_ai_key: '', csv: '' },
 		category: categories.llm.id,
 		icon: 'cluster_extraction_v0',
@@ -127,6 +133,6 @@ export let cluster_extraction_node_data: ClusterExtractionNodeInterface = {
 	type: 'prompt_v0'
 };
 
-export let cluster_extraction_node = new ClusterExtractionNode(cluster_extraction_node_data);
+export let cluster_extraction_node_v1 = new ClusterExtractionNode(cluster_extraction_node_data_v1);
 
-nodes.register(ClusterExtractionNode, cluster_extraction_node_data);
+nodes.register(ClusterExtractionNode, cluster_extraction_node_data_v1);

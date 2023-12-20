@@ -15,7 +15,7 @@
 
 	export let showSystemPrompt = false;
 
-	const { system_prompt, prompt, output } = data;
+	const { system_prompt, prompt } = data;
 </script>
 
 <DGNode
@@ -28,34 +28,36 @@
 	color="aoi-green"
 	_class="aoi-green"
 >
-	<FormField align="end">
-		<span><Checkbox bind:checked={showSystemPrompt} /></span>
-		<span slot="label">{$__('show_system_prompt')}</span>
-	</FormField>
-	{#if showSystemPrompt}
-		<TextField
-			style="width: 100%; overflow: auto"
-			helperLine$style="width: 100% !important;"
-			class="nowheel"
-			textarea
-			input$rows={5}
-			value={system_prompt}
-			on:keydown={(evt) => {
-				if (evt.key === 'Backspace') {
-					evt.stopPropagation();
-				}
-			}}
-			on:input={(evt) => {
-				data.system_prompt = evt.target?.value;
-				data.dirty = true;
-			}}
-		>
-			<HelperText slot="helper">{$__('system_extraction_prompt')}</HelperText>
-		</TextField>
+	{#if !isStandardView}
+		<FormField align="end">
+			<span><Checkbox bind:checked={showSystemPrompt} /></span>
+			<span slot="label">{$__('show_system_prompt')}</span>
+		</FormField>
+		{#if showSystemPrompt}
+			<TextField
+				style="width: 100%; overflow: auto"
+				helperLine$style="width: 100% !important;"
+				class="nowheel"
+				textarea
+				input$rows={5}
+				value={system_prompt}
+				on:keydown={(evt) => {
+					if (evt.key === 'Backspace') {
+						evt.stopPropagation();
+					}
+				}}
+				on:input={(evt) => {
+					data.system_prompt = evt.target?.value;
+					data.dirty = true;
+				}}
+			>
+				<HelperText slot="helper">{$__('system_extraction_prompt')}</HelperText>
+			</TextField>
+		{/if}
 	{/if}
 	<TextField
 		style="width: 100%; overflow: auto"
-		class="nowheel"
+		class="nowheel mt-2"
 		helperLine$style="width: 100% !important;"
 		textarea
 		input$rows={12}

@@ -128,7 +128,7 @@
 	}
 
 	const rand = generateReportName();
-	const defaultTemplate = 'heal_michigan_v0';
+	const defaultTemplate = 'heal_michigan_v1';
 	let projectTitle = rand;
 	let projectSlug = rand;
 	let projectDescription = rand;

@@ -18,11 +18,11 @@ import CSVNode, { csv_node_data } from '$lib/compute/csv';
 import JqNodeV1, { jq_node_data } from '$lib/compute/jq_v1';
 import OpenAIKeyNode, { open_ai_key_node_data } from '$lib/compute/open_ai_key';
 import ClusterExtractionNode, {
-	cluster_extraction_node_data
-} from '$lib/compute/cluster_extraction';
+	cluster_extraction_node_data_v0
+} from '$lib/compute/cluster_extraction_v0';
 import ArgumentExtractionNode, {
-	argument_extraction_node_data
-} from '$lib/compute/argument_extraction';
+	argument_extraction_node_data_v0
+} from '$lib/compute/argument_extraction_v0';
 import MergeNode, { merge_node_data } from '$lib/compute/merge';
 
 // dataset
@@ -53,7 +53,7 @@ function get_jq() {
 }
 
 function get_cluster_extraction() {
-	const node = new ClusterExtractionNode(deepCopy(cluster_extraction_node_data));
+	const node = new ClusterExtractionNode(deepCopy(cluster_extraction_node_data_v0));
 	node.data.prompt = cluster_prompt;
 	node.data.system_prompt = cluster_system_prompt;
 	node.data.input_ids.csv = 'jq_v1';
@@ -62,7 +62,7 @@ function get_cluster_extraction() {
 }
 
 function get_argument_extraction() {
-	const node = new ArgumentExtractionNode(deepCopy(argument_extraction_node_data));
+	const node = new ArgumentExtractionNode(deepCopy(argument_extraction_node_data_v0));
 	node.data.prompt = arg_prompt;
 	node.data.system_prompt = arg_system_prompt;
 	node.data.input_ids.csv = 'jq_v1';
@@ -93,30 +93,30 @@ function get_graph() {
 		},
 		{
 			source: jq_node_data.id,
-			target: cluster_extraction_node_data.id
+			target: cluster_extraction_node_data_v0.id
 		},
 		{
 			source: open_ai_key_node_data.id,
-			target: cluster_extraction_node_data.id
+			target: cluster_extraction_node_data_v0.id
 		},
 		{
 			source: jq_node_data.id,
-			target: argument_extraction_node_data.id
+			target: argument_extraction_node_data_v0.id
 		},
 		{
-			source: cluster_extraction_node_data.id,
-			target: argument_extraction_node_data.id
+			source: cluster_extraction_node_data_v0.id,
+			target: argument_extraction_node_data_v0.id
 		},
 		{
 			source: open_ai_key_node_data.id,
-			target: argument_extraction_node_data.id
+			target: argument_extraction_node_data_v0.id
 		},
 		{
-			source: argument_extraction_node_data.id,
+			source: argument_extraction_node_data_v0.id,
 			target: merge_node_data.id
 		},
 		{
-			source: cluster_extraction_node_data.id,
+			source: cluster_extraction_node_data_v0.id,
 			target: merge_node_data.id
 		}
 	];

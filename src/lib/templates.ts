@@ -7,9 +7,11 @@ import { csv_node } from './compute/csv';
 import { json_node } from './compute/json';
 import { limit_csv_node } from './compute/limit_csv';
 import { edit_csv_node } from './compute/edit_csv';
-import { cluster_extraction_node } from './compute/cluster_extraction';
+import { cluster_extraction_node_v0 } from './compute/cluster_extraction_v0';
+import { cluster_extraction_node_v1 } from './compute/cluster_extraction_v1';
 import { merge_cluster_extraction_node } from './compute/merge_cluster_extraction';
-import { argument_extraction_node } from './compute/argument_extraction';
+import { argument_extraction_node_v0 } from './compute/argument_extraction_v0';
+import { argument_extraction_node_v1 } from './compute/argument_extraction_v1';
 import { report_node_v0 } from './compute/report_v0';
 import { report_node_v1 } from './compute/report_v1';
 import { participant_filter_node } from './compute/participant_filter';
@@ -33,8 +35,10 @@ export let node_register = [
 	csv_node,
 	json_node,
 	edit_csv_node,
-	cluster_extraction_node,
-	argument_extraction_node,
+	cluster_extraction_node_v0,
+	cluster_extraction_node_v1,
+	argument_extraction_node_v0,
+	argument_extraction_node_v1,
 	merge_node,
 	participant_filter_node,
 	report_node_v0,

@@ -1,14 +1,18 @@
 import nodes from '$lib/node_register';
 import categories from '$lib/node_categories';
 import { readFileFromGCS, uploadJSONToGCS } from '$lib/utils';
-import { argument_extraction_prompt, argument_extraction_system_prompt } from '$lib/prompts';
+import {
+	argument_extraction_prompt_v1,
+	argument_extraction_system_prompt,
+	argument_extraction_prompt_v1_suffix
+} from '$lib/prompts';
 import gpt from '$lib/gpt';
 import _ from 'lodash';
 import { format, unwrapFunctionStore } from 'svelte-i18n';
 
 const $__ = unwrapFunctionStore(format);
 
-export default class ArgumentExtractionNode {
+export default class ArgumentExtractionNodeV1 {
 	id: string;
 	data: ArgumentExtractionData;
 	position: { x: number; y: number };
@@ -31,7 +35,7 @@ export default class ArgumentExtractionNode {
 		slug: string,
 		Cookies: any
 	) {
-		const { prompt, system_prompt } = this.data;
+		const { prompt, system_prompt, prompt_suffix } = this.data;
 		const csv = inputData.csv || inputData[this.data.input_ids.csv];
 		const open_ai_key = inputData.open_ai_key || inputData[this.data.input_ids.open_ai_key];
 		const cluster_extraction =
@@ -77,7 +81,7 @@ export default class ArgumentExtractionNode {
 							const response = await gpt(
 								open_ai_key,
 								replacements,
-								prompt,
+								prompt + '\n' + prompt_suffix,
 								system_prompt,
 								info,
 								error,
@@ -134,17 +138,18 @@ type ArgumentExtractionNodeInterface = DGNodeInterface & {
 	data: ArgumentExtractionData;
 };
 
-export let argument_extraction_node_data: ArgumentExtractionNodeInterface = {
+export let argument_extraction_node_data_v1: ArgumentExtractionNodeInterface = {
 	id: 'argument_extraction',
 	data: {
 		label: 'argument_extraction',
 		output: {},
 		text: '',
 		system_prompt: argument_extraction_system_prompt,
-		prompt: argument_extraction_prompt,
+		prompt: argument_extraction_prompt_v1,
+		prompt_suffix: argument_extraction_prompt_v1_suffix,
 		csv_length: 0,
 		dirty: false,
-		compute_type: 'argument_extraction_v0',
+		compute_type: 'argument_extraction_v1',
 		input_ids: { open_ai_key: '', csv: '', cluster_extraction: '' },
 		category: categories.llm.id,
 		icon: 'argument_extraction_v0'
@@ -153,8 +158,8 @@ export let argument_extraction_node_data: ArgumentExtractionNodeInterface = {
 	type: 'prompt_v0'
 };
 
-export let argument_extraction_node = new ArgumentExtractionNode(argument_extraction_node_data);
+export let argument_extraction_node_v1 = new ArgumentExtractionNodeV1(
+	argument_extraction_node_data_v1
+);
 
-nodes['argument_extraction_v0'] = argument_extraction_node;
-
-nodes.register(ArgumentExtractionNode, argument_extraction_node_data);
+nodes.register(ArgumentExtractionNodeV1, argument_extraction_node_data_v1);

@@ -38,8 +38,9 @@ export const nodeTypes = {
 
 import '$lib/compute/csv';
 import '$lib/compute/merge';
-import '$lib/compute/cluster_extraction';
-import '$lib/compute/argument_extraction';
+import '$lib/compute/cluster_extraction_v0';
+import '$lib/compute/cluster_extraction_v1';
+import '$lib/compute/argument_extraction_v0';
 import '$lib/compute/open_ai_key';
 import '$lib/compute/report_v0';
 import '$lib/compute/report_v1';
@@ -86,6 +87,7 @@ export const docs = {
 	edit_csv_v0: edit_csv_doc,
 	open_ai_key_v0: open_ai_key_doc,
 	cluster_extraction_v0: cluster_extraction_doc,
+	cluster_extraction_v1: cluster_extraction_doc,
 	argument_extraction_v0: argument_extraction_doc,
 	grid_v0: grid_doc,
 	jsonata_v0: jsonata_doc,
