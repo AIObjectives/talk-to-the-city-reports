@@ -1,0 +1,29 @@
+name: Live test of the tttc-turbo.web.app site
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: selenium
+
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install selenium webdriver_manager
+
+      - name: Run tests
+        run: |
+          export DISPLAY=:99
+          python src/test/test_selenium.py
