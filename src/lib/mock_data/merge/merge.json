@@ -10,6 +10,8 @@
           "claims": [
             {
               "claim": "The weather is currently pleasant in the city.",
+              "commentId": "28",
+              "id": "28-0",
               "quote": "The weather is indeed pleasant today",
               "topicName": "Current Conditions",
               "subtopicName": "Pleasant Weather",
@@ -28,6 +30,8 @@
           "claims": [
             {
               "claim": "The rain in the city is persistent.",
+              "commentId": "0",
+              "id": "0-0",
               "quote": "When will the rain stop.",
               "topicName": "Weather Patterns",
               "subtopicName": "Rain Duration",
