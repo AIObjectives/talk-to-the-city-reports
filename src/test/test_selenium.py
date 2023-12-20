@@ -16,7 +16,7 @@ parser.add_argument(
 
 args = parser.parse_args()
 
-urls = ["https://tttc-turbo.web.app/report/", "http://localhost:5173"]
+urls = ["https://tttc-turbo.web.app", "http://localhost:5173"]
 
 url = urls[args.run_locally]
 
@@ -36,7 +36,7 @@ driver = webdriver.Chrome(options=chrome_options)
 
 def test_report(name):
     driver.get(f"{url}/report/{name}")
-    WebDriverWait(driver, 30).until(
+    WebDriverWait(driver, 60).until(
         EC.text_to_be_present_in_element((By.TAG_NAME, "body"), "Show more")
     )
     print(f"Testing: {name}")
