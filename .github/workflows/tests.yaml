@@ -1,10 +1,13 @@
 name: tests & build python API client
 
 on:
+  schedule:
+    - cron: '*/10 * * * *'
   push:
     branches: ['*']
   pull_request:
     branches: ['*']
+  workflow_dispatch:
 
 jobs:
   test:
@@ -54,3 +57,27 @@ jobs:
         with:
           name: python-api
           path: python-api.zip
+
+  testLiveSite:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checking out repo
+        uses: actions/checkout@v3
+      - name: Setting up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      - name: Installing package list
+        run: apt list --installed
+      - name: Removing previous chrome instances on runner
+        run: sudo apt purge google-chrome-stable
+
+      - name: Installing all necessary packages
+        run: pip install chromedriver-autoinstaller selenium pyvirtualdisplay
+      - name: Install xvfb
+        run: sudo apt-get install xvfb
+
+      - name: Run tests
+        run: |
+          export DISPLAY=:99
+          python src/test/test_selenium.py
