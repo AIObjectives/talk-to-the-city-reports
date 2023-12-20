@@ -283,6 +283,11 @@ button:focus:not(:focus-visible) {
 	text-decoration: none;
 }
 
+.docs a {
+	color: var(--color-theme-1) !important;
+	text-decoration: none;
+}
+
 .api-docs code {
 	color: #333;
 	font-size: 0.8em;

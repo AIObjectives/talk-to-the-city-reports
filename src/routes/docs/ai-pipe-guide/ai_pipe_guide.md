@@ -1,52 +1,10 @@
-# tttc-turbo documentation
-
-Talk to the City Turbo is an application that enables users to convert data they have acquired through interviews, surveys, forums, IM channels etc. into atomic "claims" that are categorized into topics and subtopics, and displayed in the form of a report.
-
-These reports allow readers to peruse the collected information in a structured manner that is also visually appealing.
-
-
-There are therefore three broad categories of users:
-
-- the anon viewer
-- the reporter
-- the AI pipeline engineer
-
-## The anon viewer
-
-The anon viewer is anyone on the internet with a modern javascript enabled browser. These users are presented with the topics & subtopics graphics, the left sidebar, and the content (i.e the categorized claims).
-
-![anon](https://talktothecity.s3.amazonaws.com/tttc-turbo/static/images/Monosnap-tttc-turbo-2023-12-19-20-51-13.jpeg)
-
-## The reporter
-
-The reporter is the user who gathers the data, uploads it in CSV format, provides their OpenAI API key, and clicks "generate report".
-
-![report](https://talktothecity.s3.amazonaws.com/tttc-turbo/static/images/Monosnap-tttc-turbo-2023-12-20-03-15-32.jpeg)
-
-The reporter is assumed to be non-technical. As such the extent of their computer related skills should be assumed to be no more than the ability to:
-
-- log in using their Google account
-- create a new report with the correct template
-- uploading a CSV
-- optional: modifying the prompt
-- clicking the "generate report" button.
-
-## The AI pipeline engineer
-
-The AI pipeline engineer, on the other hand, is assumed to be a rather technically inclined user. Since the prior two categories of users do not require any special knowledge or technical skills, this documentation is geared towards the AI pipeline engineer.
-
-![AI pipe eng](https://talktothecity.s3.amazonaws.com/tttc-turbo/static/images/Monosnap-tttc-turbo-2023-12-19-19-49-04.jpeg)
-
-To get our toes wet, we'll begin with our **AI Pipeline Engineering Guide #1** which guides pipeline engineers through the process of building a pipeline from scratch.
-
-
 # AI Pipeline Engineering Guide #1
 
 ## Introduction
 
------------------------------
+---
 
-In this *AI Pipeline Engineering Guide #1*, we will cover some fundamentals of building AI pipelines using *tttc-turbo*, as well as provide a step by step guide for CSV ingestion and report cluster extraction.
+In this _AI Pipeline Engineering Guide #1_, we will cover some fundamentals of building AI pipelines using _tttc-turbo_, as well as provide a step by step guide for CSV ingestion and report cluster extraction.
 
 The intended audience for these guides is:
 
@@ -59,24 +17,21 @@ In short, anyone with the will and acclivity.
 
 By going through these guides. you can become the goto Engineer for:
 
-* Creating new reports of your own design
-* Modifying / Enhancing existing reports after feedback rounds.
-* Publishing reports as templates that can be used by reporters.
+- Creating new reports of your own design
+- Modifying / Enhancing existing reports after feedback rounds.
+- Publishing reports as templates that can be used by reporters.
 
 Please note this guide does not require any coding experience or expertise.
 
-We will begin with easy concepts and tasks, and slowly ramp up in complexity and sophistication as we progress throughout these guides.
-
-
 ## AI Pipeline Engineering as a LEGO set
 
------------------------------
+---
 
 Let's attempt a first analogy to keep in mind throughout these guides and beyond: think of tttc-turbo as a LEGO set. Everything you see on the screen is a block in the LEGO set.
 
 These LEGO blocks can be as simple as text boxes or markdown documents, CSV or JSON files; as mundane as data-wrangling nodes; or as powerful as AI and LLM blocks!
 
-As the LEGO company would say: *"The only limit is your imagination."*.
+As the LEGO company would say: _"The only limit is your imagination."_.
 
 This also introduces a useful framework, where new functionality can be added by simply creating new blocks, or new versions of existing blocks, with the strong advantages of:
 
@@ -92,16 +47,16 @@ This also introduces a useful framework, where new functionality can be added by
 ## Recommended Setup
 
 A dual screen setup is strongly recommended.
+
 - One screen for the guide.
 - A second screen for operating tttc-turbo.
 
 ## Initial Report Creation
 
 - On your second 'operation' screen:
-    - Navigate to the [home screen](https://tttc-turbo.web.app).
-    - Sign in.
-    - Create a new report based on the blank template.
-
+  - Navigate to the [home screen](https://tttc-turbo.web.app).
+  - Sign in.
+  - Create a new report based on the blank template.
 
 ![create](https://talktothecity.s3.amazonaws.com/tttc-turbo/static/images/Monosnap-tttc-turbo-2023-12-20-00-52-40.jpeg)
 
@@ -109,9 +64,9 @@ N.B you are recommended to keep the slug (the url) in latin alphabet, as some br
 
 ## Standard View
 
------------------------------
+---
 
-After creating a new blank report, you enter your preferred view. By default this is the *standard view*. The standard view is used to reporters to upload their CSV and run the pipeline you have created for them.
+After creating a new blank report, you enter your preferred view. By default this is the _standard view_. The standard view is used to reporters to upload their CSV and run the pipeline you have created for them.
 
 ![empty](https://talktothecity.s3.amazonaws.com/tttc-turbo/static/images/Monosnap-tttc-turbo-2023-12-20-00-55-25.jpeg)
 
@@ -134,16 +89,15 @@ At the top left of the graph view:
 ![CSV](https://talktothecity.s3.amazonaws.com/tttc-turbo/static/images/Monosnap-tttc-turbo-2023-12-20-00-58-01.jpeg)
 
 - Notice that you can:
-    - zoom in and out with your mouse wheel or track pad
-    - pan by click-dragging the background
-    - select the node by clicking on it
-    - deselect the node by clicking on the background
-    - move the node around by click-dragging it
-    - press shift on your keyboard, and click-dragging to select multiple nodes
+  - zoom in and out with your mouse wheel or track pad
+  - pan by click-dragging the background
+  - select the node by clicking on it
+  - deselect the node by clicking on the background
+  - move the node around by click-dragging it
+  - press shift on your keyboard, and click-dragging to select multiple nodes
 - Click on the question mark to display the help box.
 
 ![help](https://talktothecity.s3.amazonaws.com/tttc-turbo/static/images/Monosnap-tttc-turbo-2023-12-20-01-00-33.jpeg)
-
 
 - Click on help again to close the node's help box.
 - Create a file on your device, called "sample.csv"
@@ -186,8 +140,8 @@ We are now ready to connect our building blocks.
 - Connect the bottom handle of the CSV node into the top handle of the "Cluster Extraction" node.
 - At the top right of the "cluster extraction" node, notice an orange "disconnected" icon.
 - Right click on the Cluster Extraction node
-    - In the "OpenAI Key" dropdown select `open_ai_key_1`.
-    - In the 'csv' dropdown select `csv_1`.
+  - In the "OpenAI Key" dropdown select `open_ai_key_1`.
+  - In the 'csv' dropdown select `csv_1`.
 - Click on the graph background to close the Context Menu.
 - Notice the "disconnected" icon has now vanished.
 - Connect the bottom handle of the "Cluster Extraction" node to the top handle of the "Grid" node.
@@ -205,31 +159,31 @@ Notice our clusters contain "topics" and "subtopics" as well as short descriptio
 
 - Delete the "Grid" node by right clicking on it.
 - From the LLM menu:
-    - Drag an "Argument Extraction" node.
+  - Drag an "Argument Extraction" node.
 - From the wrangling menu:
-    - Drag a "Merge" node
+  - Drag a "Merge" node
 - From the display menu:
-    - Drag a "Report v0" node
+  - Drag a "Report v0" node
 
 ![arg extraction](https://talktothecity.s3.amazonaws.com/tttc-turbo/static/images/Monosnap-tttc-turbo-2023-12-20-02-44-04.jpeg)
 
 - Connect the following nodes into the "Argument Extraction" node:
-    - "CSV"
-    - "OpenAI Key"
-    - "Cluster Extraction"
+  - "CSV"
+  - "OpenAI Key"
+  - "Cluster Extraction"
 - Right click on the "Argument Extraction" node, and:
-    - under `open_ai_key` click `open_ai_key_1`.
-    - under `csv` click `csv_1`.
-    - under `cluster_extraction` click `cluster_extraction_1`.
+  - under `open_ai_key` click `open_ai_key_1`.
+  - under `csv` click `csv_1`.
+  - under `cluster_extraction` click `cluster_extraction_1`.
 
 ![arg extraction connecting](https://talktothecity.s3.amazonaws.com/tttc-turbo/static/images/Monosnap-tttc-turbo-2023-12-20-02-46-00.jpeg)
 
 - Connect the following to the "Merge" node:
-    - "Cluster Extraction"
-    - "Argument Extraction"
+  - "Cluster Extraction"
+  - "Argument Extraction"
 - Right click on the "Argument Extraction" node, and:
-    - under `cluster_extraction` click `cluster_extraction_1`
-    - under `argument_extraction` click `argument_extraction_1`
+  - under `cluster_extraction` click `cluster_extraction_1`
+  - under `argument_extraction` click `argument_extraction_1`
 
 ![connect merge](https://talktothecity.s3.amazonaws.com/tttc-turbo/static/images/Monosnap-tttc-turbo-2023-12-20-02-49-13.jpeg)
 
@@ -245,17 +199,13 @@ Notice our clusters contain "topics" and "subtopics" as well as short descriptio
 
 Your basic Talk to the City Turbo pipeline is now complete.
 
-If you would like to hide certain nodes from the standard view:
-    - Go to the graph view.
-    - Right-click on the node you want to hide.
-    - Untick the "Show in standard view" checkbox.
-    - Click "save".
+If you would like to hide certain nodes from the standard view: - Go to the graph view. - Right-click on the node you want to hide. - Untick the "Show in standard view" checkbox. - Click "save".
 
 Try opening your report in a Private window, to view it as a logged out viewer would see it.
 
 ### Exercises for the reader:
 
 - Create a "Grid" node, and connect the bottom handle of a node to it.
-    - Click "generate report" (the robot icon).
-    - Study the data in the grid, and in the JSON mode of the Grid node.
-    - Repeat with other nodes.
+  - Click "generate report" (the robot icon).
+  - Study the data in the grid, and in the JSON mode of the Grid node.
+  - Repeat with other nodes.

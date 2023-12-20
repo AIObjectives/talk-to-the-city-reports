@@ -1,64 +1,12 @@
 <script>
-	import { browser } from '$app/environment';
-	import { oneDark } from '@codemirror/theme-one-dark';
-	import { _ as __ } from 'svelte-i18n';
-	import { marked } from 'marked';
-	import CodeMirror from 'svelte-codemirror-editor';
-	import { python } from '@codemirror/lang-python';
-	import { locale } from 'svelte-i18n';
-	import helpen from './docs-en.txt?raw';
-	import helpzh from './docs-zh-TW.txt?raw';
-
-	const helps = {
-		en: helpen,
-		'zh-TW': helpzh
-	};
-
-	$: help = helps[$locale || 'en'] || helps['en'];
-	$: helpText = help?.replace(/<token>/g);
-
-	let markedContent;
-
-	const renderer = new marked.Renderer();
-	renderer.code = (code, language) => {
-		return `<div class="code-editor" data-code="${encodeURIComponent(
-			code
-		)}" data-language="${language}"></div>`;
-	};
-
-	$: markedContent = helpText ? marked(helpText, { renderer }) : null;
-	$: {
-		if (markedContent && browser) {
-			setTimeout(() => {
-				document.querySelectorAll('.code-editor').forEach((el) => {
-					const codeContent = decodeURIComponent(el.getAttribute('data-code'));
-					const cm = new CodeMirror({
-						target: el,
-						props: {
-							value: codeContent,
-							theme: oneDark,
-							lang: python(),
-							options: { autoresize: true, lineWrapping: true }
-						}
-					});
-					cm.root?.classList.add('custom-margin');
-				});
-			}, 100);
-		}
-	}
+	import Doc from '$components/Doc.svelte';
+	import helpen from './docs-en.md?raw';
+	import helpez from './docs-zh-TW.md?raw';
 </script>
 
-{#if markedContent}
-	<div class="text-column docs">
-		<br />
-		<br />
-		{@html markedContent}
-	</div>
-{/if}
-
-<style>
-	.custom-margin {
-		margin-top: 0 !important;
-		margin-bottom: 0 !important;
-	}
-</style>
+<Doc
+	helps={{
+		en: helpen,
+		'zh-TW': helpez
+	}}
+/>

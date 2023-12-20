@@ -118,6 +118,7 @@ export let gpt_node_data: GPTNodeInterface = {
 		output: {},
 		prompt: 'Please write a first hand account of living conditions in any city of your choice.',
 		system_prompt: 'You are a helpful assistant.',
+		compute_type: 'gpt_v0',
 		text_length: 0,
 		dirty: false,
 		input_ids: { open_ai_key: '', text: '' },
