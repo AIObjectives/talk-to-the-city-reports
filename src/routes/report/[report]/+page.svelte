@@ -5,7 +5,7 @@
 	import Pipeline from '$components/Pipeline.svelte';
 	import Report from '$components/report/Report.svelte';
 	import LeftPane from '$components/report/LeftPane.svelte';
-	import { error } from '$components/toast/theme';
+	import { onMount } from 'svelte';
 	import { _ as __ } from 'svelte-i18n';
 
 	let dataset: Dataset | null = null;
@@ -14,19 +14,14 @@
 	const loadDataset = async (slug: string) => {
 		dataset = await Dataset.loadDataset(slug);
 		dataset_refresh++;
-		if (!dataset) {
-			error($__('dataset_not_found'));
-		}
 	};
 
-	$: {
-		// discovered a weird bug. Don't use i18n in
-		// these reactive statements
+	onMount(() => {
 		const slug = $page.params.report;
 		if (slug) {
 			loadDataset(slug);
 		}
-	}
+	});
 </script>
 
 <LeftPane {dataset} />

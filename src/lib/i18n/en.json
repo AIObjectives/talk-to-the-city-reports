@@ -92,7 +92,7 @@
   "jq_v1": "JQ v1",
   "json": "JSON",
   "jsonata": "JSONata",
-  "limit_csv": "Max CSV",
+  "limit_csv": "Number of rows to be processed",
   "markdown": "Markdown",
   "merge_cluster_extraction": "Merge Cluster Extraction",
   "merge": "Merge",
@@ -148,5 +148,11 @@
   "error": "Error",
   "loaded_from_gcs": "Loaded from GCS",
   "comments": "Comments",
-  "missing_input_data": "Missing Input Data"
+  "missing_input_data": "Missing Input Data",
+  "template_help": "Templates provide a way of creating different kinds of reports. If you are unsure which template to use, then use the default template.",
+  "graph_view_notice_0": "You do not need the graph view for using Talk to the City with the default functionality, however, for advanced pipeline design, click",
+  "here": "here",
+  "graph_view_notice_1": "to access the graph view.",
+  "graph_view_notice_snackbar": "You can toggle views from the top right menu.",
+  "return_to_standard_view": "Return to standard view"
 }

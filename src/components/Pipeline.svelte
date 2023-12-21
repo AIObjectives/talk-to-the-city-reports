@@ -14,6 +14,7 @@
 	import { viewMode } from '$lib/store';
 	import { useSvelteFlow } from '@xyflow/svelte';
 	import DragVertical from '$lib/icons/DragVertical.svelte';
+	import GraphNotice from '$components/GraphNotice.svelte';
 	import { _ as __ } from 'svelte-i18n';
 
 	const { fitView } = useSvelteFlow();
@@ -203,6 +204,8 @@
 		{/if}
 	</div>
 {/if}
+
+<GraphNotice />
 
 <style>
 	.pipeline-icon {

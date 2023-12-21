@@ -7,7 +7,7 @@ const fitViewStore: Writable<number> = writable(0);
 const user: Writable<User | null> = writable(null);
 const dataset: Writable<Object | null> = writable(null);
 const message: Writable<Object | null> = writable(null);
-const isGraphView: Writable<boolean> = writable(false);
+const graphNotice: Writable<boolean> = writable(false);
 const viewMode = writable(Cookies.get('viewMode') || 'standard');
 
-export { user, dataset, message, isGraphView, viewMode, fitViewStore };
+export { user, dataset, message, viewMode, fitViewStore, graphNotice };

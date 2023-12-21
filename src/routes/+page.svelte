@@ -20,7 +20,7 @@
 
 	{#if $user}
 		<Projects />
-		<Button href="/report/new" class="mt-10">{$__('new_report')}</Button>
+		<Button href="/new-report" class="mt-10">{$__('new_report')}</Button>
 	{:else if mounted}
 		{$__('sign_in_to_continue')}
 	{/if}

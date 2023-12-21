@@ -13,8 +13,6 @@ The intended audience for these guides is:
 3. Software developers / engineers
 4. Pipeline engineers and architects of all sorts.
 
-In short, anyone with the will and acclivity.
-
 By going through these guides. you can become the goto Engineer for:
 
 - Creating new reports of your own design
@@ -23,15 +21,11 @@ By going through these guides. you can become the goto Engineer for:
 
 Please note this guide does not require any coding experience or expertise.
 
-## AI Pipeline Engineering as a LEGO set
+## AI Pipeline Engineering as a building blocks set
 
----
+Let's attempt a first analogy to keep in mind throughout these guides and beyond: think of tttc-turbo as a building blocks set. Everything you see on the screen is a block in the building blocks set.
 
-Let's attempt a first analogy to keep in mind throughout these guides and beyond: think of tttc-turbo as a LEGO set. Everything you see on the screen is a block in the LEGO set.
-
-These LEGO blocks can be as simple as text boxes or markdown documents, CSV or JSON files; as mundane as data-wrangling nodes; or as powerful as AI and LLM blocks!
-
-As the LEGO company would say: _"The only limit is your imagination."_.
+These building blocks can be as simple as text boxes or markdown documents, CSV or JSON files; as mundane as data-wrangling nodes; or as powerful as AI and LLM blocks!
 
 This also introduces a useful framework, where new functionality can be added by simply creating new blocks, or new versions of existing blocks, with the strong advantages of:
 
@@ -66,7 +60,7 @@ N.B you are recommended to keep the slug (the url) in latin alphabet, as some br
 
 ---
 
-After creating a new blank report, you enter your preferred view. By default this is the _standard view_. The standard view is used to reporters to upload their CSV and run the pipeline you have created for them.
+After creating a new blank report, you enter your preferred view. By default this is the _standard view_. The standard view is used by reporters to upload their CSV and run the pipeline you have created for them.
 
 ![empty](https://talktothecity.s3.amazonaws.com/tttc-turbo/static/images/Monosnap-tttc-turbo-2023-12-20-00-55-25.jpeg)
 
@@ -199,7 +193,12 @@ Notice our clusters contain "topics" and "subtopics" as well as short descriptio
 
 Your basic Talk to the City Turbo pipeline is now complete.
 
-If you would like to hide certain nodes from the standard view: - Go to the graph view. - Right-click on the node you want to hide. - Untick the "Show in standard view" checkbox. - Click "save".
+If you would like to hide certain nodes from the standard view:
+
+- Go to the graph view.
+- Right-click on the node you want to hide.
+- Untick the "Show in standard view" checkbox.
+- Click "save".
 
 Try opening your report in a Private window, to view it as a logged out viewer would see it.
 

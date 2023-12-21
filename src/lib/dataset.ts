@@ -238,19 +238,22 @@ export class Dataset {
 	static async loadDataset(slug: string): Promise<Dataset | null> {
 		if (slug)
 			try {
-				const { doc, id } = await this.loadDoc(slug);
-				const dataset = new Dataset(
-					doc.title,
-					doc.slug,
-					doc.owner,
-					doc.template,
-					doc.description,
-					doc.graph,
-					id,
-					doc.projectParent
-				);
-				dataset.sanitize();
-				return dataset;
+				const fbDoc = await this.loadDoc(slug);
+				if (!_.isEmpty(fbDoc)) {
+					const { doc, id } = fbDoc;
+					const dataset = new Dataset(
+						doc.title,
+						doc.slug,
+						doc.owner,
+						doc.template,
+						doc.description,
+						doc.graph,
+						id,
+						doc.projectParent
+					);
+					dataset.sanitize();
+					return dataset;
+				}
 			} catch (e) {
 				error($__('an_error_occurred_while_loading_the_dataset'));
 				console.error(e);

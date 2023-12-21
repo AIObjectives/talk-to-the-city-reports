@@ -89,6 +89,7 @@ export const docs = {
 	cluster_extraction_v0: cluster_extraction_doc,
 	cluster_extraction_v1: cluster_extraction_doc,
 	argument_extraction_v0: argument_extraction_doc,
+	argument_extraction_v1: argument_extraction_doc,
 	grid_v0: grid_doc,
 	jsonata_v0: jsonata_doc,
 	jq_v0: jq_doc,

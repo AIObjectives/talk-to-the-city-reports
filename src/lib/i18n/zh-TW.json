@@ -92,7 +92,7 @@
     "jq_v1": "JQ v1",
     "json": "JSON",
     "jsonata": "JSONata",
-    "limit_csv": "最大 CSV",
+    "limit_csv": "要處理的行數",
     "markdown": "Markdown",
     "merge_cluster_extraction": "合併叢集提取",
     "merge": "合併",
@@ -148,5 +148,11 @@
     "error": "錯誤",
     "loaded_from_gcs": "從 GCS 加載",
     "comments": "評論",
-    "missing_input_data": "缺少輸入資料"
+    "missing_input_data": "缺少輸入資料",
+    "template_help": "模板提供了創建不同類型報告的方法。如果您不確定使用哪個模板，那麼請使用默認模板。",
+    "graph_view_notice_0": "您在使用 Talk to the City 的預設功能時，不需要圖形視圖，但是，對於高級流水線設計，請點擊",
+    "here": "這裡",
+    "graph_view_notice_1": "來訪問圖形視圖。",
+    "graph_view_notice_snackbar": "您可以從右上角的菜單切換視圖。",
+    "return_to_standard_view": "返回標準視圖"   
 }

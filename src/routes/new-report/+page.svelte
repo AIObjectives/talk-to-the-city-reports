@@ -1,5 +1,7 @@
 <script lang="ts">
+	import Paper from '@smui/paper';
 	import Button from '@smui/button';
+	import Help from '$lib/icons/HelpCircle.svelte';
 	import HelperText from '@smui/textfield/helper-text';
 	import TextField from '@smui/textfield';
 	import Select, { Option } from '@smui/select';
@@ -128,13 +130,12 @@
 	}
 
 	const rand = generateReportName();
-	const defaultTemplate = 'heal_michigan_v1';
 	let projectTitle = rand;
 	let projectSlug = rand;
 	let projectDescription = rand;
-	let projectTemplate = defaultTemplate;
+	let projectTemplate = 'default';
 	let templates;
-	let showTemplate = true;
+	let show_help = false;
 
 	function createProjectSlug(str) {
 		return str
@@ -172,7 +173,7 @@
 </script>
 
 <div class="flex flex-col items-center justify-center min-h-screen">
-	<form on:submit={createNewProject} class="w-full max-w-sm mt-5">
+	<div class="w-full max-w-sm mt-5">
 		<div class="flex flex-wrap -mx-3 mb-6">
 			<h2 class="px-3 w-full text-center text-xl font-bold mb-6">{$__('create_a_new_report')}</h2>
 			<div class="w-full px-3">
@@ -197,9 +198,17 @@
 					<HelperText persistent slot="helper">{$__('report_description')}</HelperText>
 				</TextField>
 			</div>
-			{#if showTemplate}
-				{#if templates}
-					<div class="w-full px-3">
+			{#if templates}
+				<div class="w-full px-3" style="position: relative;">
+					<button on:click={() => (show_help = !show_help)}><Help color="gray" /></button>
+					{#if show_help}
+						<Paper class="mb-5 w-full">
+							<div class="docs">
+								{$__('template_help')}
+							</div>
+						</Paper>
+					{/if}
+					{#if projectTemplate}
 						<Select
 							style="min-width: 400px;"
 							label={$__('report_template')}
@@ -209,14 +218,14 @@
 								<Option value={templateKey}>{templateKey}</Option>
 							{/each}
 						</Select>
-					</div>
-				{:else}
-					<p>{$__('loading_templates')}...</p>
-				{/if}
+					{/if}
+				</div>
+			{:else}
+				<p>{$__('loading_templates')}...</p>
 			{/if}
-			<div class="w-full px-3 pt-5">
+			<button class="w-full px-3 pt-5" on:click={createNewProject}>
 				<Button raised type="submit">{$__('create')}</Button>
-			</div>
+			</button>
 		</div>
-	</form>
+	</div>
 </div>

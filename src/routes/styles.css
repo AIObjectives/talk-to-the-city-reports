@@ -297,3 +297,7 @@ button:focus:not(:focus-visible) {
 	padding-bottom: 0em;
 	border-radius: 3px;
 }
+
+.mdc-menu .mdc-deprecated-list {
+	background: white;
+}

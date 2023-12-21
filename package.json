@@ -24,6 +24,7 @@
 		"@smui-extra/badge": "^7.0.0-beta.15",
 		"@smui/fab": "^7.0.0-beta.15",
 		"@smui/icon-button": "^7.0.0-beta.15",
+		"@smui/snackbar": "^7.0.0-beta.15",
 		"@smui/tooltip": "^7.0.0-beta.15",
 		"@sveltejs/adapter-auto": "^2.0.0",
 		"@sveltejs/kit": "^1.27.4",
@@ -48,7 +49,6 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"svelte-codemirror-editor": "^1.2.0",
 		"@codemirror/lang-javascript": "^6.2.1",
 		"@codemirror/lang-python": "^6.1.3",
 		"@codemirror/theme-one-dark": "^6.1.2",
@@ -95,6 +95,7 @@
 		"pyodide": "^0.24.1",
 		"sinon": "^17.0.1",
 		"svelte-carousel": "^1.0.25",
+		"svelte-codemirror-editor": "^1.2.0",
 		"svelte-i18n": "^4.0.0",
 		"swagger-jsdoc": "^6.2.8",
 		"swagger-ui-dist": "^5.10.5",

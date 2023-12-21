@@ -26,7 +26,7 @@
 				data.text = evt.target?.value;
 				data.dirty = true;
 			}}
-			value={text}
+			value={text ? text : ''}
 		/>
 	{:else}
 		<TextField
@@ -38,7 +38,7 @@
 				data.text = evt.target?.value;
 				data.dirty = true;
 			}}
-			value={text}
+			value={text ? text : ''}
 		/>
 	{/if}
 </DGNode>

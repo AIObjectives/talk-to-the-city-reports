@@ -5,9 +5,7 @@ The open_ai_key node is used to set the OpenAI API key for the report. The API k
 
 ## Storage
 
-For security reasons, the API key is neither stored in Firestore, nor in Google Cloud Storage. Instead it is stored in your cookies, and is only accessible to you.
-
-You will need to re-enter it each time you create a new report. After entering it, the UI will still only display @@sk-...@@.
+For security reasons, API keys are stored locally, and accessible to you only.
 
 `;
 

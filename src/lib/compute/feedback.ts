@@ -55,7 +55,7 @@ export default class FeedbackNode {
 
 			this.removeIdsFromClaims(output, removeIds);
 
-			success($__('comments_loaded_successfully'));
+			// success($__('comments_loaded_successfully'));
 			return output;
 		} catch (e) {
 			error($__('error_loading_comments') + `: ${e}`);
