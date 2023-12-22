@@ -200,6 +200,7 @@ button:focus:not(:focus-visible) {
 	font-size: 2em;
 	margin-top: 1em;
 	margin-bottom: 0.5em;
+	line-height: 1.5em;
 	color: #333;
 }
 .docs h2 {

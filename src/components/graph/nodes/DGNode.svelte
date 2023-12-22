@@ -9,6 +9,7 @@
 	import Connection from '$lib/icons/Connection.svelte';
 	import { useNodes } from '@xyflow/svelte';
 	import { _ as __ } from 'svelte-i18n';
+	import { locale } from 'svelte-i18n';
 
 	const nodes = useNodes();
 
@@ -34,7 +35,9 @@
 	let dg_node = $dataset?.graph.find(id);
 	let show_help = false;
 	let has_all_inputs = true;
+	let doc;
 	$: {
+		doc = docs[data?.compute_type] ? docs[data?.compute_type][$locale] : null;
 		if (dg_node) {
 			$nodes;
 			selected;
@@ -75,14 +78,14 @@
 			{#if !isStandardView && !has_all_inputs}
 				<Connection color="#ffaaaa" class="mr-2" />
 			{/if}
-			{#if docs[data?.compute_type]}
+			{#if doc}
 				<button on:click={() => (show_help = !show_help)}><Help color="gray" /></button>
 			{/if}
 		</div>
 		{#if show_help}
 			<Paper class="mb-5" style="min-width: 500px;">
 				<div class="docs">
-					{@html marked.parse(docs[data?.compute_type])}
+					{@html marked.parse(doc)}
 				</div>
 			</Paper>
 		{/if}

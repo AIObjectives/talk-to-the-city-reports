@@ -127,7 +127,7 @@
 	{#if complexHierarchy}
 		<Tooltip {tooltipEvent} />
 		<div style="display: grid; grid-template-columns: 1fr 1fr;">
-			<div class="h-[400px] p-4 rounded overflow-hidden">
+			<div class="h-[400px] rounded overflow-hidden">
 				<Chart
 					{complexHierarchy}
 					{getNodeColor}
@@ -137,6 +137,7 @@
 				/>
 			</div>
 			<InfoPanel
+				scrollHeight={'400px'}
 				showFeedback={!!feedbackNode}
 				{dataset}
 				{clickEvent}

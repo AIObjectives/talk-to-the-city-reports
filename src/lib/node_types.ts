@@ -65,38 +65,80 @@ import '$lib/compute/pyodide';
 // import './compute/llama';
 // import './compute/argument_extraction_llama';
 
-import csv_doc from '$lib/docs/csv';
-import limit_csv_doc from '$lib/docs/limit_csv';
-import edit_csv_doc from '$lib/docs/edit_csv';
-import open_ai_key_doc from '$lib/docs/open_ai_key';
-import cluster_extraction_doc from '$lib/docs/cluster_extraction';
-import merge_cluster_extraction_doc from '$lib/docs/merge_cluster_extraction';
-import argument_extraction_doc from '$lib/docs/argument_extraction';
-import grid_doc from '$lib/docs/grid';
-import jsonata_doc from '$lib/docs/jsonata';
-import translate_doc from '$lib/docs/translate';
-import participant_filter_doc from './docs/participant_filter';
-import json_doc from './docs/json';
-import markdown_doc from './docs/markdown';
-import jq_doc from './docs/jq';
-import stringify_doc from './docs/stringify';
+import csv_doc_en from '$lib/docs/csv-en.md?raw';
+import csv_doc_zh_TW from '$lib/docs/csv-zh-TW.md?raw';
+
+import limit_csv_doc_en from '$lib/docs/limit_csv-en.md?raw';
+import limit_csv_doc_zh_TW from '$lib/docs/limit_csv-zh-TW.md?raw';
+
+import edit_csv_doc_en from '$lib/docs/edit_csv-en.md?raw';
+import edit_csv_doc_zh_TW from '$lib/docs/edit_csv-zh-TW.md?raw';
+
+import open_ai_key_doc_en from '$lib/docs/open_ai_key-en.md?raw';
+import open_ai_key_doc_zh_TW from '$lib/docs/open_ai_key-zh-TW.md?raw';
+
+import cluster_extraction_doc_en from '$lib/docs/cluster_extraction-en.md?raw';
+import cluster_extraction_doc_zh_TW from '$lib/docs/cluster_extraction-zh-TW.md?raw';
+
+import merge_cluster_extraction_doc_en from '$lib/docs/merge_cluster_extraction-en.md?raw';
+import merge_cluster_extraction_doc_zh_TW from '$lib/docs/merge_cluster_extraction-zh-TW.md?raw';
+
+import argument_extraction_doc_en from '$lib/docs/argument_extraction-en.md?raw';
+import argument_extraction_doc_zh_TW from '$lib/docs/argument_extraction-zh-TW.md?raw';
+
+import grid_doc_en from '$lib/docs/grid-en.md?raw';
+import grid_doc_zh_TW from '$lib/docs/grid-zh-TW.md?raw';
+
+import jsonata_doc_en from '$lib/docs/jsonata-en.md?raw';
+import jsonata_doc_zh_TW from '$lib/docs/jsonata-zh-TW.md?raw';
+
+import translate_doc_en from '$lib/docs/translate-en.md?raw';
+import translate_doc_zh_TW from '$lib/docs/translate-zh-TW.md?raw';
+
+import participant_filter_doc_en from './docs/participant_filter-en.md?raw';
+import participant_filter_doc_zh_TW from './docs/participant_filter-zh-TW.md?raw';
+
+import json_doc_en from './docs/json-en.md?raw';
+import json_doc_zh_TW from './docs/json-zh-TW.md?raw';
+
+import markdown_doc_en from './docs/markdown-en.md?raw';
+import markdown_doc_zh_TW from './docs/markdown-zh-TW.md?raw';
+
+import jq_doc_en from './docs/jq-en.md?raw';
+import jq_doc_zh_TW from './docs/jq-zh-TW.md?raw';
+
+import stringify_doc_en from './docs/stringify-en.md?raw';
+import stringify_doc_zh_TW from './docs/stringify-zh-TW.md?raw';
+
+import feedback_doc_en from './docs/feedback-en.md?raw';
+import feedback_doc_zh_TW from './docs/feedback-zh-TW.md?raw';
 
 export const docs = {
-	csv_v0: csv_doc,
-	limit_csv_v0: limit_csv_doc,
-	edit_csv_v0: edit_csv_doc,
-	open_ai_key_v0: open_ai_key_doc,
-	cluster_extraction_v0: cluster_extraction_doc,
-	cluster_extraction_v1: cluster_extraction_doc,
-	argument_extraction_v0: argument_extraction_doc,
-	argument_extraction_v1: argument_extraction_doc,
-	grid_v0: grid_doc,
-	jsonata_v0: jsonata_doc,
-	jq_v0: jq_doc,
-	translate_v0: translate_doc,
-	participant_filter_v0: participant_filter_doc,
-	merge_cluster_extraction_v0: merge_cluster_extraction_doc,
-	json_v0: json_doc,
-	markdown_v0: markdown_doc,
-	stringify_v0: stringify_doc
+	csv_v0: { en: csv_doc_en, 'zh-TW': csv_doc_zh_TW },
+	limit_csv_v0: { en: limit_csv_doc_en, 'zh-TW': limit_csv_doc_zh_TW },
+	edit_csv_v0: { en: edit_csv_doc_en, 'zh-TW': edit_csv_doc_zh_TW },
+	open_ai_key_v0: { en: open_ai_key_doc_en, 'zh-TW': open_ai_key_doc_zh_TW },
+	cluster_extraction_v0: { en: cluster_extraction_doc_en, 'zh-TW': cluster_extraction_doc_zh_TW },
+	cluster_extraction_v1: { en: cluster_extraction_doc_en, 'zh-TW': cluster_extraction_doc_zh_TW },
+	argument_extraction_v0: {
+		en: argument_extraction_doc_en,
+		'zh-TW': argument_extraction_doc_zh_TW
+	},
+	argument_extraction_v1: {
+		en: argument_extraction_doc_en,
+		'zh-TW': argument_extraction_doc_zh_TW
+	},
+	grid_v0: { en: grid_doc_en, 'zh-TW': grid_doc_zh_TW },
+	jsonata_v0: { en: jsonata_doc_en, 'zh-TW': jsonata_doc_zh_TW },
+	jq_v0: { en: jq_doc_en, 'zh-TW': jq_doc_zh_TW },
+	translate_v0: { en: translate_doc_en, 'zh-TW': translate_doc_zh_TW },
+	participant_filter_v0: { en: participant_filter_doc_en, 'zh-TW': participant_filter_doc_zh_TW },
+	merge_cluster_extraction_v0: {
+		en: merge_cluster_extraction_doc_en,
+		'zh-TW': merge_cluster_extraction_doc_zh_TW
+	},
+	json_v0: { en: json_doc_en, 'zh-TW': json_doc_zh_TW },
+	markdown_v0: { en: markdown_doc_en, 'zh-TW': markdown_doc_zh_TW },
+	stringify_v0: { en: stringify_doc_en, 'zh-TW': stringify_doc_zh_TW },
+	feedback_v0: { en: feedback_doc_en, 'zh-TW': feedback_doc_zh_TW }
 };

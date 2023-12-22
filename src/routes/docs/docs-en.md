@@ -35,3 +35,5 @@ The reporter is assumed to be non-technical. As such the extent of their compute
 tttc-turbo's UI and UX intends to make a clear distinction between the anon & reporter experience, versus the pipeline engineer's "backend" which is hidden away.
 
 Please note the following [AI Pipeline Engineering Guide #1](/docs/ai-pipe-guide) is not geared towards anon or reporters, but towards devs and engineers with an interest in building pipelines from scratch.
+
+---

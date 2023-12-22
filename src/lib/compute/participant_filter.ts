@@ -47,6 +47,7 @@ export default class ParticipantFilterNode {
 interface ParticipantFilterData extends BaseData {
 	text: string;
 	output: object;
+	placehoder: string;
 }
 
 type ParticipantFilterNodeInterface = DGNodeInterface & {
@@ -64,7 +65,8 @@ export let participant_filter_node_data: ParticipantFilterNodeInterface = {
 		input_ids: {},
 		category: categories.wrangling.id,
 		icon: 'participant_filter_v0',
-		show_in_ui: true
+		show_in_ui: true,
+		placeholder: ''
 	},
 	position: { x: 0, y: 0 },
 	type: 'text_input_v0'

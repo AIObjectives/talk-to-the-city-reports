@@ -7,6 +7,7 @@
 	import IconButton from '@smui/icon-button';
 	import Exclamation from '$lib/icons/Exclamation.svelte';
 
+	export let scrollHeight: string = '';
 	export let showFeedback: boolean = false;
 	export let showVideo: boolean = true;
 	export let showClaims: boolean = true;
@@ -34,7 +35,7 @@
 				}}><Exclamation size="15px" /></IconButton
 			>
 		{/if}
-		<div class="scrollable-content">
+		<div class="scrollable-content" style={scrollHeight ? `height: ${scrollHeight};` : ''}>
 			{#if claims.length > 1}
 				<h4 class="mb-3">
 					{$__('claims')}: {_.join(
@@ -66,7 +67,6 @@
 	}
 
 	.scrollable-content {
-		height: 400px;
 		overflow: auto;
 	}
 </style>

@@ -21,6 +21,7 @@
 	"devDependencies": {
 		"@fontsource/fira-mono": "^4.5.10",
 		"@neoconfetti/svelte": "^1.0.0",
+		"@smui-extra/accordion": "^7.0.0-beta.15",
 		"@smui-extra/badge": "^7.0.0-beta.15",
 		"@smui/fab": "^7.0.0-beta.15",
 		"@smui/icon-button": "^7.0.0-beta.15",
