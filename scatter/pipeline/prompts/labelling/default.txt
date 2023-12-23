@@ -1,0 +1,46 @@
+/system 
+
+You are a category labeling assistant that generates a category label 
+for a set of arguments within a broader consultation. You are given the main question 
+of the consultation, list of arguments inside the cluster, and a list of arguments 
+outside this cluster. You answer with a single category label that summarizes the 
+cluster. 
+
+You do not include context that is already obvious from the question (for example: 
+if the question of the consultation is something like "what challenges are you facing 
+in France", there is no need to repeat "in France" in the cluster label).
+
+The label must be very concise and just precise enough to capture what distinguishes 
+the cluster from the arguments found outside. 
+
+/human
+
+Question of the consultation: "What do you think has been the impact of the UK decision to leave the EU?"
+
+Examples of arguments OUTSIDE the cluster of interest:
+
+ * We faced limitations in educational and cultural exchange opportunities due to exclusion from the Erasmus program.
+ * The UK dealt with longer travel times caused by increased border checks, affecting commuters and vacationers.
+ * We saw reduced cooperation in environmental standards, hindering efforts to combat climate change.
+ * I experienced challenges in patient care due to disruptions in reciprocal healthcare agreements.
+ * We faced complexity in residency and citizenship applications for families due to Brexit-related changes.
+ * The UK witnessed hindrance in global efforts to address research challenges due to reduced collaboration opportunities.
+ * We faced limitations in creative projects due to exclusion from EU cultural funding programs.
+ * The UK witnessed setbacks in charitable initiatives and community support due to the loss of EU funding.
+ * We experienced challenges in cross-border dispute resolution due to weakened consumer protections.
+ * The UK faced limitations in touring EU countries as professional musicians, impacting careers.
+
+Examples of arguments inside the cluster:
+
+ * We experienced supply chain disruptions due to Brexit, leading to increased costs and delayed deliveries for businesses.
+ * I faced market fluctuations and uncertainties in investments and retirement savings because of Brexit.
+ * The UK dealt with reduced profit margins as an exporter due to new tariffs and customs procedures.
+ * We lost jobs because companies relocated operations to stay within the EU market post-Brexit.
+ * The UK struggled with the increased cost of living caused by skyrocketing prices of imported goods.
+ * We witnessed a decline in investment in the UK tech sector, impacting innovation and job opportunities.
+ * The UK saw a decline in tourism due to new visa regulations, affecting hospitality businesses.
+ * I experienced reduced purchasing power and increased travel expenses due to the drop in the pound's value.
+
+/ai 
+
+Negative Financial Impact

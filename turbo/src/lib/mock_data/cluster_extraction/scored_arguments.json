@@ -1,0 +1,32 @@
+{
+  "0": {
+    "id": "0",
+    "comment": "The weather is indeed pleasant today",
+    "interview": "Alice",
+    "claims": [
+      {
+        "claim": "The rain in the city is persistent.",
+        "quote": "When will the rain stop.",
+        "topicName": "Weather Patterns",
+        "subtopicName": "Rain Duration",
+        "score": 0.5,
+        "explanation": "This is a test explanation."
+      }
+    ]
+  },
+  "28": {
+    "id": "28",
+    "comment": "When will the rain stop.",
+    "interview": "Bob",
+    "claims": [
+      {
+        "claim": "The weather is currently pleasant in the city.",
+        "quote": "The weather is indeed pleasant today",
+        "topicName": "Current Conditions",
+        "subtopicName": "Pleasant Weather",
+        "score": 0.5,
+        "explanation": "This is a test explanation."
+      }
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "Video Data Example",
+  "question": "What about an example?",
+  "input": "example-videos",
+  "model": "gpt-4",
+  "extraction": {
+    "workers": 3,
+    "prompt_file": "example-videos"
+  },
+  "clustering": {
+    "clusters": 2
+  },
+  "visualization": {
+    "replacements": [{ "replace": "lorem", "by": "LOREM" }]
+  },
+  "intro": "This is a dummy report with video."
+}

@@ -1,0 +1,191 @@
+<br/>
+
+# API Documentation
+
+## API V0
+
+<br/>
+
+The `tttc-turbo` API is still very new, and in alpha stage.
+As such its API simply gives you access to the raw dataset graph data, or to raw graph node data.
+<br/>
+<br/>
+This data format however provides backwards compatability due to *compute types* being versioned. 
+
+<br/>
+<br/>
+
+### Auth
+
+<br/>
+
+The code examples below contain your `JWT`. It is set to never expire.
+You are recommended to save it in the `TTTC_TURBO_TOKEN` environment variable, using
+something like [direnv](https://direnv.net/), for example.
+
+<br/>
+<br/>
+
+### Swagger
+
+<br/>
+
+You can try out the various API endpoints from your browser,
+by going to the [tttc-turbo Swagger OpenAPI page](https://tttc-turbo.web.app/api.html).
+
+The page reads your user token from your cookies. You can therefor make authenticated
+requests without the need to explicitly authenticate.
+
+<br/>
+<br/>
+
+### Node Ids vs. Compute Types
+
+<br/>
+
+Internally, `tttc-turbo` stores reports (datasets) as a graph.
+
+<br/>
+
+Nodes within this graph are generally indentified by their `id`, though to build resilient third party
+scripts, you are advised to check the node compute type immediately,
+and to handle node versions, to make future upgrades easier.
+
+<br/>
+
+The reason for this is that compute types are versioned.
+For example, argument extraction is handled by the `argument_extraction_v0` compute type,
+and cluster extraction is dealt with by the `cluster_extraction_v0` compute type.
+
+<br/>
+
+You can expect the data format for compute type versions to remain stable.
+If `tttc-turbo` introduces a new data structure for any of its nodes,
+a new compute type is introduced, thus ensuring backward compatability of your
+API code for existing reports.
+
+<br/>
+
+### Vanilla Python Example
+
+<br/>
+If you intend to call the `tttc-turbo` API using Vanilla Python, this code snippet will get you started, and should work out of the box.
+<br/>
+<br/>
+
+```python
+import os
+import requests
+from rich import print
+
+base_url = "https://tttc-turbo.web.app/api"
+headers = {
+    "Authorization": f"Bearer {os.environ.get('TTTC_TURBO_TOKEN', '<token>')}"
+}
+
+get = lambda url: requests.get(f"{base_url}{url}", headers=headers).json()
+
+# dataset = get("/dataset/taiwan-zh")
+
+ae = get("/dataset/taiwan-zh/node/argument_extraction_1")["data"]
+
+if ae["compute_type"] != "argument_extraction_v0":
+    raise Exception("compute_type is not argument_extraction_v0")
+
+print(ae["output"])
+
+# output:
+#
+# {
+#     '1': {
+#         'id': '1',
+#         'comment': '那麼亞洲國家的現況呢？以新加坡或日本這兩個已開發的國家來說，是否有進行相關政策？',
+#         'claims': [
+#             {
+#                 'claim': '亞洲已開發國家在同性婚姻政策上的進展較緩慢',
+#                 'quote': '那麼亞洲國家的現況呢？以新加坡或日本這兩個已開發的國家來說，是否有進行相關政策？',
+#                 'topicName': '同性婚姻法',
+#                 'subtopicName': '法律與政策'
+#             }
+#         ]
+#     },
+
+print(ae["prompt"])
+
+# output:
+#
+# 我將給你一段關於同性婚姻的視頻訪談文字記錄，以及一份提取出來的主題及子主題列表。
+#
+# 我希望你能從中提取出一份簡潔的訪談者可能做出的...
+
+```
+
+<br/>
+<br/>
+<br/>
+
+
+### Swagger Python Client
+
+<br/>
+
+Talk to the City Turbo also provides an RPC-like Python library.
+Currently you can find it as a Github Action [download](https://github.com/AIObjectives/tttc-turbo/actions) artifact.
+
+<br/>
+<br/>
+
+
+```python
+import os
+import swagger_client
+from rich import print
+
+configuration = swagger_client.Configuration()
+configuration.host = "http://localhost:5173"
+
+api_client = swagger_client.ApiClient(configuration)
+api_client.default_headers[
+    "Authorization"
+] = f"Bearer {os.environ.get('TTTC_TURBO_TOKEN', '<token>')}"
+
+api_instance = swagger_client.DefaultApi(api_client)
+
+# raw graph data, this is only useful if you intend to render the graph
+# yourself, for some other vizualisation purposes
+dataset = api_instance.get_dataset("taiwan-zh")
+
+# or request for a specific node
+ae = api_instance.get_node("taiwan-zh", "argument_extraction_1")["data"]
+
+if ae["compute_type"] != "argument_extraction_v0":
+    raise Exception("compute_type is not argument_extraction_v0")
+
+print(ae["output"])
+
+# output:
+#
+# {
+#     '1': {
+#         'id': '1',
+#         'comment': '那麼亞洲國家的現況呢？以新加坡或日本這兩個已開發的國家來說，是否有進行相關政策？',
+#         'claims': [
+#             {
+#                 'claim': '亞洲已開發國家在同性婚姻政策上的進展較緩慢',
+#                 'quote': '那麼亞洲國家的現況呢？以新加坡或日本這兩個已開發的國家來說，是否有進行相關政策？',
+#                 'topicName': '同性婚姻法',
+#                 'subtopicName': '法律與政策'
+#             }
+#         ]
+#     },
+
+print(ae["prompt"])
+
+# output:
+#
+# 我將給你一段關於同性婚姻的視頻訪談文字記錄，以及一份提取出來的主題及子主題列表。
+#
+# 我希望你能從中提取出一份簡潔的訪談者可能做出的...
+
+
+```

@@ -1,0 +1,16 @@
+.vscode
+venv
+.DS_Store
+__pycache__/
+
+pipeline/inputs/*
+!pipeline/inputs/example-polis.csv
+!pipeline/inputs/example-videos.csv
+
+pipeline/configs/*
+!pipeline/configs/example-polis.json
+!pipeline/configs/example-videos.json
+
+pipeline/outputs/*
+
+

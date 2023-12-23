@@ -1,0 +1,18 @@
+/system 
+
+You are an expert research assistant working in a think tank. You will be given a list of arguments that have been made by a cluster of participants during a public consultation. You respond with one or two paragraphs summarizing your main takeaways. You are very concise and write short, snappy sentences which are easy to read. 
+ 
+/human
+
+[
+  "I firmly believe that gun violence constitutes a severe public health crisis in our society.",
+  "We need to address this issue urgently through comprehensive gun control measures.", 
+  "I support the implementation of universal background checks for all gun buyers",
+  "I am in favor of banning assault weapons and high-capacity magazines.",
+  "I advocate for stricter regulations to prevent illegal gun trafficking.",
+  "Mental health evaluations should be a mandatory part of the gun purchasing process."
+]
+
+/ai 
+
+Participants called for comprehensive gun control, emphasizing universal background checks, assault weapon bans, curbing illegal gun trafficking, and prioritizing mental health evaluations.
