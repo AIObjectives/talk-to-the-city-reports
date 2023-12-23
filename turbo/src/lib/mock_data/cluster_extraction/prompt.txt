@@ -1,0 +1,24 @@
+I will give you a long list of comments extracted from different video interviews on the topic of "tell me about the weather in your city".
+
+I want you to propose a way to break down the information contains in this comments into topics and subtopics of interests. 
+
+Keep the topic and subtopic names very concise and use the short description to explain what the topic is about.
+
+Return a JSON object of the form {
+  "topics": [
+    {
+      "topicName:": string, 
+      "topicShortDescription": string,
+      "subtopics": [
+        {
+          "subtopicName": string,  
+          "subtopicShortDescription": string, 
+        },
+        ...
+      ]
+    }, 
+    ... 
+  ]
+}
+
+Now here are the comment: "{comments}"

@@ -1,0 +1,181 @@
+<br/>
+
+# API 文件
+
+## API V0
+
+<br/>
+
+`tttc-turbo` API 仍然非常新，且處於 alpha 階段。
+因此，其 API 僅提供訪問原始數據集圖數據或原始圖節點數據的功能。
+<br/>
+<br/>
+然而，這種數據格式由於*計算類型*進行了版本控制，因此提供了向後兼容性。
+
+<br/>
+<br/>
+
+
+### 身份驗證
+
+<br/>
+
+以下代碼示例包含您的 `JWT`。它設置為永不過期。
+建議您使用 [direnv](https://direnv.net/) 之類的工具，將其保存在 `TTTC_TURBO_TOKEN` 環境變量中。
+
+<br/>
+<br/>
+
+### Swagger
+
+<br/>
+
+您可以透過瀏覽器嘗試各種 API 端點，
+方法是訪問 [tttc-turbo Swagger OpenAPI 頁面](https://tttc-turbo.web.app/api.html)。
+
+該頁面會從您的 cookies 中讀取用戶令牌。因此，您可以進行經過身份驗證的請求，無需明確進行身份驗證。
+
+<br/>
+<br/>
+
+
+### 節點 ID 與計算類型
+<br/>
+
+內部地，`tttc-turbo` 以圖形的形式儲存報告（數據集）。
+<br/>
+
+此圖形中的節點可以通過兩種方式識別，要麼通過節點的 `id`，要麼通過它們的*計算類型*。
+查詢節點的推薦方式是通過它們的*計算類型*。
+
+<br/>
+
+這樣做的原因是計算類型有版本。
+例如，論點提取由 `argument_extraction_v0` 計算類型處理，
+而群集提取由 `cluster_extraction_v0` 計算類型處理。
+<br/>
+
+您可以期望計算類型版本的數據格式保持穩定。
+如果 `tttc-turbo` 為其節點引入了新的數據結構，
+則會引入新的計算類型，從而確保您現有報告的 API 代碼向後兼容。
+
+<br/>
+<br/>
+
+### 原生 Python 示例
+<br/>
+
+如果您打算使用原生 Python 調用 `tttc-turbo` API，以下代碼片段可以幫助您入門，並且應該能夠即插即用。
+<br/>
+<br/>
+
+```python
+import os
+import requests
+from rich import print
+
+base_url = "https://tttc-turbo.web.app/api"
+headers = {
+    "Authorization": f"Bearer {os.environ.get('TTTC_TURBO_TOKEN', '<token>')}"
+}
+
+get = lambda url: requests.get(f"{base_url}{url}", headers=headers).json()
+
+# dataset = get("/dataset/taiwan-zh")
+
+ae = get("/dataset/taiwan-zh/node/argument_extraction_1")["data"]
+
+if ae["compute_type"] != "argument_extraction_v0":
+    raise Exception("compute_type 不是 argument_extraction_v0")
+
+print(ae["output"])
+
+# 輸出：
+#
+# {
+#     '1': {
+#         'id': '1',
+#         'comment': '那麼亞洲國家的現況呢？以新加坡或日本這兩個已開發的國家來說，是否有進行相關政策？',
+#         'claims': [
+#             {
+#                 'claim': '亞洲已開發國家在同性婚姻政策上的進展較緩慢',
+#                 'quote': '那麼亞洲國家的現況呢？以新加坡或日本這兩個已開發的國家來說，是否有進行相關政策？',
+#                 'topicName': '同性婚姻法',
+#                 'subtopicName': '法律與政策'
+#             }
+#         ]
+#     },
+
+print(ae["prompt"])
+
+# 輸出：
+#
+# 我將給你一段關於同性婚姻的視頻訪談文字記錄，以及一份提取出來的主題及子主題列表。
+#
+# 我希望你能從中提取出一份簡潔的訪談者可能做出的...
+
+```
+
+<br/>
+<br/>
+
+### Swagger Python 客戶端
+<br/>
+
+Talk to the City Turbo 也提供了一個類似 RPC 的 Python 函式庫。
+目前，您可以在 Github Action [下載](https://github.com/AIObjectives/tttc-turbo/actions)部分找到它的檔案。
+
+<br/>
+<br/>
+
+```python
+import os
+import swagger_client
+from rich import print
+
+configuration = swagger_client.Configuration()
+configuration.host = "http://localhost:5173"
+
+api_client = swagger_client.ApiClient(configuration)
+api_client.default_headers[
+    "Authorization"
+] = f"Bearer {os.environ.get('TTTC_TURBO_TOKEN', '<token>')}"
+
+api_instance = swagger_client.DefaultApi(api_client)
+
+# 原始圖形數據，這只有在您打算自己渲染圖形時有用，
+# 用於其他可視化目的
+dataset = api_instance.get_dataset("taiwan-zh")
+
+# 或者請求特定節點
+ae = api_instance.get_node("taiwan-zh", "argument_extraction_1")["data"]
+
+if ae["compute_type"] != "argument_extraction_v0":
+    raise Exception("compute_type 不是 argument_extraction_v0")
+
+print(ae["output"])
+
+# 輸出：
+#
+# {
+#     '1': {
+#         'id': '1',
+#         'comment': '那麼亞洲國家的現況呢？以新加坡或日本這兩個已開發的國家來說，是否有進行相關政策？',
+#         'claims': [
+#             {
+#                 'claim': '亞洲已開發國家在同性婚姻政策上的進展較緩慢',
+#                 'quote': '那麼亞洲國家的現況呢？以新加坡或日本這兩個已開發的國家來說，是否有進行相關政策？',
+#                 'topicName': '同性婚姻法',
+#                 'subtopicName': '法律與政策'
+#             }
+#         ]
+#     },
+
+print(ae["prompt"])
+
+# 輸出：
+#
+# 我將給你一段關於同性婚姻的視頻訪談文字記錄，以及一份提取出來的主題及子主題列表。
+#
+# 我希望你能從中提取出一份簡潔的訪談者可能做出的...
+```
