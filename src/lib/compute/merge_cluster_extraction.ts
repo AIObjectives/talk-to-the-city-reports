@@ -2,6 +2,9 @@ import nodes from '$lib/node_register';
 import { readFileFromGCS, uploadJSONToGCS } from '$lib/utils';
 import { merge_extraction_prompt } from '$lib/prompts';
 import categories from '$lib/node_categories';
+import { format, unwrapFunctionStore } from 'svelte-i18n';
+import _ from 'lodash';
+const $__ = unwrapFunctionStore(format);
 
 export default class MergeClusterExtractionNode {
 	id: string;
@@ -52,6 +55,11 @@ export default class MergeClusterExtractionNode {
 				doc = JSON.parse(doc);
 			}
 			this.data.output = doc;
+
+			this.data.message = `${$__('loaded_from_gcs')}. ${$__('topics')}: ${
+				doc?.topics?.length
+			} ${$__('subtopics')}: ${_.sumBy(doc?.topics, (topic) => topic?.subtopics?.length)}.`;
+
 			this.data.dirty = false;
 			return this.data.output;
 		}

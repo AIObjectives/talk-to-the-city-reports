@@ -1,6 +1,10 @@
 import nodes from '$lib/node_register';
 import categories from '$lib/node_categories';
 import { getEncoding } from 'js-tiktoken';
+import _ from 'lodash';
+import { format, unwrapFunctionStore } from 'svelte-i18n';
+
+const $__ = unwrapFunctionStore(format);
 
 interface CountTokensData extends BaseData {
 	num_tokens: number;
@@ -35,14 +39,17 @@ export default class CountTokensNode {
 		const inputArray = inputData[Object.keys(inputData)[0]];
 		if (!inputArray) return;
 		const inputMatches = inputArray.length && this.data.csv_length === inputArray.length;
-		if (!this.data.dirty && inputMatches) return this.data.num_tokens;
+		if (!this.data.dirty && inputMatches) {
+			this.data.message = `${$__('number_of_tokens')}: ${this.data.num_tokens}`;
+			return this.data.num_tokens;
+		}
 		const joinedInput = inputArray.map((entry: any) => entry['comment-body']).join(' ');
 		try {
 			this.data.csv_length = inputArray.length;
 			const encoding = getEncoding(this.data.text);
 			this.data.num_tokens = encoding.encode(joinedInput).length;
 			this.data.dirty = false;
-			this.data.message = `Number of tokens: ${this.data.num_tokens}`;
+			this.data.message = `${$__('number_of_tokens')}: ${this.data.num_tokens}`;
 			return this.data.num_tokens;
 		} catch (e) {
 			error(`Error: ${e}`);

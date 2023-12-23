@@ -3,7 +3,11 @@ import { readFileFromGCS, uploadJSONToGCS } from '$lib/utils';
 import { cluster_extraction_system_prompt, score_claim_relevance_prompt } from '$lib/prompts';
 import deepCopy from 'deep-copy';
 import categories from '$lib/node_categories';
-import CryptoJS from 'crypto-js';
+import gpt from '$lib/gpt';
+import _ from 'lodash';
+import { format, unwrapFunctionStore } from 'svelte-i18n';
+
+const $__ = unwrapFunctionStore(format);
 
 export default class ScoreArgumentRelevanceNode {
 	id: string;
@@ -17,6 +21,18 @@ export default class ScoreArgumentRelevanceNode {
 		this.data = data;
 		this.position = position;
 		this.type = type;
+	}
+
+	averageScore() {
+		const keys = _.keys(this.data.output);
+		let scores = [];
+		for (let i = 0; i < keys.length; i++) {
+			const claims = this.data.output[keys[i]].claims;
+			for (let j = 0; j < claims.length; j++) {
+				scores.push(claims[j].score);
+			}
+		}
+		return _.mean(scores);
 	}
 
 	async compute(
@@ -47,75 +63,58 @@ export default class ScoreArgumentRelevanceNode {
 			if (typeof doc === 'string') {
 				doc = JSON.parse(doc);
 			}
+			const numClaims = _.sumBy(_.values(doc), (value) => value.claims.length);
 			this.data.output = doc;
+			const mean = this.averageScore();
+			this.data.message = `${$__('loaded_from_gcs')}. ${$__('claims')}: ${numClaims}. ${$__(
+				'mean_score'
+			)}: ${mean.toFixed(2)}`;
 			this.data.dirty = false;
 			return this.data.output;
 		}
 
 		if (context == 'run' && open_ai_key && (prompt || system_prompt)) {
 			const copy = deepCopy(argument_extraction);
-			const funcs = [];
-			for (const key of Object.keys(copy)) {
-				const claims = copy[key];
-				for (const claim of claims.claims) {
+			const keys = _.keys(copy);
+
+			let numClaims = _.sumBy(keys, (key) => _.get(copy[key], 'claims', []).length);
+
+			const todo = new Set(_.range(0, numClaims));
+			let gptPromises = [];
+
+			let k = 0;
+			for (let i = 0; i < keys.length; i++) {
+				const claims = copy[keys[i]].claims;
+				for (let j = 0; j < claims.length; j++) {
+					const claim = claims[j];
 					const score_claim = async () => {
-						const result = await this.gpt(
+						const response = await gpt(
 							open_ai_key,
-							system_prompt,
-							prompt,
 							{ claim: JSON.stringify(claim, null, 2) },
+							prompt,
+							system_prompt,
 							info,
 							error,
-							success
+							success,
+							k,
+							numClaims,
+							todo
 						);
-						claim.score = JSON.parse(result).score;
-						claim.explanation = JSON.parse(result).explanation;
+						const res = JSON.parse(response);
+						claim.score = res.score;
+						claim.explanation = res.explanation;
 					};
-					funcs.push(score_claim);
+					k += 1;
+					gptPromises.push(score_claim());
 				}
 			}
-			const chunkSize = 50;
-			for (let i = 0; i < funcs.length; i += chunkSize) {
-				const chunk = funcs.slice(i, i + chunkSize);
-				await Promise.all(chunk.map((x) => x()));
-			}
+			await Promise.all(gptPromises);
 			this.data.output = copy;
 			this.data.csv_length = Object.keys(copy).length;
 			this.data.dirty = false;
 			await uploadJSONToGCS(this, this.data.output, slug);
 			return this.data.output;
 		}
-	}
-
-	private async gpt(
-		apiKey: string,
-		systemPrompt: string,
-		promptTemplate: string,
-		replacements: { [key: string]: string },
-		info: (arg: string) => void,
-		error: (arg: string) => void,
-		success: (arg: string) => void
-	) {
-		let vitest = import.meta.env.VITEST == 'true';
-		let openai = (await import(vitest ? '$lib/mock_open_ai' : 'openai')).default;
-		info('Calling OpenAI');
-		let prompt = promptTemplate;
-		for (const [key, value] of Object.entries(replacements)) {
-			prompt = prompt.replace(`{${key}}`, value);
-		}
-		const OpenAI = new openai({ apiKey, dangerouslyAllowBrowser: true });
-		const messages = [
-			{ role: 'system', content: systemPrompt },
-			{ role: 'user', content: prompt }
-		];
-		console.log(CryptoJS.SHA256(JSON.stringify(messages)).toString());
-		const res = await OpenAI.chat.completions.create({
-			messages,
-			model: 'gpt-4',
-			temperature: 0.1
-		});
-		const resp = res.choices[0].message.content!;
-		return resp;
 	}
 }
 

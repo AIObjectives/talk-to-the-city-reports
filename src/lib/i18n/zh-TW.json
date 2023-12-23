@@ -154,5 +154,8 @@
     "here": "這裡",
     "graph_view_notice_1": "來訪問圖形視圖。",
     "graph_view_notice_snackbar": "您可以從右上角的菜單切換視圖。",
-    "return_to_standard_view": "返回標準視圖"   
+    "return_to_standard_view": "返回標準視圖",
+    "mean_score": "平均分",
+    "number_of_tokens": "標記數",
+    "feedback": "反饋"
 }

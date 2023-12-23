@@ -176,7 +176,6 @@ export class Dataset {
 			for (const key in node) {
 				if (!_.includes(['id', 'position', 'type', 'data', 'width', 'height'], key))
 					delete node[key];
-				node.data.message = '';
 			}
 			node.data.output = {};
 			return node;

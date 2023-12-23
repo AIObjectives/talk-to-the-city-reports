@@ -5,7 +5,7 @@ import { format, unwrapFunctionStore } from 'svelte-i18n';
 
 const $__ = unwrapFunctionStore(format);
 
-let pool = workerpool.pool({ maxWorkers: 100 });
+let pool = workerpool.pool({ maxWorkers: 50 });
 
 async function openai(
 	apiKey: string,
