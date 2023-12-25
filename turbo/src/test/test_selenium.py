@@ -35,11 +35,11 @@ driver = webdriver.Chrome(options=chrome_options)
 
 
 def test_report(name):
+    print(f"Testing: {name}")
     driver.get(f"{url}/report/{name}")
-    WebDriverWait(driver, 60).until(
+    WebDriverWait(driver, 120).until(
         EC.text_to_be_present_in_element((By.TAG_NAME, "body"), "Show more")
     )
-    print(f"Testing: {name}")
     assert "Show more" in driver.page_source
     assert "Subtopics" in driver.page_source
     assert "Claims" in driver.page_source

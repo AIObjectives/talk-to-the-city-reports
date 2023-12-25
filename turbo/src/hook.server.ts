@@ -1,5 +1,5 @@
 import admin from 'firebase-admin';
-import serviceAccount from '$lib/tttc-turbo-firebase-adminsdk-dcrfe-45c85403c1.json' assert { type: 'json' };
+import serviceAccount from '$lib/service-account-pk.json' assert { type: 'json' };
 import type { Handle } from '@sveltejs/kit';
 import { locale } from 'svelte-i18n';
 

@@ -2,11 +2,11 @@ name: tests & build python API client
 
 on:
   schedule:
-    - cron: '0 * * * *'
+    - cron: "0 * * * *"
   push:
-    branches: ['*']
+    branches: ["*"]
   pull_request:
-    branches: ['*']
+    branches: ["*"]
   workflow_dispatch:
 
 jobs:
@@ -22,10 +22,10 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
-        run: npm install --force
+        run: cd turbo && npm install --force
 
       - name: Run tests
-        run: npm run test
+        run: cd turbo && npm run test
 
   buildAPI:
     needs: test
@@ -37,26 +37,26 @@ jobs:
       - name: Set up JDK 11
         uses: actions/setup-java@v2
         with:
-          distribution: 'adopt'
+          distribution: "adopt"
           java-version: 11
 
       - name: Download swagger-codegen-cli.jar
-        run: wget https://repo1.maven.org/maven2/io/swagger/codegen/v3/swagger-codegen-cli/3.0.24/swagger-codegen-cli-3.0.24.jar -O swagger-codegen-cli.jar
+        run: cd turbo && wget https://repo1.maven.org/maven2/io/swagger/codegen/v3/swagger-codegen-cli/3.0.24/swagger-codegen-cli-3.0.24.jar -O swagger-codegen-cli.jar
 
       - name: Create output directory
-        run: mkdir -p src/python-api/
+        run: cd turbo && mkdir -p src/python-api/
 
       - name: Generate Python API client
-        run: java --add-opens java.base/java.util=ALL-UNNAMED -jar swagger-codegen-cli.jar generate -i static/swagger.json -l python -o src/python-api/
+        run: cd turbo && java --add-opens java.base/java.util=ALL-UNNAMED -jar swagger-codegen-cli.jar generate -i static/swagger.json -l python -o src/python-api/
 
       - name: Zip Python API client
-        run: zip -r python-api.zip src/python-api/
+        run: cd turbo && zip -r python-api.zip src/python-api/
 
       - name: Upload Python API client
         uses: actions/upload-artifact@v2
         with:
           name: python-api
-          path: python-api.zip
+          path: turbo/python-api.zip
 
   testLiveSite:
     runs-on: ubuntu-latest
@@ -66,7 +66,7 @@ jobs:
       - name: Setting up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
+          python-version: "3.9"
       - name: Installing package list
         run: apt list --installed
       - name: Removing previous chrome instances on runner
@@ -80,4 +80,4 @@ jobs:
       - name: Run tests
         run: |
           export DISPLAY=:99
-          python src/test/test_selenium.py
+          python turbo/src/test/test_selenium.py

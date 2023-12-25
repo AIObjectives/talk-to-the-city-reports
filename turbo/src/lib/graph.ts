@@ -10,8 +10,8 @@ export class DependencyGraph {
 	parent: any; // dataset
 
 	constructor(nodes: [Node], edges: [Edge], parent: any) {
-		this.nodes = writable<Node[]>(nodes);
-		this.edges = writable<Edge[]>(edges);
+		this.nodes = writable<Node[]>(nodes ? nodes : []);
+		this.edges = writable<Edge[]>(edges ? edges : []);
 		this.parent = parent;
 	}
 

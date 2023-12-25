@@ -12,8 +12,6 @@ export const languages = {
 };
 
 register('en', () => import(`./i18n/en.json`));
-register('fr', () => import(`./i18n/fr.json`));
-register('hi', () => import(`./i18n/hi.json`));
 register('zh-TW', () => import(`./i18n/zh-TW.json`));
 
 init({

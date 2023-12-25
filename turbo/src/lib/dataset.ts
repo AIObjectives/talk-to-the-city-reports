@@ -50,7 +50,7 @@ export class Dataset {
 		this.template = projectTemplate;
 		this.timestamp = new Date();
 		this.description = projectDescription;
-		this.graph = new DependencyGraph(graph.nodes, graph.edges, this);
+		this.graph = new DependencyGraph(graph?.nodes, graph?.edges, this);
 		this.id = id;
 		this.projectParent = projectParent;
 	}
