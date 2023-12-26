@@ -12,6 +12,7 @@
 	import { page } from '$app/stores';
 	import DGNode from './DGNode.svelte';
 	import { _ as __ } from 'svelte-i18n';
+	import TrashCan from '$lib/icons/TrashCan.svelte';
 
 	type $$Props = NodeProps;
 
@@ -60,20 +61,46 @@
 	}
 </script>
 
-<DGNode {data} {id} {...$$restProps} }>
-	<div>{fileType} {$__('data')}</div>
-	{#if data?.filename}
-		<div>{data?.filename}</div>
-		<div>{data?.size_kb} KB</div>
-		<small style="color: gray">{data?.gcs_path}</small>
-	{:else}
-		<input
-			class="nodrag"
-			type="file"
-			bind:this={fileInput}
-			on:change={handleFileChange}
-			style="display: none;"
-		/>
-		<Button on:click={() => fileInput.click()}>{$__('upload')} {fileType}</Button>
-	{/if}
+<DGNode {data} {id} {...$$restProps}>
+	<div>
+		<span>{fileType} {$__('data')}</span>
+		{#if data?.filename}
+			<div class="filename-container">
+				<span class="filename">{data?.filename}</span>
+				<span class="file-size">{data?.size_kb} KB</span>
+				<small class="gcs-path ml-2" style="color: gray">{data?.gcs_path}</small>
+				<div class="trashcan-container">
+					<button on:click={() => {
+						data.gcs_path = null;
+						data.filename = null;
+						data.size_kb = null;
+						data.dirty = false;
+					}}><TrashCan color='#777'/></button>
+				</div>
+			</div>
+		{:else}
+			<input
+				class="nodrag"
+				type="file"
+				bind:this={fileInput}
+				on:change={handleFileChange}
+				style="display: none;"
+			/>
+			<Button on:click={() => fileInput.click()}>{$__('upload')} {fileType}</Button>
+		{/if}
+	</div>
 </DGNode>
+
+<style>
+	.filename-container {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.trashcan-container {
+		flex: 1;
+		display: flex;
+		justify-content: flex-end;
+	}
+</style>
