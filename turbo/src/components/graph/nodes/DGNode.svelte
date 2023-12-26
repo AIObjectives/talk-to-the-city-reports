@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Paper from '@smui/paper';
 	import { marked } from 'marked';
-	import { docs } from '$lib/node_types';
 	import Help from '$lib/icons/HelpCircle.svelte';
 	import type { BaseData } from '$lib/node_data_types';
 	import { Position, Handle } from '@xyflow/svelte';
@@ -9,7 +8,8 @@
 	import Connection from '$lib/icons/Connection.svelte';
 	import { useNodes } from '@xyflow/svelte';
 	import { _ as __ } from 'svelte-i18n';
-	import { locale } from 'svelte-i18n';
+	import register from '$lib/node_register'
+	import { onMount } from 'svelte';
 
 	const nodes = useNodes();
 
@@ -25,6 +25,11 @@
 	export let variant = 'raised';
 	export let _class = '';
 
+	onMount(async () => {
+		doc = await register.getDocs(data.compute_type);
+		inlineDoc = await register.getInlineDocs(data.compute_type);
+	})
+
 	function onConnect(x) {
 		let { source, target } = x.detail.connection;
 		$dataset?.graph.onConnect(source, target);
@@ -36,15 +41,17 @@
 	let show_help = false;
 	let has_all_inputs = true;
 	let doc;
+	let inlineDoc;
 	$: {
-		doc = docs[data?.compute_type] ? docs[data?.compute_type][$locale] : null;
 		if (dg_node) {
 			$nodes;
 			selected;
 			has_all_inputs = dg_node.hasAllInputs;
 		}
+		
 	}
 	let _style = `position: relative; ${style}; `;
+
 
 	if (width && height) {
 		_style += `min-width: ${width}px; min-height: ${height}px;`;
@@ -61,6 +68,7 @@
 	>
 		{#if data?.icon}
 			<div style="float: left; margin-right: 0.5rem;" class="w-6 h-6">
+				<!-- svelte-ignore a11y-missing-attribute -->
 				<img
 					style="width: 100%; height: 100%; object-fit: contain;"
 					src="/{data.icon}.png"
@@ -88,6 +96,9 @@
 					{@html marked.parse(doc)}
 				</div>
 			</Paper>
+		{/if}
+		{#if isStandardView && inlineDoc}
+			<div class="text-sm text-gray-900 my-5">{@html marked.parse(inlineDoc)}</div>
 		{/if}
 		<slot />
 		{#if data?.dirty}

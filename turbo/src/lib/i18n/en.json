@@ -157,5 +157,7 @@
   "return_to_standard_view": "Return to standard view",
   "mean_score": "mean score",
   "number_of_tokens": "Number of tokens",
-  "no_templates_found": "No templates found"
+  "no_templates_found": "No templates found",
+  "reference": "Reference",
+  "user_docs": "User Docs"
 }

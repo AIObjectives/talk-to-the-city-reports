@@ -34,6 +34,14 @@ for option in options:
 driver = webdriver.Chrome(options=chrome_options)
 
 
+def test_in(path, text):
+    print(f"Testing: {path}")
+    driver.get(path)
+    WebDriverWait(driver, 120).until(
+        EC.text_to_be_present_in_element((By.TAG_NAME, "body"), text)
+    )
+
+
 def test_report(name):
     print(f"Testing: {name}")
     driver.get(f"{url}/report/{name}")
@@ -53,7 +61,19 @@ def test_report(name):
 
 tests = ["mina-protocol", "heal-michigan-9", "taiwan-zh", "台灣初步測試"]
 
+
+def test_other():
+    test_in(f"{url}/docs/nodes", "argument_extraction_v0")
+    test_in(f"{url}/about", "About")
+    test_in(f"{url}/api-docs", "Please sign in")
+    test_in(f"{url}/api.html", "{dataset}")
+    test_in(f"{url}/login", "Sign in with Google")
+
+
+test_other()
+
 for test in tests:
     test_report(test)
+
 
 driver.close()

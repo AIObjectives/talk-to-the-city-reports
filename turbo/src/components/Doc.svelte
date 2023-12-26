@@ -42,9 +42,8 @@
 </script>
 
 {#if markedContent}
+	<slot name='title'/>
 	<div class="text-column docs">
-		<br />
-		<br />
 		{@html markedContent}
 	</div>
 {/if}

@@ -158,5 +158,7 @@
     "mean_score": "平均分",
     "number_of_tokens": "標記數",
     "feedback": "反饋",
-    "no_templates_found": "未找到模板"
+    "no_templates_found": "未找到模板",
+    "reference": "參考",
+    "user_docs": "用戶文檔"
 }
