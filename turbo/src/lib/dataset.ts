@@ -154,11 +154,10 @@ export class Dataset {
 			);
 
 			await dataset.sanitize();
-			await dataset.addDatasetToFirebase();
 			info($__('copying_assets'));
 			await dataset.graph.copyAssets();
 			info($__('saving_dataset_with_new_asset_paths'));
-			await dataset.updateDataset(auth.currentUser);
+			await dataset.addDatasetToFirebase();
 			success($__('dataset_forked'));
 			goto(`/report/${slug}`);
 			setTimeout(() => {

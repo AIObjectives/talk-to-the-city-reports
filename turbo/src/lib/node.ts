@@ -24,7 +24,7 @@ export class DGNode {
 	}
 	copyAssets = async () => {
 		const auth = getAuth();
-		const pathPrefix = `uploads/${auth.currentUser!.uid}/${this.parent.parent.slug}`;
+		const pathPrefix = `uploads/${auth.currentUser!.uid}/${this.parent.parent.slug}/`;
 		const node_data: GCSBaseData = this.node.data as GCSBaseData;
 		if (node_data.gcs_path && !node_data.gcs_path.includes(pathPrefix)) {
 			try {
@@ -43,7 +43,7 @@ export class DGNode {
 	deleteAssets = () => {
 		if (this.node.data.gcs_path) {
 			const auth = getAuth();
-			const pathPrefix = `uploads/${auth.currentUser!.uid}/${this.parent.parent.slug}`;
+			const pathPrefix = `uploads/${auth.currentUser!.uid}/${this.parent.parent.slug}/`;
 			if (this.node.data.gcs_path.includes(pathPrefix)) {
 				const storage = getStorage();
 				const fileRef = storageRef(storage, this.node.data.gcs_path);
@@ -54,6 +54,9 @@ export class DGNode {
 					.catch((error) => {
 						console.error('Error deleting file:', error);
 					});
+			} else {
+				console.log(this.node.data.gcs_path);
+				console.log('Not deleting file');
 			}
 		}
 	};
