@@ -1,14 +1,11 @@
 <script lang="ts">
 	import { Dataset } from '$lib/dataset';
 	import Report from '$components/report/Report.svelte';
-	import LeftPane from '$components/report/LeftPane.svelte';
 	import { _ as __ } from 'svelte-i18n';
 
 	export let data;
 	const dataset = Dataset.loadDatasetFromDoc(data.doc, data.id);
 </script>
-
-<LeftPane {dataset} />
 
 <main>
 	{#if !dataset}

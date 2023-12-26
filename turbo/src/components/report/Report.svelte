@@ -121,8 +121,6 @@
 
 <FeedbackDialog {dataset} claims={feedbackEvent} />
 
-<h1 class="text-3xl uppercase my-10">{dataset.title}</h1>
-
 <div class="graph-container">
 	{#if complexHierarchy}
 		<Tooltip {tooltipEvent} />

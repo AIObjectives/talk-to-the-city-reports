@@ -108,15 +108,14 @@
 </script>
 
 <div>
-	{#if $viewMode == 'graph' || $viewMode == 'dual'}
+	{#if $viewMode == 'graph'}
 		<PipelineCreateNodesToolbar bind:resetTimeout bind:active on:click={(x) => addNode(x.detail)} />
 	{/if}
 	<div
-		style:visibility={$viewMode == 'graph' || $viewMode == 'dual' ? 'visible' : 'hidden'}
-		style:height={'97vh'}
-		class="flow-container"
+		style:visibility={$viewMode == 'graph' ? 'visible' : 'hidden'}
+		style:height={$viewMode == 'graph' ? '97vh' : '100%'}
+		class="flow-container noSelect"
 	>
-		<!-- deleteKey={{ key: 'Backspace', modifier: 'meta' }} -->
 		<SvelteFlow
 			{nodes}
 			{edges}
@@ -131,12 +130,6 @@
 				for (const node of e.nodes) {
 					const dg_node = new DGNode(node, dataset.graph);
 					dg_node.deleteAssets();
-					// for (const edge of e.edges) {
-					// 	if (edge.source === node.id) {
-					// 		const target_node = dataset.graph.find(edge.target);
-					// 		target_node.node.data.input_data = {};
-					// 	}
-					// }
 				}
 			}}
 			elementsSelectable={true}
