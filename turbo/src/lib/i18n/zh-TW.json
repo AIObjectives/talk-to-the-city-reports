@@ -160,5 +160,6 @@
     "feedback": "反饋",
     "no_templates_found": "未找到模板",
     "reference": "參考",
-    "user_docs": "用戶文檔"
+    "user_docs": "用戶文檔",
+    "node_documentation": "節點文檔"
 }

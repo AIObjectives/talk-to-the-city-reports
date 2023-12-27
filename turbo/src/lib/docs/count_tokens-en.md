@@ -1,5 +1,3 @@
-# count_tokens_v0 node documentation
-
 This node takes CSV data as input, and counts the aggregate number of tokens in the `comment-body` columnt.
 
 Supported models are:

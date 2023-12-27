@@ -1,5 +1,3 @@
-# feedback_v0 node documentation
-
 The feedback node enables members of the public to provide feedback on the accuracy of claims. Once added to a report, an exclamation point is available in the info panel that appears when clicking on claims and bubbles in the graph.
 
 ![exclamation point](https://talktothecity.s3.amazonaws.com/tttc-turbo/static/images/Monosnap-tttc-turbo-2023-12-21-20-15-14-copy.jpeg)

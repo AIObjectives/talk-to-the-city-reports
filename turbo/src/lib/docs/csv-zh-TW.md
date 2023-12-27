@@ -1,5 +1,3 @@
-# csv_v0 節點文件
-
 CSV 節點作為群集和論點提取的主要輸入。可以在 [Google 表格](https://docs.google.com/spreadsheets/d/1k8L1M9Ptxz_fBlZlGe0f-X4wCRIfmmRrISLy3c5EqUk/edit#gid=0) 中找到樣本 CSV（如果您打算使用樣本 Google 表格，請確保點擊 文件 > 下載 > .csv）。
 
 `comment-id`：來自此來源的完整意見或評論

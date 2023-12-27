@@ -159,5 +159,6 @@
   "number_of_tokens": "Number of tokens",
   "no_templates_found": "No templates found",
   "reference": "Reference",
-  "user_docs": "User Docs"
+  "user_docs": "User Docs",
+  "node_documentation": "Node Documentation"
 }

@@ -1,3 +1,3 @@
-上傳一個 CSV 文件，包含在接下來幾步中要處理的數據。可以在 [Google 表格](https://docs.google.com/spreadsheets/d/1k8L1M9Ptxz_fBlZlGe0f-X4wCRIfmmRrISLy3c5EqUk/edit#gid=0) 上找到一個樣本 CSV。
+將包含下列步驟中要處理的資料的 CSV 檔案上傳。範例 CSV 可以在 [Google Sheets](https://docs.google.com/spreadsheets/d/1k8L1M9Ptxz_fBlZlGe0f-X4wCRIfmmRrISLy3c5EqUk/edit#gid=0) 找到。如果數據集中沒有影片內容，選填的 'video' 與 'timestamp' 欄位應該留白不填。
 
-要從 Google 表格導出 CSV，請確保點擊 文件 > 下載 > .csv。
+要從 Google Sheets 匯出 CSV 檔案，確保你點擊 檔案 > 下載 > .csv。

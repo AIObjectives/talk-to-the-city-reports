@@ -93,6 +93,7 @@
 		{#if show_help}
 			<Paper class="mb-5" style="min-width: 500px;">
 				<div class="docs">
+					<h3>{data.compute_type} {$__('node_documentation')}</h3>
 					{@html marked.parse(doc)}
 				</div>
 			</Paper>
