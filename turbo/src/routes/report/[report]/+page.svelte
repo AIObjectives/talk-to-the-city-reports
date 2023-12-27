@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { viewMode } from '$lib/store';
 	import { Dataset } from '$lib/dataset';
 	import { SvelteFlowProvider } from '@xyflow/svelte';
 	import Pipeline from '$components/Pipeline.svelte';
 	import Report from '$components/report/Report.svelte';
-	import LeftPane from '$components/report/LeftPane.svelte';
+	import Description from '$components/report/Description.svelte';
 	import { onMount } from 'svelte';
 	import { _ as __ } from 'svelte-i18n';
 
@@ -24,15 +25,19 @@
 	});
 </script>
 
-<LeftPane {dataset} />
-
 <main>
 	{#if !dataset}
 		<p class="text-center text-lg text-gray-500">{$__('loading')}</p>
 	{:else}
+		{#if $viewMode == 'standard'}
+			<Description bind:dataset />
+		{/if}
 		<SvelteFlowProvider>
 			<Pipeline bind:dataset {dataset_refresh} />
 		</SvelteFlowProvider>
+		{#if $viewMode == 'graph'}
+			<Description bind:dataset />
+		{/if}
 		<Report bind:dataset />
 	{/if}
 </main>

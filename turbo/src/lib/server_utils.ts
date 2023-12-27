@@ -1,4 +1,4 @@
-import serviceAccount from '$lib/tttc-turbo-firebase-adminsdk-dcrfe-45c85403c1.json' assert { type: 'json' };
+import serviceAccount from '$lib/service-account-pk.json' assert { type: 'json' };
 import jwt from 'jsonwebtoken';
 import admin from 'firebase-admin';
 

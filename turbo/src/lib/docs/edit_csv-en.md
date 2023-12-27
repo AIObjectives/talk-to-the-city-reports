@@ -1,5 +1,3 @@
-# edit_csv_v0 node documentation
-
 The edit_csv can be used to transform the CSV file in various ways.
 
 ## Generating columns

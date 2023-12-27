@@ -8,8 +8,8 @@ This is the [CLI based reports application](./scatter). It is python and next ba
 
 e.g
 
-[Heal Michigan](https://tttc.dev/heal-michigan)
-[Recursive Public](https://tttc.dev/recursive)
+[Heal Michigan](https://tttc.dev/heal-michigan)  
+[Recursive Public](https://tttc.dev/recursive)  
 [GenAI Taiwan](https://tttc.dev/genai)
 
 ## tttc-turbo
@@ -18,6 +18,6 @@ This is the [UI based reports application](./turbo). It is JS / TS based, and ge
 
 e.g
 
-[Heal Michigan](https://tttc-turbo.web.app/report/heal-michigan-9)
-[Taiwan same-sex marriage](https://tttc-turbo.web.app/report/taiwan-zh)
+[Heal Michigan](https://tttc-turbo.web.app/report/heal-michigan-9)  
+[Taiwan same-sex marriage](https://tttc-turbo.web.app/report/taiwan-zh)  
 [Mina protocol](https://tttc-turbo.web.app/report/mina-protocol)

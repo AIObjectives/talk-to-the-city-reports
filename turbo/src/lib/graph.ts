@@ -1,3 +1,4 @@
+import { tick } from 'svelte';
 import type { Node, Edge } from '@xyflow/svelte';
 import { DGNode } from '$lib/node';
 import deepCopy from 'deep-copy';
@@ -10,8 +11,8 @@ export class DependencyGraph {
 	parent: any; // dataset
 
 	constructor(nodes: [Node], edges: [Edge], parent: any) {
-		this.nodes = writable<Node[]>(nodes);
-		this.edges = writable<Edge[]>(edges);
+		this.nodes = writable<Node[]>(nodes ? nodes : []);
+		this.edges = writable<Edge[]>(edges ? edges : []);
 		this.parent = parent;
 	}
 
@@ -70,13 +71,14 @@ export class DependencyGraph {
 		get(this.nodes).forEach((node) => this.find(node.id).deleteAssets());
 	};
 
-	copyAssets = async () => {
-		await Promise.all(
-			get(this.nodes).map(async (node) => {
-				await this.find(node.id).copyAssets();
-			})
-		);
-	};
+	async copyAssets() {
+		const copyOperations = get(this.nodes).map(async (node) => {
+			await this.find(node.id).copyAssets();
+		});
+		await Promise.all(copyOperations);
+		await tick();
+		this.nodes.update((nodes) => [...nodes]);
+	}
 
 	deleteNode = (id: string) => {
 		const node = this.find(id);

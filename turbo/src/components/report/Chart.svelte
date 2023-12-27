@@ -4,14 +4,17 @@
 	import { cubicOut } from 'svelte/easing';
 	import ChartText from './ChartText.svelte';
 	import ChartCircle from './ChartCircle.svelte';
-
+	import { createEventDispatcher } from 'svelte';
+	
 	export let complexHierarchy;
 	export let getNodeColor;
 	export let onSelect;
+	export let showInfoPanel;
 
+	const dispatch = createEventDispatcher();
 	let padding = 3;
 	let zoom;
-	let selected;
+	export let selected;
 
 	onMount(() => {
 		selected = complexHierarchy;
@@ -34,7 +37,10 @@
 			let:scale
 			tweened={{ duration: 800, easing: cubicOut }}
 			disablePointer
-			on:click={() => (selected = complexHierarchy)}
+			on:click={(e) => {
+				selected = complexHierarchy;
+				dispatch('click', { event: 'click', x: e.clientX, y: e.clientY });
+			}}
 		>
 			<Pack {padding} let:nodes>
 				{#each nodes.filter((node) => node.depth <= (selected ? selected.depth + 1 : 1)) as node (node.data.name + '-' + node.depth + '-' + node.x + '-' + node.y)}
@@ -42,6 +48,7 @@
 						x={node.x}
 						y={node.y}
 						on:click={(e) => {
+							dispatch('click', { event: 'click', x: e.clientX, y: e.clientY });
 							e.stopPropagation();
 							selected = node;
 						}}

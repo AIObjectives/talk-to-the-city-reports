@@ -15,7 +15,7 @@
 <Menu {user} />
 
 {#if showMenu}
-	<a href="https://github.com/AIObjectives/tttc-turbo">
+	<a href="https://github.com/AIObjectives/talk-to-the-city-reports" target="_blank">
 		<img src={github} alt="GitHub" class="github" />
 	</a>
 	<header>

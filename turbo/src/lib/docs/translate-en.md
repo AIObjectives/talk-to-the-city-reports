@@ -1,5 +1,3 @@
-# translate_v0 node documentation
-
 The translate node translates CSV columns using GPT4, to the target language. Multiple columns can be specified.
 
 ## Storage

@@ -12,7 +12,7 @@ import { authenticated } from '$lib/server_utils';
  *       - name: dataset
  *         in: path
  *         required: true
- *         description: The slug of the dataset to load and process.
+ *         description: The slug of the dataset to load and process. e.g heal-michigan-9.
  *         schema:
  *           type: string
  *     responses:
@@ -35,9 +35,6 @@ export const GET = authenticated(async ({ url, request, user }) => {
 		const urlParts = url.pathname.split('/');
 		const slug = urlParts[urlParts.length - 1];
 		const dataset = await Dataset.loadDataset(slug);
-		if (dataset?.owner !== user) {
-			return new Response('Unauthorized', { status: 401 });
-		}
 		await dataset?.processNodes('load');
 		const doc = dataset?.datasetToDoc();
 		return new Response(JSON.stringify(doc, null, 2), {});

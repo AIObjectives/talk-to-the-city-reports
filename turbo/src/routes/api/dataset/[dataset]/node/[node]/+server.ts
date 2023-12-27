@@ -11,13 +11,13 @@ import { authenticated } from '$lib/server_utils';
  *       - name: dataset
  *         in: path
  *         required: true
- *         description: The slug of the dataset to retrieve the node from
+ *         description: The slug of the dataset to retrieve the node from e.g heal-michigan-9
  *         schema:
  *           type: string
  *       - name: node
  *         in: path
  *         required: true
- *         description: The id of the node to retrieve from the dataset
+ *         description: The id of the node to retrieve from the dataset e.g cluster_extraction_1
  *         schema:
  *           type: string
  *     responses:
