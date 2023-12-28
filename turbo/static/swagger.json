@@ -60,6 +60,83 @@
         ]
       }
     },
+    "/api/dataset/{dataset}/chat/completions": {
+      "post": {
+        "operationId": "chat",
+        "summary": "Lets the user chat with the dataset",
+        "description": "This endpoint lets the user chat with the dataset.",
+        "parameters": [
+          {
+            "name": "dataset",
+            "in": "path",
+            "required": true,
+            "description": "The slug of the dataset e.g., heal-michigan-9",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "messages": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "role": {
+                          "type": "string",
+                          "enum": [
+                            "user",
+                            "assistant",
+                            "system"
+                          ]
+                        },
+                        "content": {
+                          "type": "string",
+                          "example": "Summarize your opinions in 50 words."
+                        }
+                      }
+                    }
+                  },
+                  "OPENAI_KEY": {
+                    "type": "string",
+                    "description": "OpenAI API key for authentication"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully generated the chat",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized request"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
     "/api/dataset/{dataset}/node/{node}": {
       "get": {
         "operationId": "getNode",

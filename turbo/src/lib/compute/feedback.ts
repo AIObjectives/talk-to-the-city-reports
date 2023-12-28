@@ -54,8 +54,7 @@ export default class FeedbackNode {
 			const rephraseIds = _.keys(_.pickBy(oq, (value) => value.inaccurate)) || [];
 
 			this.removeIdsFromClaims(output, removeIds);
-
-			// success($__('comments_loaded_successfully'));
+			this.data.output = output;
 			return output;
 		} catch (e) {
 			error($__('error_loading_comments') + `: ${e}`);

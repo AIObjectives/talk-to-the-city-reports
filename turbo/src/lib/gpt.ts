@@ -1,22 +1,41 @@
 import CryptoJS from 'crypto-js';
 import workerpool from 'workerpool';
-import responses from '$lib/mock_data/gpt_responses';
+import mock_responses from '$lib/mock_data/gpt_responses';
 import { format, unwrapFunctionStore } from 'svelte-i18n';
+import _ from 'lodash';
 
 const $__ = unwrapFunctionStore(format);
 
 let pool = workerpool.pool({ maxWorkers: 50 });
 
-async function openai(
+export async function openai(
 	apiKey: string,
 	messages: [],
 	vitest: string,
 	hash: string,
-	mock_data: Object
+	mock_data: any,
+	response_format = { type: 'json_object' }
 ) {
+	// Remember: this function is executed in a worker thread.
+	// It cannot access the DOM or any variables in the main thread.
+
 	const MAX_RETRIES = 5;
 	const BASE_DELAY = 500;
 	const MAX_DELAY = 10000;
+
+	function isPlainObject(value) {
+		if (Object.prototype.toString.call(value) !== '[object Object]') {
+			return false;
+		}
+		var proto = Object.getPrototypeOf(value);
+		if (proto === null) {
+			return true;
+		}
+		while (Object.getPrototypeOf(proto) !== null) {
+			proto = Object.getPrototypeOf(proto);
+		}
+		return Object.getPrototypeOf(value) === proto;
+	}
 
 	let retryCount = 0;
 	while (retryCount <= MAX_RETRIES) {
@@ -27,11 +46,21 @@ async function openai(
 					throw new Error('`HTTP error! status: 500');
 				} else {
 					if (mock_data[hash]) {
-						return JSON.stringify(mock_data[hash]);
+						if (response_format?.type == 'json_object') return JSON.stringify(mock_data[hash]);
+						else return mock_data[hash];
 					} else {
 						throw new Error('Mock data is missing');
 					}
 				}
+			}
+			const body = {
+				model: 'gpt-4-1106-preview',
+				messages: messages,
+				temperature: 0.1,
+				response_format: null
+			};
+			if (isPlainObject(response_format)) {
+				body.response_format = response_format;
 			}
 			response = await fetch('https://api.openai.com/v1/chat/completions', {
 				method: 'POST',
@@ -39,12 +68,7 @@ async function openai(
 					'Content-Type': 'application/json',
 					Authorization: `Bearer ${apiKey}`
 				},
-				body: JSON.stringify({
-					model: 'gpt-4-1106-preview',
-					response_format: { type: 'json_object' },
-					messages: messages,
-					temperature: 0.1
-				})
+				body: JSON.stringify(body)
 			});
 
 			if (!response.ok) {
@@ -93,7 +117,6 @@ export default async function gpt(
 		{ role: 'system', content: system_prompt },
 		{ role: 'user', content: arg_prompt }
 	];
-	console.log(messages);
 	const stringified = JSON.stringify(messages);
 	const hash = CryptoJS.SHA256(stringified).toString();
 	try {
@@ -102,7 +125,7 @@ export default async function gpt(
 			messages,
 			import.meta.env.VITEST,
 			hash,
-			responses
+			mock_responses
 		]);
 		todo.delete(i);
 		info(`${$__('done_calling_openai')}. ${$__('calls_left')}: ${todo.size}`);
