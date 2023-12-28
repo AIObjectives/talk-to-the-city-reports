@@ -115,7 +115,7 @@ type PythonNodeInterface = DGNodeInterface & {
 export let python_node_data: PythonNodeInterface = {
 	id: 'python_v0',
 	data: {
-		label: 'Brython',
+		label: 'python',
 		text: '',
 		output: {},
 		compute_type: 'python_v0',

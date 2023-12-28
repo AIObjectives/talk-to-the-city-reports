@@ -2,16 +2,21 @@
 	import Accordion, { Panel, Header, Content } from '@smui-extra/accordion';
 	import Doc from '$components/Doc.svelte';
 	import register from '$lib/node_register'
-	import { onMount } from 'svelte';
 	import Cookies from 'js-cookie';
 	import { _ as __ } from 'svelte-i18n';
-	const defaultLocale = Cookies.get('locale') || 'en';
 
 	let docs = [];
 
-	onMount(async () => {
-		docs = await register.getAllDocs();
-	});
+	const getDocs = async (locale) => {
+		docs = await register.getAllDocs(locale);
+	};
+	let locale = Cookies.get('locale') || 'en';
+
+	$: { 
+		locale = Cookies.get('locale') || 'en';
+		getDocs(locale)
+		docs = docs;
+	}
 </script>
 
 <style>
@@ -33,11 +38,11 @@
 					</div>
 				</Header>
 				<Content>
-					<Doc helps={{[defaultLocale]: doc.docs}} >
+					<Doc helps={{[locale]: doc.docs}} >
 						<h3 slot="title">{$__('reference')}:</h3>
 					</Doc>
 					<br />
-					<Doc helps={{[defaultLocale]: doc.inlineDocs}} >
+					<Doc helps={{[locale]: doc.inlineDocs}} >
 						<h3 slot="title">{$__('user_docs')}:<br/><br/></h3>
 					</Doc>
 				</Content>

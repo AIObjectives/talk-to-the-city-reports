@@ -1,1 +1,1 @@
-markdown 節點的功能是將輸入的文字轉換成 markdown 格式。它也能接受來自其他節點的 markdown 格式輸入。
+Markdown 節點簡單地將輸入文字渲染為 markdown。它也接受來自其他節點的 markdown 作為輸入。

@@ -52,14 +52,14 @@ class Register {
 		return await this.importWithFallback(compute_type, `inline-${locale}`);
 	}
 
-	async getAllDocs() {
+	async getAllDocs(locale: string = defaultLocale) {
 		let docs = [];
 		for (const compute_type in this.nodes) {
 			docs.push({
 				compute_type,
 				icon: this.data[compute_type].data.icon,
-				docs: await this.getDocs(compute_type),
-				inlineDocs: await this.getInlineDocs(compute_type)
+				docs: await this.getDocs(compute_type, locale),
+				inlineDocs: await this.getInlineDocs(compute_type, locale)
 			});
 		}
 		docs.sort((a, b) => a.compute_type.localeCompare(b.compute_type));
