@@ -10,6 +10,7 @@
 	import { _ as __ } from 'svelte-i18n';
 	import register from '$lib/node_register'
 	import { onMount } from 'svelte';
+	import Cookies from 'js-cookie';
 
 	const nodes = useNodes();
 
@@ -25,10 +26,10 @@
 	export let variant = 'raised';
 	export let _class = '';
 
-	onMount(async () => {
-		doc = await register.getDocs(data.compute_type);
-		inlineDoc = await register.getInlineDocs(data.compute_type);
-	})
+	const getDocs = async (locale) => {
+		doc = await register.getDocs(data.compute_type, locale);
+		inlineDoc = await register.getInlineDocs(data.compute_type, locale);
+	}
 
 	function onConnect(x) {
 		let { source, target } = x.detail.connection;
@@ -43,6 +44,8 @@
 	let doc;
 	let inlineDoc;
 	$: {
+		const locale = Cookies.get('locale') || 'en';
+		getDocs(locale)
 		if (dg_node) {
 			$nodes;
 			selected;
