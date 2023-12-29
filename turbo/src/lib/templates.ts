@@ -29,6 +29,7 @@ import { gpt_node } from './compute/gpt';
 import { python_node } from './compute/python';
 import { pyodide_node } from './compute/pyodide';
 import { chat_node } from './compute/chat';
+import { webpage_node } from '$lib/compute/webpage';
 // import { llama_node } from './compute/llama';
 // import { argument_extraction_llama_node } from './compute/argument_extraction_llama';
 
@@ -59,7 +60,8 @@ export let node_register = [
 	feedback_node,
 	python_node,
 	pyodide_node,
-	chat_node
+	chat_node,
+	webpage_node
 	// llama_node,
 	// argument_extraction_llama_node
 ];
