@@ -1,10 +1,10 @@
 <script lang="ts">
 	import Paper from '@smui/paper';
 	import Button from '@smui/button';
-	import Help from '$lib/icons/HelpCircle.svelte';
 	import HelperText from '@smui/textfield/helper-text';
 	import TextField from '@smui/textfield';
 	import Select, { Option } from '@smui/select';
+	import { type DocumentData } from 'firebase/firestore';
 	import { auth } from '$lib/firebase';
 	import { Dataset } from '$lib/dataset';
 	import { goto } from '$app/navigation';
@@ -135,9 +135,8 @@
 	let projectSlug = rand;
 	let projectDescription = rand;
 	let projectTemplate = 'default';
-	let templates;
+	let templates: Record<string, DocumentData> = {};
 	let loadingTemplates = true;
-	let show_help = false;
 
 	function createProjectSlug(str) {
 		return str
@@ -159,12 +158,12 @@
 		const newDataset = new Dataset(
 			projectTitle,
 			projectSlug,
-			auth.currentUser.uid,
+			auth!.currentUser!.uid,
 			projectTemplate,
 			projectDescription,
 			graph,
-			null,
-			null
+			'',
+			''
 		);
 
 		const successFlag = await newDataset.addDatasetToFirebase();
@@ -206,14 +205,6 @@
 			{:else}
 				{#if ! _.isEmpty(templates)}
 					<div class="w-full px-3" style="position: relative;">
-						<button on:click={() => (show_help = !show_help)}><Help color="gray" /></button>
-						{#if show_help}
-							<Paper class="mb-5 w-full">
-								<div class="docs">
-									{$__('template_help')}
-								</div>
-							</Paper>
-						{/if}
 						{#if projectTemplate}
 							<Select
 								style="min-width: 400px;"
@@ -221,9 +212,14 @@
 								bind:value={projectTemplate}
 							>
 								{#each Object.keys(templates) as templateKey}
-									<Option value={templateKey}>{templateKey}</Option>
+									<Option value={templateKey}>{$__(templateKey)}</Option>
 								{/each}
 							</Select>
+							<Paper class="my-5 w-full">
+								<div class="docs">
+									{$__('template_help')}
+								</div>
+							</Paper>
 						{/if}
 					</div>
 				{:else}
@@ -231,7 +227,7 @@
 				{/if}
 			{/if}
 			<button class="w-full px-3 pt-5" on:click={createNewProject}>
-				<Button raised type="submit">{$__('create')}</Button>
+				<Button type="submit">{$__('create')}</Button>
 			</button>
 		</div>
 	</div>

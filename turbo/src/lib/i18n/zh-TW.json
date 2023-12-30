@@ -149,7 +149,7 @@
     "loaded_from_gcs": "從 GCS 加載",
     "comments": "評論",
     "missing_input_data": "缺少輸入資料",
-    "template_help": "模板提供了創建不同類型報告的方法。如果您不確定使用哪個模板，那麼請使用默認模板。",
+    "template_help": "範本提供了一種使用類似設定來創建多份報告的方式。如果您不確定該使用哪個範本，那麼請使用預設範本，它允許您自定義所有可用設定。",
     "graph_view_notice_0": "您在使用 Talk to the City 的預設功能時，不需要圖形視圖，但是，對於高級流水線設計，請點擊",
     "here": "這裡",
     "graph_view_notice_1": "來訪問圖形視圖。",
@@ -161,5 +161,8 @@
     "no_templates_found": "未找到模板",
     "reference": "參考",
     "user_docs": "用戶文檔",
-    "node_documentation": "節點文檔"
+    "node_documentation": "節點文檔",
+    "default": "預設",
+    "heal_michigan_v1": "治癒密西根州（社區挑戰視頻訪談）",
+    "blank_v0": "空白模板（僅限進階使用者）"
 }

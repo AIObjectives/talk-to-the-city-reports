@@ -149,7 +149,7 @@
   "loaded_from_gcs": "Loaded from GCS",
   "comments": "Comments",
   "missing_input_data": "Missing Input Data",
-  "template_help": "Templates provide a way of creating different kinds of reports. If you are unsure which template to use, then use the default template.",
+  "template_help": "Templates provide a way of creating multiple reports with similar settings. If you are unsure which template to use, then use the default template, which allows you to customize all available settings.",
   "graph_view_notice_0": "You do not need the graph view for using Talk to the City with the default functionality, however, for advanced pipeline design, click",
   "here": "here",
   "graph_view_notice_1": "to access the graph view.",
@@ -160,5 +160,8 @@
   "no_templates_found": "No templates found",
   "reference": "Reference",
   "user_docs": "User Docs",
-  "node_documentation": "Node Documentation"
+  "node_documentation": "Node Documentation",
+  "default": "Default",
+  "heal_michigan_v1": "Heal Michigan (community challenges video interviews)",
+  "blank_v0": "Empty Template (advanced users only)"
 }

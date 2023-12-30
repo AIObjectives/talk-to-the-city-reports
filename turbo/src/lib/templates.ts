@@ -1,5 +1,6 @@
 import { getDocs, doc, setDoc, query } from '@firebase/firestore/lite';
 import { templatesCollection } from '$lib/firebase';
+import { type DocumentData } from 'firebase/firestore';
 
 import { open_ai_key_node } from './compute/open_ai_key';
 import { translate_node } from './compute/translate';
@@ -63,13 +64,15 @@ export let node_register = [
 	// argument_extraction_llama_node
 ];
 
-export async function loadTemplates() {
+export async function loadTemplates(): Promise<Record<string, DocumentData>> {
 	const q = query(templatesCollection);
 	const querySnapshot = await getDocs(q);
-	let templates = {};
+
+	let templates: Record<string, DocumentData> = {};
 	querySnapshot.docs.forEach((doc) => {
 		templates[doc.id] = doc.data();
 	});
+
 	return templates;
 }
 
