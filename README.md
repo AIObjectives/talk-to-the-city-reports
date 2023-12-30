@@ -1,6 +1,6 @@
 # Talk to the City
 
-This repo is now a merged monorepo containg:
+This repo is now a merged monorepo containing:
 
 ## Talk to the City Reports
 

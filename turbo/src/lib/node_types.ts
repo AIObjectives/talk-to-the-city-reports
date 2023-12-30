@@ -9,6 +9,7 @@ import GridNode from '$components/graph/nodes/GridNode.svelte';
 import MarkdownNode from '$components/graph/nodes/MarkdownNode.svelte';
 import DefaultNode from '$components/graph/nodes/DefaultNode.svelte';
 import CodeMirrorNode from '$components/graph/nodes/CodeMirrorNode.svelte';
+import ChatNode from '$components/graph/nodes/ChatNode.svelte';
 
 export const nodeTypes = {
 	text_input_v0: TextInputNode,
@@ -33,7 +34,8 @@ export const nodeTypes = {
 	// python_v0: TextInputNode,
 	pyodide_v0: CodeMirrorNode,
 	report_v0: DefaultNode,
-	report_v1: DefaultNode
+	report_v1: DefaultNode,
+	chat_v0: ChatNode
 };
 
 import '$lib/compute/csv';

@@ -79,6 +79,7 @@
 		"crypto-js": "^4.2.0",
 		"csv-parser": "^3.0.0",
 		"deep-copy": "^1.4.2",
+		"dompurify": "^3.0.6",
 		"firebase": "^10.6.0",
 		"firebase-admin": "^11.11.1",
 		"fuse.js": "^7.0.0",

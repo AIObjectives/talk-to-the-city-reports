@@ -38,6 +38,7 @@ export default class MarkdownNode {
 			});
 			this.data.markdown = inputs.join('\n\n');
 		}
+		this.data.output = this.data.markdown;
 		return this.data.markdown;
 	}
 }
@@ -55,7 +56,7 @@ export let markdown_node_data: MarkdownNodeInterface = {
 	id: 'markdown',
 	data: {
 		label: 'markdown',
-		output: {},
+		output: '',
 		markdown: '',
 		dirty: false,
 		compute_type: 'markdown_v0',

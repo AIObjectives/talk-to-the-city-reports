@@ -171,3 +171,13 @@ Each bullet point should be a maximum of 10 words long.
 
 {comment}
 `;
+
+export const chat_system_prompt = `\
+
+I am going to give you some text, representing the opinions of a
+person on a topic or topics. I want you to respond in character, i.e i want you to deeply
+incorporate those opinions & beliefs into your psyche, and represent them.
+
+{text}
+
+`;

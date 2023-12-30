@@ -238,222 +238,203 @@ pip install chromedriver-autoinstaller selenium pyvirtualdisplay
 DISPLAY=:99 python src/test/test_selenium.py
 ```
 
-## Test Results
 
-| Metric              | Count |
-| ------------------- | ----: |
-| Total Test Suites   |    48 |
-| Passed Test Suites  |    48 |
-| Failed Test Suites  |     0 |
-| Pending Test Suites |     0 |
-| Total Tests         |    84 |
-| Passed Tests        |    84 |
-| Failed Tests        |     0 |
-| Pending Tests       |     0 |
-| Todo Tests          |     0 |
+## Test Results
+| Metric                | Count |
+|-----------------------|------:|
+| Total Test Suites     | 50 |
+| Passed Test Suites    | 50 |
+| Failed Test Suites    | 0 |
+| Pending Test Suites   | 0 |
+| Total Tests           | 87 |
+| Passed Tests          | 87 |
+| Failed Tests          | 0 |
+| Pending Tests         | 0 |
+| Todo Tests            | 0 |
 
 ### `[1]` [argument_extraction.test.ts](./src/test//argument_extraction.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *extract the given arguments* | **passed** | `1105` |
+| *should not extract the arguments if no csv* | **passed** | `0` |
+| *should not extract the arguments if no open_ai_key and no GCS* | **passed** | `0` |
+| *should load from GCS if no open ai key* | **passed** | `1` |
+| *should not extract the arguments if no prompt and no system prompt* | **passed** | `0` |
+| *test GCS caching* | **passed** | `0` |
 
-| Test                                                                 | Status     | Duration (ms) |
-| -------------------------------------------------------------------- | ---------- | ------------: |
-| _extract the given arguments_                                        | **passed** |          `40` |
-| _should not extract the arguments if no csv_                         | **passed** |           `0` |
-| _should not extract the arguments if no open_ai_key and no GCS_      | **passed** |           `0` |
-| _should load from GCS if no open ai key_                             | **passed** |           `0` |
-| _should not extract the arguments if no prompt and no system prompt_ | **passed** |           `0` |
-| _test GCS caching_                                                   | **passed** |           `1` |
+### `[2]` [chat.test.ts](./src/test//chat.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *compute should set output to messages and dirty to false* | **passed** | `2` |
+| *chat should add assistant response to messages* | **passed** | `309` |
+| *chat should use initial_messages if only one message is present* | **passed** | `198` |
 
-### `[2]` [cluster_extraction.test.ts](./src/test//cluster_extraction.test.ts)
+### `[3]` [cluster_extraction.test.ts](./src/test//cluster_extraction.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *extract the cluster* | **passed** | `44` |
+| *should not extract the cluster if no csv* | **passed** | `0` |
+| *should not extract the cluster if no open_ai_key* | **passed** | `1` |
+| *should not extract the cluster if no prompt and no system prompt* | **passed** | `0` |
+| *test GCS caching* | **passed** | `1` |
 
-| Test                                                               | Status     | Duration (ms) |
-| ------------------------------------------------------------------ | ---------- | ------------: |
-| _extract the cluster_                                              | **passed** |          `31` |
-| _should not extract the cluster if no csv_                         | **passed** |           `0` |
-| _should not extract the cluster if no open_ai_key_                 | **passed** |           `0` |
-| _should not extract the cluster if no prompt and no system prompt_ | **passed** |           `0` |
-| _test GCS caching_                                                 | **passed** |           `1` |
+### `[4]` [count_tokens.test.ts](./src/test//count_tokens.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *should correctly count tokens in input data* | **passed** | `314` |
+| *should not count tokens if input data length matches and node is not dirty* | **passed** | `0` |
 
-### `[3]` [count_tokens.test.ts](./src/test//count_tokens.test.ts)
+### `[5]` [csv.test.ts](./src/test//csv.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *should process CSV data correctly from GCS* | **passed** | `13` |
+| *should handle empty CSV data from GCS* | **passed** | `30` |
+| *should handle rows with uneven columns from GCS* | **passed** | `5` |
 
-| Test                                                                         | Status     | Duration (ms) |
-| ---------------------------------------------------------------------------- | ---------- | ------------: |
-| _should correctly count tokens in input data_                                | **passed** |         `276` |
-| _should not count tokens if input data length matches and node is not dirty_ | **passed** |           `0` |
+### `[6]` [dataset.test.ts](./src/test//dataset.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *Full pipeline run test* | **passed** | `299` |
 
-### `[4]` [csv.test.ts](./src/test//csv.test.ts)
+### `[7]` [edit_csv.test.ts](./src/test//edit_csv.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *generates new columns* | **passed** | `1` |
+| *deletes columns* | **passed** | `1` |
+| *renames columns* | **passed** | `0` |
+| *returns undefined if input is undefined* | **passed** | `0` |
+| *handles multiple operations* | **passed** | `0` |
+| *does not modify input if no operations are specified* | **passed** | `0` |
+| *does not crash if input is empty* | **passed** | `0` |
 
-| Test                                              | Status     | Duration (ms) |
-| ------------------------------------------------- | ---------- | ------------: |
-| _should process CSV data correctly from GCS_      | **passed** |          `12` |
-| _should handle empty CSV data from GCS_           | **passed** |           `2` |
-| _should handle rows with uneven columns from GCS_ | **passed** |           `2` |
+### `[8]` [grid.test.ts](./src/test//grid.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *sets the output of the node to the input data* | **passed** | `1` |
 
-### `[5]` [dataset.test.ts](./src/test//dataset.test.ts)
+### `[9]` [jq_v0.test.ts](./src/test//jq_v0.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *should process data correctly with JQ filter* | **passed** | `1` |
+| *should handle invalid JQ filter* | **passed** | `0` |
 
-| Test                     | Status     | Duration (ms) |
-| ------------------------ | ---------- | ------------: |
-| _Full pipeline run test_ | **passed** |         `157` |
+### `[10]` [jq_v1.test.ts](./src/test//jq_v1.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *should process data correctly with JQ filter* | **passed** | `185` |
+| *should handle invalid JQ filter* | **passed** | `4` |
 
-### `[6]` [edit_csv.test.ts](./src/test//edit_csv.test.ts)
+### `[11]` [json.test.ts](./src/test//json.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *should process JSON data correctly from GCS* | **passed** | `1` |
+| *should handle invalid JSON data from GCS* | **passed** | `0` |
+| *should update dirty state correctly* | **passed** | `0` |
 
-| Test                                                   | Status     | Duration (ms) |
-| ------------------------------------------------------ | ---------- | ------------: |
-| _generates new columns_                                | **passed** |           `1` |
-| _deletes columns_                                      | **passed** |           `0` |
-| _renames columns_                                      | **passed** |           `0` |
-| _returns undefined if input is undefined_              | **passed** |           `0` |
-| _handles multiple operations_                          | **passed** |           `1` |
-| _does not modify input if no operations are specified_ | **passed** |           `0` |
-| _does not crash if input is empty_                     | **passed** |           `0` |
+### `[12]` [jsonata.test.ts](./src/test//jsonata.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *evaluates JSONata expressions* | **passed** | `3` |
+| *returns undefined if no expression is provided* | **passed** | `1` |
+| *catches errors when evaluating expressions* | **passed** | `9` |
 
-### `[7]` [grid.test.ts](./src/test//grid.test.ts)
+### `[13]` [limit_csv.test.ts](./src/test//limit_csv.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *should limit the number of rows correctly* | **passed** | `2` |
+| *should limit the number of rows correctly, for an object* | **passed** | `1` |
+| *should return all rows if limit is greater than number of rows* | **passed** | `0` |
+| *should return an empty array if input is empty* | **passed** | `0` |
+| *should not mutate the input node* | **passed** | `0` |
 
-| Test                                            | Status     | Duration (ms) |
-| ----------------------------------------------- | ---------- | ------------: |
-| _sets the output of the node to the input data_ | **passed** |           `2` |
+### `[14]` [markdown.test.ts](./src/test//markdown.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *should set markdown data if input is a string* | **passed** | `2` |
+| *should combine multiple string inputs with separation* | **passed** | `0` |
+| *should wrap non-string inputs within code block* | **passed** | `0` |
+| *should handle an empty input object* | **passed** | `0` |
+| *should preserve the order of inputs when combining* | **passed** | `1` |
+| *should stringify and wrap arrays in code blocks* | **passed** | `0` |
+| *should throw an error if input data contains circular references* | **passed** | `0` |
 
-### `[8]` [jq_v0.test.ts](./src/test//jq_v0.test.ts)
+### `[15]` [merge.test.ts](./src/test//merge.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *merges cluster_extraction and argument_extraction data* | **passed** | `2` |
+| *does not merge if cluster_extraction data is missing* | **passed** | `0` |
+| *does not merge if argument_extraction data is missing* | **passed** | `1` |
+| *does not merge if cluster_extraction data has no topics* | **passed** | `0` |
+| *sets node data output to the merged data and dirty to false after merge* | **passed** | `0` |
 
-| Test                                           | Status     | Duration (ms) |
-| ---------------------------------------------- | ---------- | ------------: |
-| _should process data correctly with JQ filter_ | **passed** |           `2` |
-| _should handle invalid JQ filter_              | **passed** |           `0` |
+### `[16]` [merge_cluster_extraction.test.ts](./src/test//merge_cluster_extraction.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *merges cluster extraction data* | **passed** | `130` |
+| *does not merge if cluster extractions are missing* | **passed** | `104` |
+| *uses cached data if available and not dirty* | **passed** | `1` |
+| *does not merge if no open_ai_key is provided* | **passed** | `0` |
 
-### `[9]` [jq_v1.test.ts](./src/test//jq_v1.test.ts)
+### `[17]` [open_ai_key.test.ts](./src/test//open_ai_key.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *should set the key in cookies if the UI key is valid* | **passed** | `1` |
+| *if ui key is set but invalid use local key* | **passed** | `1` |
+| *should set the node text to "Invalid key" if the UI key is not valid and there is no local key* | **passed** | `0` |
+| *should not mutate the node if the UI key and local key are both valid* | **passed** | `0` |
 
-| Test                                           | Status     | Duration (ms) |
-| ---------------------------------------------- | ---------- | ------------: |
-| _should process data correctly with JQ filter_ | **passed** |         `161` |
-| _should handle invalid JQ filter_              | **passed** |           `2` |
+### `[18]` [participant_filter.test.ts](./src/test//participant_filter.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *filters participants based on the provided name* | **passed** | `2` |
+| *removes subtopics with no claims after filtering* | **passed** | `0` |
+| *removes topics with no subtopics after filtering* | **passed** | `0` |
+| *returns undefined if input data does not contain topics* | **passed** | `0` |
+| *does not filter claims if interview key is missing* | **passed** | `0` |
 
-### `[10]` [json.test.ts](./src/test//json.test.ts)
+### `[19]` [register.test.ts](./src/test//register.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *test node registeration* | **passed** | `1` |
+| *Load all nodes* | **passed** | `1085` |
 
-| Test                                          | Status     | Duration (ms) |
-| --------------------------------------------- | ---------- | ------------: |
-| _should process JSON data correctly from GCS_ | **passed** |           `2` |
-| _should handle invalid JSON data from GCS_    | **passed** |           `1` |
-| _should update dirty state correctly_         | **passed** |           `0` |
+### `[20]` [report.test.ts](./src/test//report.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *should set the output of the node to the input data* | **passed** | `1` |
+| *should handle empty input data* | **passed** | `1` |
+| *should not mutate the input node* | **passed** | `0` |
 
-### `[11]` [jsonata.test.ts](./src/test//jsonata.test.ts)
+### `[21]` [score_argument_relevance.test.ts](./src/test//score_argument_relevance.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *scores the relevance of arguments* | **passed** | `52` |
+| *uses cached data if available and not dirty* | **passed** | `1` |
+| *does not score if argument_extraction data is missing* | **passed** | `0` |
+| *does not score if open_ai_key is missing* | **passed** | `0` |
+| *does not score if prompts are missing* | **passed** | `0` |
 
-| Test                                             | Status     | Duration (ms) |
-| ------------------------------------------------ | ---------- | ------------: |
-| _evaluates JSONata expressions_                  | **passed** |           `3` |
-| _returns undefined if no expression is provided_ | **passed** |           `1` |
-| _catches errors when evaluating expressions_     | **passed** |           `8` |
+### `[22]` [simple_pipeline.test.ts](./src/test//simple_pipeline.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *should process CSV data correctly from GCS* | **passed** | `14` |
 
-### `[12]` [limit_csv.test.ts](./src/test//limit_csv.test.ts)
+### `[23]` [stringify.test.ts](./src/test//stringify.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *should correctly stringify input data* | **passed** | `1` |
+| *should return input if it cannot be stringified* | **passed** | `0` |
+| *should handle different types of input* | **passed** | `0` |
+| *should not mutate the input node* | **passed** | `1` |
 
-| Test                                                             | Status     | Duration (ms) |
-| ---------------------------------------------------------------- | ---------- | ------------: |
-| _should limit the number of rows correctly_                      | **passed** |           `1` |
-| _should limit the number of rows correctly, for an object_       | **passed** |           `0` |
-| _should return all rows if limit is greater than number of rows_ | **passed** |           `0` |
-| _should return an empty array if input is empty_                 | **passed** |           `0` |
-| _should not mutate the input node_                               | **passed** |           `0` |
+### `[24]` [translate.test.ts](./src/test//translate.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *translates the input data* | **passed** | `0` |
+| *uses cached translations when available* | **passed** | `0` |
 
-### `[13]` [markdown.test.ts](./src/test//markdown.test.ts)
-
-| Test                                                               | Status     | Duration (ms) |
-| ------------------------------------------------------------------ | ---------- | ------------: |
-| _should set markdown data if input is a string_                    | **passed** |           `0` |
-| _should combine multiple string inputs with separation_            | **passed** |           `1` |
-| _should wrap non-string inputs within code block_                  | **passed** |           `0` |
-| _should handle an empty input object_                              | **passed** |           `0` |
-| _should preserve the order of inputs when combining_               | **passed** |           `0` |
-| _should stringify and wrap arrays in code blocks_                  | **passed** |           `0` |
-| _should throw an error if input data contains circular references_ | **passed** |           `1` |
-
-### `[14]` [merge.test.ts](./src/test//merge.test.ts)
-
-| Test                                                                      | Status     | Duration (ms) |
-| ------------------------------------------------------------------------- | ---------- | ------------: |
-| _merges cluster_extraction and argument_extraction data_                  | **passed** |           `2` |
-| _does not merge if cluster_extraction data is missing_                    | **passed** |           `1` |
-| _does not merge if argument_extraction data is missing_                   | **passed** |           `0` |
-| _does not merge if cluster_extraction data has no topics_                 | **passed** |           `0` |
-| _sets node data output to the merged data and dirty to false after merge_ | **passed** |           `0` |
-
-### `[15]` [merge_cluster_extraction.test.ts](./src/test//merge_cluster_extraction.test.ts)
-
-| Test                                                | Status     | Duration (ms) |
-| --------------------------------------------------- | ---------- | ------------: |
-| _merges cluster extraction data_                    | **passed** |         `144` |
-| _does not merge if cluster extractions are missing_ | **passed** |         `109` |
-| _uses cached data if available and not dirty_       | **passed** |           `0` |
-| _does not merge if no open_ai_key is provided_      | **passed** |           `1` |
-
-### `[16]` [open_ai_key.test.ts](./src/test//open_ai_key.test.ts)
-
-| Test                                                                                             | Status     | Duration (ms) |
-| ------------------------------------------------------------------------------------------------ | ---------- | ------------: |
-| _should set the key in cookies if the UI key is valid_                                           | **passed** |           `1` |
-| _if ui key is set but invalid use local key_                                                     | **passed** |           `0` |
-| _should set the node text to "Invalid key" if the UI key is not valid and there is no local key_ | **passed** |           `1` |
-| _should not mutate the node if the UI key and local key are both valid_                          | **passed** |           `0` |
-
-### `[17]` [participant_filter.test.ts](./src/test//participant_filter.test.ts)
-
-| Test                                                      | Status     | Duration (ms) |
-| --------------------------------------------------------- | ---------- | ------------: |
-| _filters participants based on the provided name_         | **passed** |           `2` |
-| _removes subtopics with no claims after filtering_        | **passed** |           `0` |
-| _removes topics with no subtopics after filtering_        | **passed** |           `0` |
-| _returns undefined if input data does not contain topics_ | **passed** |           `0` |
-| _does not filter claims if interview key is missing_      | **passed** |           `0` |
-
-### `[18]` [register.test.ts](./src/test//register.test.ts)
-
-| Test                      | Status     | Duration (ms) |
-| ------------------------- | ---------- | ------------: |
-| _test node registeration_ | **passed** |           `1` |
-| _Load all nodes_          | **passed** |         `763` |
-
-### `[19]` [report.test.ts](./src/test//report.test.ts)
-
-| Test                                                  | Status     | Duration (ms) |
-| ----------------------------------------------------- | ---------- | ------------: |
-| _should set the output of the node to the input data_ | **passed** |           `1` |
-| _should handle empty input data_                      | **passed** |           `0` |
-| _should not mutate the input node_                    | **passed** |           `0` |
-
-### `[20]` [score_argument_relevance.test.ts](./src/test//score_argument_relevance.test.ts)
-
-| Test                                                    | Status     | Duration (ms) |
-| ------------------------------------------------------- | ---------- | ------------: |
-| _scores the relevance of arguments_                     | **passed** |         `109` |
-| _uses cached data if available and not dirty_           | **passed** |           `1` |
-| _does not score if argument_extraction data is missing_ | **passed** |           `0` |
-| _does not score if open_ai_key is missing_              | **passed** |           `0` |
-| _does not score if prompts are missing_                 | **passed** |           `0` |
-
-### `[21]` [simple_pipeline.test.ts](./src/test//simple_pipeline.test.ts)
-
-| Test                                         | Status     | Duration (ms) |
-| -------------------------------------------- | ---------- | ------------: |
-| _should process CSV data correctly from GCS_ | **passed** |           `9` |
-
-### `[22]` [stringify.test.ts](./src/test//stringify.test.ts)
-
-| Test                                              | Status     | Duration (ms) |
-| ------------------------------------------------- | ---------- | ------------: |
-| _should correctly stringify input data_           | **passed** |           `1` |
-| _should return input if it cannot be stringified_ | **passed** |           `0` |
-| _should handle different types of input_          | **passed** |           `0` |
-| _should not mutate the input node_                | **passed** |           `1` |
-
-### `[23]` [translate.test.ts](./src/test//translate.test.ts)
-
-| Test                                      | Status     | Duration (ms) |
-| ----------------------------------------- | ---------- | ------------: |
-| _translates the input data_               | **passed** |           `0` |
-| _uses cached translations when available_ | **passed** |           `0` |
-
-### `[24]` [workerpool.test.ts](./src/test//workerpool.test.ts)
-
-| Test                                            | Status     | Duration (ms) |
-| ----------------------------------------------- | ---------- | ------------: |
-| _should execute function in workerpool_         | **passed** |          `25` |
-| _should execute delayed function in workerpool_ | **passed** |        `1003` |
-
-</details>
+### `[25]` [workerpool.test.ts](./src/test//workerpool.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *should execute function in workerpool* | **passed** | `37` |
+| *should execute delayed function in workerpool* | **passed** | `1003` |

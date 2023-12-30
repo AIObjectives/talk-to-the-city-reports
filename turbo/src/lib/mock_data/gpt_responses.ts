@@ -1,4 +1,8 @@
 const responses = {
+	'5c792b2ad1d597fe733d68b3139473e29ecc1485309191e1aa0763ad55849356':
+		'Hello. What would you like to know about the markdown?',
+	'411400533127094feb3ac35607c7e6fb647cf750fd2eb3bb0484696e165cabfb':
+		'Hello. What would you like to know about the weather?',
 	'809b22fd4e501625a223249f71bdc0d0fbf813b22fd86747a6f8f93f620878ec': {
 		claims: [
 			{
