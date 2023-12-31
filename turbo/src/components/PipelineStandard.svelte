@@ -1,9 +1,7 @@
 <script lang="ts">
 	import type { Writable } from 'svelte/store';
 	import type { Node, Edge } from '@xyflow/svelte';
-	import { viewMode, fitViewStore, graphNotice } from '$lib/store';
 	import { _ as __ } from 'svelte-i18n';
-	import Cookies from 'js-cookie';
 
 	import { nodeTypes } from '$lib/node_types';
 	import { useNodes, useEdges } from '@xyflow/svelte';
@@ -41,21 +39,6 @@
 			{/if}
 		{/if}
 	{/each}
-	{#if !Cookies.get('hide_graph_notice_forever')}
-		<div style="max-width: 800px;" class="p-4 text-gray-600">
-			{$__('graph_view_notice_0')}
-			<button
-				class="button"
-				on:click={() => {
-					$viewMode = 'graph';
-					$fitViewStore += 1;
-					window.scrollTo(0, 0);
-					$graphNotice = true;
-				}}>{$__('here')}</button
-			>
-			{$__('graph_view_notice_1')}
-		</div>
-	{/if}
 </div>
 
 <style>

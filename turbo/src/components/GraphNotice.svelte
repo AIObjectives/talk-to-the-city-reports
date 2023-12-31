@@ -13,7 +13,7 @@
 
 	onMount(() => {
 		sub = graphNotice.subscribe((x) => {
-			if (x) snackbar.open();
+			if (x && snackbar) snackbar.open();
 		});
 	});
 
@@ -22,23 +22,29 @@
 	});
 </script>
 
-<Snackbar variant="stacked" bind:this={snackbar} timeoutMs={-1}>
-	<Label>{$__('graph_view_notice_snackbar')}</Label>
-	<Actions>
-		<Button
-			on:click={() => {
-				snackbar.close();
-				Cookies.set('hide_graph_notice_forever', true);
-				$viewMode = 'standard';
-			}}>{$__('return_to_standard_view')}</Button
-		>
-		<IconButton
-			on:click={() => {
-				snackbar.close();
-				Cookies.set('hide_graph_notice_forever', true);
-			}}
-			class="material-icons"
-			title="Dismiss"><Close /></IconButton
-		>
-	</Actions>
-</Snackbar>
+{#if !Cookies.get('hide_graph_notice_forever')}
+	<Snackbar variant="stacked" bind:this={snackbar} timeoutMs={-1}>
+		<Label>{$__('graph_view_notice_snackbar')}</Label>
+		<Actions>
+			<Button
+				on:click={() => {
+					snackbar.close();
+					$viewMode = 'standard';
+				}}>{$__('return_to_standard_view')}</Button
+			>
+			<Button
+				on:click={() => {
+					Cookies.set('hide_graph_notice_forever', true);
+					snackbar.close();
+				}}>{$__('dont_remind_me')}</Button
+			>
+			<IconButton
+				on:click={() => {
+					snackbar.close();
+				}}
+				class="material-icons"
+				title="Dismiss"><Close /></IconButton
+			>
+		</Actions>
+	</Snackbar>
+{/if}

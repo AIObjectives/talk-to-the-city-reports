@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Pipe from '$lib/icons/Pipe.svelte';
 	import { get } from 'svelte/store';
+	import Tune from '$lib/icons/Tune.svelte';
 	import { user, dataset as store_dataset, fitViewStore } from '$lib/store';
 	import PipelineStandard from '$components/PipelineStandard.svelte';
 	import PipelineGraph from '$components/PipelineGraph.svelte';
@@ -8,20 +9,20 @@
 	import Button from '@smui/button';
 	import '@xyflow/svelte/dist/style.css';
 	import { useNodes } from '@xyflow/svelte';
-	import { useUpdateNodeInternals } from '@xyflow/svelte';
 	import { viewMode } from '$lib/store';
 	import { useSvelteFlow } from '@xyflow/svelte';
+	import ToggleNotice from '$components/ToggleNotice.svelte';
 	import GraphNotice from '$components/GraphNotice.svelte';
+	import TemplateSwitcher from '$components/TemplateSwitcher.svelte';
 	import { _ as __ } from 'svelte-i18n';
 
 	const { fitView } = useSvelteFlow();
-	const updateNodeInternals = useUpdateNodeInternals();
 
 	const n = useNodes();
 
 	export let dataset: Dataset;
-	export let dataset_refresh: number;
 	let showPipeline = false;
+	let tune = false;
 
 	const nodes = dataset.graph.nodes,
 		edges = dataset.graph.edges;
@@ -34,16 +35,15 @@
 			for (const node of $n) {
 				node.data = { ...node.data };
 			}
-			updateNodeInternals();
 		}, 500);
 	}
 
 	const load = async () => {
-		await dataset.processNodes('load');
+		await dataset.processNodes('load', $user);
 		refreshData();
 	};
 
-	$: load(dataset_refresh)
+	$: load();
 	$: $store_dataset = dataset;
 
 	$: {
@@ -53,6 +53,25 @@
 		}, 100);
 	}
 </script>
+
+{#if $viewMode == 'standard'}
+	<div class="pipeline-container">
+		<Button
+			style="width: 300px; margin-left: auto;"
+			on:click={(e) => {
+				tune = !tune;
+			}}
+		>
+			<Tune size="30px" /> &nbsp; {#if tune}{$__('hide_advanced_settings')}{:else}{$__(
+					'show_advanced_settings'
+				)}{/if}
+		</Button>
+		{#if tune}
+			<ToggleNotice />
+			<TemplateSwitcher {dataset} />
+		{/if}
+	</div>
+{/if}
 
 <div class="pipeline-icon">
 	<button
@@ -68,14 +87,19 @@
 	<div style="display: flex; width: 100%;">
 		<div
 			class="graph-div"
-			style="flex-direction: column; width: { $viewMode === 'graph' ? '100%' : '0vw' };">
+			style="flex-direction: column; width: {$viewMode === 'graph' ? '100%' : '0vw'};"
+		>
 			<PipelineGraph {nodes} {edges} bind:dataset />
 		</div>
 		{#if $viewMode == 'standard'}
-				<div
-					class="standard-div"
-					style="display: flex; justify-content: center; align-items: center; flex-direction: column; width: {$viewMode === 'standard' ? '100%' : '0vw'}">
-				<PipelineStandard {dataset} />
+			<div
+				class="standard-div"
+				style="display: flex; justify-content: center; align-items: center; flex-direction: column; width: {$viewMode ===
+				'standard'
+					? '100%'
+					: '0vw'}"
+			>
+				<PipelineStandard />
 			</div>
 		{/if}
 	</div>

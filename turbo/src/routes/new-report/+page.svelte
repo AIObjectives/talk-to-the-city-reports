@@ -1,17 +1,19 @@
 <script lang="ts">
-	import Paper from '@smui/paper';
 	import Button from '@smui/button';
 	import HelperText from '@smui/textfield/helper-text';
-	import TextField from '@smui/textfield';
-	import Select, { Option } from '@smui/select';
 	import { type DocumentData } from 'firebase/firestore';
+	import TextField from '@smui/textfield';
 	import { auth } from '$lib/firebase';
 	import { Dataset } from '$lib/dataset';
 	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
 	import { loadTemplates } from '$lib/templates';
 	import { _ as __ } from 'svelte-i18n';
-	import _ from 'lodash'
-	import { onMount } from 'svelte';
+	import _ from 'lodash';
+
+	onMount(async () => {
+		templates = await loadTemplates();
+	});
 
 	function getRandomElement<T>(array: T[]): T {
 		return array[Math.floor(Math.random() * array.length)];
@@ -136,7 +138,6 @@
 	let projectDescription = rand;
 	let projectTemplate = 'default';
 	let templates: Record<string, DocumentData> = {};
-	let loadingTemplates = true;
 
 	function createProjectSlug(str) {
 		return str
@@ -145,11 +146,6 @@
 			.replace(/\s+/g, '-')
 			.replace(/[^0-9a-z\-]/g, '');
 	}
-
-	onMount(async () => {
-		templates = await loadTemplates();
-		loadingTemplates = false;
-	});
 
 	async function createNewProject(event) {
 		event.preventDefault();
@@ -200,32 +196,6 @@
 					<HelperText persistent slot="helper">{$__('report_description')}</HelperText>
 				</TextField>
 			</div>
-			{#if loadingTemplates}
-				<p>{$__('loading_templates')}...</p>
-			{:else}
-				{#if ! _.isEmpty(templates)}
-					<div class="w-full px-3" style="position: relative;">
-						{#if projectTemplate}
-							<Select
-								style="min-width: 400px;"
-								label={$__('report_template')}
-								bind:value={projectTemplate}
-							>
-								{#each Object.keys(templates) as templateKey}
-									<Option value={templateKey}>{$__(templateKey)}</Option>
-								{/each}
-							</Select>
-							<Paper class="my-5 w-full">
-								<div class="docs">
-									{$__('template_help')}
-								</div>
-							</Paper>
-						{/if}
-					</div>
-				{:else}
-					<p>{$__('no_templates_found')}</p>
-				{/if}
-			{/if}
 			<button class="w-full px-3 pt-5" on:click={createNewProject}>
 				<Button type="submit">{$__('create')}</Button>
 			</button>

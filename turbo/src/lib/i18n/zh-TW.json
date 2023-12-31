@@ -150,7 +150,7 @@
     "comments": "評論",
     "missing_input_data": "缺少輸入資料",
     "template_help": "範本提供了一種使用類似設定來創建多份報告的方式。如果您不確定該使用哪個範本，那麼請使用預設範本，它允許您自定義所有可用設定。",
-    "graph_view_notice_0": "您在使用 Talk to the City 的預設功能時，不需要圖形視圖，但是，對於高級流水線設計，請點擊",
+    "graph_view_notice_0": "您不需要圖形視圖即可使用'Talk to the City'的預設功能。",
     "here": "這裡",
     "graph_view_notice_1": "來訪問圖形視圖。",
     "graph_view_notice_snackbar": "您可以從右上角的菜單切換視圖。",
@@ -164,5 +164,11 @@
     "node_documentation": "節點文檔",
     "default": "預設",
     "heal_michigan_v1": "治癒密西根州（社區挑戰視頻訪談）",
-    "blank_v0": "空白模板（僅限進階使用者）"
+    "blank_v0": "空白模板（僅限進階使用者）",
+    "dont_remind_me": "不要提醒我",
+    "apply": "應用",
+    "are_you_sure_apply_template": "確定要應用模板嗎？這將會覆蓋所有設定。",
+    "show_advanced_settings": "顯示進階設定",
+    "hide_advanced_settings": "隱藏進階設定",
+    "switch_to_graph_view": "切換到圖形視圖"
 }
