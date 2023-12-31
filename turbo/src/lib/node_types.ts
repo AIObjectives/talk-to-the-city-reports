@@ -35,7 +35,8 @@ export const nodeTypes = {
 	pyodide_v0: CodeMirrorNode,
 	report_v0: DefaultNode,
 	report_v1: DefaultNode,
-	chat_v0: ChatNode
+	chat_v0: ChatNode,
+	webpage_v0: TextInputNode
 };
 
 import '$lib/compute/csv';
@@ -62,6 +63,7 @@ import '$lib/compute/stringify';
 import '$lib/compute/score_argument_relevance';
 import '$lib/compute/gpt';
 import '$lib/compute/score_argument_relevance';
+import '$lib/compute/webpage';
 // import '$lib/compute/python';
 import '$lib/compute/pyodide';
 // import './compute/llama';
