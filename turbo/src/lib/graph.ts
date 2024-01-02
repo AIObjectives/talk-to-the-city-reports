@@ -16,6 +16,11 @@ export class DependencyGraph {
 		this.parent = parent;
 	}
 
+	findByComputeType = (computeType: string): DGNode[] => {
+		const nodes = get(this.nodes).filter((node) => node.data.compute_type === computeType);
+		return nodes.map((node) => new DGNode(node, this));
+	};
+
 	find = (id: string): DGNode => {
 		const node = get(this.nodes).find((node) => node.id === id);
 		if (node) return new DGNode(node, this);

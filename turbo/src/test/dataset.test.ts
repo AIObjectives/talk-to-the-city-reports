@@ -18,6 +18,11 @@ describe('Full pipeline run test', () => {
 	beforeEach(() => {
 		vi.restoreAllMocks();
 	});
+	it('Find by compute type', async () => {
+		const dataset = getSimpleDataset();
+		const nodes = dataset.graph.findByComputeType('markdown_v0');
+		expect(nodes[0].node.data.compute_type).toEqual('markdown_v0');
+	});
 	it('Simple pipeline run test', async () => {
 		const dataset = getSimpleDataset();
 		await dataset.processNodes('run');
