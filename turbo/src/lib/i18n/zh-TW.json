@@ -170,5 +170,6 @@
     "are_you_sure_apply_template": "確定要應用模板嗎？這將會覆蓋所有設定。",
     "show_advanced_settings": "顯示進階設定",
     "hide_advanced_settings": "隱藏進階設定",
-    "switch_to_graph_view": "切換到圖形視圖"
+    "switch_to_graph_view": "切換到圖形視圖",
+    "done": "完成"
 }
