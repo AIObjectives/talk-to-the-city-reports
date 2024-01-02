@@ -21,6 +21,11 @@ jobs:
         with:
           node-version: 18
 
+      - name: Write VITE_PYTHON_LAMBDA_SECRET to .env
+        run: |
+          echo "VITE_PYTHON_LAMBDA_SECRET=${{ secrets.VITE_PYTHON_LAMBDA_SECRET }}" > turbo/.env
+        shell: bash
+
       - name: Install dependencies
         run: cd turbo && npm install --force
 

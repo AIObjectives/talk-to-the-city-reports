@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+set -e
+
+if [ "$#" -eq 0 ]; then
+    rm -rf __pycache__ *.zip
+    if [ $? -ne 0 ]; then
+        echo "Failed to clean up previous build files."
+        exit 1
+    fi
+
+    docker buildx build --platform linux/amd64 . -t tttc-turbo-python
+    if [ $? -ne 0 ]; then
+        echo "Docker build failed."
+        exit 1
+    fi
+
+    docker run -it -v "$(pwd):/src/output" --rm tttc-turbo-python cp /src/package/lambda.zip /src/output/
+    if [ $? -ne 0 ]; then
+        echo "Failed to copy the lambda package."
+        exit 1
+    fi
+elif [ "$1" = "--secret" ] && [ "$#" -eq 2 ]; then
+    echo -n "$2" | openssl dgst -sha256
+fi
