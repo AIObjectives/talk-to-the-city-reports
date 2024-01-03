@@ -7,7 +7,7 @@
 	export let dataset;
 	let editing = false;
 
-	$: userIsOwner = $user && dataset.ownerId === $user.id;
+	$: userIsOwner = $user && dataset.owner === $user.uid;
 </script>
 
 {#if userIsOwner && editing}
