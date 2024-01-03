@@ -4,6 +4,7 @@
 	import { _ as __ } from 'svelte-i18n';
 	import { slide } from 'svelte/transition';
 
+	export let showOwner: boolean = false;
 	export let dataset: Dataset;
 	export let loadDatasets: () => void;
 	import Button from '@smui/button';
@@ -27,5 +28,8 @@
 		<p class="text-gray-700 text-base">{dataset.description.slice(0, 100)}</p>
 		<a href="/report/{dataset.slug}"> <Button>{$__('view_report')}</Button></a>
 		<p class="text-gray-400 text-base"><small>/{dataset.slug}</small></p>
+		{#if showOwner}
+			<p class="text-gray-400 text-base"><small>Owner: {dataset.owner}</small></p>
+		{/if}
 	</Card>
 </div>
