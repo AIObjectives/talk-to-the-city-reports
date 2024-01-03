@@ -8,11 +8,19 @@
 	export let claims;
 	export let showFeedback: boolean = false;
 
-	let showMoreClaims = false;
-	let uniqueClaims = _.uniqBy(claims, 'claim');
-	let grouped = _.groupBy(claims, 'claim');
-	let duplicateClaims = _.countBy(claims, 'claim');
-	let sortedClaims = _.orderBy(uniqueClaims, (claim) => duplicateClaims[claim.claim], 'desc');
+	let showMoreClaims: boolean = false;
+	let uniqueClaims: [] = [];
+	let grouped: [] = [];
+	let duplicateClaims: [] = [];
+	let sortedClaims: [] = [];
+
+	$: {
+		showMoreClaims = false;
+		uniqueClaims = _.uniqBy(claims, 'claim');
+		grouped = _.groupBy(claims, 'claim');
+		duplicateClaims = _.countBy(claims, 'claim');
+		sortedClaims = _.orderBy(uniqueClaims, (claim) => duplicateClaims[claim.claim], 'desc');
+	}
 </script>
 
 <div class="ml-5 mt-2 mb-2"><h5>{$__('representative_arguments')}:</h5></div>

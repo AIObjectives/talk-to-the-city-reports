@@ -54,25 +54,6 @@
 	}
 </script>
 
-{#if $viewMode == 'standard'}
-	<div class="pipeline-container">
-		<Button
-			style="width: 300px; margin-left: auto;"
-			on:click={(e) => {
-				tune = !tune;
-			}}
-		>
-			<Tune size="30px" /> &nbsp; {#if tune}{$__('hide_advanced_settings')}{:else}{$__(
-					'show_advanced_settings'
-				)}{/if}
-		</Button>
-		{#if tune}
-			<ToggleNotice />
-			<TemplateSwitcher {dataset} />
-		{/if}
-	</div>
-{/if}
-
 <div class="pipeline-icon">
 	<button
 		on:click={(e) => {
@@ -84,6 +65,25 @@
 </div>
 
 {#if showPipeline || ($user && $user.uid === dataset.owner)}
+	{#if $viewMode == 'standard'}
+		<div class="pipeline-container">
+			<Button
+				style="width: 300px; margin-left: auto;"
+				on:click={(e) => {
+					tune = !tune;
+				}}
+			>
+				<Tune size="30px" /> &nbsp; {#if tune}{$__('hide_advanced_settings')}{:else}{$__(
+						'show_advanced_settings'
+					)}{/if}
+			</Button>
+			{#if tune}
+				<ToggleNotice />
+				<TemplateSwitcher {dataset} />
+			{/if}
+		</div>
+	{/if}
+
 	<div style="display: flex; width: 100%;">
 		<div
 			class="graph-div"
