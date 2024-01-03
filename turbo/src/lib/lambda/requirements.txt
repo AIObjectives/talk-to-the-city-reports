@@ -1,0 +1,6 @@
+readabilipy
+fastapi
+uvicorn
+mangum
+urllib3<2.0
+requests

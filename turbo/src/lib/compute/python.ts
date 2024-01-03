@@ -1,22 +1,15 @@
 import nodes from '$lib/node_register';
 import categories from '$lib/node_categories';
 import _ from 'lodash';
-import deepCopy from 'deep-copy';
-// import brscript from '$lib/compute/brython.py?raw';
 
-let brscript = `\
-from browser import document\n\
-import json\n\
-\n\
-inputData = {inputData}\n\
-outputData = None\n\
-\n\
-\n\
+let scriptTemplate = `
+import json
+
+inputData = {inputData}
+outputData = None
+
 {script}
-\n\
-\n\
-if outputData is not None:\n\
-    document["output"].textContent = json.dumps(outputData)\n\
+
 `;
 
 interface BaseData {}
@@ -25,6 +18,10 @@ interface PythonData extends BaseData {
 	script: string;
 	output: object;
 }
+
+let dev = 'http://localhost:8000/';
+let prod = import.meta.env.VITE_PYTHON_LAMBDA_URL;
+let url = prod;
 
 export default class PythonNodeV0 {
 	id: string;
@@ -49,67 +46,48 @@ export default class PythonNodeV0 {
 		slug: string,
 		Cookies: any
 	) {
+		const data = {};
+		_.keys(this.data.input_ids).forEach((k) => {
+			const id = this.data.input_ids[k];
+			if (id) {
+				data[k] = inputData[id];
+			}
+		});
+		let script = scriptTemplate.replace('{inputData}', JSON.stringify(data));
+		script = script.replace('{script}', this.data.text);
 		try {
-			if (!_.isEmpty(this.data.output)) {
-				return this.data.output;
+			const response = await fetch(url, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: import.meta.env.VITE_PYTHON_LAMBDA_SECRET
+				},
+				body: JSON.stringify({ code: script })
+			});
+			if (!response.ok) {
+				throw new Error(`HTTP error! status: ${response.status}`);
 			}
-			console.log('computing python node ' + this.id);
-			let input = {};
-			_.forEach(this.data.input_ids, (value, key) => {
-				input[key] = inputData[value];
-			});
-			this.data.dirty = false;
-			const script = document.createElement('script');
-			script.type = 'text/python';
-			let pyscript = brscript;
-			pyscript = brscript.replace(/{inputData}/g, JSON.stringify(input));
-			pyscript = pyscript.replace(/{script}/g, this.data.text);
-			script.text = pyscript;
-			document.body.appendChild(script);
-			brython();
-			script.remove();
-
-			let observer;
-
-			let outputPromise = new Promise((resolve, reject) => {
-				let outputElement = document.getElementById('output');
-				observer = new MutationObserver((mutationsList, observer) => {
-					for (let mutation of mutationsList) {
-						if (mutation.type === 'childList') {
-							resolve(outputElement.textContent);
-							observer.disconnect();
-						}
-					}
-				});
-				observer.observe(outputElement, { childList: true });
-			});
-
-			outputPromise.finally(() => {
-				if (observer) {
-					observer.disconnect();
+			const j = await response.json();
+			let outputData = {};
+			if (_.isString(j)) {
+				try {
+					outputData = JSON.parse(j);
+				} catch (e) {
+					outputData = j;
 				}
-			});
-
-			try {
-				console.log('waiting for output');
-				let outputText = await outputPromise;
-				this.data.output = JSON.parse(outputText);
-			} catch (e) {
-				console.log(e);
+			} else {
+				outputData = j;
 			}
-
-			return this.data.output;
+			this.data.output = outputData;
+			return outputData;
 		} catch (e) {
-			console.error(e.toString());
-			this.data.message = e.toString();
-			error('Failed to execute Brython code');
-			return undefined;
+			error(e.message);
 		}
 	}
 }
 
 type PythonNodeInterface = DGNodeInterface & {
-	data: PythonData;
+	text: PythonData;
 };
 
 export let python_node_data: PythonNodeInterface = {
@@ -119,26 +97,13 @@ export let python_node_data: PythonNodeInterface = {
 		text: '',
 		output: {},
 		compute_type: 'python_v0',
-		input_ids: {
-			input_0: '',
-			input_1: '',
-			input_2: '',
-			input_3: '',
-			input_4: '',
-			input_5: '',
-			input_6: '',
-			input_7: '',
-			input_8: '',
-			input_9: '',
-			input_10: '',
-			input_11: ''
-		},
+		input_ids: { input_0: '', input_1: '', input_3: '' },
 		category: categories.lang.id,
 		icon: 'python_v0',
 		show_in_ui: false
 	},
 	position: { x: 0, y: 0 },
-	type: 'text_input_v0'
+	type: 'python_v0'
 };
 
 export let python_node = new PythonNodeV0(python_node_data);

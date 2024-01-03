@@ -2,13 +2,22 @@ import nodes from '$lib/node_register';
 import categories from '$lib/node_categories';
 import _ from 'lodash';
 
+let pyodideInstance: any = null;
+
+async function loadPyodide() {
+	if (!pyodideInstance) {
+		const module = await import('$lib/pyodide/pyodide.js');
+		pyodideInstance = await module.loadPyodide();
+	}
+	return pyodideInstance;
+}
+
 let pyscript = `
-from pyodide.ffi import to_js
 import json
 
 outputData = None
 
-input = input.to_py()
+inputData = inputData.to_py()
 
 {script}
 
@@ -53,15 +62,17 @@ export default class PyodideNodeV0 {
 			if (!_.isEmpty(this.data.output)) {
 				return this.data.output;
 			}
-			console.log('computing python node ' + this.id);
-			let pyInput = [];
-			Object.keys(inputData).forEach((key) => {
-				const value = inputData[key];
-				pyInput.push(typeof value === 'object' ? pyodide.toPy(value) : value);
+			let pyInput = {};
+			_.keys(this.data.input_ids).forEach((key) => {
+				const id = this.data.input_ids[key];
+				if (id) {
+					const value = inputData[id];
+					pyInput[key] = typeof value === 'object' ? pyodide.toPy(value) : value;
+				}
 			});
 			this.data.dirty = false;
 			let script = pyscript.replace('{script}', this.data.text);
-			pyodide.globals.set('input', pyInput);
+			pyodide.globals.set('inputData', pyInput);
 			pyodide.runPython(script);
 			let outputData = pyodide.globals.get('outputData');
 

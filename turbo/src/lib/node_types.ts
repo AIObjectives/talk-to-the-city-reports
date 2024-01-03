@@ -31,7 +31,7 @@ export const nodeTypes = {
 	stringify_v0: DefaultNode,
 	feedback_v0: DefaultNode,
 	gpt_v0: PromptNode,
-	// python_v0: TextInputNode,
+	python_v0: CodeMirrorNode,
 	pyodide_v0: CodeMirrorNode,
 	report_v0: DefaultNode,
 	report_v1: DefaultNode,
