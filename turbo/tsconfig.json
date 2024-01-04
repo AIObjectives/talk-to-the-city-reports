@@ -3,7 +3,8 @@
 	"paths": {
 		"$lib/*": ["src/lib/*"],
 		"$components/*": ["src/components/*"],
-		"$routes/*": ["src/routes/*"]
+		"$routes/*": ["src/routes/*"],
+		"$test/*": ["src/test/*"]
 	},
 	"compilerOptions": {
 		"importsNotUsedAsValues": "preserve",

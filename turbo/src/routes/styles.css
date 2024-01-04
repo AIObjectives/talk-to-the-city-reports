@@ -160,7 +160,8 @@ button:focus:not(:focus-visible) {
 }
 
 .selected-dg-node {
-	border: 2px solid #aaaaff !important;
+	opacity: 1 !important;
+	border: 1px solid #aaaaff !important;
 }
 
 .docs img {
@@ -245,8 +246,6 @@ button:focus:not(:focus-visible) {
 }
 
 .svelte-flow__pane {
-	border-right: solid;
-	border-color: #eee;
 }
 
 .exec-buttons-top {
@@ -301,4 +300,10 @@ button:focus:not(:focus-visible) {
 
 .mdc-menu .mdc-deprecated-list {
 	background: white;
+}
+
+.smui-paper {
+  background-color: #fff !important;
+  opacity: 1 !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }

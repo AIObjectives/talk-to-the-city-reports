@@ -9,7 +9,6 @@
 	import PipelineCreateNodesToolbar from '$components/PipelineCreateNodesToolbar.svelte';
 	import { user } from '$lib/store';
 	import { useSvelteFlow } from '@xyflow/svelte';
-	import { viewMode } from '$lib/store';
 	import ContentSaveOutline from '$lib/icons/ContentSaveOutline.svelte';
 	import ContentDuplicate from '$lib/icons/ContentDuplicate.svelte';
 	import RobotOutline from '$lib/icons/RobotOutline.svelte';
@@ -19,10 +18,19 @@
 
 	import { Panel } from '@xyflow/svelte';
 	import DownloadImage from '$components/graph/DownloadImage.svelte';
+	import { getContext } from 'svelte';
+	let viewMode = getContext('viewMode');
 
 	const { screenToFlowPosition } = useSvelteFlow();
 
 	let resetTimeout;
+
+	export let width = '100%';
+	export let height = '97vh';
+	export let showNodesToolbar = true;
+	export let showSaveButton: boolean = false;
+	export let showCopyButton: boolean = false;
+	export let showScreenshotButton: boolean = false;
 	export let dataset: Dataset;
 	export let nodes;
 	export let edges;
@@ -108,12 +116,14 @@
 </script>
 
 <div>
-	{#if $viewMode == 'graph'}
+	{#if $viewMode == 'graph' && showNodesToolbar}
 		<PipelineCreateNodesToolbar bind:resetTimeout bind:active on:click={(x) => addNode(x.detail)} />
 	{/if}
 	<div
 		style:visibility={$viewMode == 'graph' ? 'visible' : 'hidden'}
-		style:height={$viewMode == 'graph' ? '97vh' : '100%'}
+		style:margin={'auto'}
+		style:width
+		style:height={$viewMode == 'graph' ? height : '100%'}
 		class="flow-container noSelect"
 	>
 		<SvelteFlow
@@ -144,13 +154,15 @@
 		>
 			<Controls showLock={false} />
 			<Panel position="top-right">
-				<div class="exec-buttons-top" style="height:42px;">
-					<button
-						on:click={async () => {
-							await dataset.updateDataset($user);
-						}}><ContentSaveOutline size={30} /></button
-					>
-				</div>
+				{#if showSaveButton}
+					<div class="exec-buttons-top" style="height:42px;">
+						<button
+							on:click={async () => {
+								await dataset.updateDataset($user);
+							}}><ContentSaveOutline size={30} /></button
+						>
+					</div>
+				{/if}
 				<div class="exec-buttons-bottom" style="height:42px;">
 					<button
 						class="glow-button"
@@ -169,14 +181,18 @@
 			</Panel>
 
 			<Panel position="bottom-right">
-				<div class="exec-buttons" style="height:42px;">
-					<button
-						on:click={() => {
-							dataset.graph.duplicateSelectedNodes();
-						}}><ContentDuplicate size="30px" /></button
-					>
-				</div>
-				<div class="exec-buttons" style="height:42px;"><DownloadImage /></div>
+				{#if showCopyButton}
+					<div class="exec-buttons" style="height:42px;">
+						<button
+							on:click={() => {
+								dataset.graph.duplicateSelectedNodes();
+							}}><ContentDuplicate size="30px" /></button
+						>
+					</div>
+				{/if}
+				{#if showScreenshotButton}
+					<div class="exec-buttons" style="height:42px;"><DownloadImage /></div>
+				{/if}
 			</Panel>
 
 			<Panel position="top-left">

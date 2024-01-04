@@ -20,4 +20,12 @@ describe('CountTokensNode class', () => {
 		const count = await node.compute(inputData, 'run', console.log, console.log, console.log, '/');
 		expect(count).toBe(node.data.num_tokens);
 	});
+
+	it('should count tokens if the input data is a string', async () => {
+		const inputData = { csv: 'Hello World' };
+		const node = new CountTokensNode(deepCopy(count_tokens_node_data));
+		const count = await node.compute(inputData, 'run', console.log, console.log, console.log, '/');
+		expect(count).toBe(2);
+		expect(node.data.dirty).toBe(false);
+	});
 });

@@ -13,7 +13,8 @@ const config = {
 		alias: {
 			$lib: '/src/lib',
 			$components: path.resolve('./src/components'),
-			$routes: '/src/routes'
+			$routes: '/src/routes',
+			$test: '/src/test'
 		}
 	}
 };

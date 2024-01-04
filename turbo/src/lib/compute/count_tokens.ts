@@ -36,18 +36,26 @@ export default class CountTokensNode {
 		slug: string,
 		Cookies: any
 	) {
-		const inputArray = inputData[Object.keys(inputData)[0]];
-		if (!inputArray) return;
-		const inputMatches = inputArray.length && this.data.csv_length === inputArray.length;
+		const input = _.head(_.values(inputData));
+		if (!input) return;
+		if (_.isString(input)) {
+			inputData = input;
+		} else if (_.isArray(input)) {
+			inputData = input.map((entry: any) => entry['comment-body']).join(' ');
+		} else {
+			error(`Error: ${$__('missing_input_data')}`);
+			return;
+		}
+		const inputMatches = inputData.length && this.data.csv_length === inputData.length;
 		if (!this.data.dirty && inputMatches) {
 			this.data.message = `${$__('number_of_tokens')}: ${this.data.num_tokens}`;
 			return this.data.num_tokens;
 		}
-		const joinedInput = inputArray.map((entry: any) => entry['comment-body']).join(' ');
+
 		try {
-			this.data.csv_length = inputArray.length;
+			this.data.csv_length = inputData.length;
 			const encoding = getEncoding(this.data.text);
-			this.data.num_tokens = encoding.encode(joinedInput).length;
+			this.data.num_tokens = encoding.encode(inputData).length;
 			this.data.dirty = false;
 			this.data.message = `${$__('number_of_tokens')}: ${this.data.num_tokens}`;
 			return this.data.num_tokens;

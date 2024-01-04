@@ -1,3 +1,4 @@
+import { get } from 'svelte/store';
 import nodes from '$lib/node_register';
 import { getEncoding } from 'js-tiktoken';
 import categories from '$lib/node_categories';
@@ -118,7 +119,7 @@ export default class ChatNode {
 			null
 		);
 		this.data.messages.push({ role: 'assistant', content: response });
-		console.log(this.data.message);
+		console.log(response);
 		return this.data.messages;
 	}
 
@@ -150,7 +151,7 @@ export let chat_node_data: ChatNodeInterface = {
 		input_ids: { open_ai_key: '', data: '' },
 		category: categories.llm.id,
 		icon: 'chat_v0',
-		show_in_ui: false
+		show_in_ui: true
 	},
 	position: { x: 0, y: 0 },
 	type: 'chat_v0'

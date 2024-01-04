@@ -3,7 +3,7 @@
 	import Button, { Label } from '@smui/button';
 	import Textfield from '@smui/textfield';
 	import { page } from '$app/stores';
-	import { dataset } from '$lib/store';
+	import { storeDataset } from '$lib/store';
 	import { Dataset } from '$lib/dataset';
 	import { _ as __ } from 'svelte-i18n';
 
@@ -29,7 +29,7 @@
 			message = $__('a_report_with_this_name_already_exists');
 			invalid = true;
 		} else {
-			await $dataset!.fork(value);
+			await $storeDataset!.fork(value);
 			message = $__('forking_report');
 			modalShowing = false;
 			showDropdown = false;

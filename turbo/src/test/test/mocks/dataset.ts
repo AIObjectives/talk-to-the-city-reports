@@ -152,7 +152,8 @@ export function getSimpleGraph() {
 	const edges = [
 		{
 			source: open_ai_key_node_data.id,
-			target: markdown_node_data.id
+			target: markdown_node_data.id,
+			id: open_ai_key_node_data.id + markdown_node_data.id
 		}
 	];
 	return { nodes: nodes, edges: edges };

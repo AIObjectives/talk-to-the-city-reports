@@ -63,7 +63,7 @@ export let markdown_node_data: MarkdownNodeInterface = {
 		input_ids: { markdown: '' },
 		category: categories.display.id,
 		icon: 'markdown_v0',
-		show_in_ui: false
+		show_in_ui: true
 	},
 	position: { x: 0, y: 0 },
 	type: 'markdown_v0'
