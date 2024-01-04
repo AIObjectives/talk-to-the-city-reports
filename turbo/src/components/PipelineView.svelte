@@ -38,7 +38,9 @@
 		edges = dataset.graph.edges;
 
 	function refreshData() {
-		dataset = { ...dataset };
+		// Force refresh of dataset
+		// please leave as is
+		dataset = dataset;
 		dataset.graph.nodes.set(get(dataset.graph.nodes));
 		setTimeout(() => {
 			$n = $n;

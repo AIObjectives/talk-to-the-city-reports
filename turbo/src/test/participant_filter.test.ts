@@ -1,4 +1,6 @@
-import ParticipantFilterNode, { participant_filter_node_data } from '$lib/compute/participant_filter';
+import ParticipantFilterNode, {
+	participant_filter_node_data
+} from '$lib/compute/participant_filter';
 import deepCopy from 'deep-copy';
 import { describe, it } from 'vitest';
 import { expect } from 'vitest';
@@ -13,17 +15,22 @@ describe('ParticipantFilterNode class', () => {
 					{
 						subtopics: [
 							{
-								claims: [
-									{ interview: 'Interview with Alice' },
-									{ interview: 'Interview with Bob' }
-								]
+								claims: [{ interview: 'Interview with Alice' }, { interview: 'Interview with Bob' }]
 							}
 						]
 					}
 				]
 			}
 		};
-		const output = await node.compute(inputData, 'run', console.log, console.error, console.log, 'test_slug');
+		const output = await node.compute(
+			inputData,
+			'run',
+			console.log,
+			console.error,
+			console.log,
+			'test_slug',
+			null
+		);
 		expect(output).toEqual({
 			topics: [
 				{
@@ -46,17 +53,22 @@ describe('ParticipantFilterNode class', () => {
 					{
 						subtopics: [
 							{
-								claims: [
-									{ interview: 'Interview with Alice' },
-									{ interview: 'Interview with Bob' }
-								]
+								claims: [{ interview: 'Interview with Alice' }, { interview: 'Interview with Bob' }]
 							}
 						]
 					}
 				]
 			}
 		};
-		const output = await node.compute(inputData, 'run', console.log, console.error, console.log, 'test_slug');
+		const output = await node.compute(
+			inputData,
+			'run',
+			console.log,
+			console.error,
+			console.log,
+			'test_slug',
+			null
+		);
 		expect(output).toEqual({ topics: [] });
 	});
 
@@ -69,32 +81,32 @@ describe('ParticipantFilterNode class', () => {
 					{
 						subtopics: [
 							{
-								claims: [
-									{ interview: 'Interview with Alice' },
-									{ interview: 'Interview with Bob' }
-								]
+								claims: [{ interview: 'Interview with Alice' }, { interview: 'Interview with Bob' }]
 							},
 							{
-								claims: [
-									{ interview: 'Interview with Charlie' }
-								]
+								claims: [{ interview: 'Interview with Charlie' }]
 							}
 						]
 					},
 					{
 						subtopics: [
 							{
-								claims: [
-									{ interview: 'Interview with Alice' },
-									{ interview: 'Interview with Bob' }
-								]
+								claims: [{ interview: 'Interview with Alice' }, { interview: 'Interview with Bob' }]
 							}
 						]
 					}
 				]
 			}
 		};
-		const output = await node.compute(inputData, 'run', console.log, console.error, console.log, 'test_slug');
+		const output = await node.compute(
+			inputData,
+			'run',
+			console.log,
+			console.error,
+			console.log,
+			'test_slug',
+			null
+		);
 		expect(output).toEqual({
 			topics: [
 				{
@@ -112,7 +124,15 @@ describe('ParticipantFilterNode class', () => {
 		const node = new ParticipantFilterNode(deepCopy(participant_filter_node_data));
 		node.data.text = 'Alice';
 		const inputData = { json: {} };
-		const output = await node.compute(inputData, 'run', console.log, console.error, console.log, 'test_slug');
+		const output = await node.compute(
+			inputData,
+			'run',
+			console.log,
+			console.error,
+			console.log,
+			'test_slug',
+			null
+		);
 		expect(output).toBeUndefined();
 	});
 
@@ -135,7 +155,15 @@ describe('ParticipantFilterNode class', () => {
 				]
 			}
 		};
-		const output = await node.compute(inputData, 'run', console.log, console.error, console.log, 'test_slug');
+		const output = await node.compute(
+			inputData,
+			'run',
+			console.log,
+			console.error,
+			console.log,
+			'test_slug',
+			null
+		);
 		expect(output).toEqual({
 			topics: [
 				{

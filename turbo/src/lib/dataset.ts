@@ -123,6 +123,7 @@ export class Dataset {
 				await updateDoc(doc(datasetCollection, this.id), copy);
 				success($__('dataset_updated'));
 			} catch (err) {
+				console.error(err);
 				error($__('error_updating_dataset'));
 			}
 		}

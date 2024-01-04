@@ -6,15 +6,12 @@
 	import Description from '$components/report/Description.svelte';
 	import { onMount } from 'svelte';
 	import { _ as __ } from 'svelte-i18n';
-	import { getContext } from 'svelte';
+	import { globalViewMode } from '$lib/store';
 
-	let viewMode = getContext('viewMode');
 	let dataset: Dataset | null = null;
-	let dataset_refresh: number = 0;
 
 	const loadDataset = async (slug: string) => {
 		dataset = await Dataset.loadDataset(slug);
-		dataset_refresh++;
 	};
 
 	onMount(() => {
@@ -29,18 +26,17 @@
 	{#if !dataset}
 		<p class="text-center text-lg text-gray-500">{$__('loading')}</p>
 	{:else}
-		{#if $viewMode == 'standard'}
+		{#if $globalViewMode == 'standard'}
 			<Description bind:dataset />
 		{/if}
 		<Pipeline
 			bind:dataset
-			{dataset_refresh}
 			showSaveButton={true}
 			showCopyButton={true}
 			showScreenshotButton={true}
 			enableGlobalViewMode={true}
 		/>
-		{#if $viewMode == 'graph'}
+		{#if $globalViewMode == 'graph'}
 			<Description bind:dataset />
 		{/if}
 		<Report bind:dataset />
