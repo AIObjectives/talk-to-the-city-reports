@@ -1,14 +1,15 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import github from '$lib/images/github.svg';
-	import { user, viewMode } from '$lib/store';
+	import { user } from '$lib/store';
 	import Menu from '$components/menu/menu.svelte';
-
+	import { globalViewMode } from '$lib/store';
 	import '$lib/i18n';
 	import { _ as __ } from 'svelte-i18n';
 	import _ from 'lodash';
+
 	$: isReport = $page?.route?.id?.startsWith('/report/[report]');
-	$: isStandard = $viewMode == 'standard';
+	$: isStandard = $globalViewMode == 'standard';
 	$: showMenu = (isReport && isStandard) || !isReport;
 </script>
 

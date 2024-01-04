@@ -1,8 +1,10 @@
 <script lang="ts">
 	import Button from '@smui/button';
 	import Tune from '$lib/icons/Tune.svelte';
-	import { viewMode, fitViewStore, graphNotice } from '$lib/store';
+	import { fitViewStore, graphNotice } from '$lib/store';
 	import { _ as __ } from 'svelte-i18n';
+	import { getContext } from 'svelte';
+	let viewMode = getContext('viewMode');
 </script>
 
 <div style="max-width: 800px;" class="p-4 text-gray-600">

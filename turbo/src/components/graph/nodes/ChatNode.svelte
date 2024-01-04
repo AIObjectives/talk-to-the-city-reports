@@ -7,9 +7,9 @@
 	import nodes from '$lib/node_register';
 	import _ from 'lodash';
 	import { _ as __ } from 'svelte-i18n';
-	import { dataset } from '$lib/store';
 	import TrashCan from '$lib/icons/TrashCan.svelte';
 	import DOMPurify from 'dompurify';
+	import { getContext } from 'svelte';
 
 	type $$Props = NodeProps;
 
@@ -18,7 +18,9 @@
 	export let data: $$Props['data'];
 	export let id: $$Props['id'];
 
-    const messages = writable(data.messages);
+	const messages = writable(data.messages);
+
+	const dataset = getContext('dataset');
 
 	async function sendMessage() {
 		if (messageInput.trim()) {
@@ -26,10 +28,10 @@
 				...currentMessages,
 				{ role: 'user', content: messageInput }
 			]);
-			const node = get($dataset.graph.nodes).find((x) => x.id === id);
+			const node = get(dataset.graph.nodes).find((x) => x.id === id);
 			const node_impl = nodes.init(data.compute_type, node);
 			messageInput = '';
-			const result = await node_impl.chat(get(messages), $dataset);
+			const result = await node_impl.chat(get(messages), dataset);
 			messages.set(result);
 		}
 	}
@@ -48,12 +50,14 @@
 	style="max-width: 800px; height: 100%; display: flex; flex-direction: column;"
 >
 	<div class="chat-container" style="display: flex; flex-direction: column; flex-grow: 1;">
-        <button on:click={() => {
-			const node = get($dataset.graph.nodes).find((x) => x.id === id);
-			const node_impl = nodes.init(data.compute_type, node);
-			node_impl.reset();
-			messages.set(data.messages);
-        }}><TrashCan color='#777'/></button>
+		<button
+			on:click={() => {
+				const node = get(dataset.graph.nodes).find((x) => x.id === id);
+				const node_impl = nodes.init(data.compute_type, node);
+				node_impl.reset();
+				messages.set(data.messages);
+			}}><TrashCan color="#777" /></button
+		>
 		<div class="chat-body" style="flex-grow: 1; overflow-y: auto; padding: 8px;">
 			{#if _.isArray($messages)}
 				{#each _.takeRight($messages, $messages.length - 1) as message, index (index)}

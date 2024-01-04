@@ -18,6 +18,12 @@
 			],
 			"$routes/*": [
 				"../src/routes/*"
+			],
+			"$test": [
+				"../src/test"
+			],
+			"$test/*": [
+				"../src/test/*"
 			]
 		},
 		"rootDirs": [

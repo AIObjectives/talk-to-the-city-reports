@@ -3,10 +3,13 @@
 	import Button from '@smui/button';
 	import IconButton from '@smui/icon-button';
 	import Close from '$lib/icons/Close.svelte';
-	import { graphNotice, viewMode } from '$lib/store';
+	import { graphNotice } from '$lib/store';
 	import { onMount, onDestroy } from 'svelte';
 	import Cookies from 'js-cookie';
 	import { _ as __ } from 'svelte-i18n';
+	import { getContext } from 'svelte';
+
+	let viewMode = getContext('viewMode');
 
 	let snackbar: Snackbar;
 	let sub = null;
@@ -18,7 +21,7 @@
 	});
 
 	onDestroy(() => {
-		sub();
+		if (sub) sub();
 	});
 </script>
 

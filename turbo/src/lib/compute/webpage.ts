@@ -71,7 +71,7 @@ export let webpage_node_data: WebpageNodeInterface = {
 		input_ids: {},
 		category: categories.input.id,
 		icon: 'webpage_v0',
-		show_in_ui: false
+		show_in_ui: true
 	},
 	position: { x: 0, y: 0 },
 	type: 'text_input_v0'

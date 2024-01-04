@@ -1,6 +1,7 @@
 import { browser } from '$app/environment';
 import { init } from 'svelte-i18n';
 import Cookies from 'js-cookie';
+import _ from 'lodash';
 
 const defaultLocale = Cookies.get('locale') || 'en';
 
@@ -16,6 +17,15 @@ class Register {
 	register(node: any, init_data) {
 		this.nodes[init_data.data.compute_type] = node;
 		this.data[init_data.data.compute_type] = init_data;
+	}
+
+	init_new(compute_type: string) {
+		if (!this.data.hasOwnProperty(compute_type)) {
+			throw new Error(`Compute type '${compute_type}' not found.`);
+		}
+		const dataClone = _.cloneDeep(this.data[compute_type]);
+		const node = new this.nodes[compute_type](dataClone);
+		return node;
 	}
 
 	init(compute_type: string, init_data: any) {

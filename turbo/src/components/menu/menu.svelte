@@ -3,7 +3,7 @@
 	import BurgerMenu from './menu_burger.svelte';
 	import ForkDialog from './fork_dialog.svelte';
 	import MenuItem from './menu_item.svelte';
-	import { dataset } from '$lib/store';
+	import { storeDataset } from '$lib/store';
 	import ToggleView from '$components/ToggleView.svelte';
 	import { _ as __ } from 'svelte-i18n';
 
@@ -37,7 +37,7 @@
 						<MenuItem
 							on:click={(e) => {
 								const name = prompt($__('enter_name_of_template'));
-								$dataset.saveAsTemplate(name);
+								$storeDataset.saveAsTemplate(name);
 							}}
 							label={$__('save_as_template')}
 						/>

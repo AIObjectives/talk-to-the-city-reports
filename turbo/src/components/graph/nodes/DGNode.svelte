@@ -4,14 +4,14 @@
 	import Help from '$lib/icons/HelpCircle.svelte';
 	import type { BaseData } from '$lib/node_data_types';
 	import { Position, Handle } from '@xyflow/svelte';
-	import { dataset } from '$lib/store';
 	import Connection from '$lib/icons/Connection.svelte';
 	import { useNodes } from '@xyflow/svelte';
 	import { _ as __ } from 'svelte-i18n';
-	import register from '$lib/node_register'
-	import { onMount } from 'svelte';
+	import register from '$lib/node_register';
 	import Cookies from 'js-cookie';
+	import { getContext } from 'svelte';
 
+	const dataset = getContext('dataset');
 	const nodes = useNodes();
 
 	export let data: BaseData;
@@ -29,32 +29,30 @@
 	const getDocs = async (locale) => {
 		doc = await register.getDocs(data.compute_type, locale);
 		inlineDoc = await register.getInlineDocs(data.compute_type, locale);
-	}
+	};
 
 	function onConnect(x) {
 		let { source, target } = x.detail.connection;
-		$dataset?.graph.onConnect(source, target);
+		dataset?.graph.onConnect(source, target);
 	}
 
 	$: variant = isStandardView ? 'raised' : 'outlined';
 	$: show = isStandardView ? data.show_in_ui === undefined || data.show_in_ui === true : true;
-	let dg_node = $dataset?.graph.find(id);
+	let dg_node = dataset?.graph.find(id);
 	let show_help = false;
 	let has_all_inputs = true;
 	let doc;
 	let inlineDoc;
 	$: {
 		const locale = Cookies.get('locale') || 'en';
-		getDocs(locale)
+		getDocs(locale);
 		if (dg_node) {
 			$nodes;
 			selected;
 			has_all_inputs = dg_node.hasAllInputs;
 		}
-		
 	}
 	let _style = `position: relative; ${style}; `;
-
 
 	if (width && height) {
 		_style += `min-width: ${width}px; min-height: ${height}px;`;
@@ -153,10 +151,6 @@
 		stroke-width: 3;
 		stroke: rgb(185, 191, 220);
 	}
-	.paper {
-		position: relative;
-	}
-
 	.help-icon-wrapper {
 		position: absolute;
 		top: 10px;
