@@ -1,5 +1,6 @@
 import nodes from '$lib/node_register';
 import categories from '$lib/node_categories';
+import type { DGNodeInterface, BaseData } from '$lib/node_data_types';
 
 export default class WebpageNode {
 	id: string;
@@ -32,29 +33,36 @@ export default class WebpageNode {
 		}
 
 		try {
+			console.log('fetching readability');
+			// Todo: relative URLs don't work server-side
+			// consider using ${import.meta.env.VITE_APP_BASE_URL}
 			const response = await fetch(`/api/readability?url=${encodeURIComponent(url)}`);
 			if (response.ok) {
 				const text = await response.text();
 				const content = text;
 				if (content) {
+					console.log('assigning content to output');
+					console.log(content);
 					this.data.output = content;
 					return content;
 				} else {
+					console.error('Content not found in the response.');
 					error('Content not found in the response.');
 				}
 			} else {
-				// The API call was unsuccessful
+				console.error(`API call failed with status: ${response.status}`);
 				error(`API call failed with status: ${response.status}`);
 			}
 		} catch (e) {
-			// Catch and handle errors that may occur during the API call
-			error(`An error occurred during API call: ${e.message}`);
+			console.error(`An error occurred during API call: ${(e as Error).message}`);
+			error(`An error occurred during API call: ${(e as Error).message}`);
 		}
 	}
 }
 
 interface WebpageData extends BaseData {
-	output: object;
+	output: string;
+	text: string;
 }
 
 type WebpageNodeInterface = DGNodeInterface & {
@@ -66,12 +74,14 @@ export let webpage_node_data: WebpageNodeInterface = {
 	data: {
 		label: 'webpage',
 		dirty: false,
-		output: {},
+		output: '',
+		text: '',
 		compute_type: 'webpage_v0',
 		input_ids: {},
 		category: categories.input.id,
 		icon: 'webpage_v0',
-		show_in_ui: true
+		show_in_ui: true,
+		message: ''
 	},
 	position: { x: 0, y: 0 },
 	type: 'text_input_v0'

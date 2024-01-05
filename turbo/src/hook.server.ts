@@ -13,6 +13,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 if (!admin.apps.length) {
 	console.log('initializing firebase');
 	admin.initializeApp({
-		credential: admin.credential.cert(serviceAccount)
+		credential: admin.credential.cert(serviceAccount as admin.ServiceAccount)
 	});
 }

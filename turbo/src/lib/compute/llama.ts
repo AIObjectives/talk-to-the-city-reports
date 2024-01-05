@@ -1,7 +1,6 @@
 import nodes from '$lib/node_register';
 import categories from '$lib/node_categories';
-
-interface BaseData {}
+import type { DGNodeInterface, BaseData } from '$lib/node_data_types';
 
 interface LlamaData extends BaseData {
 	text: string;
@@ -30,7 +29,7 @@ export default class LlamaNode {
 		slug: string,
 		Cookies: any
 	) {
-		this.data.message = 'fetching...';
+		this.data.message = 'fetching..';
 		this.data.dirty = false;
 		try {
 			const response = await fetch('http://localhost:10000/v1/chat/completions');
@@ -60,7 +59,8 @@ export let llama_node_data: LlamaNodeInterface = {
 		input_ids: {},
 		category: categories.llama.id,
 		icon: 'llama_v0',
-		show_in_ui: true
+		show_in_ui: true,
+		message: ''
 	},
 	position: { x: 0, y: 0 },
 	type: 'text_input_v0'

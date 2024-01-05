@@ -1,22 +1,29 @@
 {
 	"name": "tttc-turbo",
 	"version": "0.0.1",
+	"tsCoverage": "87%",
+	"vitestPass": 103,
+	"vitestFail": 0,
+	"engines": {
+		"node": ">=18.0.0"
+	},
 	"scripts": {
-		"dev": "npm run prepare && vite dev",
+		"dev": "src/lib/scripts/dev.sh",
 		"build": "npm run prepare && vite build",
 		"preview": "vite preview",
-		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"check": "svelte-check --tsconfig ./tsconfig.json --fail-on-warnings",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write src",
 		"prepare": "npm run smui-theme",
 		"python-api": "java --add-opens java.base/java.util=ALL-UNNAMED -jar ../swagger-codegen-cli.jar generate -i static/swagger.json -l python -o src/python-api/",
 		"smui-theme": "smui-theme compile static/smui.css -i src/theme",
-		"test-ui": "python3 src/lib/scripts/test.py && vitest --ui --open --coverage --passWithNoTests",
-		"test": "vitest --coverage --run",
-		"test-update-readme": "vitest --coverage --run --no-color --silent",
+		"test-ui": "npm run test && vitest --ui --open --coverage --passWithNoTests",
+		"test": "python3 src/lib/scripts/test.py",
 		"test-watch": "vitest --coverage",
-		"test-help": "vitest -h"
+		"test-help": "vitest -h",
+		"ts-coverage": "python3 src/lib/scripts/coverage.py",
+		"ts-coverage-report": "./src/lib/scripts/convert-svelte-to-tsx.cjs && typescript-coverage-report && rm -rf src/tmp"
 	},
 	"devDependencies": {
 		"@fontsource/fira-mono": "^4.5.10",
@@ -30,6 +37,7 @@
 		"@sveltejs/adapter-auto": "^2.0.0",
 		"@sveltejs/kit": "^1.27.4",
 		"@types/cookie": "^0.5.1",
+		"@types/js-cookie": "^3.0.6",
 		"@types/lodash": "^4.14.202",
 		"@typescript-eslint/eslint-plugin": "^6.0.0",
 		"@typescript-eslint/parser": "^6.0.0",
@@ -109,6 +117,8 @@
 		"swagger-ui-svelte": "^0.0.13",
 		"tailwindcss": "^3.3.5",
 		"ts-json-schema-generator": "^1.5.0",
+		"type-coverage": "^2.27.1",
+		"typescript-coverage-report": "^0.8.0",
 		"workerpool": "^8.0.0"
 	}
 }

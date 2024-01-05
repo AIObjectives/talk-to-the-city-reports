@@ -1,3 +1,5 @@
+coverage-ts
+src/tmp
 .venv
 src/python-api
 backup
