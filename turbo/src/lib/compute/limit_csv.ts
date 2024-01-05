@@ -2,6 +2,7 @@ import nodes from '$lib/node_register';
 import categories from '$lib/node_categories';
 import _ from 'lodash';
 import { format, unwrapFunctionStore } from 'svelte-i18n';
+import type { DGNodeInterface, BaseData } from '$lib/node_data_types';
 const $__ = unwrapFunctionStore(format);
 
 export default class LimitCSVNode {
@@ -19,7 +20,7 @@ export default class LimitCSVNode {
 	}
 
 	async compute(
-		inputData: object,
+		inputData: Record<string, any>,
 		context: string,
 		info: (arg: string) => void,
 		error: (arg: string) => void,
@@ -27,15 +28,28 @@ export default class LimitCSVNode {
 		slug: string,
 		Cookies: any
 	) {
-		const input: [object] = inputData[Object.keys(inputData)[0]];
+		const input: [] = _.head(_.values(inputData));
 		this.data.dirty = false;
-		if (input && _.isPlainObject(input)) {
-			return _.pick(input, _.keys(input).slice(0, this.data.number));
-		} else if (input && _.isArray(input)) {
-			return input.slice(0, this.data.number);
-		} else {
-			return [];
+		if (_.isEmpty(input)) {
+			this.data.message = $__('missing_input_data');
+			this.data.output = [];
+			return this.data.output;
 		}
+		const number: number = _.isNumber(this.data.number)
+			? this.data.number
+			: parseInt(this.data.number);
+
+		if (_.isNaN(number)) {
+			this.data.output = input;
+		} else if (_.isNumber(number))
+			if (_.isPlainObject(input)) {
+				this.data.output = _.pick(input, _.keys(input).slice(0, this.data.number));
+			} else if (_.isArray(input)) {
+				this.data.output = input.slice(0, this.data.number);
+			} else {
+				this.data.output = [];
+			}
+		return this.data.output;
 	}
 }
 
@@ -53,6 +67,7 @@ export let limit_csv_node_data: LimitCSVNodeInterface = {
 		label: 'limit_csv',
 		dirty: false,
 		number: 2,
+		message: '',
 		compute_type: 'limit_csv_v0',
 		input_ids: { csv: '' },
 		category: categories.wrangling.id,

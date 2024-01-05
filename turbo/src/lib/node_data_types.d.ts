@@ -6,7 +6,8 @@ export interface BaseData {
 	category: string;
 	icon: string;
 	output?: any;
-	show_in_ui: true;
+	show_in_ui: boolean;
+	message: string;
 }
 
 export interface DGEdgeInterface {
