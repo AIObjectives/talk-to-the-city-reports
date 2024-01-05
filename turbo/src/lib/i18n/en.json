@@ -170,5 +170,6 @@
   "show_advanced_settings": "Show Advanced Settings",
   "hide_advanced_settings": "Hide Advanced Settings",
   "switch_to_graph_view": "Switch to Graph View",
-  "done": "Done"
+  "done": "Done",
+  "other": "Other"
 }

@@ -171,5 +171,6 @@
     "show_advanced_settings": "顯示進階設定",
     "hide_advanced_settings": "隱藏進階設定",
     "switch_to_graph_view": "切換到圖形視圖",
-    "done": "完成"
+    "done": "完成",
+    "other": "其他"
 }
