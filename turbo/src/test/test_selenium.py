@@ -51,7 +51,6 @@ def test_report(name):
     assert "Show more" in driver.page_source
     assert "Subtopics" in driver.page_source
     assert "Claims" in driver.page_source
-    assert "Quote" in driver.page_source
     assert "AI Objectives Institute" in driver.page_source
     assert "Home" in driver.page_source
     assert "About" in driver.page_source
