@@ -10,6 +10,14 @@ describe('limit_csv function', () => {
 		expect(result).toEqual([{ name: 'Alice' }, { name: 'Bob' }]);
 	});
 
+	it('should let all data pass through if number is left blank', async () => {
+		const node = new LimitCSVNode(limit_csv_node_data);
+		node.data.number = '';
+		const inputData = { csv: [{ name: 'Alice' }, { name: 'Bob' }, { name: 'Charlie' }] };
+		const result = await node.compute(inputData, null);
+		expect(result).toEqual([{ name: 'Alice' }, { name: 'Bob' }, { name: 'Charlie' }]);
+	});
+
 	it('should limit the number of rows correctly, for an object', async () => {
 		const node = new LimitCSVNode(limit_csv_node_data);
 		node.data.number = 1;
