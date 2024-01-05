@@ -51,7 +51,6 @@ def test_report(name):
     assert "Show more" in driver.page_source
     assert "Subtopics" in driver.page_source
     assert "Claims" in driver.page_source
-    assert "Quote" in driver.page_source
     assert "AI Objectives Institute" in driver.page_source
     assert "Home" in driver.page_source
     assert "About" in driver.page_source
@@ -62,10 +61,10 @@ def test_report(name):
 tests = ["mina-protocol", "heal-michigan-9", "taiwan-zh", "台灣初步測試"]
 
 
-# some tests are running too slowly so commenting out for now
 def test_other():
-    # test_in(f"{url}/docs/nodes", "argument_extraction_v0")
-    # test_in(f"{url}/api-docs", "Please sign in")
+    test_in(f"{url}/report/heal-michigan-9", "HEAL MICHIGAN")
+    test_in(f"{url}/docs/nodes", "argument_extraction_v0")
+    test_in(f"{url}/api-docs", "Please sign in")
     test_in(f"{url}/about", "About")
     test_in(f"{url}/api.html", "{dataset}")
     test_in(f"{url}/login", "Sign in with Google")

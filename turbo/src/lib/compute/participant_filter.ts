@@ -1,5 +1,7 @@
 import nodes from '$lib/node_register';
 import categories from '$lib/node_categories';
+import { browser } from '$app/environment';
+import type { DGNodeInterface, BaseData } from '$lib/node_data_types';
 
 export default class ParticipantFilterNode {
 	id: string;
@@ -15,8 +17,18 @@ export default class ParticipantFilterNode {
 		this.type = type;
 	}
 
+	filterByURLParam() {
+		if (browser) {
+			const urlParams = new URLSearchParams(window.location.search);
+			const participant = urlParams.get(this.data.query_param_name || 'name');
+			if (participant) {
+				this.data.text = participant;
+			}
+		}
+	}
+
 	async compute(
-		inputData: object,
+		inputData: Record<string, any>,
 		context: string,
 		info: (arg: string) => void,
 		error: (arg: string) => void,
@@ -25,6 +37,8 @@ export default class ParticipantFilterNode {
 		Cookies: any
 	) {
 		this.data.dirty = false;
+		this.filterByURLParam();
+
 		const input = inputData[Object.keys(inputData)[0]];
 		if (input && input.topics) {
 			const copy = JSON.parse(JSON.stringify(input));
@@ -32,8 +46,11 @@ export default class ParticipantFilterNode {
 			copy.topics.forEach((topic: any) => {
 				topic.subtopics.forEach((subtopic: any) => {
 					subtopic.claims = subtopic.claims.filter((claim: any) => {
-						if (claim.interview) return claim.interview.toLowerCase().includes(participantName);
-						else return true;
+						if (claim.interview) {
+							const name = claim.interview.toLowerCase().replace(/ /g, '-');
+							const filter = participantName.replace(/ /g, '-');
+							return name.includes(filter);
+						} else return true;
 					});
 				});
 				topic.subtopics = topic.subtopics.filter((subtopic: any) => subtopic.claims.length > 0);
@@ -47,7 +64,7 @@ export default class ParticipantFilterNode {
 interface ParticipantFilterData extends BaseData {
 	text: string;
 	output: object;
-	placehoder: string;
+	query_param_name: string;
 }
 
 type ParticipantFilterNodeInterface = DGNodeInterface & {
@@ -66,10 +83,10 @@ export let participant_filter_node_data: ParticipantFilterNodeInterface = {
 		category: categories.wrangling.id,
 		icon: 'participant_filter_v0',
 		show_in_ui: true,
-		placeholder: ''
+		query_param_name: 'name'
 	},
 	position: { x: 0, y: 0 },
-	type: 'text_input_v0'
+	type: 'participant_filter_v0'
 };
 
 export let participant_filter_node = new ParticipantFilterNode(participant_filter_node_data);
