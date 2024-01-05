@@ -37,8 +37,8 @@
 
 	$: feedbackNode = get(dataset.graph.nodes).find((n) => n.data?.compute_type === 'feedback_v0');
 
-	$: reportNode = get(dataset.graph.nodes).find((n) => n.data?.compute_type === 'report_v0');
-	$: topics = reportNode?.data?.output?.topics;
+	$: mergeNode = get(dataset.graph.nodes).find((n) => n.data?.compute_type === 'merge_v0');
+	$: topics = mergeNode?.data?.output?.topics;
 	$: subtopics = topic?.subtopics || [];
 
 	function close() {
@@ -102,15 +102,15 @@
 										topic = t;
 									}}>{t.topicName}</Option
 								>
-								<Option
-									value={'other'}
-									on:click={(x) => {
-										setTimeout(() => {
-											otherTopic = true;
-										}, 100);
-									}}>{'other'}</Option
-								>
 							{/each}
+							<Option
+								value={'other'}
+								on:click={(x) => {
+									setTimeout(() => {
+										otherTopic = true;
+									}, 100);
+								}}>{$__('other')}</Option
+							>
 						</Select>
 					</div>
 					<div>

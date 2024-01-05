@@ -40,6 +40,7 @@
 		],
 		"moduleResolution": "node",
 		"module": "esnext",
+		"noEmit": true,
 		"target": "esnext",
 		"ignoreDeprecations": "5.0"
 	},
