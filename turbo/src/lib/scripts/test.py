@@ -1,6 +1,15 @@
 import subprocess, os, json, re, pathlib
 
 
+def update_test_count(test_pass, test_fail):
+    with open('package.json') as f:
+        package_json = json.load(f)
+        package_json['vitestPass'] = test_pass
+        package_json['vitestFail'] = test_fail
+    with open('package.json', 'w') as f:
+        json.dump(package_json, f, indent='\t')
+
+
 def convert_to_markdown(json_data):
     summary_table = """
 | Metric                | Count |
@@ -26,8 +35,8 @@ def convert_to_markdown(json_data):
         detail_heading = f"### `[{index}]` [{short_filename}](./src/test/{filename})"
         test_table_header = "| Test | Status | Duration (ms) |\n|---|---|---:|\n"
         test_table_body = "\n".join(
-            "| *{}* | **{}** | `{}` |".format(
-                test["title"], test["status"], test["duration"]
+            "| *{}* | **{}** |".format(
+                test["title"], test["status"]
             )
             for test in suite["assertionResults"]
         )
@@ -50,19 +59,16 @@ def update_readme():
     if result.returncode == 0:
         json_data = json.loads(result.stdout)
         markdown_result = convert_to_markdown(json_data)
-
+        update_test_count(json_data['numPassedTests'], json_data['numFailedTests'])
         with open("README.md") as f:
             content = f.read()
-
-        # Use regex to be flexible with finding the 'Test Results' heading
         test_results_header_regex = re.compile(
             r"(\n\#{2}\s*Test\s+Results\b.*?\n)", re.IGNORECASE
         )
         match = test_results_header_regex.search(content)
-
         if (
             match
-        ):  # If the heading exists, replace the following section until next heading
+        ):
             start_index = match.start()
             end_index = re.search(
                 r"\n(\#{2}\s)", content[start_index + len(match.group(1)) :]
@@ -72,21 +78,19 @@ def update_readme():
                 if end_index
                 else len(content)
             )
-
             new_content = (
                 content[:start_index]
-                + "\n"
-                + match.group(  # Ensure one newline before the heading (avoiding extra empty lines)
+                + match.group(
                     1
                 ).rstrip()
+                + "\n\n"
+                + markdown_result.strip()
                 + "\n"
-                + markdown_result.strip()  # The matched '## Test Results' heading
-                + "\n"
-                + content[  # New markdown result with no surrounding whitespace
+                + content[
                     end_index:
-                ]  # Rest of original content
+                ]
             )
-        else:  # If the heading doesn't exist, append it
+        else:
             new_content = (
                 content.rstrip()
                 + "\n\n"

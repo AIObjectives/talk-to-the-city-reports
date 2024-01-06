@@ -1,0 +1,5 @@
+. turbo/src/lib/scripts/colors.sh
+
+echo "${LIGHT_BLUE}Running selenium tests...${NC}\n"
+
+python3 turbo/src/test/test_selenium.py --local

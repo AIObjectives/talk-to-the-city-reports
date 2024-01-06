@@ -2,6 +2,7 @@ import { browser } from '$app/environment';
 import { init } from 'svelte-i18n';
 import Cookies from 'js-cookie';
 import _ from 'lodash';
+import type { DGNodeInterface, BaseData } from '$lib/node_data_types.d.ts';
 
 const defaultLocale = Cookies.get('locale') || 'en';
 
@@ -10,11 +11,19 @@ init({
 	initialLocale: browser ? window.navigator.language : defaultLocale
 });
 
-class Register {
-	nodes: any = {};
-	data: any = {};
+interface NodeRegister {
+	[key: string]: any;
+}
 
-	register(node: any, init_data) {
+interface DataRegister {
+	[key: string]: DGNodeInterface;
+}
+
+class Register {
+	nodes: NodeRegister = {};
+	data: DataRegister = {};
+
+	register(node: any, init_data: DGNodeInterface<BaseData>) {
 		this.nodes[init_data.data.compute_type] = node;
 		this.data[init_data.data.compute_type] = init_data;
 	}

@@ -1,0 +1,19 @@
+#!/bin/bash
+. turbo/src/lib/scripts/colors.sh
+
+echo -e "${LIGHT_BLUE}Checking typescript (this may be too drastic)...${NC}\n"
+cd turbo
+python3 src/lib/scripts/ts_errors.py --pre-commit-hook
+TS_ERRORS_EXIT_CODE=$?
+if [ $TS_ERRORS_EXIT_CODE -ne 0 ]; then
+    echo "TypeScript errors detected - refusing to commit."
+    exit $TS_ERRORS_EXIT_CODE
+fi
+echo -e "${LIGHT_BLUE}Running tests...${NC}\n"
+npm run test
+echo -e "\n${LIGHT_BLUE}Running typescript coverage...${NC}\n"
+npm run ts-coverage
+# todo: this should be handled more gracefully
+# since the user may not want to always add package.json and README.md
+git add package.json README.md
+cd -

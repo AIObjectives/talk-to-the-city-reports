@@ -139,7 +139,7 @@
 	let projectTemplate = 'default';
 	let templates: Record<string, DocumentData> = {};
 
-	function createProjectSlug(str) {
+	function createProjectSlug(str: string): string {
 		return str
 			.trim()
 			.toLowerCase()
@@ -147,7 +147,7 @@
 			.replace(/[^0-9a-z\-]/g, '');
 	}
 
-	async function createNewProject(event) {
+	async function createNewProject(event: Event): Promise<void> {
 		event.preventDefault();
 		let graph = templates[projectTemplate];
 
@@ -192,7 +192,7 @@
 				</TextField>
 			</div>
 			<div class="w-full px-3 py-5">
-				<TextField style="width: 100%;" rows="5" textarea bind:value={projectDescription}>
+				<TextField style="width: 100%;" textarea bind:value={projectDescription}>
 					<HelperText persistent slot="helper">{$__('report_description')}</HelperText>
 				</TextField>
 			</div>

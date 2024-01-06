@@ -1,5 +1,5 @@
 import { toast } from '@zerodevx/svelte-toast';
-import type { SvelteToastOptions } from 'node_modules/@zerodevx/svelte-toast/stores';
+import type { SvelteToastOptions } from '@zerodevx/svelte-toast/stores.d.ts';
 
 export const success = (m: string | SvelteToastOptions) =>
 	toast.push(m, {
