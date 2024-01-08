@@ -45,7 +45,7 @@ export default class CSVNode {
 		if (this.data.gcs_path) {
 			// info('Loading ' + this.data.gcs_path.split('/').pop());
 			contents = await readFileFromGCS(this);
-			let parsedData = '';
+			let parsedData: any = '';
 			if (browser) parsedData = this.paparseCSV(contents);
 			else parsedData = await this.csvParser(contents);
 			this.data.output = this.filterValidRows(parsedData);
@@ -61,7 +61,7 @@ export default class CSVNode {
 		const { Readable } = streamModule;
 
 		return new Promise((resolve, reject) => {
-			const results = [];
+			const results: any = [];
 			Readable.from(csvString)
 				.pipe(csv())
 				.on('data', (data) => results.push(data))
@@ -87,10 +87,12 @@ export default class CSVNode {
 
 	isValidRow(row: object) {
 		for (const column in row) {
+			// @ts-ignore
 			row[column] = row[column].trim();
 		}
 		let allEmpty = true;
 		for (const column in row) {
+			// @ts-ignore
 			if (row[column] !== '') {
 				allEmpty = false;
 				break;
@@ -114,7 +116,8 @@ export let csv_node_data: CSVNodeInterface = {
 		input_ids: {},
 		category: categories.input.id,
 		icon: 'csv_v0',
-		show_in_ui: true
+		show_in_ui: true,
+		message: ''
 	},
 	position: { x: 0, y: 0 },
 	type: 'csv_v0'

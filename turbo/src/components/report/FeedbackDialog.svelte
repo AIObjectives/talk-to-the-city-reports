@@ -21,9 +21,9 @@
 	let miscategorized = false;
 	let inaccurate = false;
 	let doesNotBelong = false;
-	let topic = null;
-	let subtopic = null;
-	let otherTopic = null;
+	let topic: any = null;
+	let subtopic: any = null;
+	let otherTopic: any = null;
 	let otherTopicName = '';
 	let otherSubtopicName = '';
 
@@ -35,9 +35,9 @@
 		}
 	}
 
-	$: feedbackNode = get(dataset.graph.nodes).find((n) => n.data?.compute_type === 'feedback_v0');
+	$: feedbackNode = get(dataset.graph.nodes).find((n) => n.data?.compute_type === 'feedback_v0')!;
 
-	$: mergeNode = get(dataset.graph.nodes).find((n) => n.data?.compute_type === 'merge_v0');
+	$: mergeNode = get(dataset.graph.nodes).find((n) => n.data?.compute_type === 'merge_v0')!;
 	$: topics = mergeNode?.data?.output?.topics;
 	$: subtopics = topic?.subtopics || [];
 
@@ -81,6 +81,7 @@
 	bind:open
 	aria-labelledby="simple-title"
 	aria-describedby="simple-content"
+	class="z-2"
 >
 	<Title id="simple-title" class="mb-8">{$__('feedback')}</Title>
 
