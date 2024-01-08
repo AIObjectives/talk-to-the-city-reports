@@ -1,20 +1,18 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import { Chart, Svg, Group, Pack, Zoom } from 'layerchart';
 	import { cubicOut } from 'svelte/easing';
 	import ChartText from './ChartText.svelte';
 	import ChartCircle from './ChartCircle.svelte';
 	import { createEventDispatcher } from 'svelte';
-	
-	export let complexHierarchy;
-	export let getNodeColor;
-	export let onSelect;
-	export let showInfoPanel;
+
+	export let complexHierarchy: any;
+	export let getNodeColor: any;
 
 	const dispatch = createEventDispatcher();
 	let padding = 3;
-	let zoom;
-	export let selected;
+	let zoom: any;
+	export let selected: any;
 
 	onMount(() => {
 		selected = complexHierarchy;
@@ -28,11 +26,16 @@
 			zoom.zoomTo({ x: selected.x, y: selected.y }, { width: diameter, height: diameter });
 		}
 	}
+
+	function selectedNodes(nodes: any) {
+		return nodes.filter((node: any) => node.depth <= (selected ? selected.depth + 1 : 1));
+	}
 </script>
 
 <Chart data={complexHierarchy}>
 	<Svg>
 		<Zoom
+			translateOnScale={false}
 			bind:this={zoom}
 			let:scale
 			tweened={{ duration: 800, easing: cubicOut }}
@@ -43,7 +46,7 @@
 			}}
 		>
 			<Pack {padding} let:nodes>
-				{#each nodes.filter((node) => node.depth <= (selected ? selected.depth + 1 : 1)) as node (node.data.name + '-' + node.depth + '-' + node.x + '-' + node.y)}
+				{#each selectedNodes(nodes) as node (node.data.name + '-' + node.depth + '-' + node.x + '-' + node.y)}
 					<Group
 						x={node.x}
 						y={node.y}

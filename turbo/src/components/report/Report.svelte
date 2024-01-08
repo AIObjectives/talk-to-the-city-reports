@@ -13,14 +13,16 @@
 	import Tooltip from '$components/report/Tooltip.svelte';
 	import InfoPanel from '$components/report/InfoPanel.svelte';
 	import FeedbackDialog from './FeedbackDialog.svelte';
+	import type { FeedbackNodeInterface } from '$lib/compute/feedback';
+	import type { CSVNodeInterface } from '$lib/compute/csv';
+	import { Dataset } from '$lib/dataset';
 
-	export let dataset: any;
+	export let dataset: Dataset;
 
 	let report: any;
 	let csv: any;
-	let timestamps;
 
-	function transformData(originalData) {
+	function transformData(originalData: any) {
 		return {
 			name: '',
 			children: _.map(originalData.topics, (topic) => ({
@@ -44,8 +46,8 @@
 	let complexHierarchy: any;
 
 	let report_node;
-	let csv_node;
-	let feedbackNode;
+	let csv_node: CSVNodeInterface;
+	let feedbackNode: FeedbackNodeInterface;
 
 	$: {
 		if (dataset) {
@@ -56,38 +58,25 @@
 				(n) => n.data?.compute_type === 'report_v1'
 			);
 			if (report_node_v0) {
-				csv_node =
-					get(dataset.graph.nodes).find((n) => n.data?.compute_type === 'csv_v0') ||
-					get(dataset.graph.nodes).find((n) => n.data?.compute_type === 'json_v0');
+				csv_node = (get(dataset.graph.nodes).find((n) => n.data?.compute_type === 'csv_v0') ||
+					get(dataset.graph.nodes).find(
+						(n) => n.data?.compute_type === 'json_v0'
+					)) as CSVNodeInterface;
 				report_node = report_node_v0;
 				report = report_node.data.output;
 				csv = csv_node.data.output;
 			} else if (report_node_v1) {
 				csv = report_node_v1.data.output[report_node_v1.data.output_ids.csv];
 				report = report_node_v1.data.output[report_node_v1.data.output_ids.merge];
-				timestamps = report_node_v1.data.output[report_node_v1.data.output_ids.timestamps];
-				if (!_.isEmpty(timestamps))
-					timestamps = _.map(timestamps, (item) => {
-						const parts = item.timestamp.split(':').map(Number);
-						const totalSeconds = parts[0] * 3600 + parts[1] * 60 + parts[2];
-						return _.assign(item, { timestamp_seconds: totalSeconds });
-					});
 			}
 
-			feedbackNode = get(dataset.graph.nodes).find((n) => n.data?.compute_type === 'feedback_v0');
+			feedbackNode = get(dataset.graph.nodes).find(
+				(n) => n.data?.compute_type === 'feedback_v0'
+			) as FeedbackNodeInterface;
 			if (!_.isEmpty(report) && !_.isEmpty(csv)) {
-				if (!_.isEmpty(csv) && _.every(csv, (item) => item.timestamp))
-					csv = _.map(csv, (item) => {
-						if (item.timestamp) {
-							const parts = item.timestamp.split(':').map(Number);
-							const totalSeconds = parts[0] * 3600 + parts[1] * 60 + parts[2];
-							return _.assign(item, { timestamp_seconds: totalSeconds });
-						}
-					});
-
 				let transformedData = transformData(report);
 				complexHierarchy = hierarchy(transformedData)
-					.sum((d) => d.value)
+					.sum((d: any) => d.value)
 					.sort(sortFunc('value', 'desc'));
 			}
 		}
@@ -111,7 +100,7 @@
 
 	const ordinalColor = scaleOrdinal(customColors);
 
-	function getNodeColor(node) {
+	function getNodeColor(node: any) {
 		const colorParent = findAncestor(node, (n) => n.depth === 1);
 		return colorParent
 			? hsl(ordinalColor(colorParent.data.name)).brighter(node.depth * 0.3)
@@ -120,49 +109,49 @@
 
 	let showInfoPanel = false;
 	$: gridTemplateColumns = showInfoPanel ? '1fr 400px' : '1fr';
-	let selected;
-
+	let selected: any;
 </script>
 
 <FeedbackDialog {dataset} claims={feedbackEvent} />
 
-<div class="graph-container" class:info-active={showInfoPanel} style="--grid-template-columns: {gridTemplateColumns}">
-    {#if complexHierarchy}
-        <Tooltip {tooltipEvent} />
-        <div class="chart-wrapper" class:selected={selected?.depth > 1}>
-            <Chart
-                {complexHierarchy}
-                {getNodeColor}
-                bind:selected="{selected}"
-                on:click={(e) => {
-                    if (e?.detail?.node){
-                        tooltipEvent = null;
-                        clickEvent = e.detail;
-                    }
-                    showInfoPanel = !!e?.detail?.node;
-                }}
-                on:mouseenter={(e) => (tooltipEvent = e.detail)}
-                on:mouseleave={(e) => (tooltipEvent = null)}
-            />
-        </div>
-        {#if showInfoPanel}
-            <div class="info-panel">
-                <InfoPanel
-                    scrollHeight={'400px'}
-                    showFeedback={!!feedbackNode}
-                    {dataset}
-                    {clickEvent}
-                    {csv}
-                    {timestamps}
-                    on:feedback={(e) => {
-                        feedbackEvent = e.detail;
-                    }}
-                />
-            </div>
-        {/if}
-    {/if}
+<div
+	class="graph-container"
+	class:info-active={showInfoPanel}
+	style="--grid-template-columns: {gridTemplateColumns}"
+>
+	{#if complexHierarchy}
+		<Tooltip {tooltipEvent} />
+		<div class="chart-wrapper" class:selected={selected?.depth > 1}>
+			<Chart
+				{complexHierarchy}
+				{getNodeColor}
+				bind:selected
+				on:click={(e) => {
+					if (e?.detail?.node) {
+						tooltipEvent = null;
+						clickEvent = e.detail;
+					}
+					showInfoPanel = !!e?.detail?.node;
+				}}
+				on:mouseenter={(e) => (tooltipEvent = e.detail)}
+				on:mouseleave={(e) => (tooltipEvent = null)}
+			/>
+		</div>
+		{#if showInfoPanel}
+			<div class="info-panel">
+				<InfoPanel
+					scrollHeight={'400px'}
+					showFeedback={!!feedbackNode}
+					{clickEvent}
+					{csv}
+					on:feedback={(e) => {
+						feedbackEvent = e.detail;
+					}}
+				/>
+			</div>
+		{/if}
+	{/if}
 </div>
-
 
 <br />
 
@@ -184,6 +173,7 @@
 							{_.map(
 								_.sumBy(
 									topic.subtopics,
+									// @ts-ignore
 									(subtopic) => _.uniqBy(subtopic.claims, 'claim').length
 								).toString(),
 								(c) => $__(c)
@@ -230,9 +220,9 @@
 </div>
 
 <style>
-    .chart-wrapper.selected {
-        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
-    }
+	.chart-wrapper.selected {
+		box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+	}
 	.graph-container {
 		padding: var(--main-padding);
 		max-width: 70rem;
@@ -253,33 +243,33 @@
 		margin: 0 auto;
 		box-sizing: border-box;
 	}
-    .graph-container {
-        display: grid;
-        /* Use the reactive gridTemplateColumns variable */
-        grid-template-columns: var(--grid-template-columns);
-        gap: 16px; /* Optional: Add a gap if needed */
-        transition: all 0.5s ease-in-out; /* Smooth transition for the resizing */
-    }
+	.graph-container {
+		display: grid;
+		/* Use the reactive gridTemplateColumns variable */
+		grid-template-columns: var(--grid-template-columns);
+		gap: 16px; /* Optional: Add a gap if needed */
+		transition: all 0.5s ease-in-out; /* Smooth transition for the resizing */
+	}
 
-    .chart-wrapper {
-        /* Flex-grow allows the chart to grow and take up available space */
-        flex-grow: 1;
-        height: 400px;
-        border-radius: 8px; /* Optional rounded corners */
-        overflow: hidden;
-        transition: all 0.5s ease-in-out;
-    }
+	.chart-wrapper {
+		/* Flex-grow allows the chart to grow and take up available space */
+		flex-grow: 1;
+		height: 400px;
+		border-radius: 8px; /* Optional rounded corners */
+		overflow: hidden;
+		transition: all 0.5s ease-in-out;
+	}
 
-    .info-panel {
-        /* The InfoPanel takes up one grid column with a fixed width when visible */
-        width: 400px;
-        transition: all 0.5s ease-in-out;
-        /* Set to only take space when it's actually displayed */
-        display: none;
-    }
-    
-    /* Only display the info panel when showInfoPanel is true */
-    .info-active .info-panel {
-        display: block;
-    }
+	.info-panel {
+		/* The InfoPanel takes up one grid column with a fixed width when visible */
+		width: 400px;
+		transition: all 0.5s ease-in-out;
+		/* Set to only take space when it's actually displayed */
+		display: none;
+	}
+
+	/* Only display the info panel when showInfoPanel is true */
+	.info-active .info-panel {
+		display: block;
+	}
 </style>

@@ -3,7 +3,7 @@ import nodes from '$lib/node_register';
 import DeepCopy from 'deep-copy';
 import { db } from '$lib/firebase';
 import categories from '$lib/node_categories';
-import type { BaseData } from '$lib/node_data_types';
+import type { BaseData, DGNodeInterface } from '$lib/node_data_types';
 import { format, unwrapFunctionStore } from 'svelte-i18n';
 import { collection, getDocs, query, where, addDoc } from 'firebase/firestore/lite';
 
@@ -19,7 +19,7 @@ export default class FeedbackNode {
 	position: { x: number; y: number };
 	type: string;
 
-	constructor(node_data) {
+	constructor(node_data: FeedbackNodeInterface) {
 		const { id, data, position, type } = node_data;
 		this.id = id;
 		this.data = data;
@@ -42,7 +42,7 @@ export default class FeedbackNode {
 		try {
 			const q = query(collection(db, 'feedback'), where('slug', '==', slug));
 			const querySnapshot = await getDocs(q);
-			const oq = {};
+			const oq: Record<string, any> = {};
 			querySnapshot.forEach((doc) => {
 				const data = doc.data();
 				oq[data.claimId] = data;
@@ -61,13 +61,13 @@ export default class FeedbackNode {
 		}
 	}
 
-	removeIdsFromClaims(data, ids) {
+	removeIdsFromClaims(data: any, ids: any) {
 		_.forEach(ids, (id) => {
 			_.forIn(data, (item) => _.remove(item.claims, { claim: id }));
 		});
 	}
 
-	async addCommentToClaim(claims, slug, submitData: any, success, error) {
+	async addCommentToClaim(claims: any, slug: any, submitData: any, success: any, error: any) {
 		_.forEach(claims, async (claim) => {
 			try {
 				const docRef = await addDoc(collection(db, 'feedback'), {
@@ -88,7 +88,7 @@ export default class FeedbackNode {
 	}
 }
 
-type FeedbackNodeInterface = DGNodeInterface & {
+export type FeedbackNodeInterface = DGNodeInterface & {
 	data: FeedbackData;
 };
 
@@ -102,7 +102,9 @@ export let feedback_node_data: FeedbackNodeInterface = {
 		input_ids: {},
 		category: categories.input.id,
 		icon: 'feedback_v0',
-		show_in_ui: false
+		show_in_ui: false,
+		comments: {},
+		message: ''
 	},
 	position: { x: 0, y: 0 },
 	type: 'feedback_v0'

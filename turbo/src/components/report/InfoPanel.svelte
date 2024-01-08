@@ -3,7 +3,6 @@
 	import { _ as __ } from 'svelte-i18n';
 	import InfoPanelClaim from './InfoPanelClaim.svelte';
 	import { createEventDispatcher } from 'svelte';
-	import type { Dataset } from '$lib/dataset';
 	import IconButton from '@smui/icon-button';
 	import Exclamation from '$lib/icons/Exclamation.svelte';
 
@@ -13,9 +12,8 @@
 	export let showClaims: boolean = true;
 	export let clickEvent: any = undefined;
 	export let csv: any;
-	export let timestamps: any;
-	export let dataset: Dataset;
 	export let claims: any = undefined;
+	export let useClass: string = '';
 	const dispatch = createEventDispatcher();
 
 	$: {
@@ -26,7 +24,7 @@
 </script>
 
 {#if claims}
-	<div class="outer-div">
+	<div class="outer-div shadow-xl bg-white {useClass}">
 		{#if showFeedback}
 			<IconButton
 				style="position: absolute; top: 0px; right: 0px; z-index: 1;"
@@ -45,16 +43,11 @@
 				</h4>
 				<h5 class="mb-3">{claims[0].claim}</h5>
 			{/if}
-			{#each claims as claim (claim.id)}
-				<InfoPanelClaim
-					{clickEvent}
-					{timestamps}
-					{showVideo}
-					{claim}
-					{csv}
-					{dataset}
-					showClaims={claims.length == 1 && showClaims}
-				/>
+			{#each claims as claim, i (claim.id)}
+				<InfoPanelClaim {showVideo} {claim} {csv} showClaims={claims.length == 1 && showClaims} />
+				{#if i < claims.length - 1}
+					<hr class="mt-5" />
+				{/if}
 			{/each}
 		</div>
 	</div>
@@ -63,7 +56,7 @@
 <style>
 	.outer-div {
 		position: relative;
-		padding-top: 20px;
+		padding: 10px;
 	}
 
 	.scrollable-content {
