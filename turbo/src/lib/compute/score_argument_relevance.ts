@@ -138,7 +138,7 @@ export let score_argument_relevance_node_data: ScoreArgumentRelevanceNodeInterfa
 		dirty: false,
 		compute_type: 'score_argument_relevance_v0',
 		input_ids: { open_ai_key: '', argument_extraction: '' },
-		category: categories.llm.id,
+		category: categories.ml.id,
 		icon: 'score_argument_relevance_v0',
 		show_in_ui: false
 	},

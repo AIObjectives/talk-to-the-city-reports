@@ -1,5 +1,6 @@
 import CryptoJS from 'crypto-js';
 import merged_clusters from '$lib/mock_data/cluster_extraction/merged_cluster_extraction.json';
+import sample from '$lib/mock_data/speech_to_text/sample.json';
 
 type Message = {
 	role: 'system' | 'user';
@@ -12,8 +13,36 @@ type CompletionRequest = {
 	temperature: number;
 };
 
+type TranscriptionRequest = {
+	file: any;
+	model: string;
+	response_format: 'verbose_json' | 'json' | 'text' | 'srt' | 'vtt' | undefined;
+	prompt: string;
+	temperature: number;
+	language: string;
+};
+
 type CompletionResponse = {
 	choices: { message: { content: string } }[];
+};
+
+type TranscriptionResponse = {
+	task: string;
+	language: string;
+	duration: number;
+	text: string;
+	segments: {
+		id: number;
+		seek: number;
+		start: number;
+		end: number;
+		text: string;
+		tokens: number[];
+		temperature: number;
+		avg_logprob: number;
+		compression_ratio: number;
+		no_speech_prob: number;
+	}[];
 };
 
 export default class OpenAI {
@@ -22,6 +51,11 @@ export default class OpenAI {
 	chat: {
 		completions: {
 			create: (request: CompletionRequest) => Promise<CompletionResponse>;
+		};
+	};
+	audio: {
+		transcriptions: {
+			create: (request: TranscriptionRequest) => Promise<TranscriptionResponse>;
 		};
 	};
 
@@ -39,6 +73,22 @@ export default class OpenAI {
 				create: this.createCompletion.bind(this)
 			}
 		};
+		this.audio = {
+			transcriptions: {
+				create: this.createTranscription.bind(this)
+			}
+		};
+	}
+
+	async createTranscription({
+		file,
+		model,
+		response_format,
+		prompt,
+		language,
+		temperature
+	}: TranscriptionRequest): Promise<TranscriptionResponse> {
+		return sample;
 	}
 
 	async createCompletion({

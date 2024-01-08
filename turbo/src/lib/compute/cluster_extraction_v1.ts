@@ -125,7 +125,7 @@ export let cluster_extraction_node_data_v1: ClusterExtractionNodeInterface = {
 		dirty: false,
 		compute_type: 'cluster_extraction_v1',
 		input_ids: { open_ai_key: '', csv: '' },
-		category: categories.llm.id,
+		category: categories.ml.id,
 		icon: 'cluster_extraction_v0',
 		show_in_ui: true
 	},

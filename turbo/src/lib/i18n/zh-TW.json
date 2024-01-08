@@ -147,6 +147,7 @@
     "success": "成功",
     "error": "錯誤",
     "loaded_from_gcs": "從 GCS 加載",
+    "loaded_from_cache": "從快取加載",
     "comments": "評論",
     "missing_input_data": "缺少輸入資料",
     "template_help": "範本提供了一種使用類似設定來創建多份報告的方式。如果您不確定該使用哪個範本，那麼請使用預設範本，它允許您自定義所有可用設定。",
@@ -172,5 +173,18 @@
     "hide_advanced_settings": "隱藏進階設定",
     "switch_to_graph_view": "切換到圖形視圖",
     "done": "完成",
-    "other": "其他"
+    "other": "其他",
+    "transcribing_audio": "轉錄音頻",
+    "invalid_audio": "無效音頻",
+    "whisper_v0": "Whisper 模板（使用音頻檔案作為輸入）",
+    "download": "下載",
+    "audio": "音頻",
+    "custom": "自定義",
+    "text": "文字",
+    "response_format": "回應格式",
+    "language": "語言",
+    "temperature": "溫度",
+    "prompt": "提示",
+    "whisper": "Whisper",
+    "video": "視頻"
 }

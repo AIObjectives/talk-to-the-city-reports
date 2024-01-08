@@ -1,6 +1,7 @@
 import NumberInputNode from '$components/graph/nodes/NumberInputNode.svelte';
 import TextInputNode from '$components/graph/nodes/TextInputNode.svelte';
 import PromptNode from '$components/graph/nodes/PromptNode.svelte';
+import AudioNode from '$components/graph/nodes/AudioNode.svelte';
 import CSVNode from '$components/graph/nodes/CSVNode.svelte';
 import JSONNode from '$components/graph/nodes/JSONNode.svelte';
 import TranslateNode from '$components/graph/nodes/TranslateNode.svelte';
@@ -10,6 +11,7 @@ import MarkdownNode from '$components/graph/nodes/MarkdownNode.svelte';
 import DefaultNode from '$components/graph/nodes/DefaultNode.svelte';
 import CodeMirrorNode from '$components/graph/nodes/CodeMirrorNode.svelte';
 import ChatNode from '$components/graph/nodes/ChatNode.svelte';
+import WhisperNode from '$components/graph/nodes/WhisperNode.svelte';
 
 export const nodeTypes = {
 	text_input_v0: TextInputNode,
@@ -36,7 +38,9 @@ export const nodeTypes = {
 	report_v0: DefaultNode,
 	report_v1: DefaultNode,
 	chat_v0: ChatNode,
-	webpage_v0: TextInputNode
+	webpage_v0: TextInputNode,
+	whisper_v0: WhisperNode,
+	audio_v0: AudioNode
 };
 
 import '$lib/compute/csv';

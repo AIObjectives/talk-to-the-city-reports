@@ -18,7 +18,8 @@ describe('MergeNode class', () => {
 			console.log,
 			console.error,
 			console.log,
-			'test_slug'
+			'test_slug',
+			null
 		);
 		expect(output).toHaveProperty('topics');
 		expect(output.topics).toBeInstanceOf(Array);
@@ -42,7 +43,8 @@ describe('MergeNode class', () => {
 			console.log,
 			console.error,
 			console.log,
-			'test_slug'
+			'test_slug',
+			null
 		);
 		expect(output).toBeUndefined();
 	});
@@ -58,7 +60,8 @@ describe('MergeNode class', () => {
 			console.log,
 			console.error,
 			console.log,
-			'test_slug'
+			'test_slug',
+			null
 		);
 		expect(output).toBeUndefined();
 	});
@@ -75,7 +78,8 @@ describe('MergeNode class', () => {
 			console.log,
 			console.error,
 			console.log,
-			'test_slug'
+			'test_slug',
+			null
 		);
 		expect(output).toBeUndefined();
 	});
@@ -92,7 +96,8 @@ describe('MergeNode class', () => {
 			console.log,
 			console.error,
 			console.log,
-			'test_slug'
+			'test_slug',
+			null
 		);
 		expect(node.data.output).toHaveProperty('topics');
 		expect(node.data.dirty).toBe(false);

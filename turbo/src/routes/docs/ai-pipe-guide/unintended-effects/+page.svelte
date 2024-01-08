@@ -48,7 +48,7 @@ Let's begin with a new node: \`webpage_v0\`. It takes in a URL, fetches the webp
 		showNodesToolbar={false}
 		height="50vh"
 		width="50%"
-		viewMode="graph"
+		viewMode="standard"
 		showSaveButton={false}
 	/>
 {/if}
@@ -56,8 +56,6 @@ Let's begin with a new node: \`webpage_v0\`. It takes in a URL, fetches the webp
 <p class="docs marked mx-auto max-w-screen-md">
 	{@html marked(`
 As we can see above, a node on its own isn't really useful. So let's add another node: the \`markdown_v0\` node. This node takes in a string, or a CSV, passes its contents through the [marked](https://marked.js.org/) library, and displays the result as sanitized, rendered HTML.
-
-Please note the dataset above is in *graph* view whilst the one below is in *standard* view.
 `)}
 </p>
 <br />
@@ -114,16 +112,10 @@ Let's try something a bit more useful this time, by connecting the webpage into 
 			'description',
 			{
 				nodes: [
-					(() => {
-						const web = nodesRegister.init_new('webpage_v0');
-						web.data.text = 'https://en.wikipedia.org/wiki/Metcalfe%27s_law';
-						return web;
-					})(),
-					(() => {
-						const tokens = nodesRegister.init_new('count_tokens_v0');
-						tokens.position = { x: -2, y: 200 };
-						return tokens;
-					})()
+					nodesRegister.init_new('webpage_v0', {
+						text: 'https://en.wikipedia.org/wiki/Metcalfe%27s_law'
+					}),
+					nodesRegister.init_new('count_tokens_v0', { show_in_ui: true })
 				],
 				edges: [{ source: 'webpage', target: 'count_tokens' }]
 			},
@@ -132,7 +124,7 @@ Let's try something a bit more useful this time, by connecting the webpage into 
 		showNodesToolbar={false}
 		height="50vh"
 		width="50%"
-		viewMode="graph"
+		viewMode="standard"
 	/>
 {/if}
 
@@ -193,7 +185,7 @@ What other interesting side effects can we get from connecting nodes? Let's conn
 		showNodesToolbar={false}
 		height="50vh"
 		width="50%"
-		viewMode="graph"
+		viewMode="standard"
 		showSaveButton={false}
 	/>
 {/if}
@@ -264,7 +256,7 @@ In the chat node, i invite you to:
 		showNodesToolbar={false}
 		height="70vh"
 		width="50%"
-		viewMode="graph"
+		viewMode="standard"
 		showSaveButton={false}
 	/>
 {/if}

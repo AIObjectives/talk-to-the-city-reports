@@ -30,6 +30,7 @@ export default class LimitCSVNode {
 	) {
 		const input: [] = _.head(_.values(inputData));
 		this.data.dirty = false;
+		this.data.message = '';
 		if (_.isEmpty(input)) {
 			this.data.message = $__('missing_input_data');
 			this.data.output = [];
@@ -69,7 +70,7 @@ export let limit_csv_node_data: LimitCSVNodeInterface = {
 		number: 2,
 		message: '',
 		compute_type: 'limit_csv_v0',
-		input_ids: { csv: '' },
+		input_ids: {},
 		category: categories.wrangling.id,
 		icon: 'limit_csv_v0',
 		show_in_ui: true

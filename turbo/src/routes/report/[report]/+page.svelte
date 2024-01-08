@@ -35,6 +35,7 @@
 			showCopyButton={true}
 			showScreenshotButton={true}
 			enableGlobalViewMode={true}
+			autoSave={true}
 		/>
 		{#if $globalViewMode == 'graph'}
 			<Description bind:dataset />

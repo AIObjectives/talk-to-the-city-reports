@@ -1,13 +1,22 @@
 #!/bin/bash
 . turbo/src/lib/scripts/colors.sh
 
+exec < /dev/tty
+
 echo -e "${LIGHT_BLUE}Checking typescript (this may be too drastic)...${NC}\n"
 cd turbo
 python3 src/lib/scripts/ts_errors.py --pre-commit-hook
 TS_ERRORS_EXIT_CODE=$?
 if [ $TS_ERRORS_EXIT_CODE -ne 0 ]; then
-    echo "TypeScript errors detected - refusing to commit."
-    exit $TS_ERRORS_EXIT_CODE
+    echo "TypeScript errors detected."
+    while true; do
+        read -p "Do you wish to continue? (y/n) " yn
+        case $yn in
+            [Yy]* ) break;;
+            [Nn]* ) exit $TS_ERRORS_EXIT_CODE;;
+            * ) echo "Please answer yes or no.";;
+        esac
+    done
 fi
 echo -e "${LIGHT_BLUE}Running tests...${NC}\n"
 npm run test

@@ -28,13 +28,13 @@ class Register {
 		this.data[init_data.data.compute_type] = init_data;
 	}
 
-	init_new(compute_type: string) {
+	init_new(compute_type: string, init_data: any = {}) {
 		if (!this.data.hasOwnProperty(compute_type)) {
 			throw new Error(`Compute type '${compute_type}' not found.`);
 		}
 		const dataClone = _.cloneDeep(this.data[compute_type]);
-		const node = new this.nodes[compute_type](dataClone);
-		return node;
+		dataClone.data = _.merge(dataClone.data, init_data);
+		return new this.nodes[compute_type](dataClone);
 	}
 
 	init(compute_type: string, init_data: any) {

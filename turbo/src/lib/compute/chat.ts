@@ -149,7 +149,7 @@ export let chat_node_data: ChatNodeInterface = {
 		output: {},
 		compute_type: 'chat_v0',
 		input_ids: { open_ai_key: '', data: '' },
-		category: categories.llm.id,
+		category: categories.ml.id,
 		icon: 'chat_v0',
 		show_in_ui: true
 	},
