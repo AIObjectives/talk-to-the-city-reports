@@ -73,6 +73,8 @@ export default class FeedbackNode {
 				const docRef = await addDoc(collection(db, 'feedback'), {
 					slug: slug,
 					claimId: claim.claim,
+					claim: claim,
+					v: 1,
 					...submitData
 				});
 

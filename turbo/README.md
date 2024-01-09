@@ -185,6 +185,15 @@ Once you're done making your changes, you can deploy to firebase with:
 $ firebase deploy
 ```
 
+### Multi-site deployments
+
+Firebase allows easily deploying to multiple sites that use the same project resources.
+
+To specify a different site:
+
+- modify `.hosting.site` in `turbo/firebase.json`
+- run `firebase deploy --only hosting:<alt-site-name>`
+
 </details>
 
 ## Running
@@ -288,8 +297,8 @@ DISPLAY=:99 python src/test/test_selenium.py
 | Passed Test Suites    | 62 |
 | Failed Test Suites    | 0 |
 | Pending Test Suites   | 0 |
-| Total Tests           | 114 |
-| Passed Tests          | 114 |
+| Total Tests           | 115 |
+| Passed Tests          | 115 |
 | Failed Tests          | 0 |
 | Pending Tests         | 0 |
 | Todo Tests            | 0 |
@@ -335,6 +344,7 @@ DISPLAY=:99 python src/test/test_selenium.py
 | *should correctly count tokens in input data* | **passed** |
 | *should not count tokens if input data length matches and node is not dirty* | **passed** |
 | *should count tokens if the input data is a string* | **passed** |
+| *should display 0 tokens in the message if tokens are added, then removed and run again* | **passed** |
 
 ### `[6]` [csv.test.ts](./src/test//csv.test.ts)
 | Test | Status | Duration (ms) |
