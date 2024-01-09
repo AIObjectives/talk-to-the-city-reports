@@ -28,6 +28,7 @@
 	export let showSaveButton: boolean = false;
 	export let showCopyButton: boolean = false;
 	export let showScreenshotButton: boolean = false;
+	export let autoSave: boolean = false;
 
 	let showPipeline = false;
 	let tune = false;
@@ -131,7 +132,7 @@
 	<div class="pipeline-container">
 		<Button
 			on:click={async () => {
-				await dataset.processNodes('run', $user);
+				await dataset.processNodes('run', $user, autoSave);
 				refreshData();
 			}}
 		>

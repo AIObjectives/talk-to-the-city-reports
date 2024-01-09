@@ -80,7 +80,7 @@ export let count_tokens_node_data: CountTokensNodeInterface = {
 		csv_length: 0,
 		compute_type: 'count_tokens_v0',
 		input_ids: { csv: '' },
-		category: categories.llm.id,
+		category: categories.ml.id,
 		icon: 'count_tokens_v0',
 		show_in_ui: false
 	},

@@ -30,6 +30,8 @@ import { python_node } from './compute/python';
 import { pyodide_node } from './compute/pyodide';
 import { chat_node } from './compute/chat';
 import { webpage_node } from '$lib/compute/webpage';
+import { whisper_node } from '$lib/compute/whisper';
+import { audio_node } from '$lib/compute/audio';
 // import { llama_node } from './compute/llama';
 // import { argument_extraction_llama_node } from './compute/argument_extraction_llama';
 
@@ -61,7 +63,9 @@ export let node_register = [
 	python_node,
 	pyodide_node,
 	chat_node,
-	webpage_node
+	webpage_node,
+	whisper_node,
+	audio_node
 	// llama_node,
 	// argument_extraction_llama_node
 ];
@@ -80,10 +84,9 @@ export async function loadTemplates(): Promise<Record<string, DocumentData>> {
 
 export async function saveTemplate(name: string, data: any) {
 	for (const node of data.nodes) {
-		if (!node.data.output) {
-			node.data.output = {};
-		}
+		node.data.output = {};
 	}
+	console.log(data);
 	try {
 		const docRef = doc(templatesCollection, name);
 		await setDoc(docRef, data);

@@ -147,6 +147,7 @@
   "success": "Success",
   "error": "Error",
   "loaded_from_gcs": "Loaded from GCS",
+  "loaded_from_cache": "Loaded from cache",
   "comments": "Comments",
   "missing_input_data": "Missing Input Data",
   "template_help": "Templates provide a way of creating multiple reports with similar settings. If you are unsure which template to use, then use the default template, which allows you to customize all available settings.",
@@ -171,5 +172,18 @@
   "hide_advanced_settings": "Hide Advanced Settings",
   "switch_to_graph_view": "Switch to Graph View",
   "done": "Done",
-  "other": "Other"
+  "other": "Other",
+  "transcribing_audio": "Transcribing Audio",
+  "invalid_audio": "Invalid Audio",
+  "whisper_v0": "Whisper template (use audio file as input)",
+  "download": "Download",
+  "audio": "Audio",
+  "custom": "Custom",
+  "text": "Text",
+  "response_format": "Response Format",
+  "language": "Language",
+  "temperature": "Temperature",
+  "prompt": "Prompt",
+  "Whisper": "Whisper",
+  "video": "Video"
 }

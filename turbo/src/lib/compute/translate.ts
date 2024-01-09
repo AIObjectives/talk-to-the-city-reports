@@ -1,13 +1,8 @@
 import nodes from '$lib/node_register';
 import { readFileFromGCS, uploadJSONToGCS } from '$lib/utils';
+import type { DGNodeInterface, GCSBaseData } from '$lib/node_data_types';
 
 import categories from '$lib/node_categories';
-
-interface TranslateData extends BaseData {
-	target_language: string;
-	gcs_path: string;
-	keys: string[];
-}
 
 export default class TranslateNode {
 	id: string;
@@ -15,7 +10,7 @@ export default class TranslateNode {
 	position: { x: number; y: number };
 	type: string;
 
-	constructor(node_data) {
+	constructor(node_data: TranslateNodeInterface) {
 		const { id, data, position, type } = node_data;
 		this.id = id;
 		this.data = data;
@@ -24,7 +19,7 @@ export default class TranslateNode {
 	}
 
 	async compute(
-		inputData: object,
+		inputData: Record<string, any>,
 		context: string,
 		info: (arg: string) => void,
 		error: (arg: string) => void,
@@ -52,13 +47,13 @@ export default class TranslateNode {
 		}
 
 		if (!this.data.dirty && this.data.output && this.data.output.length >= data.length) {
-			return this.data.output.map((translatedItem, index) => {
+			return this.data.output.map((translatedItem: any, index: number) => {
 				return { ...data[index], ...translatedItem };
 			});
 		}
 
 		if (context == 'run') {
-			const translateHandler = async (text) => {
+			const translateHandler = async (text: string) => {
 				let vitest = import.meta.env.VITEST == 'true';
 				let openai = (await import(vitest ? '$lib/mock_open_ai' : 'openai')).default;
 				info('Translating: ' + text);
@@ -85,7 +80,7 @@ export default class TranslateNode {
 			let translations = [];
 
 			for (let i = 0; i < data.length; i++) {
-				let translationItem = {};
+				let translationItem: Record<string, any> = {};
 				for (const key of keys) {
 					translationItem[key] = await translateHandler(data[i][key]);
 				}
@@ -103,7 +98,13 @@ export default class TranslateNode {
 	}
 }
 
-type TranslateNodeInterface = DGNodeInterface & {
+interface TranslateData extends GCSBaseData {
+	target_language: string;
+	gcs_path: string;
+	keys: string[];
+}
+
+type TranslateNodeInterface = DGNodeInterface<GCSBaseData> & {
 	data: TranslateData;
 };
 
@@ -117,12 +118,15 @@ export let translate_node_data: TranslateNodeInterface = {
 		gcs_path: '',
 		compute_type: 'translate_v0',
 		input_ids: { open_ai_key: '', data: '' },
-		category: categories.llm.id,
-		icon: 'translate_v0'
+		category: categories.ml.id,
+		icon: 'translate_v0',
+		message: '',
+		show_in_ui: true,
+		filename: '',
+		size_kb: 0
 	},
 	position: { x: 0, y: 0 },
-	type: 'translate_v0',
-	show_in_ui: false
+	type: 'translate_v0'
 };
 
 export let translate_node = new TranslateNode(translate_node_data);

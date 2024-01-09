@@ -16,6 +16,7 @@
 	export let showCopyButton: boolean = false;
 	export let showScreenshotButton: boolean = false;
 	export let enableGlobalViewMode: boolean = false;
+	export let autoSave: boolean = false;
 
 	onMount(() => {
 		viewModeStore.subscribe((x) => {
@@ -41,6 +42,7 @@
 		{showSaveButton}
 		{showCopyButton}
 		{showScreenshotButton}
+		{autoSave}
 		bind:dataset
 	/>
 </SvelteFlowProvider>

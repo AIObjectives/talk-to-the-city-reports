@@ -12,6 +12,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     steps:
       - uses: actions/checkout@v2
@@ -35,6 +36,7 @@ jobs:
   buildAPI:
     needs: test
     runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     steps:
       - uses: actions/checkout@v2
@@ -64,7 +66,9 @@ jobs:
           path: turbo/python-api.zip
 
   testLiveSite:
+    if: github.repository == 'AIObjectives/talk-to-the-city-reports'
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Checking out repo
         uses: actions/checkout@v3

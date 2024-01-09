@@ -16,7 +16,7 @@
 
 	export let data: BaseData;
 	export let id: string;
-	export let selected: boolean;
+	export let selected: boolean = false;
 	export let style: string = '';
 	export let type: string = '';
 	export let width: number = 0;

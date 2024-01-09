@@ -12,9 +12,9 @@ const categories: CategoriesDictionary = {
 		label: 'input',
 		id: 'input'
 	},
-	llm: {
-		label: 'llm',
-		id: 'llm'
+	ml: {
+		label: 'ML',
+		id: 'ml'
 	},
 	lang: {
 		label: 'lang',

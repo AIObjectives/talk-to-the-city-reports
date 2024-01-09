@@ -2,10 +2,10 @@
 	"name": "tttc-turbo",
 	"version": "0.0.1",
 	"tsCoverage": "87%",
-	"vitestPass": 103,
+	"vitestPass": 114,
 	"vitestFail": 0,
 	"engines": {
-		"node": ">=18.0.0"
+		"node": "18"
 	},
 	"scripts": {
 		"dev": "src/lib/scripts/dev.sh",

@@ -55,9 +55,9 @@ export class Dataset {
 		this.projectParent = projectParent;
 	}
 
-	async processNodes(context: string, user: User) {
+	async processNodes(context: string, user: User, save = false) {
 		let nodeOutputs = {},
-			save = false,
+			shouldSave = false,
 			dirtyNodes = new Set(
 				get(this.graph.nodes)
 					.filter((node) => node.data.dirty)
@@ -90,7 +90,7 @@ export class Dataset {
 				continue;
 			}
 
-			save = save || node.data.dirty;
+			shouldSave = shouldSave || node.data.dirty;
 			const node_impl = nodes.init(node.data.compute_type, node);
 			try {
 				nodeOutputs[node.id] = await node_impl.compute(
@@ -111,7 +111,7 @@ export class Dataset {
 			this.graph.nodes.update((node) => node);
 			this.graph.nodes = this.graph.nodes;
 		}
-		if (context == 'run' && save) await this.updateDataset(user);
+		if (context == 'run' && save && shouldSave) await this.updateDataset(user);
 	}
 
 	async updateDataset(user: User) {

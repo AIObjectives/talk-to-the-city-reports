@@ -64,10 +64,11 @@
 					)) as CSVNodeInterface;
 				report_node = report_node_v0;
 				report = report_node.data.output;
-				csv = csv_node.data.output;
+				csv = csv_node?.data.output;
 			} else if (report_node_v1) {
-				csv = report_node_v1.data.output[report_node_v1.data.output_ids.csv];
+				report_node = report_node_v1;
 				report = report_node_v1.data.output[report_node_v1.data.output_ids.merge];
+				csv = report_node_v1.data.output[report_node_v1.data.output_ids.csv];
 			}
 
 			feedbackNode = get(dataset.graph.nodes).find(
@@ -232,6 +233,11 @@
 		width: 100%;
 		margin: 0 auto;
 		box-sizing: border-box;
+		display: grid;
+		/* Use the reactive gridTemplateColumns variable */
+		grid-template-columns: var(--grid-template-columns);
+		gap: 16px; /* Optional: Add a gap if needed */
+		transition: all 0.5s ease-in-out; /* Smooth transition for the resizing */
 	}
 	.report-container {
 		padding: var(--main-padding);
@@ -243,14 +249,6 @@
 		margin: 0 auto;
 		box-sizing: border-box;
 	}
-	.graph-container {
-		display: grid;
-		/* Use the reactive gridTemplateColumns variable */
-		grid-template-columns: var(--grid-template-columns);
-		gap: 16px; /* Optional: Add a gap if needed */
-		transition: all 0.5s ease-in-out; /* Smooth transition for the resizing */
-	}
-
 	.chart-wrapper {
 		/* Flex-grow allows the chart to grow and take up available space */
 		flex-grow: 1;

@@ -122,7 +122,7 @@ export let gpt_node_data: GPTNodeInterface = {
 		text_length: 0,
 		dirty: false,
 		input_ids: { open_ai_key: '', text: '' },
-		category: categories.llm.id,
+		category: categories.ml.id,
 		icon: 'gpt_v0'
 	},
 	position: { x: 0, y: 0 },

@@ -146,7 +146,7 @@ export let argument_extraction_node_data_v0: ArgumentExtractionNodeInterface = {
 		dirty: false,
 		compute_type: 'argument_extraction_v0',
 		input_ids: { open_ai_key: '', csv: '', cluster_extraction: '' },
-		category: categories.llm.id,
+		category: categories.ml.id,
 		icon: 'argument_extraction_v0'
 	},
 	position: { x: 0, y: 0 },

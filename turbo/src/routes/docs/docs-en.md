@@ -36,4 +36,9 @@ tttc-turbo's UI and UX intends to make a clear distinction between the anon & re
 
 Please note the following [AI Pipeline Engineering Guide #1](/docs/ai-pipe-guide) is not geared towards anon or reporters, but towards devs and engineers with an interest in building pipelines from scratch.
 
+Here are also some more advanced articles delving into various aspects of pipeline building:
+
+- [The unintended effects of graph-based ML applications](/docs/ai-pipe-guide/unintended-effects)
+- [whisper](/docs/whisper)
+
 ---

@@ -1,7 +1,9 @@
 import nodes from '$lib/node_register';
 import categories from '$lib/node_categories';
 import deepCopy from 'deep-copy';
+import type { DGNodeInterface, BaseData } from '$lib/node_data_types';
 import _ from 'lodash';
+
 export default class MergeNode {
 	id: string;
 	data: MergeData;
@@ -17,7 +19,7 @@ export default class MergeNode {
 	}
 
 	async compute(
-		inputData: object,
+		inputData: Record<string, any>,
 		context: string,
 		info: (arg: string) => void,
 		error: (arg: string) => void,
@@ -44,7 +46,7 @@ export default class MergeNode {
 			});
 		});
 
-		const lookup = {};
+		const lookup: Record<string, any> = {};
 
 		_.forOwn(argument_extraction, (v, k) => {
 			_.forEach(v['claims'], (claim) => {
@@ -66,6 +68,13 @@ export default class MergeNode {
 				const key = `${topic['topicName']}::${subtopic['subtopicName']}`;
 				subtopic['claims'] = _.get(lookup, key, []);
 			});
+		});
+
+		_.remove(cluster_extraction['topics'], (topic: Record<string, any>) => {
+			_.remove(topic['subtopics'], (subtopic: Record<string, any>) => {
+				return _.isEmpty(subtopic['claims']);
+			});
+			return _.isEmpty(topic['subtopics']);
 		});
 
 		this.data.output = cluster_extraction;
@@ -92,7 +101,8 @@ export let merge_node_data: MergeNodeInterface = {
 		input_ids: { cluster_extraction: '', argument_extraction: '' },
 		category: categories.wrangling.id,
 		icon: 'merge_v0',
-		show_in_ui: false
+		show_in_ui: false,
+		message: ''
 	},
 	position: { x: 0, y: 0 },
 	type: 'merge_v0'

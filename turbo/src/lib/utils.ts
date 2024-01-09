@@ -3,11 +3,7 @@ import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'fire
 import { getAuth, type User } from 'firebase/auth';
 import type { DGNodeInterface, GCSBaseData, DGEdgeInterface } from '$lib/node_data_types';
 
-export async function uploadJSONToGCS(
-	node: DGNodeInterface<GCSBaseData>,
-	data: GCSBaseData,
-	slug: string
-): Promise<string> {
+export async function uploadJSONToGCS(node: any, data: any, slug: string): Promise<string> {
 	try {
 		if (!node) {
 			throw new Error('Node not provided');
@@ -33,10 +29,11 @@ export async function uploadJSONToGCS(
 }
 
 export async function uploadDataToGCS(
-	node: DGNodeInterface<GCSBaseData>,
-	data: GCSBaseData,
+	node: any,
+	data: any,
 	slug: string,
-	fileName: string
+	fileName: string,
+	type: string
 ): Promise<string> {
 	try {
 		if (!node) {
@@ -53,7 +50,9 @@ export async function uploadDataToGCS(
 		const fileRef = storageRef(storage, filePath);
 
 		let blob: Blob;
-		if (typeof data === 'object' && data !== null) {
+		if (type) {
+			blob = new Blob([data], { type: type });
+		} else if (typeof data === 'object' && data !== null) {
 			const jsonData: string = JSON.stringify(data);
 			blob = new Blob([jsonData], { type: 'application/json' });
 		} else if (typeof data === 'string') {
@@ -72,7 +71,7 @@ export async function uploadDataToGCS(
 	}
 }
 
-export async function readFileFromGCS(node: DGNodeInterface<GCSBaseData>): Promise<string> {
+export async function readFileFromGCS(node: any, isBlob: boolean = false) {
 	try {
 		if (!node || !node.data.gcs_path) {
 			throw new Error('Node or GCS path not provided');
@@ -84,8 +83,10 @@ export async function readFileFromGCS(node: DGNodeInterface<GCSBaseData>): Promi
 		if (!response.ok) {
 			throw new Error('Failed to fetch file from GCS');
 		}
-		const fileContent: string = await response.text();
-		return fileContent;
+		if (isBlob) {
+			return await response.blob();
+		}
+		return await response.text();
 	} catch (error: unknown) {
 		console.error('Error reading file from GCS:', (error as Error).message);
 		throw error;
@@ -126,4 +127,13 @@ export function topologicalSort(
 	});
 
 	return _.reverse(sorted);
+}
+
+export function secondsToHHMMSS(seconds: number): string {
+	const hours = Math.floor(seconds / 3600);
+	const minutes = Math.floor((seconds % 3600) / 60);
+	const secondsRemainder = Math.floor(seconds % 60);
+	return [hours, minutes, secondsRemainder]
+		.map((val) => (val < 10 ? `0${val}` : val.toString()))
+		.join(':');
 }

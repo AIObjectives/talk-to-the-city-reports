@@ -71,7 +71,7 @@ export let open_ai_key_node_data: OpenAIKeyNodeInterface = {
 		dirty: false,
 		compute_type: 'open_ai_key_v0',
 		input_ids: {},
-		category: categories.llm.id,
+		category: categories.ml.id,
 		icon: 'open_ai_key_v0',
 		show_in_ui: true
 	},

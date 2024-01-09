@@ -2,6 +2,7 @@ import nodes from '$lib/node_register';
 import categories from '$lib/node_categories';
 import _ from 'lodash';
 import { format, unwrapFunctionStore } from 'svelte-i18n';
+import type { DGNodeInterface, BaseData } from '$lib/node_data_types';
 
 const $__ = unwrapFunctionStore(format);
 
@@ -20,7 +21,7 @@ export default class ReportNode {
 	}
 
 	async compute(
-		inputData: object,
+		inputData: Record<string, any>,
 		context: string,
 		info: (arg: string) => void,
 		error: (arg: string) => void,
@@ -33,12 +34,12 @@ export default class ReportNode {
 		const output = this.data.output;
 		this.data.output[output_ids.merge] = inputData[this.data.input_ids.merge];
 		this.data.output[output_ids.csv] = inputData[this.data.input_ids.csv];
-		this.data.output[output_ids.timestamps] = inputData[this.data.input_ids.timestamps];
-		this.data.message = `
-		${$__(`clusters`)}: ${output.merge.topics.length}<br/>
-		${$__(`csv`)}: ${output.csv.length}`;
-		if (output.timestamps) {
-			this.data.message += `<br/>${$__(`timestamps`)}: ${output.timestamps.length}`;
+		if (output.merge?.topics.length > 0 && output.csv?.length > 0) {
+			this.data.message = `
+		${$__(`clusters`)}: ${output.merge?.topics.length}<br/>
+		${$__(`csv`)}: ${output.csv?.length}`;
+		} else {
+			this.data.message = '';
 		}
 
 		return this.data.output;
@@ -46,7 +47,8 @@ export default class ReportNode {
 }
 
 interface ReportData extends BaseData {
-	output: object;
+	output: Record<string, any>;
+	output_ids: Record<string, string>;
 }
 
 type ReportNodeInterface = DGNodeInterface & {
@@ -60,14 +62,15 @@ export let report_node_data: ReportNodeInterface = {
 		output: {},
 		dirty: false,
 		compute_type: 'report_v1',
-		input_ids: { merge: '', csv: '', timestamps: '' },
-		output_ids: { merge: 'merge', csv: 'csv', timestamps: 'timestamps' },
+		input_ids: { merge: '', csv: '' },
+		output_ids: { merge: 'merge', csv: 'csv' },
 		category: categories.display.id,
-		icon: 'report_v0'
+		icon: 'report_v0',
+		show_in_ui: false,
+		message: ''
 	},
 	position: { x: 0, y: 0 },
-	type: 'default_v0',
-	show_in_ui: false
+	type: 'default_v0'
 };
 
 export let report_node_v1 = new ReportNode(report_node_data);

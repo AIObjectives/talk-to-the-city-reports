@@ -11,6 +11,7 @@
 	import { type NodeProps } from '@xyflow/svelte';
 	import { page } from '$app/stores';
 	import DGNode from './DGNode.svelte';
+	import _ from 'lodash';
 	import { _ as __ } from 'svelte-i18n';
 	import TrashCan from '$lib/icons/TrashCan.svelte';
 
@@ -25,57 +26,67 @@
 	const storage = getStorage();
 	const auth = getAuth();
 
-	async function handleFileChange(event: Event) {
+	async function handleFileChange(event) {
 		const uploadedFile = (event.target as HTMLInputElement).files[0];
 		if (!uploadedFile) return;
 
 		const userId = auth.currentUser.uid;
 		const filePath = `uploads/${userId}/${$page.params.report}/${id}_${uploadedFile.name}`;
 		const fileRef = storageRef(storage, filePath);
-
-		let reader = new FileReader();
-		reader.onload = function (e) {
+		if (uploadedFile.type.startsWith('audio/')) {
 			const uploadTask = uploadBytesResumable(fileRef, uploadedFile);
-			uploadTask.on(
-				'state_changed',
-				(snapshot) => {
-					// Handle progress...
-				},
-				(error) => {
-					console.error('Upload failed', error);
-				},
-				async () => {
-					await getDownloadURL(uploadTask.snapshot.ref);
-					data.gcs_path = filePath;
-					data.filename = uploadedFile.name;
-					data.size_kb = uploadedFile.size / 1000;
-					data.dirty = true;
-					$nodes = $nodes;
-					for (const node of $nodes) {
-						node.data = { ...node.data };
-					}
+			handleUpload(uploadTask, uploadedFile, filePath);
+		} else {
+			let reader = new FileReader();
+			reader.onload = function () {
+				const uploadTask = uploadBytesResumable(fileRef, uploadedFile);
+				handleUpload(uploadTask, uploadedFile, filePath);
+			};
+			reader.readAsText(uploadedFile, 'UTF-8');
+		}
+	}
+
+	function handleUpload(uploadTask, uploadedFile, filePath) {
+		uploadTask.on(
+			'state_changed',
+			(snapshot) => {
+				// Handle progress...
+			},
+			(error) => {
+				console.error('Upload failed', error);
+			},
+			async () => {
+				await getDownloadURL(uploadTask.snapshot.ref);
+				data.gcs_path = filePath;
+				data.filename = uploadedFile.name;
+				data.size_kb = uploadedFile.size / 1000;
+				data.dirty = true;
+				$nodes = $nodes; // This line seems to do nothing? Might need review
+				for (const node of $nodes) {
+					node.data = { ...node.data }; // This line also seems like a no-op or needs clarification
 				}
-			);
-		};
-		reader.readAsText(uploadedFile, 'UTF-8');
+			}
+		);
 	}
 </script>
 
 <DGNode {data} {id} {...$$restProps}>
 	<div>
-		<span>{fileType} {$__('data')}</span>
+		<div>{$__(fileType)} {_.toLower($__('data'))}</div>
 		{#if data?.filename}
+			<div class="filename mr-1">{data?.filename}</div>
+			<span class="file-size">{data?.size_kb} KB</span>
 			<div class="filename-container">
-				<span class="filename">{data?.filename}</span>
-				<span class="file-size">{data?.size_kb} KB</span>
-				<small class="gcs-path ml-2" style="color: gray">{data?.gcs_path}</small>
+				<small class="gcs-path" style="color: gray">{data?.gcs_path}</small>
 				<div class="trashcan-container">
-					<button on:click={() => {
-						data.gcs_path = null;
-						data.filename = null;
-						data.size_kb = null;
-						data.dirty = false;
-					}}><TrashCan color='#777'/></button>
+					<button
+						on:click={() => {
+							data.gcs_path = null;
+							data.filename = null;
+							data.size_kb = null;
+							data.dirty = false;
+						}}><TrashCan color="#777" /></button
+					>
 				</div>
 			</div>
 		{:else}
@@ -86,9 +97,10 @@
 				on:change={handleFileChange}
 				style="display: none;"
 			/>
-			<Button on:click={() => fileInput.click()}>{$__('upload')} {fileType}</Button>
+			<Button on:click={() => fileInput.click()}>{$__('upload')} {$__(fileType)}</Button>
 		{/if}
 	</div>
+	<slot />
 </DGNode>
 
 <style>

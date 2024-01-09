@@ -35,3 +35,8 @@ Talk to the City Turbo 是一款應用程式，它使使用者能夠將他們透
 tttc-turbo 的使用者介面和使用者體驗旨在明確區分匿名使用者和報導者的體驗，與管線工程師的“後端”體驗，後者是隱藏起來的。
 
 請注意，以下的[AI 管線工程指南 #1](/docs/ai-pipe-guide)並非針對匿名使用者或報導者，而是針對有興趣從頭開始構建管線的開發人員和工程師。
+
+以下是一些更深入探討管線建置各個方面的進階文章：
+
+- [基於圖形的機器學習應用的非預期效果](/docs/ai-pipe-guide/unintended-effects)
+- [Whisper](/docs/whisper)
