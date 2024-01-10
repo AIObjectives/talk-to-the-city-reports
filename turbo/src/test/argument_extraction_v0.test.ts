@@ -7,7 +7,7 @@ import { expect } from 'vitest';
 import mock_argument_extraction_data from '$lib/mock_data/argument_extraction/argument_extraction.json';
 import mock_cluster_extraction_data from '$lib/mock_data/cluster_extraction/cluster_extraction.json';
 import csv_data from '$lib/mock_data/csv/csv.json';
-import prompt from '$lib/mock_data/argument_extraction/prompt.txt?raw';
+import prompt from '$lib/mock_data/argument_extraction/v0/prompt.txt?raw';
 import system_prompt from '$lib/mock_data/argument_extraction/system_prompt.txt?raw';
 
 vi.mock('$lib/utils', () => ({

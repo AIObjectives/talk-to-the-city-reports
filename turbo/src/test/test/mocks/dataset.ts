@@ -4,7 +4,8 @@ import deepCopy from 'deep-copy';
 // data
 import cluster_prompt from '$lib/mock_data/cluster_extraction/prompt.txt?raw';
 import cluster_system_prompt from '$lib/mock_data/cluster_extraction/system_prompt.txt?raw';
-import arg_prompt from '$lib/mock_data/argument_extraction/prompt.txt?raw';
+import arg_prompt from '$lib/mock_data/argument_extraction/v1/prompt.txt?raw';
+import arg_prompt_suffix from '$lib/mock_data/argument_extraction/v1/prompt_suffix.txt?raw';
 import arg_system_prompt from '$lib/mock_data/argument_extraction/system_prompt.txt?raw';
 
 // nodes
@@ -15,8 +16,8 @@ import ClusterExtractionNode, {
 	cluster_extraction_node_data_v0
 } from '$lib/compute/cluster_extraction_v0';
 import ArgumentExtractionNode, {
-	argument_extraction_node_data_v0
-} from '$lib/compute/argument_extraction_v0';
+	argument_extraction_node_data_v1
+} from '$lib/compute/argument_extraction_v1';
 import MergeNode, { merge_node_data } from '$lib/compute/merge';
 import ChatNode, { chat_node_data } from '$lib/compute/chat';
 import MarkdownNode, { markdown_node_data } from '$lib/compute/markdown';
@@ -57,8 +58,9 @@ export function get_cluster_extraction() {
 }
 
 export function get_argument_extraction() {
-	const node = new ArgumentExtractionNode(deepCopy(argument_extraction_node_data_v0));
+	const node = new ArgumentExtractionNode(deepCopy(argument_extraction_node_data_v1));
 	node.data.prompt = arg_prompt;
+	node.data.prompt_suffix = arg_prompt_suffix;
 	node.data.system_prompt = arg_system_prompt;
 	node.data.input_ids.csv = 'jq_v1';
 	node.data.input_ids.open_ai_key = 'open_ai_key';
@@ -111,18 +113,18 @@ export function get_graph() {
 		},
 		{
 			source: jq_node_data.id,
-			target: argument_extraction_node_data_v0.id
+			target: argument_extraction_node_data_v1.id
 		},
 		{
 			source: cluster_extraction_node_data_v0.id,
-			target: argument_extraction_node_data_v0.id
+			target: argument_extraction_node_data_v1.id
 		},
 		{
 			source: open_ai_key_node_data.id,
-			target: argument_extraction_node_data_v0.id
+			target: argument_extraction_node_data_v1.id
 		},
 		{
-			source: argument_extraction_node_data_v0.id,
+			source: argument_extraction_node_data_v1.id,
 			target: merge_node_data.id
 		},
 		{
