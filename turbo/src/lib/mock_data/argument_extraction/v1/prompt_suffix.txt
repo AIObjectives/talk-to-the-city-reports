@@ -1,0 +1,18 @@
+
+Return a JSON object of the form {
+  "claims": [
+    {
+      "claim": string, // a very concise extracted claim
+      "quote": string // the exact quote,
+      "topicName": string // from the given list of topics
+      "subtopicName": string // from the list of subtopics
+    }, 
+    // ... 
+  ]
+}
+
+Now here is the list of topics and subtopics: {clusters}
+
+Now here is the comment: "{comment}"
+
+Remember to keep the claims very concise.

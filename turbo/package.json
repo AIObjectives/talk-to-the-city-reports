@@ -1,8 +1,8 @@
 {
 	"name": "tttc-turbo",
 	"version": "0.0.1",
-	"tsCoverage": "87%",
-	"vitestPass": 115,
+	"tsCoverage": "85%",
+	"vitestPass": 121,
 	"vitestFail": 0,
 	"engines": {
 		"node": "18"

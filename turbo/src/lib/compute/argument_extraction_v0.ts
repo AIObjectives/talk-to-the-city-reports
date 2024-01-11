@@ -5,6 +5,7 @@ import { argument_extraction_prompt_v0, argument_extraction_system_prompt } from
 import gpt from '$lib/gpt';
 import _ from 'lodash';
 import { format, unwrapFunctionStore } from 'svelte-i18n';
+import type { DGNodeInterface, GCSBaseData } from '$lib/node_data_types';
 
 const $__ = unwrapFunctionStore(format);
 
@@ -14,7 +15,7 @@ export default class ArgumentExtractionNode {
 	position: { x: number; y: number };
 	type: string;
 
-	constructor(node_data) {
+	constructor(node_data: ArgumentExtractionNodeInterface) {
 		const { id, data, position, type } = node_data;
 		this.id = id;
 		this.data = data;
@@ -23,7 +24,7 @@ export default class ArgumentExtractionNode {
 	}
 
 	async compute(
-		inputData: object,
+		inputData: Record<string, any>,
 		context: string,
 		info: (arg: string) => void,
 		error: (arg: string) => void,
@@ -44,7 +45,7 @@ export default class ArgumentExtractionNode {
 		}
 
 		if (!this.data.dirty && this.data.csv_length == csv.length && this.data.gcs_path) {
-			let doc = await readFileFromGCS(this);
+			let doc: any = await readFileFromGCS(this);
 			if (typeof doc === 'string') {
 				doc = JSON.parse(doc);
 			}
@@ -88,7 +89,7 @@ export default class ArgumentExtractionNode {
 							);
 							return { id: csv[i]['comment-id'], ...JSON.parse(response), comment, interview };
 						} catch (err) {
-							error(err.message);
+							error((err as Error).message);
 							// Return null or handle the error as desired
 							return null;
 						}
@@ -126,8 +127,12 @@ export default class ArgumentExtractionNode {
 	}
 }
 
-interface ArgumentExtractionData extends ClusterExtractionData {
-	// Inherits all properties from ClusterExtractionData
+interface ArgumentExtractionData extends GCSBaseData {
+	output: Record<string, any>;
+	text: string;
+	system_prompt: string;
+	prompt: string;
+	csv_length: number;
 }
 
 type ArgumentExtractionNodeInterface = DGNodeInterface & {
@@ -147,7 +152,12 @@ export let argument_extraction_node_data_v0: ArgumentExtractionNodeInterface = {
 		compute_type: 'argument_extraction_v0',
 		input_ids: { open_ai_key: '', csv: '', cluster_extraction: '' },
 		category: categories.ml.id,
-		icon: 'argument_extraction_v0'
+		icon: 'argument_extraction_v0',
+		show_in_ui: true,
+		message: '',
+		filename: '',
+		size_kb: 0,
+		gcs_path: ''
 	},
 	position: { x: 0, y: 0 },
 	type: 'prompt_v0'

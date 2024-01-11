@@ -1,0 +1,7 @@
+I'm going to give you the transcript of a video interview and a list of topics and subtopics which have already been extracted.  
+
+I want you to extract a list of concise claims that the interviewee may have made or supported if they had been asked the questions "tell me about the weather in your city". 
+
+We are only interested in claims that can be mapped to one of the given topic and subtopic. The claim must be fairly general but not a platitude. It must be something that other people may potentially disagree with. Each claim must also be atomic. 
+
+For each claim, please also provide a relevant quote from the transcript. The quote must be as concise as possible while still supporting the argument. The quote doesn't need to be a logical argument. It could also be a personal story or anecdote illustrating why the interviewee would make this claim. You may use "[...]" in the quote to skip the less interesting bits of the quote. 
