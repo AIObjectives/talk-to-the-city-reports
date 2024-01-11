@@ -12,9 +12,9 @@ A clear and concise description of what the bug is.
 
 **To Reproduce**
 Steps to reproduce the behavior:
-1. Click on project '....'
-2. Click on cluster '....'
-3. Scroll down to '....'
+1. Click on project '<project_name>'
+2. Click on cluster '<cluster_name>'
+3. Scroll down to '<relevant_section>'
 4. *bug*
 
 **Expected behavior**
