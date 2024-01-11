@@ -13,7 +13,7 @@ A clear and concise description of what the bug is.
 **To Reproduce**
 Steps to reproduce the behavior:
 1. Click on project '<project_name>'
-2. Click on cluster '<cluster_name>'
+2. Click on cluster '<cluster_name>' (if applicable)
 3. Scroll down to '<relevant_section>'
 4. *bug*
 
