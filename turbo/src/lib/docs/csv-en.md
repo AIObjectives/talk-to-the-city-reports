@@ -12,3 +12,11 @@ Optional columns:
 `interview`: the interview (ideally a person's name) the comment was taken from  
 `video`: the video the comment was extracted from, currently only vimeo links are supported  
 `timestamp`: the timestamp of the comment in the video, in the format hh:mm:ss
+
+The `video` column should contain links in the form:
+
+`https://www.youtube.com/embed/<video_id>`
+
+or
+
+`https://vimeo.com/<video_id>`

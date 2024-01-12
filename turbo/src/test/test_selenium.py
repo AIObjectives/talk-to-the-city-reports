@@ -62,7 +62,9 @@ tests = ["mina-protocol", "heal-michigan-9", "taiwan-zh", "台灣初步測試"]
 
 
 def test_other():
-    test_in(f"{url}/report/heal-michigan-9", "HEAL MICHIGAN")
+    test_in(f"{url}/report/heal-michigan", "The need for different organizations to work together to maximize impact")
+    if not args.run_locally:
+        test_in(f"https://tttc-turbo-hm.web.app/report/heal-michigan", "The need for different organizations to work together to maximize impact")
     test_in(f"{url}/docs/nodes", "argument_extraction_v0")
     test_in(f"{url}/api-docs", "Please sign in")
     test_in(f"{url}/about", "About")

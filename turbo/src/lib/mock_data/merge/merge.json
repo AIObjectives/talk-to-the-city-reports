@@ -15,7 +15,8 @@
               "quote": "The weather is indeed pleasant today",
               "topicName": "Current Conditions",
               "subtopicName": "Pleasant Weather",
-              "interview": "Bob"            }
+              "interview": "Bob"
+            }
           ]
         }
       ]
@@ -35,7 +36,8 @@
               "quote": "When will the rain stop.",
               "topicName": "Weather Patterns",
               "subtopicName": "Rain Duration",
-              "interview": "Alice"            }
+              "interview": "Alice"
+            }
           ]
         }
       ]

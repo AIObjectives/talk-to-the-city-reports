@@ -16,6 +16,10 @@ const config = {
 			$routes: '/src/routes',
 			$test: '/src/test'
 		}
+	},
+	test: {
+		globals: true,
+		environment: 'jsdom'
 	}
 };
 
