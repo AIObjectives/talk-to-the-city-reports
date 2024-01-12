@@ -32,7 +32,8 @@
 
 	let text = node.data.name;
 	if (node.children) {
-		text = node.data.name + ' (' + _.map(node.children.length.toString(), (c) => $__(c)) + ')';
+		text =
+			node.data.name + ' (' + _.map(node.children.length.toString(), (c) => $__(c)).join('') + ')';
 	}
 	let lines = splitToLines(text, 20);
 </script>
@@ -41,7 +42,7 @@
 	<text
 		x={node.x}
 		y={yPosition}
-		class="stroke-white/70 pointer-events-none [text-anchor:middle] [paint-order:stroke]"
+		class="inter-font pointer-events-none text-anchor-middle paint-order-stroke"
 		style:font-size="{fontSize}rem"
 		style:stroke-width="{fontSize * 2}px"
 	>
@@ -50,3 +51,19 @@
 		{/each}
 	</text>
 </g>
+
+<style>
+	@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
+	.inter-font {
+		font-family: 'Inter', sans-serif;
+	}
+
+	.text-anchor-middle {
+		text-anchor: middle;
+	}
+
+	.paint-order-stroke {
+		paint-order: stroke;
+	}
+</style>
