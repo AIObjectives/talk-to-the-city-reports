@@ -1,14 +1,17 @@
 <script lang="ts">
-	import TextField from '@smui/textfield';
-	import { query, where, getDocs } from 'firebase/firestore/lite';
+	import { query, where, getDocs, orderBy } from 'firebase/firestore/lite';
+	import type { QueryConstraint } from 'firebase/firestore';
 	import { datasetCollection } from '$lib/firebase';
-	import ProjectCard from '$components/ProjectCard.svelte';
-	import { user } from '$lib/store';
-	import { Dataset } from '$lib/dataset';
 	import { _ as __ } from 'svelte-i18n';
+
 	import Checkbox from '@smui/checkbox';
 	import FormField from '@smui/form-field';
+	import TextField from '@smui/textfield';
+
+	import { user } from '$lib/store';
+	import { Dataset } from '$lib/dataset';
 	import Tune from '$lib/icons/Tune.svelte';
+	import ProjectCard from '$components/ProjectCard.svelte';
 
 	let datasets: Dataset[] = [];
 	let filteredDatasets: Dataset[] = [];
@@ -18,9 +21,10 @@
 	let showAdmin: boolean = false;
 	let filterByComputeType: string = '';
 
-	async function loadDatasets(showAll: boolean) {
-		let filter = showAll ? null : where('owner', '==', $user.uid);
-		const q = query(datasetCollection, filter);
+	async function loadDatasets() {
+		let filter: QueryConstraint[] = showAll ? [] : [where('owner', '==', $user.uid)];
+		filter.push(orderBy('timestamp', 'desc'));
+		const q = query(datasetCollection, ...filter);
 		const querySnapshot = await getDocs(q);
 		datasets = querySnapshot.docs.map((doc) => {
 			const data = doc.data();
@@ -46,7 +50,7 @@
 		});
 	}
 
-	$: loadDatasets(showAll);
+	$: loadDatasets();
 </script>
 
 {#if isAdmin}

@@ -6,7 +6,7 @@
 
 	export let showOwner: boolean = false;
 	export let dataset: Dataset;
-	export let loadDatasets: () => void;
+	export let loadDatasets: () => Promise<void>;
 	import Button from '@smui/button';
 	import Card from '@smui/card';
 
@@ -19,7 +19,7 @@
 	};
 </script>
 
-<div in:slide={{ x: +100, duration: 300 }} out:slide={{ x: -100, duration: 300 }}>
+<div in:slide={{ duration: 300 }} out:slide={{ duration: 300 }}>
 	<Card class="w-72 relative rounded overflow-hidden m-4 p-4">
 		<span class="absolute top-0 right-0 cursor-pointer mt-2 mr-2">
 			<button on:click={deleteDataset}><Close /></button>
