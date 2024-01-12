@@ -137,3 +137,8 @@ export function secondsToHHMMSS(seconds: number): string {
 		.map((val) => (val < 10 ? `0${val}` : val.toString()))
 		.join(':');
 }
+
+export function HHMMSSToSeconds(hhmmss: string): number {
+	const [hours, minutes, seconds] = hhmmss.split(':').map(Number);
+	return hours * 3600 + minutes * 60 + seconds;
+}

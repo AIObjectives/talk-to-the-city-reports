@@ -12,3 +12,11 @@ CSV 節點被用作群集和論點提取的主要輸入。您可以在[google �
 `interview`：評論來自的訪談（理想情況下是一個人的名字）
 `video`：評論從中提取的視頻，目前僅支持 vimeo 鏈接
 `timestamp`：視頻中評論的時間戳，格式為 hh:mm:ss
+
+視頻列應該包含以下格式的連結：
+
+`https://www.youtube.com/embed/<video_id>`
+
+或者
+
+`https://vimeo.com/<video_id>`

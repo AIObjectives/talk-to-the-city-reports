@@ -2,7 +2,7 @@
 	"name": "tttc-turbo",
 	"version": "0.0.1",
 	"tsCoverage": "85%",
-	"vitestPass": 121,
+	"vitestPass": 128,
 	"vitestFail": 0,
 	"engines": {
 		"node": "18"
@@ -36,6 +36,7 @@
 		"@smui/tooltip": "^7.0.0-beta.15",
 		"@sveltejs/adapter-auto": "^2.0.0",
 		"@sveltejs/kit": "^1.27.4",
+		"@testing-library/svelte": "^4.0.5",
 		"@types/cookie": "^0.5.1",
 		"@types/js-cookie": "^3.0.6",
 		"@types/lodash": "^4.14.202",
@@ -47,6 +48,8 @@
 		"eslint": "^8.28.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-svelte": "^2.30.0",
+		"jest-dom": "^4.0.0",
+		"jsdom": "^23.2.0",
 		"lodash": "^4.17.21",
 		"prettier": "^2.8.0",
 		"prettier-plugin-svelte": "^2.10.1",
@@ -99,7 +102,6 @@
 		"jq-web": "^0.5.1",
 		"js-cookie": "^3.0.5",
 		"js-tiktoken": "^1.0.8",
-		"jsdom": "^23.0.1",
 		"jsonata": "^2.0.3",
 		"jsonwebtoken": "^9.0.2",
 		"jsrsasign": "^10.9.0",

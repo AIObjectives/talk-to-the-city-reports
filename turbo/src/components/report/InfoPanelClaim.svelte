@@ -1,32 +1,35 @@
 <script lang="ts">
-	import _ from 'lodash';
 	import { _ as __ } from 'svelte-i18n';
+
+	import { HHMMSSToSeconds } from '$lib/utils';
+	import Player from './Player.svelte';
 
 	export let showVideo: boolean;
 	export let claim: any;
 	export let csv: any;
 	export let showClaims: boolean;
 
-	let newIframeSrc: string;
-	let claimCommentId: string = claim.commentId;
+	let videoSrc: string;
 
-	function buildVimeoLink(video: string, timestamp: string) {
+	function buildVideoLink(video: string, timestamp: string) {
 		const parts = video.split('/');
-		// convert HH:MM:SS to seconds
-		const totalSeconds = timestamp
-			.split(':')
-			.reverse()
-			.reduce((prev: number, curr: any, i) => prev + curr * Math.pow(60, i), 0);
 		const videoId = parts[parts.length - 1];
-		return `https://player.vimeo.com/video/${videoId}#t=${totalSeconds}s`;
+		if (video.includes('vimeo.com')) {
+			return `https://player.vimeo.com/video/${videoId}#t=${HHMMSSToSeconds(timestamp)}s`;
+		} else if (video.includes('youtube.com')) {
+			return `https://www.youtube.com/embed/${videoId}&t=${HHMMSSToSeconds(timestamp)}`;
+		}
 	}
 
-	$: if (claimCommentId && showVideo && csv) {
-		let csvEntry = csv.find((entry: any) => entry['comment-id'] === claimCommentId);
+	$: if (claim.commentId && showVideo && csv) {
+		let csvEntry: Record<string, any> = csv.find(
+			(entry: any) => entry['comment-id'] === claim.commentId
+		);
 		if (claim?.timestamp && csvEntry?.video)
-			newIframeSrc = buildVimeoLink(csvEntry?.video, claim?.timestamp);
-		else if (csvEntry?.video && csvEntry?.timestamp)
-			newIframeSrc = buildVimeoLink(csvEntry?.video, csvEntry?.timestamp);
+			videoSrc = buildVideoLink(csvEntry?.video, claim?.timestamp);
+		else if (csvEntry?.video && csvEntry?.timestamp) {
+			videoSrc = buildVideoLink(csvEntry?.video, csvEntry?.timestamp);
+		}
 	}
 </script>
 
@@ -46,37 +49,13 @@
 		{claim.interview}
 		<br />
 	{/if}
-	{#if showVideo && newIframeSrc}
-		<div class="iframe-container mt-3">
-			<iframe
-				class="responsive-iframe"
-				src={newIframeSrc}
-				frameborder="0"
-				allow="autoplay; fullscreen; picture-in-picture"
-				allowfullscreen
-				title="Video Player"
-			/>
-		</div>
+	{#if showVideo && videoSrc}
+		<Player src={videoSrc} />
 	{/if}
 </div>
 
 <style>
 	.inner-div {
 		max-height: 100%;
-	}
-
-	.iframe-container {
-		position: relative;
-		width: 100%;
-		padding-top: 56.25%; /* 16:9 Aspect Ratio */
-	}
-
-	.responsive-iframe {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		border: 0; /* Optional: Removes the border */
 	}
 </style>
