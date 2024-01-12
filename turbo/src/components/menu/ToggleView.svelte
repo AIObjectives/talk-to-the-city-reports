@@ -1,9 +1,11 @@
 <script>
 	import _ from 'lodash';
-	import MenuItem from './menu/menu_item.svelte';
-	import { fitViewStore } from '$lib/store';
 	import { _ as __ } from 'svelte-i18n';
+
+	import { fitViewStore } from '$lib/store';
 	import { globalViewMode } from '$lib/store';
+
+	import MenuItem from '$components/menu/menu_item.svelte';
 
 	let modes = ['standard', 'graph'];
 	let i = modes.indexOf($globalViewMode);

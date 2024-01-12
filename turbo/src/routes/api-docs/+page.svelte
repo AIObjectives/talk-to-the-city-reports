@@ -15,7 +15,7 @@
 		'zh-TW': helpzh
 	};
 
-	$: help = helps[$locale || 'en'] || helps['en'];
+	$: help = helps[$locale || 'en-US'] || helps['en-US'];
 	$: userToken = Cookies.get('user_token');
 	$: helpText = userToken ? help?.replace(/<token>/g, userToken) : null;
 

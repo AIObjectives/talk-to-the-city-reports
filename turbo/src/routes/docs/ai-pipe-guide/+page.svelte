@@ -6,7 +6,7 @@
 
 <Doc
 	helps={{
-		en: ai_pipe_guide,
+		'en-US': ai_pipe_guide,
 		'zh-TW': ai_pipe_guide_zh
 	}}
 />

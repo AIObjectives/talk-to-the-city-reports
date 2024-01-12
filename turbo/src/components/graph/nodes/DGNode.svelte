@@ -44,7 +44,7 @@
 	let doc;
 	let inlineDoc;
 	$: {
-		const locale = Cookies.get('locale') || 'en';
+		const locale = Cookies.get('locale') || 'en-US';
 		getDocs(locale);
 		if (dg_node) {
 			$nodes;

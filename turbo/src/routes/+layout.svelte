@@ -1,16 +1,19 @@
 <script>
-	import Header from './Header.svelte';
-	import Footer from '$components/Footer.svelte';
-	import './styles.css';
-	import { SvelteToast } from '@zerodevx/svelte-toast';
 	import { onMount } from 'svelte';
 	import { onAuthStateChanged } from 'firebase/auth';
 	import { user } from '$lib/store';
 	import { auth } from '$lib/firebase';
-	import '/src/app.css';
+
 	import { _ as __ } from 'svelte-i18n';
 	import Cookies from 'js-cookie';
 	import { KJUR } from 'jsrsasign';
+	import { SvelteToast } from '@zerodevx/svelte-toast';
+
+	import '/src/app.css';
+	import './styles.css';
+
+	import Header from '$components/Header.svelte';
+	import Footer from '$components/Footer.svelte';
 
 	export const generateJWT = (payload, secretKey) => {
 		const header = { alg: 'HS256', typ: 'JWT' };
