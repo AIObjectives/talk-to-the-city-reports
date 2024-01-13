@@ -1,3 +1,4 @@
+src/lib/compute/.plaintext/*
 coverage-ts
 src/tmp
 .venv

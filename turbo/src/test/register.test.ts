@@ -1,6 +1,6 @@
 import { describe, it } from 'vitest';
 import { expect } from 'vitest';
-import GridNode, { grid_node_data } from '$lib/compute/grid';
+import GridNode, { grid_node_data } from '$lib/compute/grid_v0';
 import nodes from '$lib/node_register';
 import fs from 'fs';
 import path from 'path';

@@ -13,9 +13,10 @@
 	import Tooltip from '$components/report/Tooltip.svelte';
 	import InfoPanel from '$components/report/InfoPanel.svelte';
 	import FeedbackDialog from './FeedbackDialog.svelte';
-	import type { FeedbackNodeInterface } from '$lib/compute/feedback';
-	import type { CSVNodeInterface } from '$lib/compute/csv';
+	import type { FeedbackNodeInterface } from '$lib/compute/feedback_v0';
+	import type { CSVNodeInterface } from '$lib/compute/csv_v0';
 	import { Dataset } from '$lib/dataset';
+	import Appendix from '$components/report/appendix/Appendix.svelte';
 
 	export let dataset: Dataset;
 
@@ -223,6 +224,10 @@
 		{/each}
 	{/if}
 </div>
+
+{#if report?.topics}
+	<Appendix {dataset} />
+{/if}
 
 <style>
 	.chart-wrapper.selected {

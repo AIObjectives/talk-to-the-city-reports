@@ -185,5 +185,11 @@
   "temperature": "Temperature",
   "prompt": "Prompt",
   "Whisper": "Whisper",
-  "video": "Video"
+  "video": "Video",
+  "appendix_section": "Appendix Section",
+  "show_code": "Show Code",
+  "show_prompt": "Show Prompt",
+  "step": "Step",
+  "report_v0": "Report",
+  "report_v1": "Report"
 }

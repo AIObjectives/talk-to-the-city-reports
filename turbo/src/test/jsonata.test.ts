@@ -1,4 +1,4 @@
-import JsonataNode, { jsonata_node_data } from '$lib/compute/jsonata';
+import JsonataNode, { jsonata_node_data } from '$lib/compute/jsonata_v0';
 import deepCopy from 'deep-copy';
 import { describe, it } from 'vitest';
 import { expect } from 'vitest';

@@ -1,6 +1,6 @@
 import { describe, it } from 'vitest';
 import { expect } from 'vitest';
-import MergeNode, { merge_node_data } from '$lib/compute/merge';
+import MergeNode, { merge_node_data } from '$lib/compute/merge_v0';
 import deepCopy from 'deep-copy';
 import mock_cluster_extraction_data from '$lib/mock_data/cluster_extraction/cluster_extraction.json';
 import mock_argument_extraction_data from '$lib/mock_data/argument_extraction/argument_extraction.json';

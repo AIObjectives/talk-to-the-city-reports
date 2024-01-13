@@ -1,5 +1,5 @@
 import { describe, it, vi, expect } from 'vitest';
-import PyodideNodeV0, { pyodide_node_data } from '$lib/compute/pyodide';
+import PyodideNodeV0, { pyodide_node_data } from '$lib/compute/pyodide_v0';
 import deepCopy from 'deep-copy';
 import _ from 'lodash';
 

@@ -1,4 +1,4 @@
-import MarkdownNode, { markdown_node_data } from '$lib/compute/markdown';
+import MarkdownNode, { markdown_node_data } from '$lib/compute/markdown_v0';
 import deepCopy from 'deep-copy';
 import { describe, it, expect } from 'vitest';
 

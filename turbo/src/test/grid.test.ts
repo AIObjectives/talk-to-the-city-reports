@@ -1,6 +1,6 @@
 import { describe, it, vi, beforeEach } from 'vitest';
 import { expect } from 'vitest';
-import GridNode, { grid_node_data } from '$lib/compute/grid';
+import GridNode, { grid_node_data } from '$lib/compute/grid_v0';
 import deepCopy from 'deep-copy';
 
 describe('GridNode class', () => {

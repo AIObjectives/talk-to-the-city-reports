@@ -1,6 +1,6 @@
 import { describe, it, vi, expect, beforeEach, afterEach } from 'vitest';
-import PythonNodeV0, { python_node_data } from '$lib/compute/python';
-import type PythonData from '$lib/compute/python';
+import PythonNodeV0, { python_node_data } from '$lib/compute/python_v0';
+import type PythonData from '$lib/compute/python_v0';
 import deepCopy from 'deep-copy';
 import _ from 'lodash';
 

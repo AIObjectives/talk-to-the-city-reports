@@ -57,7 +57,7 @@ export let llama_node_data: LlamaNodeInterface = {
 		dirty: false,
 		compute_type: 'llama_v0',
 		input_ids: {},
-		category: categories.llama.id,
+		category: categories.ml.id,
 		icon: 'llama_v0',
 		show_in_ui: true,
 		message: ''
