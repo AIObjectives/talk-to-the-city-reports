@@ -1,6 +1,6 @@
 import { describe, it } from 'vitest';
 import { expect } from 'vitest';
-import OpenAIKeyNode, { open_ai_key_node_data } from '$lib/compute/open_ai_key';
+import OpenAIKeyNode, { open_ai_key_node_data } from '$lib/compute/open_ai_key_v0';
 import deepCopy from 'deep-copy';
 import Cookies from './test/mocks/js-cookie';
 

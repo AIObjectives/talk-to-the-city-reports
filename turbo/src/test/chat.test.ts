@@ -1,5 +1,5 @@
 import { describe, it, vi, expect, beforeEach } from 'vitest';
-import ChatNode, { chat_node_data } from '$lib/compute/chat';
+import ChatNode, { chat_node_data } from '$lib/compute/chat_v0';
 import deepCopy from 'deep-copy';
 import mock_responses from '$lib/mock_data/gpt_responses';
 import { openai } from '$lib/gpt';

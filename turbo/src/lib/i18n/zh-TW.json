@@ -186,5 +186,11 @@
     "temperature": "溫度",
     "prompt": "提示",
     "whisper": "Whisper",
-    "video": "視頻"
+    "video": "視頻",
+    "appendix_section": "附錄",
+    "show_code": "顯示代碼",
+    "show_prompt": "顯示提示",
+    "step": "步驟",
+    "report_v0": "報告",
+    "report_v1": "報告"
 }

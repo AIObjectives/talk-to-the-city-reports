@@ -9,18 +9,18 @@ import arg_prompt_suffix from '$lib/mock_data/argument_extraction/v1/prompt_suff
 import arg_system_prompt from '$lib/mock_data/argument_extraction/system_prompt.txt?raw';
 
 // nodes
-import CSVNode, { csv_node_data } from '$lib/compute/csv';
+import CSVNode, { csv_node_data } from '$lib/compute/csv_v0';
 import JqNodeV1, { jq_node_data } from '$lib/compute/jq_v1';
-import OpenAIKeyNode, { open_ai_key_node_data } from '$lib/compute/open_ai_key';
+import OpenAIKeyNode, { open_ai_key_node_data } from '$lib/compute/open_ai_key_v0';
 import ClusterExtractionNode, {
 	cluster_extraction_node_data_v0
 } from '$lib/compute/cluster_extraction_v0';
 import ArgumentExtractionNode, {
 	argument_extraction_node_data_v1
 } from '$lib/compute/argument_extraction_v1';
-import MergeNode, { merge_node_data } from '$lib/compute/merge';
-import ChatNode, { chat_node_data } from '$lib/compute/chat';
-import MarkdownNode, { markdown_node_data } from '$lib/compute/markdown';
+import MergeNode, { merge_node_data } from '$lib/compute/merge_v0';
+import ChatNode, { chat_node_data } from '$lib/compute/chat_v0';
+import MarkdownNode, { markdown_node_data } from '$lib/compute/markdown_v0';
 
 // dataset
 import { Dataset } from '$lib/dataset';

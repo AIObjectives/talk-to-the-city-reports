@@ -1,6 +1,6 @@
 import { describe, it } from 'vitest';
 import { expect } from 'vitest';
-import LimitCSVNode, { limit_csv_node_data } from '$lib/compute/limit_csv';
+import LimitCSVNode, { limit_csv_node_data } from '$lib/compute/limit_csv_v0';
 
 describe('limit_csv function', () => {
 	it('should limit the number of rows correctly', async () => {

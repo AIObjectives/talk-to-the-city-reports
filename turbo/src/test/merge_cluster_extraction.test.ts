@@ -1,6 +1,6 @@
 import MergeClusterExtractionNode, {
 	merge_cluster_extraction_node_data
-} from '$lib/compute/merge_cluster_extraction';
+} from '$lib/compute/merge_cluster_extraction_v0';
 import deepCopy from 'deep-copy';
 import { describe, it, vi } from 'vitest';
 import { expect } from 'vitest';

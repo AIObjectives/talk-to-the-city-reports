@@ -1,6 +1,6 @@
 import { describe, it, vi, beforeEach } from 'vitest';
 import { expect } from 'vitest';
-import TranslateNode, { translate_node_data } from '$lib/compute/translate';
+import TranslateNode, { translate_node_data } from '$lib/compute/translate_v0';
 import deepCopy from 'deep-copy';
 import * as utils from '$lib/utils';
 

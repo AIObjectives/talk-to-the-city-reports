@@ -1,6 +1,6 @@
 import { describe, it } from 'vitest';
 import { expect } from 'vitest';
-import CountTokensNode, { count_tokens_node_data } from '$lib/compute/count_tokens';
+import CountTokensNode, { count_tokens_node_data } from '$lib/compute/count_tokens_v0';
 import deepCopy from 'deep-copy';
 
 describe('CountTokensNode class', () => {

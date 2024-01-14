@@ -1,6 +1,6 @@
 import ParticipantFilterNode, {
 	participant_filter_node_data
-} from '$lib/compute/participant_filter';
+} from '$lib/compute/participant_filter_v0';
 import deepCopy from 'deep-copy';
 import { describe, it } from 'vitest';
 import { expect } from 'vitest';

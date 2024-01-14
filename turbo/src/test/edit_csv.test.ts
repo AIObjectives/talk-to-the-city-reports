@@ -1,4 +1,4 @@
-import EditCSVNode, { edit_csv_node_data } from '$lib/compute/edit_csv';
+import EditCSVNode, { edit_csv_node_data } from '$lib/compute/edit_csv_v0';
 import deepCopy from 'deep-copy';
 import { describe, it } from 'vitest';
 import { expect } from 'vitest';

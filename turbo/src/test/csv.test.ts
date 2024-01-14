@@ -1,6 +1,6 @@
 import { describe, it, vi, beforeEach } from 'vitest';
 import { expect } from 'vitest';
-import CSVNode, { csv_node_data } from '$lib/compute/csv';
+import CSVNode, { csv_node_data } from '$lib/compute/csv_v0';
 import deepCopy from 'deep-copy';
 import * as utils from '$lib/utils';
 

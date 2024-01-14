@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import AudioNode, { audio_node_data } from '$lib/compute/audio';
+import AudioNode, { audio_node_data } from '$lib/compute/audio_v0';
 import deepCopy from 'deep-copy';
 import { readFileFromGCS } from '$lib/utils';
 

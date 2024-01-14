@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import WhisperNode, { whisper_node_data } from '$lib/compute/whisper';
+import WhisperNode, { whisper_node_data } from '$lib/compute/whisper_v0';
 import deepCopy from 'deep-copy';
 import { readFileFromGCS, uploadJSONToGCS } from '$lib/utils';
 import MockOpenAI from '$lib/mock_open_ai';

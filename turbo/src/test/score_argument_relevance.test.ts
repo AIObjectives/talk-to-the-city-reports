@@ -1,6 +1,6 @@
 import ScoreArgumentRelevanceNode, {
 	score_argument_relevance_node_data
-} from '$lib/compute/score_argument_relevance';
+} from '$lib/compute/score_argument_relevance_v0';
 import deepCopy from 'deep-copy';
 import { describe, it, vi } from 'vitest';
 import { expect } from 'vitest';
