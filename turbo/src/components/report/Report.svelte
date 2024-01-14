@@ -88,15 +88,19 @@
 	let feedbackEvent: any;
 
 	const customColors = [
-		'#005F73',
-		'#0A9396',
-		'#94D2BD',
-		'#E9D8A6',
-		'#EE9B00',
-		'#CA6702',
-		'#BB3E03',
-		'#AE2012',
-		'#9B2226'
+		'#51a1a9',
+		'#8ccdde',
+		'#bde5da',
+		'#ebe6bc',
+		'#ed975a',
+		'#d48787',
+		'#f6c26f',
+		'#7bb8ea',
+		'#ddaf88',
+		'#98b0cd',
+		'#82b875',
+		'#b7d68f',
+		'#c0c4e7'
 	];
 
 	const ordinalColor = scaleOrdinal(customColors);

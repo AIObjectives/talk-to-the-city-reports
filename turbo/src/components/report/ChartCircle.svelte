@@ -12,10 +12,10 @@
 </script>
 
 <Circle
-	r={node.r}
-	stroke={hsl(nodeColor).darker(1)}
+	r={node.r * (node.depth > 0 ? 0.97 : 0.99)}
+	stroke={node.depth == 0 ? '#ffffff00' : hsl(nodeColor).darker(1)}
 	stroke-width={1 / scale}
-	fill={nodeColor}
+	fill={node.depth == 0 ? '#ffffff00' : nodeColor}
 	rx={5}
 	on:mousemove={(e) => {
 		e.stopPropagation();
