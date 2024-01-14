@@ -27,7 +27,40 @@ describe('InfoPanelClaim', () => {
 		const element = screen.getByText(claim.claim);
 		expect(element).to.exist;
 		var iframe = document.getElementById('player') as HTMLIFrameElement;
-		expect(iframe.src).toBe('https://www.youtube.com/embed/Vxmecypi03w&t=60');
+		expect(iframe.src).toBe('https://www.youtube.com/embed/Vxmecypi03w?start=60');
+	});
+	it('testing yt link has si', async () => {
+		const claim = merge['topics'][1]['subtopics'][0]['claims'][0];
+		csv[0].video = 'https://www.youtube.com/embed/Vxmecypi03w?si=68itEHCI1cnCXQbJ';
+		render(InfoPanelClaim, {
+			props: { showVideo: true, claim, csv, showClaims: true }
+		});
+		const element = screen.getByText(claim.claim);
+		expect(element).to.exist;
+		var iframe = document.getElementById('player') as HTMLIFrameElement;
+		expect(iframe.src).toBe('https://www.youtube.com/embed/Vxmecypi03w?start=60');
+	});
+	it('testing yt link has timestamp', async () => {
+		const claim = merge['topics'][1]['subtopics'][0]['claims'][0];
+		csv[0].video = 'https://www.youtube.com/embed/Vxmecypi03w?start=60';
+		render(InfoPanelClaim, {
+			props: { showVideo: true, claim, csv, showClaims: true }
+		});
+		const element = screen.getByText(claim.claim);
+		expect(element).to.exist;
+		var iframe = document.getElementById('player') as HTMLIFrameElement;
+		expect(iframe.src).toBe('https://www.youtube.com/embed/Vxmecypi03w?start=60');
+	});
+	it('testing yt link has si and timestamp', async () => {
+		const claim = merge['topics'][1]['subtopics'][0]['claims'][0];
+		csv[0].video = 'https://www.youtube.com/embed/Vxmecypi03w?si=68itEHCI1cnCXQbJ&start=60';
+		render(InfoPanelClaim, {
+			props: { showVideo: true, claim, csv, showClaims: true }
+		});
+		const element = screen.getByText(claim.claim);
+		expect(element).to.exist;
+		var iframe = document.getElementById('player') as HTMLIFrameElement;
+		expect(iframe.src).toBe('https://www.youtube.com/embed/Vxmecypi03w?start=60');
 	});
 	it('testing no video', async () => {
 		const claim = merge['topics'][1]['subtopics'][0]['claims'][0];

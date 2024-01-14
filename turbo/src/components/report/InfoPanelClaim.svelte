@@ -11,14 +11,17 @@
 
 	let videoSrc: string;
 
-	function buildVideoLink(video: string, timestamp: string) {
+	function buildVideoLink(video, timestamp) {
 		const parts = video.split('/');
-		const videoId = parts[parts.length - 1];
+		const videoId = parts[parts.length - 1].split('?')[0];
+		let embedUrl = '';
 		if (video.includes('vimeo.com')) {
-			return `https://player.vimeo.com/video/${videoId}#t=${HHMMSSToSeconds(timestamp)}s`;
+			embedUrl = `https://player.vimeo.com/video/${videoId}#t=${HHMMSSToSeconds(timestamp)}s`;
 		} else if (video.includes('youtube.com')) {
-			return `https://www.youtube.com/embed/${videoId}&t=${HHMMSSToSeconds(timestamp)}`;
+			const startTimeInSeconds = HHMMSSToSeconds(timestamp);
+			embedUrl = `https://www.youtube.com/embed/${videoId}?start=${startTimeInSeconds}`;
 		}
+		return embedUrl;
 	}
 
 	$: if (claim.commentId && showVideo && csv) {

@@ -297,8 +297,8 @@ DISPLAY=:99 python src/test/test_selenium.py
 | Passed Test Suites    | 68 |
 | Failed Test Suites    | 0 |
 | Pending Test Suites   | 0 |
-| Total Tests           | 128 |
-| Passed Tests          | 128 |
+| Total Tests           | 131 |
+| Passed Tests          | 131 |
 | Failed Tests          | 0 |
 | Pending Tests         | 0 |
 | Todo Tests            | 0 |
@@ -308,6 +308,9 @@ DISPLAY=:99 python src/test/test_selenium.py
 |---|---|---:|
 | *testing vimeo claim* | **passed** |
 | *testing yt claim* | **passed** |
+| *testing yt link has si* | **passed** |
+| *testing yt link has timestamp* | **passed** |
+| *testing yt link has si and timestamp* | **passed** |
 | *testing no video* | **passed** |
 | *testing no claim throws error* | **passed** |
 
