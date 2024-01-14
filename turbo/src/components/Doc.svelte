@@ -9,7 +9,7 @@
 
 	export let helps = {};
 
-	$: help = helps[$locale || 'en'] || helps['en'];
+	$: help = helps[$locale || 'en-US'] || helps['en-US'];
 	$: helpText = help?.replace(/<token>/g);
 
 	const renderer = new marked.Renderer();
@@ -42,7 +42,7 @@
 </script>
 
 {#if markedContent}
-	<slot name='title'/>
+	<slot name="title" />
 	<div class="text-column docs">
 		{@html markedContent}
 	</div>

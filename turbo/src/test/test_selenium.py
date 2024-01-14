@@ -65,11 +65,15 @@ def test_other():
     test_in(f"{url}/report/heal-michigan", "The need for different organizations to work together to maximize impact")
     if not args.run_locally:
         test_in(f"https://tttc-turbo-hm.web.app/report/heal-michigan", "The need for different organizations to work together to maximize impact")
+    test_in(f"{url}/docs", "the anon viewer")
     test_in(f"{url}/docs/nodes", "argument_extraction_v0")
     test_in(f"{url}/api-docs", "Please sign in")
     test_in(f"{url}/about", "About")
     test_in(f"{url}/api.html", "{dataset}")
     test_in(f"{url}/login", "Sign in with Google")
+    test_in(f"{url}/docs/ai-pipe-guide/unintended-effects", "In the chat node")
+    # todo: need to make pipeline visible to anon users
+    # test_in(f"{url}/docs/ai-pipe-guide/unintended-effects", "We use your API key")
 
 
 test_other()

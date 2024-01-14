@@ -1,6 +1,6 @@
 <script lang="ts">
-	export let showDropdown: boolean;
 	import MenuIcon from '$lib/icons/Menu.svelte';
+	export let showDropdown: boolean;
 </script>
 
 <button
@@ -18,9 +18,6 @@
 
 <style>
 	.burger {
-		position: absolute;
-		right: 5px;
-		top: 5px;
 		z-index: 100000;
 	}
 </style>

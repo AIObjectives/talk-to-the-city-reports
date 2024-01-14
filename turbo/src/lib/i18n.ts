@@ -4,14 +4,18 @@ import { init, register } from 'svelte-i18n';
 import _ from 'lodash';
 import Cookies from 'js-cookie';
 
-const defaultLocale = Cookies.get('locale') || 'en';
+// clear old locale, we are now using fully qualified locale
+// not ISO 639-1
+if (Cookies.get('locale') == 'en') Cookies.set('locale', 'en-US');
+
+const defaultLocale = Cookies.get('locale') || 'en-US';
 
 export const languages = {
-	en: '🇺🇸',
+	'en-US': '🇺🇸',
 	'zh-TW': '🇹🇼'
 };
 
-register('en', () => import(`./i18n/en.json`));
+register('en-US', () => import(`./i18n/en-US.json`));
 register('zh-TW', () => import(`./i18n/zh-TW.json`));
 
 init({

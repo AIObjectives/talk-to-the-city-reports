@@ -1,19 +1,28 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import github from '$lib/images/github.svg';
-	import { user } from '$lib/store';
-	import Menu from '$components/menu/menu.svelte';
-	import { globalViewMode } from '$lib/store';
-	import '$lib/i18n';
+
 	import { _ as __ } from 'svelte-i18n';
 	import _ from 'lodash';
+
+	import '$lib/i18n';
+	import { user } from '$lib/store';
+	import { globalViewMode } from '$lib/store';
+	import github from '$lib/images/github.svg';
+
+	import Menu from '$components/menu/menu.svelte';
+	import LanguageSelector from '$components/LanguageSelector.svelte';
 
 	$: isReport = $page?.route?.id?.startsWith('/report/[report]');
 	$: isStandard = $globalViewMode == 'standard';
 	$: showMenu = (isReport && isStandard) || !isReport;
 </script>
 
-<Menu {user} />
+<div class="right-stack">
+	<Menu {user} />
+	{#if isStandard}
+		<LanguageSelector />
+	{/if}
+</div>
 
 {#if showMenu}
 	<a href="https://github.com/AIObjectives/talk-to-the-city-reports" target="_blank">
@@ -43,7 +52,6 @@
 				<path d="M0,0 L0,3 C0.5,3 0.5,3 1,2 L2,0 Z" />
 			</svg>
 		</nav>
-
 		<div class="corner" />
 	</header>
 {/if}
@@ -52,6 +60,15 @@
 	header {
 		display: flex;
 		justify-content: space-between;
+	}
+
+	.right-stack {
+		position: absolute;
+		right: 0;
+		top: 0;
+		display: flex;
+		flex-direction: row-reverse;
+		align-items: flex-start;
 	}
 
 	.github {
@@ -64,20 +81,6 @@
 	.corner {
 		width: 3em;
 		height: 3em;
-	}
-
-	.corner a {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 100%;
-		height: 100%;
-	}
-
-	.corner img {
-		width: 2em;
-		height: 2em;
-		object-fit: contain;
 	}
 
 	nav {

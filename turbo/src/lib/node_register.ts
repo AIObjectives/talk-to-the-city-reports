@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 import _ from 'lodash';
 import type { DGNodeInterface, BaseData } from '$lib/node_data_types.d.ts';
 
-const defaultLocale = Cookies.get('locale') || 'en';
+const defaultLocale = Cookies.get('locale') || 'en-US';
 
 init({
 	fallbackLocale: defaultLocale,
