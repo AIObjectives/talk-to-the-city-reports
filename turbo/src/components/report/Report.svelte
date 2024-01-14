@@ -189,7 +189,7 @@
 					</div>
 
 					<h6 class="mt-4 mb-4">{topic.topicShortDescription}</h6>
-					{#each topic.subtopics as subtopic}
+					{#each topic.subtopics as subtopic (subtopic.subtopicName)}
 						<Paper square>
 							<div
 								class="text-lg"
@@ -207,7 +207,6 @@
 								<h7>{subtopic.subtopicShortDescription}</h7>
 							</div>
 							<Claims
-								{dataset}
 								{csv}
 								claims={subtopic.claims}
 								on:feedback={(e) => {
