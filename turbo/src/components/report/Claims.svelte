@@ -1,34 +1,44 @@
 <script lang="ts">
+	import { afterUpdate } from 'svelte';
 	import { _ as __ } from 'svelte-i18n';
 	import _ from 'lodash';
 	import Claim from './Claim.svelte';
 
-	export let dataset: any;
 	export let csv: any;
-	export let claims;
+	export let claims: Claim[];
 	export let showFeedback: boolean = false;
 
-	let showMoreClaims: boolean = false;
-	let uniqueClaims: [] = [];
-	let grouped: [] = [];
-	let duplicateClaims: [] = [];
-	let sortedClaims: [] = [];
+	let showMoreClaims = false;
+	let sortedClaims = [];
+	let ids = [];
 
-	$: {
-		showMoreClaims = false;
-		uniqueClaims = _.uniqBy(claims, 'claim');
-		grouped = _.groupBy(claims, 'claim');
-		duplicateClaims = _.countBy(claims, 'claim');
-		sortedClaims = _.orderBy(uniqueClaims, (claim) => duplicateClaims[claim.claim], 'desc');
-	}
+	const updateClaimsData = () => {
+		if (claims) {
+			ids = _.map(claims, 'id');
+			let duplicateClaims = _.countBy(claims, 'claim');
+			sortedClaims = _.orderBy(
+				_.uniqBy(claims, 'claim'),
+				(claim) => duplicateClaims[claim.claim],
+				'desc'
+			);
+		}
+	};
+
+	updateClaimsData();
+
+	afterUpdate(() => {
+		if (claims && !_.isEqual(ids, _.map(claims, 'id'))) {
+			updateClaimsData();
+		}
+	});
 </script>
 
 <div class="ml-5 mt-2 mb-2"><h5>{$__('representative_arguments')}:</h5></div>
 <div class="ml-10">
-	{#each showMoreClaims ? sortedClaims : sortedClaims.slice(0, 5) as claim (claim.claim)}
+	{#each sortedClaims.slice(0, showMoreClaims ? sortedClaims.length : 5) as claim (claim.claim)}
 		<div class="flex items-center" style="color: black">
 			<div class="text-sm">
-				<Claim {dataset} {csv} claims={grouped[claim.claim]} on:feedback {showFeedback} />
+				<Claim {csv} claims={_.groupBy(claims, 'claim')[claim.claim]} on:feedback {showFeedback} />
 			</div>
 		</div>
 	{/each}

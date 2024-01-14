@@ -28,7 +28,14 @@
 	}
 
 	function selectedNodes(nodes: any) {
-		return nodes.filter((node: any) => node.depth <= (selected ? selected.depth + 1 : 1));
+		return nodes.filter((node: any) => {
+			if (node === selected) {
+				return true;
+			}
+			const depthFilter = node.depth <= (selected ? selected.depth + 1 : 1);
+			const parentFilter = node.depth !== 3 || (selected && node.parent === selected);
+			return depthFilter && parentFilter;
+		});
 	}
 </script>
 
