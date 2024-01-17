@@ -32,6 +32,7 @@ import { chat_node } from './compute/chat_v0';
 import { webpage_node } from '$lib/compute/webpage_v0';
 import { whisper_node } from '$lib/compute/whisper_v0';
 import { audio_node } from '$lib/compute/audio_v0';
+import { add_csv_node } from '$lib/compute/add_csv_v0';
 // import { llama_node } from './compute/llama';
 // import { argument_extraction_llama_node } from './compute/argument_extraction_llama';
 
@@ -65,7 +66,8 @@ export let node_register = [
 	chat_node,
 	webpage_node,
 	whisper_node,
-	audio_node
+	audio_node,
+	add_csv_node
 	// llama_node,
 	// argument_extraction_llama_node
 ];
