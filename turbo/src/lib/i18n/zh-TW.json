@@ -195,5 +195,6 @@
     "report_v1": "報告",
     "filter_csv": "過濾 CSV",
     "add_filter": "添加過濾器",
-    "exclusive": "獨家"
+    "exclusive": "獨家",
+    "comment_expander": "評論展開器"
 }

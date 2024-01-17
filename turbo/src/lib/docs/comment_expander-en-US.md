@@ -1,0 +1,1 @@
+The `comment_expander` node lengthens the `comment-body` row into a longer row of up to 100 words. It is useful when dealing with CSVs that were created with Whisper; which typically output one sentence per line.
