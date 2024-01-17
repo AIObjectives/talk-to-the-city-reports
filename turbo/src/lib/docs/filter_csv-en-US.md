@@ -1,0 +1,1 @@
+The `filter_csv` node is designed to filter rows from a CSV file. It supports both inclusive and exclusive filtering modes, allowing users to include only rows that match all filters or exclude rows that match any filter, respectively.

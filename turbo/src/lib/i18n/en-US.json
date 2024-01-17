@@ -191,5 +191,8 @@
   "show_prompt": "Show Prompt",
   "step": "Step",
   "report_v0": "Report",
-  "report_v1": "Report"
+  "report_v1": "Report",
+  "filter_csv": "Filter CSV",
+  "add_filter": "Add Filter",
+  "exclusive": "Exclusive"
 }
