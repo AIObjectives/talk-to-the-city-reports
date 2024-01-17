@@ -293,12 +293,12 @@ DISPLAY=:99 python src/test/test_selenium.py
 
 | Metric                | Count |
 |-----------------------|------:|
-| Total Test Suites     | 72 |
-| Passed Test Suites    | 72 |
+| Total Test Suites     | 74 |
+| Passed Test Suites    | 74 |
 | Failed Test Suites    | 0 |
 | Pending Test Suites   | 0 |
-| Total Tests           | 143 |
-| Passed Tests          | 143 |
+| Total Tests           | 148 |
+| Passed Tests          | 148 |
 | Failed Tests          | 0 |
 | Pending Tests         | 0 |
 | Todo Tests            | 0 |
@@ -568,14 +568,23 @@ DISPLAY=:99 python src/test/test_selenium.py
 | *translates the input data* | **passed** |
 | *uses cached translations when available* | **passed** |
 
-### `[34]` [utils.test.ts](./src/test//utils.test.ts)
+### `[34]` [unique_v0.test.ts](./src/test//unique_v0.test.ts)
+| Test | Status | Duration (ms) |
+|---|---|---:|
+| *should return unique values based on the specified property* | **passed** |
+| *should return an empty array if input is empty* | **passed** |
+| *should return undefined if no property is specified* | **passed** |
+| *should set dirty to false after compute* | **passed** |
+| *should not mutate the input data* | **passed** |
+
+### `[35]` [utils.test.ts](./src/test//utils.test.ts)
 | Test | Status | Duration (ms) |
 |---|---|---:|
 | *Test secondsToHHMMSS* | **passed** |
 | *Test secondsToHHMMSS with string* | **passed** |
 | *Test HHMMSSToSeconds* | **passed** |
 
-### `[35]` [whisper.test.ts](./src/test//whisper.test.ts)
+### `[36]` [whisper.test.ts](./src/test//whisper.test.ts)
 | Test | Status | Duration (ms) |
 |---|---|---:|
 | *should load from cache if data is not dirty and gcs_path is set* | **passed** |
@@ -584,7 +593,7 @@ DISPLAY=:99 python src/test/test_selenium.py
 | *should return undefined and set message if open_ai_key is missing* | **passed** |
 | *should convert transcription to internal format if response_format is custom* | **passed** |
 
-### `[36]` [workerpool.test.ts](./src/test//workerpool.test.ts)
+### `[37]` [workerpool.test.ts](./src/test//workerpool.test.ts)
 | Test | Status | Duration (ms) |
 |---|---|---:|
 | *should execute function in workerpool* | **passed** |
