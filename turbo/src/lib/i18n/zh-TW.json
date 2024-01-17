@@ -192,5 +192,8 @@
     "show_prompt": "顯示提示",
     "step": "步驟",
     "report_v0": "報告",
-    "report_v1": "報告"
+    "report_v1": "報告",
+    "filter_csv": "過濾 CSV",
+    "add_filter": "添加過濾器",
+    "exclusive": "獨家",
 }
