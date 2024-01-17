@@ -194,5 +194,6 @@
   "report_v1": "Report",
   "filter_csv": "Filter CSV",
   "add_filter": "Add Filter",
-  "exclusive": "Exclusive"
+  "exclusive": "Exclusive",
+  "comment_expander": "Comment Expander"
 }
