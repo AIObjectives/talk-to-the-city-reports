@@ -36,6 +36,7 @@ import { add_csv_node } from '$lib/compute/add_csv_v0';
 import { filter_csv_node } from '$lib/compute/filter_csv_v0';
 import { unique_node } from '$lib/compute/unique_v0';
 import { comment_expander_node } from '$lib/compute/comment_expander_v0';
+import { download_node } from '$lib/compute/download_v0';
 
 export let node_register = [
 	open_ai_key_node,
@@ -71,7 +72,8 @@ export let node_register = [
 	audio_node,
 	filter_csv_node,
 	unique_node,
-	comment_expander_node
+	comment_expander_node,
+	download_node
 ];
 
 export async function loadTemplates(): Promise<Record<string, DocumentData>> {

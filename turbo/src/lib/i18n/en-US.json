@@ -197,5 +197,6 @@
   "exclusive": "Exclusive",
   "pipeline_run_complete": "Pipeline run complete",
   "comment_expander": "Comment Expander",
-  "show_prompt_suffix": "Show Prompt Suffix"
+  "show_prompt_suffix": "Show Prompt Suffix",
+  "format": "Format"
 }
