@@ -198,5 +198,6 @@
     "exclusive": "獨家",
     "pipeline_run_complete": "管道運行完成",
     "comment_expander": "評論展開器",
-    "show_prompt_suffix": "顯示提示後綴"
+    "show_prompt_suffix": "顯示提示後綴",
+    "format": "格式"
 }
