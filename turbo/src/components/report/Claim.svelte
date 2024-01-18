@@ -12,27 +12,29 @@
 	let open = false;
 </script>
 
-<span
-	class="claim"
-	role="button"
-	tabindex="0"
-	on:mousedown={() => {
-		open = true;
-	}}
->
-	<i>• {claims[0].claim}</i>
-	{#if claims.length > 1}
-		<small class="repeated">
-			({$__('repeated')}
-			{_.map(claims.length.toString(), (c) => $__(c)).join('')}
-			{$__('times')})</small
-		>
+{#if _.isArray(claims)}
+	<span
+		class="claim"
+		role="button"
+		tabindex="0"
+		on:mousedown={() => {
+			open = true;
+		}}
+	>
+		<i>• {claims[0]?.claim}</i>
+		{#if claims.length > 1}
+			<small class="repeated">
+				({$__('repeated')}
+				{_.map(claims.length.toString(), (c) => $__(c)).join('')}
+				{$__('times')})</small
+			>
+		{/if}
+	</span>
+	{#if open}
+		<Popover bind:open padding={10} class="z-1">
+			<InfoPanel {csv} {claims} showClaims={false} showVideo={true} on:feedback {showFeedback} />
+		</Popover>
 	{/if}
-</span>
-{#if open}
-	<Popover bind:open padding={10} class="z-1">
-		<InfoPanel {csv} {claims} showClaims={false} showVideo={true} on:feedback {showFeedback} />
-	</Popover>
 {/if}
 
 <style>

@@ -195,5 +195,6 @@
   "filter_csv": "Filter CSV",
   "add_filter": "Add Filter",
   "exclusive": "Exclusive",
-  "comment_expander": "Comment Expander"
+  "comment_expander": "Comment Expander",
+  "pipeline_run_complete": "Pipeline run complete"
 }

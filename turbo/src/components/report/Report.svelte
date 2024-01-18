@@ -75,7 +75,7 @@
 			feedbackNode = get(dataset.graph.nodes).find(
 				(n) => n.data?.compute_type === 'feedback_v0'
 			) as FeedbackNodeInterface;
-			if (!_.isEmpty(report) && !_.isEmpty(csv)) {
+			if (!_.isEmpty(report)) {
 				let transformedData = transformData(report);
 				complexHierarchy = hierarchy(transformedData)
 					.sum((d: any) => d.value)

@@ -52,7 +52,7 @@
 	}
 
 	const load = async () => {
-		await dataset.processNodes('load', $user);
+		await dataset.processNodes('load', $user, false, refreshData);
 		refreshData();
 	};
 

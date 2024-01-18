@@ -55,16 +55,13 @@ export class Dataset {
 		this.projectParent = projectParent;
 	}
 
-	async processNodes(context: string, user: User, save = false) {
-		let nodeOutputs = {},
-			shouldSave = false,
-			dirtyNodes = new Set(
-				get(this.graph.nodes)
-					.filter((node) => node.data.dirty)
-					.map((node) => node.id)
-			);
-
+	propagateDirtyState() {
 		const dataset = this;
+		const dirtyNodes = new Set(
+			get(this.graph.nodes)
+				.filter((node) => node.data.dirty)
+				.map((node) => node.id)
+		);
 
 		function markDownstreamNodesAsDirty(nodeId) {
 			get(dataset.graph.edges).forEach((edge) => {
@@ -77,49 +74,148 @@ export class Dataset {
 		}
 
 		dirtyNodes.forEach((nodeId) => markDownstreamNodesAsDirty(nodeId));
+	}
 
-		for (let node of topologicalSort(get(this.graph.nodes), get(this.graph.edges))) {
-			let inputData = {};
-			get(this.graph.edges)
-				.filter((edge) => edge.target === node.id)
-				.forEach((edge) => {
-					inputData[edge.source] = nodeOutputs[edge.source];
-				});
+	refresh() {
+		this.graph.nodes.update((node) => node);
+		this.graph.nodes = this.graph.nodes;
+	}
 
-			if (!node.data) {
-				continue;
-			}
+	independentSets(sortedNodes, edges) {
+		let independentNodeSets = [];
+		let nodeDependencies = new Map();
 
-			shouldSave = shouldSave || node.data.dirty;
-			const node_impl = nodes.init(node.data.compute_type, node);
-			try {
-				nodeOutputs[node.id] = await node_impl.compute(
-					inputData,
-					context,
-					info,
-					error,
-					success,
-					this.slug,
-					Cookies
-				);
-			} catch (e) {
-				console.error(e);
-				error(
-					$__('error_running') + ' ' + node.id + ' ' + $__('please_view_console_for_more_details')
-				);
-			}
-			this.graph.nodes.update((node) => node);
-			this.graph.nodes = this.graph.nodes;
+		for (let node of sortedNodes) {
+			nodeDependencies.set(node.id, 0);
 		}
-		if (context == 'run' && save && shouldSave) await this.updateDataset(user);
+
+		for (let edge of edges) {
+			if (nodeDependencies.has(edge.target)) {
+				nodeDependencies.set(edge.target, nodeDependencies.get(edge.target) + 1);
+			}
+		}
+
+		while (nodeDependencies.size > 0) {
+			let currentSet = Array.from(nodeDependencies.entries())
+				.filter(([nodeId, count]) => count === 0)
+				.map(([nodeId]) => sortedNodes.find((node) => node.id === nodeId));
+
+			if (currentSet.length === 0) {
+				throw new Error('Cyclic dependency detected or missing nodes.');
+			}
+
+			independentNodeSets.push(currentSet);
+
+			for (let node of currentSet) {
+				nodeDependencies.delete(node.id);
+				edges
+					.filter((edge) => edge.source === node.id)
+					.forEach((edge) => {
+						if (nodeDependencies.has(edge.target)) {
+							nodeDependencies.set(edge.target, nodeDependencies.get(edge.target) - 1);
+						}
+					});
+			}
+		}
+
+		return independentNodeSets;
+	}
+
+	async processNodes(context: string, user: User, save = false, refreshData = null) {
+		this.propagateDirtyState();
+		let nodeOutputs = {};
+		let shouldSave = false;
+
+		// load speed optimization:
+		// report_v1 gets to front-run the rest of the nodes
+		const report_v1 = this.graph.findByComputeType('report_v1');
+		if (!_.isEmpty(report_v1) && refreshData) {
+			const report_v1_impl = nodes.init('report_v1', report_v1[0].node);
+			await report_v1_impl.compute({}, context, info, error, success, this.slug, Cookies);
+			if (refreshData) refreshData();
+		}
+
+		const independentNodeSets = this.independentSets(
+			topologicalSort(get(this.graph.nodes), get(this.graph.edges)),
+			get(this.graph.edges)
+		);
+
+		let i = 0;
+		for (let nodeSet of independentNodeSets) {
+			i++;
+			let inputData = {};
+			for (let node of nodeSet) {
+				get(this.graph.edges)
+					.filter((edge) => edge.target === node.id)
+					.forEach((edge) => {
+						inputData[edge.source] = nodeOutputs[edge.source];
+					});
+			}
+
+			let innerPromises = nodeSet.map((node) =>
+				(async () => {
+					shouldSave = shouldSave || node.data.dirty;
+					const node_impl = nodes.init(node.data.compute_type, node);
+
+					const nodeEdges = get(this.graph.edges).filter((edge) => edge.target === node.id);
+					const sources = nodeEdges.map((x) => x.source);
+
+					try {
+						const nodeInputData = _.pick(inputData, sources);
+						const result = await node_impl.compute(
+							nodeInputData,
+							context,
+							info,
+							error,
+							success,
+							this.slug,
+							Cookies
+						);
+						const obj = {
+							id: node.id,
+							output: result
+						};
+						return obj;
+					} catch (e) {
+						console.error(e);
+						error(
+							$__('error_running') +
+								' ' +
+								node.id +
+								' ' +
+								$__('please_view_console_for_more_details')
+						);
+					}
+				})()
+			);
+
+			const results = await Promise.all(innerPromises);
+
+			for (let result of results) {
+				if (result !== undefined) {
+					nodeOutputs[result.id] = result.output;
+				}
+			}
+
+			this.refresh();
+		}
+
+		if (context == 'run') {
+			success($__('pipeline_run_complete'));
+			if (save && shouldSave) await this.updateDataset(user);
+		}
 	}
 
 	async updateDataset(user: User) {
 		if (user && user.uid === this.owner) {
 			try {
 				info($__('updating_dataset'));
-				const copy = Deepcopy(this.datasetToDoc());
+				let copy = Deepcopy(this.datasetToDoc());
+				if (copy.template === undefined) {
+					copy.template = '';
+				}
 				this.sanitizeNodes(copy.graph.nodes);
+				copy = JSON.parse(JSON.stringify(copy));
 				await updateDoc(doc(datasetCollection, this.id), copy);
 				success($__('dataset_updated'));
 			} catch (err) {

@@ -297,8 +297,8 @@ DISPLAY=:99 python src/test/test_selenium.py
 | Passed Test Suites    | 76 |
 | Failed Test Suites    | 0 |
 | Pending Test Suites   | 0 |
-| Total Tests           | 153 |
-| Passed Tests          | 153 |
+| Total Tests           | 159 |
+| Passed Tests          | 159 |
 | Failed Tests          | 0 |
 | Pending Tests         | 0 |
 | Todo Tests            | 0 |
@@ -547,7 +547,13 @@ DISPLAY=:99 python src/test/test_selenium.py
 ### `[30]` [report_v1.test.ts](./src/test//report_v1.test.ts)
 | Test | Status | Duration (ms) |
 |---|---|---:|
-| *should set the output of the node to the input data* | **passed** |
+| *sets the output of the node to the input data* | **passed** |
+| *uploads data to GCS on run* | **passed** |
+| *reads data from GCS on load if gcs_path is set and input data is empty* | **passed** |
+| *clears gcs_path if readFileFromGCS throws an error* | **passed** |
+| *sets message if merge and csv data are present* | **passed** |
+| *sets message to empty string if merge or csv data are missing* | **passed** |
+| *does not mutate the input node* | **passed** |
 
 ### `[31]` [score_argument_relevance.test.ts](./src/test//score_argument_relevance.test.ts)
 | Test | Status | Duration (ms) |
