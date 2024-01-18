@@ -31,12 +31,12 @@ describe('EditCSVNode class', () => {
 		expect(output).toEqual([{ newColumn1: 'value1', column2: 'value2' }]);
 	});
 
-	it('returns undefined if input is undefined', async () => {
+	it('returns default output if input is undefined', async () => {
 		const nodeData = deepCopy(edit_csv_node_data);
 		const node = new EditCSVNode(nodeData);
 		const inputData = { csv: undefined };
 		const output = await node.compute(inputData, null);
-		expect(output).toBeUndefined();
+		expect(output).toEqual({});
 	});
 
 	it('handles multiple operations', async () => {

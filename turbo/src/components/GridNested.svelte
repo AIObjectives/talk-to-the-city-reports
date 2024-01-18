@@ -1,5 +1,7 @@
 <script lang="ts">
-	import TextField from '@smui/textfield';
+	import { oneDark } from '@codemirror/theme-one-dark';
+	import CodeMirror from 'svelte-codemirror-editor';
+	import { json } from '@codemirror/lang-json';
 	import Pencil from '$lib/icons/PencilOutline.svelte';
 	import Grid from '$components/Grid.svelte';
 	import _ from 'lodash';
@@ -75,12 +77,13 @@
 			}}><Pencil /></button
 		>
 		{#if editing}
-			<TextField
-				style="width: 100%; overflow: auto; min-width: 500px; min-height: 600px;"
-				helperLine$style="width: 100% !important;"
-				textarea
-				input$rows={12}
+			<CodeMirror
 				value={JSON.stringify(data, null, 2)}
+				theme={oneDark}
+				lang={json()}
+				className="nodrag; nowheel;"
+				style="min-width: 500px; min-height: 600px; height: 100%; width: 100%;"
+				options={{ autoresize: true, lineWrapping: true }}
 			/>
 		{:else}
 			{#if totalPages > 1}

@@ -196,6 +196,7 @@
     "filter_csv": "過濾 CSV",
     "add_filter": "添加過濾器",
     "exclusive": "獨家",
+    "pipeline_run_complete": "管道運行完成",
     "comment_expander": "評論展開器",
-    "pipeline_run_complete": "管道運行完成"
+    "show_prompt_suffix": "顯示提示後綴"
 }

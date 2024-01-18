@@ -1,8 +1,11 @@
+import DeepCopy from 'deep-copy';
 import nodes from '$lib/node_register';
 import { readFileFromGCS, uploadJSONToGCS } from '$lib/utils';
 import { merge_extraction_prompt } from '$lib/prompts';
 import categories from '$lib/node_categories';
 import { format, unwrapFunctionStore } from 'svelte-i18n';
+import type { DGNodeInterface, GCSBaseData } from '$lib/node_data_types';
+
 import _ from 'lodash';
 const $__ = unwrapFunctionStore(format);
 
@@ -33,7 +36,7 @@ export default class MergeClusterExtractionNode {
 		const open_ai_key_key = this.data.input_ids.open_ai_key;
 		const keys = Object.keys(inputData);
 		const cluster_extraction_keys = keys.filter((x) => x != csv_key && x != open_ai_key_key);
-		const cluster_extractions = cluster_extraction_keys.map((x) => inputData[x]);
+		const cluster_extractions = DeepCopy(cluster_extraction_keys.map((x) => inputData[x]));
 		const open_ai_key = inputData.open_ai_key || inputData[this.data.input_ids.open_ai_key];
 
 		if (
@@ -66,6 +69,14 @@ export default class MergeClusterExtractionNode {
 
 		if (context == 'run' && open_ai_key && cluster_extractions && cluster_extractions.length > 0) {
 			info('Computing ' + this.data.label);
+			if (this.data.ignore_description)
+				for (const extr of cluster_extractions) {
+					for (const topic of extr.topics) {
+						for (const subtopic of topic.subtopics) {
+							delete subtopic.subtopicShortDescription;
+						}
+					}
+				}
 			this.data.num_cluster_extractions = cluster_extractions.length;
 			const { prompt, system_prompt } = this.data;
 			const result = await this.gpt(
@@ -82,6 +93,9 @@ export default class MergeClusterExtractionNode {
 			this.data.output = JSON.parse(result);
 			await uploadJSONToGCS(this, this.data.output, slug);
 			this.data.dirty = false;
+			this.data.message = `${$__('topics')}: ${this.data.output?.topics?.length} ${$__(
+				'subtopics'
+			)}: ${_.sumBy(this.data.output?.topics, (topic) => topic?.subtopics?.length)}.`;
 			success('Done computing ' + this.data.label);
 			return this.data.output;
 		}
@@ -120,8 +134,14 @@ export default class MergeClusterExtractionNode {
 	}
 }
 
-interface MergeClusterExtractionData extends ClusterExtractionData {
-	// Inherits all properties from ClusterExtractionData
+interface MergeClusterExtractionData extends GCSBaseData {
+	output: Record<string, any>;
+	num_cluster_extractions: number;
+	prompt: string;
+	system_prompt: string;
+	input_ids: Record<string, any>;
+	text: string;
+	ignore_description: boolean;
 }
 
 type MergeClusterExtractionNodeInterface = DGNodeInterface & {
@@ -143,10 +163,15 @@ export let merge_cluster_extraction_node_data: MergeClusterExtractionNodeInterfa
 		input_ids: { csv: '', open_ai_key: '' },
 		category: categories.wrangling.id,
 		icon: 'merge_cluster_extraction_v0',
-		show_in_ui: false
+		show_in_ui: false,
+		ignore_description: false,
+		message: '',
+		filename: '',
+		size_kb: 0,
+		gcs_path: ''
 	},
 	position: { x: 0, y: 0 },
-	type: 'prompt_v0'
+	type: 'merge_cluster_extraction_v0'
 };
 
 export let merge_cluster_extraction_node = new MergeClusterExtractionNode(

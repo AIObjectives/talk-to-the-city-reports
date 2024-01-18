@@ -72,8 +72,6 @@ export let node_register = [
 	filter_csv_node,
 	unique_node,
 	comment_expander_node
-	// llama_node,
-	// argument_extraction_llama_node
 ];
 
 export async function loadTemplates(): Promise<Record<string, DocumentData>> {
