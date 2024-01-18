@@ -14,8 +14,7 @@
 	export let isStandardView: boolean;
 
 	export let showSystemPrompt = false;
-
-	const { system_prompt, prompt } = data;
+	export let showPromptSuffix = false;
 </script>
 
 <DGNode
@@ -40,7 +39,7 @@
 				class="nowheel"
 				textarea
 				input$rows={5}
-				value={system_prompt}
+				value={data.system_prompt}
 				on:keydown={(evt) => {
 					if (evt.key === 'Backspace') {
 						evt.stopPropagation();
@@ -61,7 +60,7 @@
 		helperLine$style="width: 100% !important;"
 		textarea
 		input$rows={12}
-		value={prompt}
+		value={data.prompt}
 		on:input={(evt) => {
 			data.prompt = evt.target?.value;
 			data.dirty = true;
@@ -74,4 +73,32 @@
 	>
 		<HelperText slot="helper">{$__('primary_extraction_prompt')}</HelperText>
 	</TextField>
+	{#if !isStandardView}
+		<FormField align="end">
+			<span><Checkbox bind:checked={showPromptSuffix} /></span>
+			<span slot="label">{$__('show_prompt_suffix')}</span>
+		</FormField>
+	{/if}
+	{#if showPromptSuffix}
+		<TextField
+			style="width: 100%; overflow: auto"
+			helperLine$style="width: 100% !important;"
+			class="nowheel"
+			textarea
+			input$rows={5}
+			value={data.prompt_suffix}
+			on:keydown={(evt) => {
+				if (evt.key === 'Backspace') {
+					evt.stopPropagation();
+				}
+			}}
+			on:input={(evt) => {
+				data.prompt_suffix = evt.target?.value;
+				data.dirty = true;
+			}}
+		>
+			<HelperText slot="helper">{$__('extraction_prompt_suffix')}</HelperText>
+		</TextField>
+	{/if}
+	<slot />
 </DGNode>

@@ -407,7 +407,7 @@ DISPLAY=:99 python src/test/test_selenium.py
 | *generates new columns* | **passed** |
 | *deletes columns* | **passed** |
 | *renames columns* | **passed** |
-| *returns undefined if input is undefined* | **passed** |
+| *returns default output if input is undefined* | **passed** |
 | *handles multiple operations* | **passed** |
 | *does not modify input if no operations are specified* | **passed** |
 | *does not crash if input is empty* | **passed** |

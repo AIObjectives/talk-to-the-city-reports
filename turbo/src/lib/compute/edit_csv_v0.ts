@@ -1,5 +1,6 @@
 import nodes from '$lib/node_register';
 import categories from '$lib/node_categories';
+import deepCopy from 'deep-copy';
 
 interface BaseData {}
 
@@ -33,15 +34,19 @@ class EditCSVNode {
 		slug: string,
 		Cookies: any
 	) {
-		const input = inputData[Object.keys(inputData)[0]];
+		const input = deepCopy(inputData[Object.keys(inputData)[0]]);
 		if (!input) {
 			this.data.dirty = false;
 			return;
 		}
 
 		for (const [key, value] of Object.entries(this.data.generate)) {
-			input.forEach((row: { [key: string]: any }) => {
-				row[key] = value;
+			input.forEach((row: { [key: string]: any }, i) => {
+				if (value.includes('$i')) {
+					row[key] = value.replace('$i', i);
+				} else {
+					row[key] = value;
+				}
 			});
 		}
 

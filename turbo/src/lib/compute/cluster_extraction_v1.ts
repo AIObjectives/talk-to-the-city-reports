@@ -6,6 +6,7 @@ import {
 	cluster_extraction_system_prompt,
 	cluster_extraction_prompt_v1_suffix
 } from '$lib/prompts';
+import type { DGNodeInterface, GCSBaseData } from '$lib/node_data_types';
 import { format, unwrapFunctionStore } from 'svelte-i18n';
 import gpt from '$lib/gpt';
 import _ from 'lodash';
@@ -45,7 +46,14 @@ export default class ClusterExtractionNode {
 		}
 
 		if (!this.data.dirty && this.data.csv_length == csv.length && this.data.gcs_path) {
-			let doc = await readFileFromGCS(this);
+			let doc;
+			try {
+				doc = await readFileFromGCS(this);
+			} catch (e) {
+				console.log('error', e);
+				this.data.gcs_path = '';
+				return;
+			}
 			if (typeof doc === 'string') {
 				doc = JSON.parse(doc);
 			}
@@ -67,7 +75,7 @@ export default class ClusterExtractionNode {
 				info(this.data.message);
 				i++;
 			}, 5000);
-			const todo = new Set(_.range(0, csv.length));
+			const todo = new Set([1]);
 			const result = await gpt(
 				open_ai_key,
 				{
@@ -99,7 +107,7 @@ export default class ClusterExtractionNode {
 	}
 }
 
-interface ClusterExtractionData extends BaseData {
+interface ClusterExtractionData extends GCSBaseData {
 	output: object;
 	text: string;
 	system_prompt: string;
@@ -127,7 +135,11 @@ export let cluster_extraction_node_data_v1: ClusterExtractionNodeInterface = {
 		input_ids: { open_ai_key: '', csv: '' },
 		category: categories.ml.id,
 		icon: 'cluster_extraction_v0',
-		show_in_ui: true
+		show_in_ui: true,
+		message: '',
+		filename: '',
+		size_kb: 0,
+		gcs_path: ''
 	},
 	position: { x: 0, y: 0 },
 	type: 'prompt_v0'

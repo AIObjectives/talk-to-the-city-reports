@@ -239,13 +239,19 @@ export class Dataset {
 	async fork(slug: string): Promise<boolean> {
 		try {
 			info($__('forking_dataset'));
+			let copy = Deepcopy(this.datasetToDoc());
+			if (copy.template === undefined) {
+				copy.template = '';
+			}
+			this.sanitizeNodes(copy.graph.nodes);
+			copy = JSON.parse(JSON.stringify(copy));
 			const dataset = new Dataset(
 				this.title,
 				slug,
 				auth!.currentUser!.uid,
 				this.template,
 				this.description,
-				Deepcopy({ nodes: get(this.graph.nodes), edges: get(this.graph.edges) }),
+				Deepcopy({ nodes: copy.graph.nodes, edges: copy.graph.edges }),
 				undefined,
 				this.slug
 			);
