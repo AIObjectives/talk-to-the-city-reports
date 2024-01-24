@@ -1,3 +1,6 @@
+src/routes/tmp
+src/lib/pkg/
+sum
 src/lib/compute/.plaintext/*
 coverage-ts
 src/tmp

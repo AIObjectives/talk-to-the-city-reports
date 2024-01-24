@@ -1,4 +1,40 @@
 const responses = {
+	'0bb27701067939d4b9358f94bce6b77e0cf296e6db67c8cb1e93c88be3e9faf8':
+		'Crowded streets, vibrant markets, high-rise apartments, diverse, rich culture.',
+	'20f235466b65b040a2a0b11c6656ac1aaed2efe8eecfea59cb16d53322febe52':
+		'Clean, efficient public transport, expensive rent, historic, culturally vibrant, safe.',
+	'06643cabd565ebf8f435d16d0105b1b9bf246a2500f88829c8d1480c4f4d0f9c': {
+		topics: [
+			{
+				topicName: 'Weather',
+				subtopics: ['Current Conditions', 'Precipitation Duration']
+			}
+		]
+	},
+	'72527412d60d3518133c47bf99bb066cb92cff7fa36fc9606ecad6cc22d3b971': {
+		topics: [
+			{
+				topicName: 'Weather',
+				subtopics: ['Current Conditions']
+			}
+		]
+	},
+	'1cc0c4531e0cc91df9afafba55c658c8db62078e5eba14cac070a83a6f635e01': {
+		topics: [
+			{
+				topicName: 'Weather',
+				subtopics: ['Precipitation Duration']
+			}
+		]
+	},
+	'087f95f192e154b9174207942af1822c5d43d8825550c183957b6083cca0e9d8': `{
+  "response": "Taipei offers vibrant culture, convenience, but also dense living spaces."
+}`,
+	e362b7741e7ec13d29675b48143d37a3d4b5e455ccf714863c16737818e7e3db:
+		'New York City: Bustling, crowded, diverse, expensive, vibrant, noisy, ever-changing.',
+	'3c6d5b428018019749375e31356eadbbc0e1c6ea4a18fedf9156b627a1ab3970': `{
+  "response": "New York: Bustling, crowded, diverse, expensive, vibrant, with limited space."
+}`,
 	'5c792b2ad1d597fe733d68b3139473e29ecc1485309191e1aa0763ad55849356':
 		'Hello. What would you like to know about the markdown?',
 	'411400533127094feb3ac35607c7e6fb647cf750fd2eb3bb0484696e165cabfb':

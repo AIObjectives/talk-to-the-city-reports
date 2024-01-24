@@ -69,8 +69,8 @@ export default class ReportNode {
 			}
 		}
 		const output_ids = this.data.output_ids;
-		this.data.output[output_ids.merge] = inputData[this.data.input_ids.merge];
-		this.data.output[output_ids.csv] = inputData[this.data.input_ids.csv];
+		this.data.output[output_ids.merge] = _.cloneDeep(inputData[this.data.input_ids.merge]);
+		this.data.output[output_ids.csv] = _.cloneDeep(inputData[this.data.input_ids.csv]);
 		this.setMessage(false);
 		return this.data.output;
 	}

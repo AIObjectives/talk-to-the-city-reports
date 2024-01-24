@@ -56,6 +56,7 @@ export default class ParticipantFilterNode {
 				topic.subtopics = topic.subtopics.filter((subtopic: any) => subtopic.claims.length > 0);
 			});
 			copy.topics = copy.topics.filter((topic: any) => topic.subtopics.length > 0);
+			this.data.output = copy;
 			return copy;
 		}
 	}
@@ -83,7 +84,8 @@ export let participant_filter_node_data: ParticipantFilterNodeInterface = {
 		category: categories.wrangling.id,
 		icon: 'participant_filter_v0',
 		show_in_ui: true,
-		query_param_name: 'name'
+		query_param_name: 'name',
+		message: ''
 	},
 	position: { x: 0, y: 0 },
 	type: 'participant_filter_v0'

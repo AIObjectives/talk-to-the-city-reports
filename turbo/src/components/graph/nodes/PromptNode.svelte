@@ -54,26 +54,28 @@
 			</TextField>
 		{/if}
 	{/if}
-	<TextField
-		style="width: 100%; overflow: auto"
-		class="nowheel mt-2"
-		helperLine$style="width: 100% !important;"
-		textarea
-		input$rows={12}
-		value={data.prompt}
-		on:input={(evt) => {
-			data.prompt = evt.target?.value;
-			data.dirty = true;
-		}}
-		on:keydown={(evt) => {
-			if (evt.key === 'Backspace') {
-				evt.stopPropagation();
-			}
-		}}
-	>
-		<HelperText slot="helper">{$__('primary_extraction_prompt')}</HelperText>
-	</TextField>
-	{#if !isStandardView}
+	{#if data.prompt}
+		<TextField
+			style="width: 100%; overflow: auto"
+			class="nowheel mt-2"
+			helperLine$style="width: 100% !important;"
+			textarea
+			input$rows={12}
+			value={data.prompt}
+			on:input={(evt) => {
+				data.prompt = evt.target?.value;
+				data.dirty = true;
+			}}
+			on:keydown={(evt) => {
+				if (evt.key === 'Backspace') {
+					evt.stopPropagation();
+				}
+			}}
+		>
+			<HelperText slot="helper">{$__('primary_extraction_prompt')}</HelperText>
+		</TextField>
+	{/if}
+	{#if !isStandardView && data.prompt_suffix}
 		<FormField align="end">
 			<span><Checkbox bind:checked={showPromptSuffix} /></span>
 			<span slot="label">{$__('show_prompt_suffix')}</span>

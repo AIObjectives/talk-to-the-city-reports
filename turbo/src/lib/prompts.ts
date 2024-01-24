@@ -95,6 +95,30 @@ I want you to propose a way to break down the information contained in these com
 
 Keep the topic and subtopic names very concise and use the short description to explain what the topic is about.`.trim();
 
+export const multi_cluster_extraction_prompt_v0 = `\
+I will give you a list of comments.
+
+I want you to classify the information contained in these comments into topics and subtopics. 
+
+Keep the topic and subtopic names very concise.
+`;
+
+export const multi_cluster_extraction_v0_suffix = `\
+Return a JSON object of the form {
+  "topics": [
+    {
+      "topicName:": string, 
+      "subtopics": [
+          ...
+      ]
+    }, 
+    ... 
+  ]
+}
+
+
+Now here are the comment: "{comments}"`;
+
 export const cluster_extraction_prompt_v1_suffix = `
 Return a JSON object of the form {
   "topics": [
@@ -181,3 +205,62 @@ incorporate those opinions & beliefs into your psyche, and represent them.
 {text}
 
 `;
+
+export const merge_extraction_v1_system_prompt = `\
+You are a taxonomy expert. You can reason brilliantly about topics, and subtopics, and you specialize in merging topics.
+`;
+
+export const merge_extraction_prompt_v1 = `\
+I want you to analyze the overarching topics and merge the topics and subtopics when it makes sense to do so.
+
+For example:
+
+- Mountaineering Evolution
+- Mountaineering Challenges
+
+Should be merged to:
+
+- Mountaineering
+
+or:
+
+- deep see fishing
+- lake fishing
+
+Should be merged to: 
+
+- fishing
+
+Topic names must be one or two words only.
+`;
+
+export const merge_extraction_v1_suffix = `\
+Please output JSON in the following format:
+
+{
+'topics': [
+    'topicName': <string>,
+    'subtopics': [
+         ...
+     ],
+    ...
+]}
+
+Now the topics:
+
+{text}
+`;
+
+export const gpt_v0_prompt =
+	'Please write a first hand 10 word account of living conditions in any city of your choice.';
+
+export const gpt_v0_prompt_1 =
+	'Please write a first hand 10 word account of living conditions in an Asian city.';
+
+export const gpt_v0_prompt_2 =
+	'Please write a first hand 10 word account of living conditions in a European city.';
+
+export const summarize_v0_prompt = `\
+given topic {topicName} and subtopic {subtopicName} please generate a {words} word summary of the following quotes: {quotes}
+
+Do not summarize the quotes one at a time. Instead write a well-written, highly coherent, and all encompassing summary.`;

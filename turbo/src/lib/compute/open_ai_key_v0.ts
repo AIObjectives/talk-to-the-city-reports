@@ -1,11 +1,6 @@
 import nodes from '$lib/node_register';
 import categories from '$lib/node_categories';
-
-interface BaseData {}
-
-interface OpenAIKeyData extends BaseData {
-	text: string;
-}
+import type { DGNodeInterface, BaseData } from '$lib/node_data_types';
 
 export default class OpenAIKeyNode {
 	id: string;
@@ -32,22 +27,20 @@ export default class OpenAIKeyNode {
 	) {
 		let ui_key = this.data.text;
 		let ui_key_is_valid = this.keyIsValid(ui_key);
+		this.data.dirty = false;
 		if (ui_key && ui_key_is_valid) {
 			Cookies.set('open_ai_key', ui_key);
 			this.data.text = 'sk-...(key hidden)';
-			this.data.dirty = false;
 			this.data.output = ui_key;
 			return ui_key;
 		}
 		if (ui_key && !ui_key_is_valid) {
 			this.data.text = 'Invalid key';
-			this.data.dirty = false;
 		}
 		let local_key = Cookies.get('open_ai_key');
 		let local_key_is_valid = this.keyIsValid(local_key);
 		if (local_key && local_key_is_valid) {
 			this.data.text = 'sk-...(key hidden)';
-			this.data.dirty = false;
 			this.data.output = local_key;
 			return local_key;
 		}
@@ -57,6 +50,10 @@ export default class OpenAIKeyNode {
 	keyIsValid(key) {
 		return key && key.length == 51 && key.slice(0, 3) == 'sk-';
 	}
+}
+
+interface OpenAIKeyData extends BaseData {
+	text: string;
 }
 
 type OpenAIKeyNodeInterface = DGNodeInterface & {
@@ -73,7 +70,8 @@ export let open_ai_key_node_data: OpenAIKeyNodeInterface = {
 		input_ids: {},
 		category: categories.ml.id,
 		icon: 'open_ai_key_v0',
-		show_in_ui: true
+		show_in_ui: true,
+		message: ''
 	},
 	position: { x: 0, y: 0 },
 	type: 'text_input_v0'

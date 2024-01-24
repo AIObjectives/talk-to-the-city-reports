@@ -188,7 +188,9 @@
 						</small>
 					</div>
 
-					<h6 class="mt-4 mb-4">{topic.topicShortDescription}</h6>
+					{#if topic.topicShortDescription}
+						<h6 class="mt-4 mb-4">{topic.topicShortDescription}</h6>
+					{/if}
 					{#each topic.subtopics as subtopic (subtopic.subtopicName)}
 						<Paper square>
 							<div
@@ -203,9 +205,11 @@
 									{$__('claims')}</small
 								>
 							</div>
-							<div class="ml-5 mt-2 mb-2" style="color: black">
-								<h7>{subtopic.subtopicShortDescription}</h7>
-							</div>
+							{#if subtopic.subtopicShortDescription}
+								<div class="ml-5 mt-2 mb-2" style="color: black">
+									<h7>{subtopic.subtopicShortDescription}</h7>
+								</div>
+							{/if}
 							<Claims
 								{csv}
 								claims={subtopic.claims}

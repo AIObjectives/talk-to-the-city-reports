@@ -1,13 +1,10 @@
+import { browser } from '$app/environment';
 import nodes from '$lib/node_register';
 import categories from '$lib/node_categories';
 import * as jq_web from 'jq-web/jq.asm.bundle.js';
-import _ from 'lodash';
-interface BaseData {}
+import type { DGNodeInterface, BaseData } from '$lib/node_data_types';
 
-interface JqData extends BaseData {
-	text: string;
-	output: object;
-}
+import _ from 'lodash';
 
 export default class JqNodeV1 {
 	id: string;
@@ -34,11 +31,32 @@ export default class JqNodeV1 {
 	) {
 		this.data.message = '';
 		this.data.dirty = false;
-		const input = inputData[Object.keys(inputData)[0]];
+		const input = _.head(_.values(inputData));
 		try {
 			if (this.data.text && (_.isPlainObject(input) || _.isArray(input))) {
-				this.data.output = jq_web.json(input, this.data.text);
-				return this.data.output;
+				if (browser) {
+					this.data.output = jq_web.json(input, this.data.text);
+					return this.data.output;
+				} else {
+					const jqModule = await import('node-jq');
+					const jq = jqModule.default;
+					const res: any = await jq.run(this.data.text, input, {
+						input: 'json',
+						output: 'json'
+					});
+					try {
+						this.data.output = JSON.parse(res);
+						return this.data.output;
+					} catch (e) {
+						try {
+							this.data.output = res.split('\n').map(JSON.parse);
+							return this.data.output;
+						} catch (e) {
+							this.data.output = res;
+							return this.data.output;
+						}
+					}
+				}
 			}
 		} catch (e) {
 			console.log(e);
@@ -47,6 +65,11 @@ export default class JqNodeV1 {
 			return undefined;
 		}
 	}
+}
+
+interface JqData extends BaseData {
+	text: string;
+	output: any;
 }
 
 type JqNodeInterface = DGNodeInterface & {
@@ -64,7 +87,8 @@ export let jq_node_data: JqNodeInterface = {
 		input_ids: {},
 		category: categories.lang.id,
 		icon: 'jq_v0',
-		show_in_ui: false
+		show_in_ui: false,
+		message: ''
 	},
 	position: { x: 0, y: 0 },
 	type: 'jq_v1'

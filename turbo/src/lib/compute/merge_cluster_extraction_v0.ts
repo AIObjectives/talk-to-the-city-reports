@@ -1,7 +1,7 @@
 import DeepCopy from 'deep-copy';
 import nodes from '$lib/node_register';
 import { readFileFromGCS, uploadJSONToGCS } from '$lib/utils';
-import { merge_extraction_prompt } from '$lib/prompts';
+import { merge_extraction_prompt, cluster_extraction_system_prompt } from '$lib/prompts';
 import categories from '$lib/node_categories';
 import { format, unwrapFunctionStore } from 'svelte-i18n';
 import type { DGNodeInterface, GCSBaseData } from '$lib/node_data_types';
@@ -24,7 +24,7 @@ export default class MergeClusterExtractionNode {
 	}
 
 	async compute(
-		inputData: object,
+		inputData: Record<string, any>,
 		context: string,
 		info: (arg: string) => void,
 		error: (arg: string) => void,
@@ -53,7 +53,7 @@ export default class MergeClusterExtractionNode {
 			this.data.num_cluster_extractions == cluster_extractions.length &&
 			this.data.gcs_path
 		) {
-			let doc = await readFileFromGCS(this);
+			let doc: any = await readFileFromGCS(this);
 			if (typeof doc === 'string') {
 				doc = JSON.parse(doc);
 			}
@@ -95,7 +95,7 @@ export default class MergeClusterExtractionNode {
 			this.data.dirty = false;
 			this.data.message = `${$__('topics')}: ${this.data.output?.topics?.length} ${$__(
 				'subtopics'
-			)}: ${_.sumBy(this.data.output?.topics, (topic) => topic?.subtopics?.length)}.`;
+			)}: ${_.sumBy(this.data.output?.topics, (topic: any) => topic?.subtopics?.length)}.`;
 			success('Done computing ' + this.data.label);
 			return this.data.output;
 		}
@@ -135,7 +135,7 @@ export default class MergeClusterExtractionNode {
 }
 
 interface MergeClusterExtractionData extends GCSBaseData {
-	output: Record<string, any>;
+	output: any;
 	num_cluster_extractions: number;
 	prompt: string;
 	system_prompt: string;
@@ -154,8 +154,7 @@ export let merge_cluster_extraction_node_data: MergeClusterExtractionNodeInterfa
 		label: 'merge_cluster_extraction',
 		output: {},
 		text: '',
-		system_prompt:
-			'You are a professional research assistant. You have helped run many public consultations, surveys and citizen assemblies.',
+		system_prompt: cluster_extraction_system_prompt,
 		prompt: merge_extraction_prompt,
 		num_cluster_extractions: 0,
 		dirty: false,
@@ -174,7 +173,7 @@ export let merge_cluster_extraction_node_data: MergeClusterExtractionNodeInterfa
 	type: 'merge_cluster_extraction_v0'
 };
 
-export let merge_cluster_extraction_node = new MergeClusterExtractionNode(
+export let merge_cluster_extraction_node_v0 = new MergeClusterExtractionNode(
 	merge_cluster_extraction_node_data
 );
 

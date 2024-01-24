@@ -199,5 +199,13 @@
     "pipeline_run_complete": "管道運行完成",
     "comment_expander": "評論展開器",
     "show_prompt_suffix": "顯示提示後綴",
-    "format": "格式"
+    "format": "格式",
+    "add_prompt": "添加提示",
+    "multi_gpt": "多 GPT",
+    "join_output": "連接輸出",
+    "output_ready": "輸出就緒",
+    "multi_cluster_extraction": "多叢集提取",
+    "context_limit": "上下文限制",
+    "limit_context_to_number_of_tokens": "限制上下文到標記數",
+    "enable": "啟用"
 }

@@ -26,16 +26,25 @@
 		if (!data || !Array.isArray(data) || data.length === 0) {
 			return null;
 		}
+
 		const headers = Object.keys(data[0]);
-		const csvRows = [];
-		csvRows.push(headers.join(','));
+		const csvRows = [headers.join(',')]; // Initialize with headers
+
 		for (const row of data) {
 			const values = headers.map((header) => {
-				const escaped = ('' + row[header]).replace(/"/g, '\\"');
-				return `"${escaped}"`;
+				let cell = row[header];
+				cell = cell !== null && cell !== undefined ? cell.toString() : ''; // Convert to string, handle null and undefined
+				if (cell.includes('"')) {
+					cell = cell.replace(/"/g, '""'); // Escape double quotes
+				}
+				if (cell.search(/("|,|\n)/g) >= 0) {
+					cell = `"${cell}"`; // Quote fields with commas, newlines, or quotes
+				}
+				return cell;
 			});
 			csvRows.push(values.join(','));
 		}
+
 		const csvString = csvRows.join('\n');
 		return csvString;
 	}

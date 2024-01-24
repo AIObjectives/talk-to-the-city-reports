@@ -56,12 +56,12 @@ export async function openai(
 			const body = {
 				model: 'gpt-4-1106-preview',
 				messages: messages,
-				temperature: 0.1,
-				response_format: null
+				temperature: 0.1
 			};
 			if (isPlainObject(response_format)) {
 				body.response_format = response_format;
 			}
+			// console.log(JSON.stringify(body));
 			response = await fetch('https://api.openai.com/v1/chat/completions', {
 				method: 'POST',
 				headers: {
@@ -76,6 +76,7 @@ export async function openai(
 			}
 
 			const data = await response.json();
+			// console.log('data', data);
 			let resp = data.choices[0].message.content;
 			if (resp.startsWith('```json')) {
 				const start = resp.indexOf('```json') + 7;
@@ -107,25 +108,29 @@ export default async function gpt(
 	success,
 	i,
 	total,
-	todo
+	todo,
+	response_format = { type: 'json_object' }
 ) {
 	let arg_prompt = prompt;
-	for (const [key, value] of Object.entries(replacements)) {
-		arg_prompt = arg_prompt.replace(`{${key}}`, value);
-	}
+	if (!_.isEmpty(replacements))
+		for (const [key, value] of Object.entries(replacements)) {
+			arg_prompt = arg_prompt.replace(`{${key}}`, value);
+		}
 	const messages = [
 		{ role: 'system', content: system_prompt },
 		{ role: 'user', content: arg_prompt }
 	];
 	const stringified = JSON.stringify(messages);
 	const hash = CryptoJS.SHA256(stringified).toString();
+	// console.log(hash);
 	try {
 		const result = await pool.exec(openai, [
 			apiKey,
 			messages,
 			import.meta.env.VITEST,
 			hash,
-			mock_responses
+			mock_responses,
+			response_format
 		]);
 		todo.delete(i);
 		info(`${$__('done_calling_openai')}. ${$__('calls_left')}: ${todo.size}`);

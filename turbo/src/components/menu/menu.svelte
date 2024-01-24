@@ -12,7 +12,7 @@
 
 	let showDropdown: boolean = false;
 	let modalShowing: boolean = false;
-	let adminUid = import.meta.env.VITE_ADMIN_UID;
+	let adminUid = import.meta.env.VITE_ADMIN;
 
 	$: reportPath = $page.route.id?.startsWith('/report/');
 	$: anyPath = reportPath;
