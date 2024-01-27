@@ -42,6 +42,12 @@ export default class ArgumentExtractionNodeV1 {
 		const cluster_extraction =
 			inputData.cluster_extraction || inputData[this.data.input_ids.cluster_extraction];
 
+		if (this.data.enable === false) {
+			this.data.message = `${$__('disabled')}`;
+			this.data.dirty = false;
+			return;
+		}
+
 		if (!csv || csv.length == 0 || !cluster_extraction) {
 			this.data.message = `${$__('missing_input_data')}`;
 			this.data.dirty = false;
@@ -163,10 +169,11 @@ export let argument_extraction_node_data_v1: ArgumentExtractionNodeInterface = {
 		message: '',
 		filename: '',
 		size_kb: 0,
-		gcs_path: ''
+		gcs_path: '',
+		enable: true
 	},
 	position: { x: 0, y: 0 },
-	type: 'prompt_v0'
+	type: 'argument_extraction_v1'
 };
 
 export let argument_extraction_node_v1 = new ArgumentExtractionNodeV1(

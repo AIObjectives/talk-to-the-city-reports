@@ -31,6 +31,11 @@ export default class AddCSVNode {
 		_.forEach(_.values(inputData), (x) => {
 			outArray = outArray.concat(x);
 		});
+		if (this.data.commentId) {
+			_.forEach(outArray, (x, i) => {
+				x['comment-id'] = this.data.commentId.replace('$i', i.toString());
+			});
+		}
 		this.data.output = outArray;
 		return this.data.output;
 	}
@@ -38,6 +43,7 @@ export default class AddCSVNode {
 
 interface AddCSVData extends BaseData {
 	output: object;
+	commentId: string;
 }
 
 type AddCSVNodeInterface = DGNodeInterface & {
@@ -55,7 +61,8 @@ export let add_csv_node_data: AddCSVNodeInterface = {
 		category: categories.wrangling.id,
 		icon: 'add_csv_v0',
 		show_in_ui: false,
-		message: ''
+		message: '',
+		commentId: ''
 	},
 	position: { x: 0, y: 0 },
 	type: 'add_csv_v0'

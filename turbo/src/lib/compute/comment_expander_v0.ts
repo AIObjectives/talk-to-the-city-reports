@@ -28,6 +28,7 @@ export default class CommentExpanderNode {
 	) {
 		this.data.dirty = false;
 		let out = _.head(_.values(inputData));
+		let limit = parseInt(this.data.text);
 
 		let concatenated: string = '',
 			commentInfo: Record<string, any> = {},
@@ -36,6 +37,10 @@ export default class CommentExpanderNode {
 
 		_.forEach(out, (row) => {
 			const words = row['comment-body'].split(/\s+/);
+			if (words.length > limit) {
+				row['comment-body'] = words.slice(0, limit).join(' ');
+			}
+
 			if (commentInfo.interview && row.interview !== commentInfo.interview) {
 				results.push({ ...commentInfo, 'comment-body': concatenated });
 				concatenated = '';
@@ -45,7 +50,7 @@ export default class CommentExpanderNode {
 
 			wordCnt += words.length;
 
-			if (wordCnt >= 100) {
+			if (wordCnt >= limit) {
 				if (concatenated) results.push({ ...commentInfo, 'comment-body': concatenated });
 				commentInfo = _.pick(row, ['video', 'comment-id', 'interview', 'timestamp']);
 				concatenated = row['comment-body'];
@@ -66,6 +71,7 @@ export default class CommentExpanderNode {
 
 interface CommentExpanderData extends BaseData {
 	output: object;
+	text: string;
 }
 
 type CommentExpanderNodeInterface = DGNodeInterface & {
@@ -83,7 +89,8 @@ export let comment_expander_node_data: CommentExpanderNodeInterface = {
 		category: categories.wrangling.id,
 		icon: 'comment_expander_v0',
 		show_in_ui: false,
-		message: ''
+		message: '',
+		text: '100'
 	},
 	position: { x: 0, y: 0 },
 	type: 'comment_expander_v0'

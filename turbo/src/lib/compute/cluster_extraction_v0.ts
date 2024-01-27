@@ -3,6 +3,7 @@ import categories from '$lib/node_categories';
 import { readFileFromGCS, uploadJSONToGCS } from '$lib/utils';
 import { cluster_extraction_prompt_v0, cluster_extraction_system_prompt } from '$lib/prompts';
 import { format, unwrapFunctionStore } from 'svelte-i18n';
+import type { DGNodeInterface, GCSBaseData } from '$lib/node_data_types';
 import gpt from '$lib/gpt';
 import _ from 'lodash';
 
@@ -23,7 +24,7 @@ export default class ClusterExtractionNode {
 	}
 
 	async compute(
-		inputData: object,
+		inputData: Record<string, any>,
 		context: string,
 		info: (arg: string) => void,
 		error: (arg: string) => void,
@@ -41,14 +42,14 @@ export default class ClusterExtractionNode {
 		}
 
 		if (!this.data.dirty && this.data.csv_length == csv.length && this.data.gcs_path) {
-			let doc = await readFileFromGCS(this);
+			let doc: any = await readFileFromGCS(this);
 			if (typeof doc === 'string') {
 				doc = JSON.parse(doc);
 			}
 			this.data.output = doc;
 			this.data.message = `${$__('loaded_from_gcs')}. ${$__('topics')}: ${
 				doc?.topics?.length
-			} ${$__('subtopics')}: ${_.sumBy(doc?.topics, (topic) => topic?.subtopics?.length)}.`;
+			} ${$__('subtopics')}: ${_.sumBy(doc?.topics, (topic: any) => topic?.subtopics?.length)}.`;
 			this.data.dirty = false;
 			return this.data.output;
 		}
@@ -84,7 +85,7 @@ export default class ClusterExtractionNode {
 			this.data.dirty = false;
 			this.data.message = `${$__('topics')}: ${this.data.output?.topics?.length} ${$__(
 				'subtopics'
-			)}: ${_.sumBy(this.data.output?.topics, (topic) => topic?.subtopics?.length)}.`;
+			)}: ${_.sumBy(this.data.output?.topics, (topic: any) => topic?.subtopics?.length)}.`;
 			success(this.data.message);
 			return this.data.output;
 		} else {
@@ -95,8 +96,8 @@ export default class ClusterExtractionNode {
 	}
 }
 
-interface ClusterExtractionData extends BaseData {
-	output: object;
+interface ClusterExtractionData extends GCSBaseData {
+	output: any;
 	text: string;
 	system_prompt: string;
 	prompt: string;
@@ -121,7 +122,11 @@ export let cluster_extraction_node_data_v0: ClusterExtractionNodeInterface = {
 		input_ids: { open_ai_key: '', csv: '' },
 		category: categories.ml.id,
 		icon: 'cluster_extraction_v0',
-		show_in_ui: true
+		show_in_ui: true,
+		message: '',
+		filename: '',
+		size_kb: 0,
+		gcs_path: ''
 	},
 	position: { x: 0, y: 0 },
 	type: 'prompt_v0'

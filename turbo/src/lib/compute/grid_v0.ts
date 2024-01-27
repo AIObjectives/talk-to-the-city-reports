@@ -1,13 +1,6 @@
 import nodes from '$lib/node_register';
 import categories from '$lib/node_categories';
-import { readFileFromGCS } from '$lib/utils';
-
-interface BaseData {}
-
-interface GridData extends BaseData {
-	text: string;
-	output: object;
-}
+import type { DGNodeInterface, BaseData } from '$lib/node_data_types';
 
 export default class GridNode {
 	id: string;
@@ -39,8 +32,15 @@ export default class GridNode {
 			...this.data,
 			output: this.data.output
 		};
-		return input;
+		return this.data.output;
 	}
+}
+
+interface GridData extends BaseData {
+	text: string;
+	output: object;
+	width: number;
+	height: number;
 }
 
 type GridNodeInterface = DGNodeInterface & {
@@ -60,7 +60,8 @@ export let grid_node_data: GridNodeInterface = {
 		icon: 'grid_v0',
 		width: 700,
 		height: 500,
-		show_in_ui: false
+		show_in_ui: false,
+		message: ''
 	},
 	position: { x: 0, y: 0 },
 	type: 'grid_v0'

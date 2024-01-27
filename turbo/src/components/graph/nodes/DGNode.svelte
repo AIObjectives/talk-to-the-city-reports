@@ -1,4 +1,7 @@
 <script lang="ts">
+	import Checkbox from '@smui/checkbox';
+	import FormField from '@smui/form-field';
+	import Tune from '$lib/icons/Tune.svelte';
 	import Paper from '@smui/paper';
 	import { marked } from 'marked';
 	import Help from '$lib/icons/HelpCircle.svelte';
@@ -9,7 +12,9 @@
 	import { _ as __ } from 'svelte-i18n';
 	import register from '$lib/node_register';
 	import Cookies from 'js-cookie';
+	import TuneDGNode from './dgnode/TuneDGNode.svelte';
 	import { getContext } from 'svelte';
+	import _ from 'lodash';
 
 	const dataset = getContext('dataset');
 	const nodes = useNodes();
@@ -43,6 +48,7 @@
 	let has_all_inputs = true;
 	let doc;
 	let inlineDoc;
+	let tune = false;
 	$: {
 		const locale = Cookies.get('locale') || 'en-US';
 		getDocs(locale);
@@ -63,7 +69,7 @@
 	<Paper
 		color={isStandardView ? 'default' : color}
 		variant={isStandardView ? 'raised' : variant}
-		title={id}
+		title={data?.compute_type}
 		class={(selected ? 'selected-dg-node' : 'dg-node') + ' ' + _class}
 		style={_style}
 	>
@@ -84,8 +90,15 @@
 		</div>
 
 		<div class="help-icon-wrapper">
-			{#if !isStandardView && !has_all_inputs}
-				<Connection color="#ffaaaa" class="mr-2" />
+			{#if !isStandardView}
+				<button
+					on:click={() => {
+						tune = !tune;
+					}}><Tune color="gray" /></button
+				>&nbsp;&nbsp;
+				{#if !has_all_inputs}
+					<Connection color="#ffaaaa" class="mr-2" />
+				{/if}
 			{/if}
 			{#if doc}
 				<button on:click={() => (show_help = !show_help)}><Help color="gray" /></button>
@@ -99,6 +112,9 @@
 				</div>
 			</Paper>
 		{/if}
+		{#if tune}
+			<TuneDGNode {data} />
+		{/if}
 		{#if isStandardView && inlineDoc}
 			<div class="text-sm text-gray-900 my-5">{@html marked.parse(inlineDoc)}</div>
 		{/if}
@@ -108,6 +124,20 @@
 		{/if}
 		{#if data?.message}
 			<div class="text-sm text-gray-500">{@html data?.message}</div>
+		{/if}
+		{#if _.isBoolean(data.enable)}
+			<FormField align="end">
+				<span
+					><Checkbox
+						checked={data.enable === true}
+						on:change={(x) => {
+							console.log(x.target.checked);
+							data.enable = x.target.checked;
+						}}
+					/></span
+				>
+				<span slot="label">{$__('enable')}</span>
+			</FormField>
 		{/if}
 	</Paper>
 

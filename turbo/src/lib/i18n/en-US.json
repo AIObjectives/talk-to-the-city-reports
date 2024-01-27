@@ -198,5 +198,13 @@
   "pipeline_run_complete": "Pipeline run complete",
   "comment_expander": "Comment Expander",
   "show_prompt_suffix": "Show Prompt Suffix",
-  "format": "Format"
+  "format": "Format",
+  "add_prompt": "Add Prompt",
+  "multi_gpt": "Multi GPT",
+  "join_output": "Join Output",
+  "output_ready": "Output Ready",
+  "multi_cluster_extraction": "Multi Cluster Extraction",
+  "context_limit": "Context Limit",
+  "limit_context_to_number_of_tokens": "Limit context to number of tokens",
+  "enable": "Enable"
 }

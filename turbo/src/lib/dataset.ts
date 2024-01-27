@@ -1,3 +1,4 @@
+import { tick } from 'svelte';
 import { goto } from '$app/navigation';
 import Cookies from 'js-cookie';
 import { get } from 'svelte/store';
@@ -197,7 +198,7 @@ export class Dataset {
 				}
 			}
 
-			this.refresh();
+			await this.refresh();
 		}
 
 		if (context == 'run') {

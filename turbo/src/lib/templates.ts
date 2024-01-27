@@ -8,10 +8,8 @@ import { csv_node } from './compute/csv_v0';
 import { json_node } from './compute/json_v0';
 import { limit_csv_node } from './compute/limit_csv_v0';
 import { edit_csv_node } from './compute/edit_csv_v0';
-import { cluster_extraction_node_v0 } from './compute/cluster_extraction_v0';
 import { cluster_extraction_node_v1 } from './compute/cluster_extraction_v1';
-import { merge_cluster_extraction_node } from './compute/merge_cluster_extraction_v0';
-import { argument_extraction_node_v0 } from './compute/argument_extraction_v0';
+import { merge_cluster_extraction_node_v1 } from './compute/merge_cluster_extraction_v1';
 import { argument_extraction_node_v1 } from './compute/argument_extraction_v1';
 import { report_node_v0 } from './compute/report_v0';
 import { report_node_v1 } from './compute/report_v1';
@@ -26,6 +24,7 @@ import { stringify_node } from './compute/stringify_v0';
 import { score_argument_relevance_node } from './compute/score_argument_relevance_v0';
 import { feedback_node } from './compute/feedback_v0';
 import { gpt_node } from './compute/gpt_v0';
+import { multi_gpt_node } from './compute/multi_gpt_v0';
 import { python_node } from './compute/python_v0';
 import { pyodide_node } from './compute/pyodide_v0';
 import { chat_node } from './compute/chat_v0';
@@ -37,15 +36,16 @@ import { filter_csv_node } from '$lib/compute/filter_csv_v0';
 import { unique_node } from '$lib/compute/unique_v0';
 import { comment_expander_node } from '$lib/compute/comment_expander_v0';
 import { download_node } from '$lib/compute/download_v0';
+import { text_to_csv_node } from '$lib/compute/text_to_csv_v0';
+import { multi_cluster_extraction_node } from './compute/multi_cluster_extraction_v0';
+import { summarize_node } from './compute/summarize_v0';
 
 export let node_register = [
 	open_ai_key_node,
 	csv_node,
 	json_node,
 	edit_csv_node,
-	cluster_extraction_node_v0,
 	cluster_extraction_node_v1,
-	argument_extraction_node_v0,
 	argument_extraction_node_v1,
 	merge_node,
 	participant_filter_node,
@@ -57,11 +57,12 @@ export let node_register = [
 	jq_v1_node,
 	grid_node,
 	count_tokens_node,
-	merge_cluster_extraction_node,
+	merge_cluster_extraction_node_v1,
 	markdown_node,
 	stringify_node,
 	score_argument_relevance_node,
 	gpt_node,
+	multi_gpt_node,
 	feedback_node,
 	python_node,
 	pyodide_node,
@@ -73,7 +74,10 @@ export let node_register = [
 	filter_csv_node,
 	unique_node,
 	comment_expander_node,
-	download_node
+	download_node,
+	text_to_csv_node,
+	multi_cluster_extraction_node,
+	summarize_node
 ];
 
 export async function loadTemplates(): Promise<Record<string, DocumentData>> {

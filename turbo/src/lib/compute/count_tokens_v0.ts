@@ -1,8 +1,10 @@
 import nodes from '$lib/node_register';
 import categories from '$lib/node_categories';
 import { getEncoding } from 'js-tiktoken';
+import type { TiktokenEncoding } from 'js-tiktoken';
 import _ from 'lodash';
 import { format, unwrapFunctionStore } from 'svelte-i18n';
+import type { DGNodeInterface, BaseData } from '$lib/node_data_types';
 
 const $__ = unwrapFunctionStore(format);
 
@@ -54,7 +56,7 @@ export default class CountTokensNode {
 
 		try {
 			this.data.csv_length = inputData.length;
-			const encoding = getEncoding(this.data.text);
+			const encoding = getEncoding(this.data.text as TiktokenEncoding);
 			this.data.num_tokens = encoding.encode(inputData).length;
 			this.data.dirty = false;
 			this.data.message = `${$__('number_of_tokens')}: ${this.data.num_tokens}`;

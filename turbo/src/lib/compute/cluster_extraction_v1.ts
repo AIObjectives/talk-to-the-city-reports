@@ -28,7 +28,7 @@ export default class ClusterExtractionNode {
 	}
 
 	async compute(
-		inputData: object,
+		inputData: Record<string, any>,
 		context: string,
 		info: (arg: string) => void,
 		error: (arg: string) => void,
@@ -96,7 +96,7 @@ export default class ClusterExtractionNode {
 			this.data.dirty = false;
 			this.data.message = `${$__('topics')}: ${this.data.output?.topics?.length} ${$__(
 				'subtopics'
-			)}: ${_.sumBy(this.data.output?.topics, (topic) => topic?.subtopics?.length)}.`;
+			)}: ${_.sumBy(this.data.output?.topics, (topic: any) => topic?.subtopics?.length)}.`;
 			success(this.data.message);
 			return this.data.output;
 		} else {
@@ -108,7 +108,7 @@ export default class ClusterExtractionNode {
 }
 
 interface ClusterExtractionData extends GCSBaseData {
-	output: object;
+	output: any;
 	text: string;
 	system_prompt: string;
 	prompt: string;

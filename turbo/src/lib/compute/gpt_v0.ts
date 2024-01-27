@@ -3,7 +3,9 @@ import categories from '$lib/node_categories';
 import { readFileFromGCS, uploadJSONToGCS } from '$lib/utils';
 import gpt from '$lib/gpt';
 import _ from 'lodash';
+import { gpt_v0_prompt } from '$lib/prompts';
 import { format, unwrapFunctionStore } from 'svelte-i18n';
+import type { DGNodeInterface, GCSBaseData } from '$lib/node_data_types';
 
 const $__ = unwrapFunctionStore(format);
 
@@ -22,7 +24,7 @@ export default class GPTNode {
 	}
 
 	async compute(
-		inputData: object,
+		inputData: Record<string, any>,
 		context: string,
 		info: (arg: string) => void,
 		error: (arg: string) => void,
@@ -30,17 +32,11 @@ export default class GPTNode {
 		slug: string,
 		Cookies: any
 	) {
-		let text = inputData[this.data.input_ids.text];
+		let text = inputData[this.data.input_ids.text] || [];
 		const open_ai_key = inputData.open_ai_key || inputData[this.data.input_ids.open_ai_key];
 
-		if (_.isPlainObject(text) || _.isArray(text)) {
+		if (_.isPlainObject(text) || (_.isArray(text) && !_.isEmpty(text))) {
 			text = JSON.stringify(text, null, 2);
-		}
-
-		if (!text || text.length == 0) {
-			this.data.message = `${$__('missing_input_data')}`;
-			this.data.dirty = false;
-			return;
 		}
 
 		if (!this.data.dirty && this.data.text_length == text.length && this.data.gcs_path) {
@@ -56,7 +52,7 @@ export default class GPTNode {
 
 		if (context == 'run' && open_ai_key) {
 			this.data.text_length = text.length;
-			const { prompt, system_prompt } = this.data;
+			const { prompt, system_prompt, prompt_suffix } = this.data;
 
 			info(`${$__('computing')} ${$__(this.data.label)}`);
 
@@ -72,18 +68,20 @@ export default class GPTNode {
 			const result = await gpt(
 				open_ai_key,
 				{ text: text },
-				prompt,
+				prompt_suffix ? prompt + prompt_suffix : prompt,
 				system_prompt,
 				info,
 				error,
 				success,
 				0,
 				1,
-				todo
+				todo,
+				this.data.response_format
 			);
 
 			clearInterval(interval);
-			this.data.output = JSON.parse(result);
+			if (this.data.response_format?.type == 'json_object') this.data.output = JSON.parse(result);
+			else this.data.output = result;
 			this.data.dirty = false;
 
 			this.data.message = `${$__('output_ready')}`;
@@ -99,12 +97,13 @@ export default class GPTNode {
 	}
 }
 
-interface GPTData extends BaseData {
-	output: object;
-	content: string;
+interface GPTData extends GCSBaseData {
+	output: any;
 	text_length: number;
 	prompt: string;
+	prompt_suffix: string;
 	system_prompt: string;
+	response_format: any;
 }
 
 type GPTNodeInterface = DGNodeInterface & {
@@ -116,14 +115,21 @@ export let gpt_node_data: GPTNodeInterface = {
 	data: {
 		label: 'GPT',
 		output: {},
-		prompt: 'Please write a first hand account of living conditions in any city of your choice.',
+		prompt: gpt_v0_prompt,
 		system_prompt: 'You are a helpful assistant.',
+		prompt_suffix: '',
 		compute_type: 'gpt_v0',
 		text_length: 0,
 		dirty: false,
 		input_ids: { open_ai_key: '', text: '' },
 		category: categories.ml.id,
-		icon: 'gpt_v0'
+		icon: 'gpt_v0',
+		response_format: null,
+		show_in_ui: true,
+		message: '',
+		filename: '',
+		size_kb: 0,
+		gcs_path: ''
 	},
 	position: { x: 0, y: 0 },
 	type: 'gpt_v0'

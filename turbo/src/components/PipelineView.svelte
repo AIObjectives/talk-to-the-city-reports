@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { useUpdateNodeInternals } from '@xyflow/svelte';
+	import { tick } from 'svelte';
 	import { setContext } from 'svelte';
 	import Pipe from '$lib/icons/Pipe.svelte';
 	import { get } from 'svelte/store';

@@ -1,8 +1,8 @@
 {
 	"name": "tttc-turbo",
 	"version": "0.0.1",
-	"tsCoverage": "84%",
-	"vitestPass": 159,
+	"tsCoverage": "83%",
+	"vitestPass": 187,
 	"vitestFail": 0,
 	"engines": {
 		"node": "18"
@@ -109,6 +109,7 @@
 		"jsrsasign": "^10.9.0",
 		"layerchart": "^0.25.1",
 		"marked": "^10.0.0",
+		"node-jq": "^4.2.2",
 		"openai": "^4.18.0",
 		"papaparse": "^5.4.1",
 		"pyodide": "^0.24.1",

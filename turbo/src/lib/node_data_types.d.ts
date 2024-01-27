@@ -8,6 +8,7 @@ export interface BaseData {
 	output?: any;
 	show_in_ui: boolean;
 	message: string;
+	enable?: boolean;
 }
 
 export interface DGEdgeInterface {

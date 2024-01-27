@@ -196,9 +196,11 @@
 					<HelperText persistent slot="helper">{$__('report_description')}</HelperText>
 				</TextField>
 			</div>
-			<button class="w-full px-3 pt-5" on:click={createNewProject}>
-				<Button type="submit">{$__('create')}</Button>
-			</button>
+			{#if !_.isEmpty(templates)}
+				<button class="w-full px-3 pt-5" on:click={createNewProject}>
+					<Button type="submit">{$__('create')}</Button>
+				</button>
+			{/if}
 		</div>
 	</div>
 </div>

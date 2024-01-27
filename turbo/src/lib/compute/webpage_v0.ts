@@ -33,7 +33,6 @@ export default class WebpageNode {
 		}
 
 		try {
-			console.log('fetching readability');
 			// Todo: relative URLs don't work server-side
 			// consider using ${import.meta.env.VITE_APP_BASE_URL}
 			const response = await fetch(`/api/readability?url=${encodeURIComponent(url)}`);
@@ -41,8 +40,6 @@ export default class WebpageNode {
 				const text = await response.text();
 				const content = text;
 				if (content) {
-					console.log('assigning content to output');
-					console.log(content);
 					this.data.output = content;
 					return content;
 				} else {
