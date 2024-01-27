@@ -4,6 +4,48 @@ import { DGNode } from '$lib/node';
 import deepCopy from 'deep-copy';
 import type { Writable } from 'svelte/store';
 import { writable, get } from 'svelte/store';
+import nodesRegister from '$lib/node_register';
+import { getLayoutedElements, elkOptions } from '$lib/elk';
+import _ from 'lodash';
+
+async function onLayout(direction: string, useInitialNodes = false, nodes, edges) {
+	const opts = { 'elk.direction': direction, ...elkOptions };
+	const ns = get(nodes);
+	const es = get(edges);
+	await getLayoutedElements(ns, es, opts).then(({ nodes: layoutedNodes, edges: layoutedEdges }) => {
+		nodes.set(layoutedNodes);
+		edges.set(layoutedEdges);
+	});
+	await tick();
+}
+
+function customizer(objValue, srcValue) {
+	if (_.isArray(objValue)) {
+		return srcValue;
+	}
+	if (_.isObject(objValue)) {
+		return _.mergeWith({}, objValue, srcValue, customizer);
+	}
+}
+
+function deepDiff(obj1, obj2) {
+	function difference(object, base) {
+		function changes(object, base) {
+			return _.transform(object, (result, value, key) => {
+				if (!_.isEqual(value, base[key])) {
+					result[key] =
+						_.isObject(value) && _.isObject(base[key]) ? changes(value, base[key]) : value;
+				}
+			});
+		}
+		return changes(object, base);
+	}
+
+	const leftDiff = difference(obj1, obj2);
+	const rightDiff = difference(obj2, obj1);
+
+	return { leftDiff, rightDiff };
+}
 
 export class DependencyGraph {
 	nodes: Writable<Node[]>;
@@ -15,6 +57,55 @@ export class DependencyGraph {
 		this.edges = writable<Edge[]>(edges ? edges : []);
 		this.parent = parent;
 	}
+
+	conform = async (dryRun = true, save = false) => {
+		let log = '';
+		const nodes = get(this.nodes);
+		for (let i = 0; i < nodes.length; i++) {
+			const node = nodes[i];
+			const initial_data = nodesRegister.data[node.data.compute_type];
+			const merged = _.mergeWith({}, initial_data.data, node.data, customizer);
+			const { leftDiff, rightDiff } = deepDiff(node.data, merged);
+			// log += 'data: ' + JSON.stringify(node.data, null, 2) + '\n';
+			// log += 'initial: ' + JSON.stringify(initial_data.data, null, 2) + '\n';
+
+			if (!_.isEmpty(rightDiff)) {
+				log += node.id + ' differences when comparing document to merged:\n';
+				log += rightDiff ? JSON.stringify(rightDiff, null, 2) : 'None';
+				log += '\n';
+				if (!dryRun) {
+					node.data = merged;
+					this.nodes.set(nodes);
+				}
+			}
+			const edges = get(this.edges);
+			const inputEdges = edges.filter((edge) => edge.target == node.id);
+			inputEdges.forEach(async (edge) => {
+				const source = edge.source;
+				const vals = _.pickBy(node.data.input_ids, (v, k) => {
+					return v == source;
+				});
+				if (!_.isEmpty(vals)) {
+					const val = _.head(_.keys(vals));
+					if (val && val != edge.targetHandle) {
+						log += `Setting ${node.id} source edge targetHandle to ${val}\n`;
+						if (!dryRun) edge.targetHandle = val;
+					}
+				}
+				await tick();
+			});
+			if (!dryRun) this.edges.set(edges);
+
+			log += '...............\n';
+		}
+		log += 'Laying out the graph';
+		if (!dryRun) {
+			await onLayout('RIGHT', true, this.nodes, this.edges);
+		}
+		if (!dryRun && save) {
+			await this.parent.updateDataset({ uid: this.parent.owner }, false);
+		}
+	};
 
 	findByComputeType = (computeType: string): DGNode[] => {
 		const nodes = get(this.nodes).filter((node) => node.data.compute_type === computeType);
@@ -94,10 +185,10 @@ export class DependencyGraph {
 		);
 	};
 
-	onConnect = (source: string, target: string) => {
+	onConnect = (source: string, target: string, sourceHandle: string, targetHandle: string) => {
 		source = get(this.nodes).find((n) => n.id === source);
 		target = get(this.nodes).find((n) => n.id === target);
-		target.data.dirty = true;
+		target.data.input_ids[targetHandle] = source.id;
 		setTimeout(() => {
 			this.nodes.update(($nodes) => $nodes);
 			for (const node of get(this.nodes)) {

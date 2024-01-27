@@ -1,5 +1,4 @@
 import CryptoJS from 'crypto-js';
-import merged_clusters from '$lib/mock_data/cluster_extraction/merged_cluster_extraction.json';
 import sample from '$lib/mock_data/speech_to_text/sample.json';
 import responses from '$lib/mock_data/gpt_responses';
 

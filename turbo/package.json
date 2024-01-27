@@ -98,6 +98,7 @@
 		"deep-copy": "^1.4.2",
 		"dompurify": "^3.0.6",
 		"dotenv": "^16.3.1",
+		"elkjs": "^0.9.1",
 		"firebase": "^10.6.0",
 		"firebase-admin": "^11.11.1",
 		"html-to-image": "^1.11.11",

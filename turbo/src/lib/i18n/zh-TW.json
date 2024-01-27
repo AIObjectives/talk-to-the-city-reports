@@ -193,6 +193,7 @@
     "step": "步驟",
     "report_v0": "報告",
     "report_v1": "報告",
+    "report v1": "報告",
     "filter_csv": "過濾 CSV",
     "add_filter": "添加過濾器",
     "exclusive": "獨家",
@@ -207,5 +208,15 @@
     "multi_cluster_extraction": "多叢集提取",
     "context_limit": "上下文限制",
     "limit_context_to_number_of_tokens": "限制上下文到標記數",
-    "enable": "啟用"
+    "enable": "啟用",
+    "summarize": "摘要",
+    "save_dataset": "儲存資料集",
+    "run_pipeline": "運行管道",
+    "align_horizontally": "水平對齊",
+    "align_vertically": "垂直對齊",
+    "duplicate_nodes": "複製節點",
+    "large_report_v0": "大型報告",
+    "webpage_v0": "網頁",
+    "num_tokens": "標記數",
+    "num_chunks": "塊數"
 }

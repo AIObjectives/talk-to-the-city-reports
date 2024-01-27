@@ -3,12 +3,27 @@
 	import { Dataset } from '$lib/dataset';
 	import { _ as __ } from 'svelte-i18n';
 	import { slide } from 'svelte/transition';
+	import Button from '@smui/button';
+	import Card from '@smui/card';
+	import { onMount } from 'svelte';
+	import Cookies from 'js-cookie';
 
 	export let showOwner: boolean = false;
 	export let dataset: Dataset;
 	export let loadDatasets: () => Promise<void>;
-	import Button from '@smui/button';
-	import Card from '@smui/card';
+
+	let ownerEmail = '';
+
+	onMount(async () => {
+		let token = Cookies.get('user_token');
+		ownerEmail = await fetch('/api/users/info/email?uid=' + dataset.owner, {
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		})
+			.then((res) => res.json())
+			.then((data) => data.email);
+	});
 
 	const deleteDataset = async () => {
 		const assets: string[] = dataset.graph.listAssets();
@@ -29,7 +44,7 @@
 		<a href="/report/{dataset.slug}"> <Button>{$__('view_report')}</Button></a>
 		<p class="text-gray-400 text-base"><small>/{dataset.slug}</small></p>
 		{#if showOwner}
-			<p class="text-gray-400 text-base"><small>Owner: {dataset.owner}</small></p>
+			<p class="text-gray-400 text-base"><small>Owner: {ownerEmail}</small></p>
 		{/if}
 	</Card>
 </div>

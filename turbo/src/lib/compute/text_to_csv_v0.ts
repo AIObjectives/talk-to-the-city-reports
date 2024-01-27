@@ -98,7 +98,7 @@ export let text_to_csv_node_data: TextToCSVInterface = {
 		label: 'text_to_csv',
 		dirty: false,
 		compute_type: 'text_to_csv_v0',
-		input_ids: {},
+		input_ids: { data: '' },
 		category: categories.wrangling.id,
 		icon: 'text_to_csv_v0',
 		show_in_ui: true,

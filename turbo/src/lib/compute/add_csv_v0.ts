@@ -57,7 +57,7 @@ export let add_csv_node_data: AddCSVNodeInterface = {
 		output: {},
 		dirty: false,
 		compute_type: 'add_csv_v0',
-		input_ids: {},
+		input_ids: { data: '' },
 		category: categories.wrangling.id,
 		icon: 'add_csv_v0',
 		show_in_ui: false,

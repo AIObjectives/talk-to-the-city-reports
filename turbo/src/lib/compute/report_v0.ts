@@ -46,7 +46,7 @@ export let report_node_data: ReportNodeInterface = {
 		output: {},
 		dirty: false,
 		compute_type: 'report_v0',
-		input_ids: {},
+		input_ids: { data: '' },
 		category: categories.display.id,
 		icon: 'report_v0'
 	},

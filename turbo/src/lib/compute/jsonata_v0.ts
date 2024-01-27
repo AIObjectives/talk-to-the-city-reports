@@ -60,7 +60,7 @@ export let jsonata_node_data: JsonataNodeInterface = {
 		dirty: false,
 		output: {},
 		compute_type: 'jsonata_v0',
-		input_ids: {},
+		input_ids: { data: '' },
 		category: categories.lang.id,
 		icon: 'jsonata_v0',
 		show_in_ui: false

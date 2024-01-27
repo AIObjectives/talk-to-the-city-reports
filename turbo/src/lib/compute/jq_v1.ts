@@ -84,7 +84,7 @@ export let jq_node_data: JqNodeInterface = {
 		dirty: false,
 		output: {},
 		compute_type: 'jq_v1',
-		input_ids: {},
+		input_ids: { data: '' },
 		category: categories.lang.id,
 		icon: 'jq_v0',
 		show_in_ui: false,

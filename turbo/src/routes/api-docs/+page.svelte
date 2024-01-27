@@ -7,11 +7,11 @@
 	import CodeMirror from 'svelte-codemirror-editor';
 	import { locale } from 'svelte-i18n';
 	import { python } from '@codemirror/lang-python';
-	import helpen from './help-en.txt?raw';
+	import helpen from './help-en-US.txt?raw';
 	import helpzh from './help-zh-TW.txt?raw';
 
 	const helps = {
-		en: helpen,
+		'en-US': helpen,
 		'zh-TW': helpzh
 	};
 

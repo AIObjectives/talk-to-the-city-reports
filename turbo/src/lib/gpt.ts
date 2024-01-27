@@ -76,7 +76,6 @@ export async function openai(
 			}
 
 			const data = await response.json();
-			// console.log('data', data);
 			let resp = data.choices[0].message.content;
 			if (resp.startsWith('```json')) {
 				const start = resp.indexOf('```json') + 7;
@@ -122,6 +121,7 @@ export default async function gpt(
 	];
 	const stringified = JSON.stringify(messages);
 	const hash = CryptoJS.SHA256(stringified).toString();
+	// needed for mocks:
 	// console.log(hash);
 	try {
 		const result = await pool.exec(openai, [

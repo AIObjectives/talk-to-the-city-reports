@@ -80,7 +80,7 @@ export let participant_filter_node_data: ParticipantFilterNodeInterface = {
 		dirty: false,
 		output: {},
 		compute_type: 'participant_filter_v0',
-		input_ids: {},
+		input_ids: { data: '' },
 		category: categories.wrangling.id,
 		icon: 'participant_filter_v0',
 		show_in_ui: true,

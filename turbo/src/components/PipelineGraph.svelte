@@ -1,28 +1,34 @@
 <script lang="ts">
-	import { Controls, SvelteFlow } from '@xyflow/svelte';
+	import { _ as __ } from 'svelte-i18n';
+	import { onMount } from 'svelte';
 	import { nodeTypes } from '$lib/node_types';
 	import { node_register } from '$lib/templates';
-	import ContextMenu from './ContextMenu.svelte';
-	import { Dataset } from '$lib/dataset';
-	import { DGNode } from '$lib/node';
-	import DeepCopy from 'deep-copy';
-	import PipelineCreateNodesToolbar from '$components/PipelineCreateNodesToolbar.svelte';
 	import { user } from '$lib/store';
 	import { useSvelteFlow } from '@xyflow/svelte';
+	import DeepCopy from 'deep-copy';
+	import { getLayoutedElements, elkOptions } from '$lib/elk';
+
+	import { Dataset } from '$lib/dataset';
+	import { Controls, SvelteFlow } from '@xyflow/svelte';
+	import ContextMenu from './ContextMenu.svelte';
+	import { DGNode } from '$lib/node';
+	import PipelineCreateNodesToolbar from '$components/PipelineCreateNodesToolbar.svelte';
 	import ContentSaveOutline from '$lib/icons/ContentSaveOutline.svelte';
 	import ContentDuplicate from '$lib/icons/ContentDuplicate.svelte';
 	import RobotOutline from '$lib/icons/RobotOutline.svelte';
 	import { useNodes } from '@xyflow/svelte';
 	import ToolbarNode from './ToolbarNode.svelte';
-	const n = useNodes();
-
 	import { Panel } from '@xyflow/svelte';
 	import DownloadImage from '$components/graph/DownloadImage.svelte';
 	import { getContext } from 'svelte';
+	import { Tooltip } from 'svelte-ux';
+	import DotsHorizontal from '$lib/icons/DotsHorizontal.svelte';
+	import DotsVertical from '$lib/icons/DotsVertical.svelte';
+
+	const { fitView } = useSvelteFlow();
+	const n = useNodes();
 	let viewMode = getContext('viewMode');
-
 	const { screenToFlowPosition } = useSvelteFlow();
-
 	let resetTimeout;
 
 	export let width = '100%';
@@ -30,11 +36,20 @@
 	export let showNodesToolbar = true;
 	export let showSaveButton: boolean = false;
 	export let showCopyButton: boolean = false;
+	export let autoSave: boolean = false;
 	export let showScreenshotButton: boolean = false;
 	export let dataset: Dataset;
 	export let nodes;
 	export let edges;
 	let active = { nodes: [] };
+
+	viewMode.subscribe((value) => {
+		if (value == 'graph') {
+			setTimeout(() => {
+				onLayout('RIGHT');
+			}, 100);
+		}
+	});
 
 	const onDragOver = (event: DragEvent) => {
 		event.preventDefault();
@@ -58,7 +73,6 @@
 			nodeToAdd = DeepCopy(nodeToAdd);
 			nodeToAdd.position = position;
 
-			// Finding all matching nodes and sorting them
 			const matchingNodes = $nodes.filter((node) => node.id.startsWith(nodeToAdd.id + '_'));
 			const regex = /_(\d+)$/;
 
@@ -69,11 +83,9 @@
 					return numberB - numberA;
 				});
 
-				// Increment the highest number found
 				const highestNumber = parseInt(sortedNodes[0].id.match(regex)[1]);
 				nodeToAdd.id = `${nodeToAdd.id}_${highestNumber + 1}`;
 			} else {
-				// If no matching nodes, append _1
 				nodeToAdd.id = `${nodeToAdd.id}_1`;
 			}
 
@@ -112,6 +124,21 @@
 
 	function handlePaneClick() {
 		menu = null;
+	}
+
+	function onLayout(direction: string) {
+		const opts = { 'elk.direction': direction, ...elkOptions };
+		const ns = $nodes;
+		const es = $edges;
+
+		getLayoutedElements(ns, es, opts).then(({ nodes: layoutedNodes, edges: layoutedEdges }) => {
+			$nodes = layoutedNodes;
+			$edges = layoutedEdges;
+
+			fitView();
+
+			window.requestAnimationFrame(() => fitView());
+		});
 	}
 </script>
 
@@ -156,42 +183,62 @@
 			<Panel position="top-right">
 				{#if showSaveButton}
 					<div class="exec-buttons-top" style="height:42px;">
-						<button
-							on:click={async () => {
-								await dataset.updateDataset($user);
-							}}><ContentSaveOutline size={30} /></button
-						>
+						<Tooltip title={$__('save_dataset')}>
+							<button
+								on:click={async () => {
+									await dataset.updateDataset($user);
+								}}><ContentSaveOutline size={30} /></button
+							>
+						</Tooltip>
 					</div>
 				{/if}
 				<div class="exec-buttons-bottom" style="height:42px;">
-					<button
-						class="glow-button"
-						on:click={async () => {
-							await dataset.processNodes('run', $user);
-							setTimeout(() => {
-								dataset = dataset;
-								$n = $n;
-								for (const node of $n) {
-									node.data = { ...node.data };
-								}
-							}, 500);
-						}}><RobotOutline size={30} /></button
-					>
+					<Tooltip title={$__('run_pipeline')}>
+						<button
+							class="glow-button"
+							on:click={async () => {
+								await dataset.processNodes('run', $user, autoSave);
+								setTimeout(() => {
+									dataset = dataset;
+									$n = $n;
+									for (const node of $n) {
+										node.data = { ...node.data };
+									}
+								}, 500);
+							}}><RobotOutline size={30} /></button
+						>
+					</Tooltip>
 				</div>
 			</Panel>
 
 			<Panel position="bottom-right">
-				{#if showCopyButton}
+				<Tooltip title={$__('align_horizontally')}>
 					<div class="exec-buttons" style="height:42px;">
-						<button
-							on:click={() => {
-								dataset.graph.duplicateSelectedNodes();
-							}}><ContentDuplicate size="30px" /></button
-						>
+						<button on:click={() => onLayout('RIGHT')}><DotsHorizontal size="30px" /></button>
 					</div>
+				</Tooltip>
+				<Tooltip title={$__('align_vertically')}>
+					<div class="exec-buttons" style="height:42px;">
+						<button on:click={() => onLayout('DOWN')}><DotsVertical size="30px" /></button>
+					</div>
+				</Tooltip>
+				{#if showCopyButton}
+					<Tooltip title={$__('duplicate_nodes')}>
+						<div class="exec-buttons" style="height:42px;">
+							<button
+								on:click={() => {
+									dataset.graph.duplicateSelectedNodes();
+								}}><ContentDuplicate size="30px" /></button
+							>
+						</div>
+					</Tooltip>
 				{/if}
 				{#if showScreenshotButton}
-					<div class="exec-buttons" style="height:42px;"><DownloadImage /></div>
+					<Tooltip title={$__('download_image')}>
+						<div class="exec-buttons" style="height:42px;">
+							<DownloadImage />
+						</div>
+					</Tooltip>
 				{/if}
 			</Panel>
 

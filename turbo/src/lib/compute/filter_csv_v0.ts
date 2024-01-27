@@ -58,7 +58,7 @@ export let filter_csv_node_data: FilterCSVNodeInterface = {
 		exclusive: true,
 		dirty: false,
 		compute_type: 'filter_csv_v0',
-		input_ids: {},
+		input_ids: { data: '' },
 		category: categories.wrangling.id,
 		icon: 'filter_csv_v0',
 		show_in_ui: false,

@@ -7,7 +7,6 @@ import ClusterExtractionNode, {
 } from '$lib/compute/cluster_extraction_v1';
 import {
 	multi_cluster_extraction_prompt_v0,
-	cluster_extraction_system_prompt,
 	multi_cluster_extraction_v0_suffix
 } from '$lib/prompts';
 import _ from 'lodash';

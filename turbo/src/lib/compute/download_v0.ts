@@ -46,7 +46,7 @@ export let download_node_data: DownloadNodeInterface = {
 		output: {},
 		dirty: false,
 		compute_type: 'download_v0',
-		input_ids: {},
+		input_ids: { data: '' },
 		category: categories.wrangling.id,
 		icon: 'download_v0',
 		show_in_ui: false,

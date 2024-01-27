@@ -50,7 +50,10 @@
 		});
 	}
 
-	$: loadDatasets();
+	$: {
+		showAll;
+		loadDatasets();
+	}
 </script>
 
 {#if isAdmin}
@@ -77,7 +80,7 @@
 	{#if loading}
 		<p class="text-center text-lg text-gray-500">{$__('loading')}</p>
 	{/if}
-	{#each filteredDatasets as dataset}
+	{#each filteredDatasets as dataset (dataset.id)}
 		<ProjectCard {dataset} {loadDatasets} showOwner={showAll} />
 	{/each}
 </div>

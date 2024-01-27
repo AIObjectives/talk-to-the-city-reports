@@ -1,14 +1,13 @@
-declare global {
-	interface User {
-		id: string;
-	}
-	interface Claim {
-		id: string;
-		topicName: string;
-		subtopicName: string;
-		interview: string;
-		quote: string;
-		claim: string;
-		commentId: string;
-	}
+export interface User {
+	id: string;
+}
+
+export interface Claim {
+	id: string;
+	topicName: string;
+	subtopicName: string;
+	interview: string;
+	quote: string;
+	claim: string;
+	commentId: string;
 }

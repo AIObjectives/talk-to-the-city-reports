@@ -1,6 +1,7 @@
 import nodes from '$lib/node_register';
 import categories from '$lib/node_categories';
 import type { DGNodeInterface, BaseData } from '$lib/node_data_types';
+import _ from 'lodash';
 
 export default class GridNode {
 	id: string;
@@ -55,7 +56,7 @@ export let grid_node_data: GridNodeInterface = {
 		dirty: false,
 		output: {},
 		compute_type: 'grid_v0',
-		input_ids: {},
+		input_ids: { data: '' },
 		category: categories.display.id,
 		icon: 'grid_v0',
 		width: 700,

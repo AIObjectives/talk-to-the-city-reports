@@ -207,21 +207,21 @@ export class Dataset {
 		}
 	}
 
-	async updateDataset(user: User) {
-		if (user && user.uid === this.owner) {
+	async updateDataset(user: User, notify = true) {
+		if (user && (user.uid === this.owner || user.uid == import.meta.env.VITE_ADMIN)) {
 			try {
-				info($__('updating_dataset'));
-				let copy = Deepcopy(this.datasetToDoc());
+				if (notify) info($__('updating_dataset'));
+				let copy: any = Deepcopy(this.datasetToDoc());
 				if (copy.template === undefined) {
 					copy.template = '';
 				}
 				this.sanitizeNodes(copy.graph.nodes);
 				copy = JSON.parse(JSON.stringify(copy));
 				await updateDoc(doc(datasetCollection, this.id), copy);
-				success($__('dataset_updated'));
+				if (notify) success($__('dataset_updated'));
 			} catch (err) {
 				console.error(err);
-				error($__('error_updating_dataset'));
+				if (notify) error($__('error_updating_dataset'));
 			}
 		}
 	}
@@ -354,6 +354,7 @@ export class Dataset {
 						doc.projectParent
 					);
 					dataset.sanitize();
+					await dataset.graph.conform(false, false);
 					return dataset;
 				}
 			} catch (e) {
@@ -364,7 +365,7 @@ export class Dataset {
 	}
 
 	async addDatasetToFirebase(): Promise<boolean> {
-		if (!this.title || !this.slug || !this.description || !this.template) {
+		if (!this.title || !this.slug || !this.description) {
 			error($__('please_fill_all_fields'));
 			return false;
 		}

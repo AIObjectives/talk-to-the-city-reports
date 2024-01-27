@@ -85,7 +85,7 @@ export let comment_expander_node_data: CommentExpanderNodeInterface = {
 		output: {},
 		dirty: false,
 		compute_type: 'comment_expander_v0',
-		input_ids: {},
+		input_ids: { data: '' },
 		category: categories.wrangling.id,
 		icon: 'comment_expander_v0',
 		show_in_ui: false,
