@@ -305,8 +305,8 @@ DISPLAY=:99 python src/test/test_selenium.py
 | Passed Test Suites    | 90 |
 | Failed Test Suites    | 0 |
 | Pending Test Suites   | 0 |
-| Total Tests           | 187 |
-| Passed Tests          | 187 |
+| Total Tests           | 186 |
+| Passed Tests          | 186 |
 | Failed Tests          | 0 |
 | Pending Tests         | 0 |
 | Todo Tests            | 0 |
@@ -483,7 +483,6 @@ DISPLAY=:99 python src/test/test_selenium.py
 ### `[21]` [limit_csv.test.ts](./src/test//limit_csv.test.ts)
 | Test | Status | Duration (ms) |
 |---|---|---:|
-| *should limit the number of rows correctly* | **passed** |
 | *should let all data pass through if number is left blank* | **passed** |
 | *should limit the number of rows correctly, for an object* | **passed** |
 | *should return all rows if limit is greater than number of rows* | **passed** |

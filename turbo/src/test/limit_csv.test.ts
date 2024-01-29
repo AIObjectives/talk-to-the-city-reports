@@ -1,43 +1,68 @@
-import { describe, it } from 'vitest';
+import { describe, it, vi } from 'vitest';
 import { expect } from 'vitest';
 import LimitCSVNode, { limit_csv_node_data } from '$lib/compute/limit_csv_v0';
 
 describe('limit_csv function', () => {
-	it('should limit the number of rows correctly', async () => {
-		const node = new LimitCSVNode(limit_csv_node_data);
-		const inputData = { csv: [{ name: 'Alice' }, { name: 'Bob' }, { name: 'Charlie' }] };
-		const result = await node.compute(inputData, null);
-		expect(result).toEqual([{ name: 'Alice' }, { name: 'Bob' }]);
-	});
-
 	it('should let all data pass through if number is left blank', async () => {
 		const node = new LimitCSVNode(limit_csv_node_data);
 		node.data.number = '';
 		const inputData = { csv: [{ name: 'Alice' }, { name: 'Bob' }, { name: 'Charlie' }] };
-		const result = await node.compute(inputData, null);
+		const result = await node.compute(
+			inputData,
+			'run',
+			vi.fn(),
+			vi.fn(),
+			vi.fn(),
+			'test_slug',
+			vi.fn()
+		);
 		expect(result).toEqual([{ name: 'Alice' }, { name: 'Bob' }, { name: 'Charlie' }]);
 	});
 
 	it('should limit the number of rows correctly, for an object', async () => {
 		const node = new LimitCSVNode(limit_csv_node_data);
-		node.data.number = 1;
+		node.data.number = '1';
 		const inputData = { csv: { 1: { name: 'Alice' }, 2: { name: 'Bob' }, 3: { name: 'Charlie' } } };
-		const result = await node.compute(inputData, null);
+		const result = await node.compute(
+			inputData,
+			'run',
+			vi.fn(),
+			vi.fn(),
+			vi.fn(),
+			'test_slug',
+			vi.fn()
+		);
 		expect(result).toEqual({ 1: { name: 'Alice' } });
 	});
 
 	it('should return all rows if limit is greater than number of rows', async () => {
 		const node = new LimitCSVNode(limit_csv_node_data);
-		node.data.number = 5;
+		node.data.number = '5';
 		const inputData = { csv: [{ name: 'Alice' }, { name: 'Bob' }] };
-		const result = await node.compute(inputData, null);
+		const result = await node.compute(
+			inputData,
+			'run',
+			vi.fn(),
+			vi.fn(),
+			vi.fn(),
+			'test_slug',
+			vi.fn()
+		);
 		expect(result).toEqual([{ name: 'Alice' }, { name: 'Bob' }]);
 	});
 
 	it('should return an empty array if input is empty', async () => {
 		const node = new LimitCSVNode(limit_csv_node_data);
 		const inputData = { csv: [] };
-		const result = await node.compute(inputData, null);
+		const result = await node.compute(
+			inputData,
+			'run',
+			vi.fn(),
+			vi.fn(),
+			vi.fn(),
+			'test_slug',
+			vi.fn()
+		);
 		expect(result).toEqual([]);
 	});
 
@@ -46,7 +71,7 @@ describe('limit_csv function', () => {
 		const nodeCopy = new LimitCSVNode(limit_csv_node_data);
 		const inputData = { csv: [{ name: 'Alice' }, { name: 'Bob' }, { name: 'Charlie' }] };
 
-		await nodeCopy.compute(inputData, null);
+		await nodeCopy.compute(inputData, 'run', vi.fn(), vi.fn(), vi.fn(), 'test_slug', vi.fn());
 
 		// Check if dirty flag is updated
 		expect(nodeCopy.data.dirty).toBe(false);

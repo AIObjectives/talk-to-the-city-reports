@@ -1,17 +1,14 @@
 <script lang="ts">
-	import { Handle, Position, type NodeProps } from '@xyflow/svelte';
+	import { type NodeProps } from '@xyflow/svelte';
 	import TextField from '@smui/textfield';
 	import DGNode from './DGNode.svelte';
 
 	type $$Props = NodeProps;
 
 	export let data: $$Props['data'];
-	export let id: $$Props['id'];
-
-	const { number } = data;
 </script>
 
-<DGNode {data} {id} {...$$restProps}>
+<DGNode {data} {...$$restProps}>
 	<TextField
 		style="width: 100%;"
 		helperLine$style="width: 100%;"
@@ -22,6 +19,6 @@
 			data.number = evt.target?.value;
 			data.dirty = true;
 		}}
-		value={number}
+		value={data.number}
 	/>
 </DGNode>

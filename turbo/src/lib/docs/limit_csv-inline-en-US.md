@@ -1,0 +1,1 @@
+You can test Talk to the City more quickly by only running it on a subset of your data, to see an example output more quickly before creating a full report. To test with a subset of data, enter a number of CSV rows below. We recommend testing with 2-20 rows of data.

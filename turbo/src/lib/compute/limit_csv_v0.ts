@@ -44,9 +44,9 @@ export default class LimitCSVNode {
 			this.data.output = input;
 		} else if (_.isNumber(number))
 			if (_.isPlainObject(input)) {
-				this.data.output = _.pick(input, _.keys(input).slice(0, this.data.number));
+				this.data.output = _.pick(input, _.keys(input).slice(0, number));
 			} else if (_.isArray(input)) {
-				this.data.output = input.slice(0, this.data.number);
+				this.data.output = input.slice(0, number);
 			} else {
 				this.data.output = [];
 			}
@@ -55,7 +55,7 @@ export default class LimitCSVNode {
 }
 
 interface LimitCSVData extends BaseData {
-	number: number;
+	number: string;
 }
 
 type LimitCSVNodeInterface = DGNodeInterface & {
@@ -67,7 +67,7 @@ export let limit_csv_node_data: LimitCSVNodeInterface = {
 	data: {
 		label: 'limit_csv',
 		dirty: false,
-		number: 2,
+		number: '',
 		message: '',
 		compute_type: 'limit_csv_v0',
 		input_ids: { csv: '' },
