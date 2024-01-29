@@ -43,6 +43,7 @@
 					on:click={() => {
 						dataset.graph.nodes.set(template.nodes);
 						dataset.graph.edges.set(template.edges);
+						dataset.graph.conform(false, false);
 						template = null;
 					}}
 				>

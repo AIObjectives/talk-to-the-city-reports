@@ -88,7 +88,7 @@ type ReportNodeInterface = DGNodeInterface & {
 export let report_node_data: ReportNodeInterface = {
 	id: 'report_v1',
 	data: {
-		label: 'report v1',
+		label: 'report_v1',
 		output: {},
 		dirty: false,
 		compute_type: 'report_v1',

@@ -70,7 +70,7 @@ export let limit_csv_node_data: LimitCSVNodeInterface = {
 		number: 2,
 		message: '',
 		compute_type: 'limit_csv_v0',
-		input_ids: {},
+		input_ids: { csv: '' },
 		category: categories.wrangling.id,
 		icon: 'limit_csv_v0',
 		show_in_ui: true

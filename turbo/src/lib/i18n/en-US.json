@@ -192,6 +192,7 @@
   "step": "Step",
   "report_v0": "Report",
   "report_v1": "Report",
+  "report v1": "Report",
   "filter_csv": "Filter CSV",
   "add_filter": "Add Filter",
   "exclusive": "Exclusive",
@@ -206,5 +207,15 @@
   "multi_cluster_extraction": "Multi Cluster Extraction",
   "context_limit": "Context Limit",
   "limit_context_to_number_of_tokens": "Limit context to number of tokens",
-  "enable": "Enable"
+  "enable": "Enable",
+  "summarize": "Summarize",
+  "save_dataset": "Save Dataset",
+  "run_pipeline": "Run Pipeline",
+  "align_horizontally": "Align Horizontally",
+  "align_vertically": "Align Vertically",
+  "duplicate_nodes": "Duplicate Nodes",
+  "large_report_v0": "Large Report",
+  "webpage_v0": "Webpage",
+  "num_tokens": "Num Tokens",
+  "num_chunks": "Num Chunks"
 }

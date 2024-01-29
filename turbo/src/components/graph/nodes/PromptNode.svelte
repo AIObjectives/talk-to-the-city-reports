@@ -54,7 +54,7 @@
 			</TextField>
 		{/if}
 	{/if}
-	{#if data.prompt}
+	{#if data.prompt !== undefined}
 		<TextField
 			style="width: 100%; overflow: auto"
 			class="nowheel mt-2"

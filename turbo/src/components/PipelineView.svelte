@@ -116,6 +116,7 @@
 				{showScreenshotButton}
 				{height}
 				{width}
+				{autoSave}
 			/>
 		</div>
 		{#if $viewMode == 'standard'}

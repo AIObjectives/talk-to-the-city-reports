@@ -78,7 +78,7 @@ export let audio_node_data: AudioNodeInterface = {
 		gcs_path: '',
 		output: null,
 		compute_type: 'audio_v0',
-		input_ids: {},
+		input_ids: { data: '' },
 		category: categories.input.id,
 		icon: 'audio_v0',
 		show_in_ui: true,

@@ -101,7 +101,7 @@ export let feedback_node_data: FeedbackNodeInterface = {
 		dirty: false,
 		output: {},
 		compute_type: 'feedback_v0',
-		input_ids: {},
+		input_ids: { data: '' },
 		category: categories.input.id,
 		icon: 'feedback_v0',
 		show_in_ui: false,

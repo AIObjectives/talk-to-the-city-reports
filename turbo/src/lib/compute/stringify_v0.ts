@@ -50,7 +50,7 @@ export let stringify_node_data: StringifyNodeInterface = {
 		dirty: false,
 		output: {},
 		compute_type: 'stringify_v0',
-		input_ids: {},
+		input_ids: { data: '' },
 		category: categories.wrangling.id,
 		icon: 'stringify_v0',
 		show_in_ui: false

@@ -30,7 +30,7 @@
 		>
 			<HelperText slot="helper">{$__('limit_context_to_number_of_tokens')}</HelperText>
 		</Textfield>
-		<p>Num tokens: {formatter.format(data.num_tokens)}</p>
-		<p>Num Chunks: {formatter.format(data.num_chunks)}</p>
+		<p>{$__('num_tokens')}: {formatter.format(data.num_tokens)}</p>
+		<p>{$__('num_chunks')}: {formatter.format(data.num_chunks)}</p>
 	{/if}
 </PromptNode>

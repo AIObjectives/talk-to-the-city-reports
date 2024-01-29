@@ -51,7 +51,7 @@ export let unique_node_data: UniqueNodeInterface = {
 		output: [],
 		dirty: false,
 		compute_type: 'unique_v0',
-		input_ids: {},
+		input_ids: { data: '' },
 		category: categories.wrangling.id,
 		icon: 'unique_v0',
 		show_in_ui: false,

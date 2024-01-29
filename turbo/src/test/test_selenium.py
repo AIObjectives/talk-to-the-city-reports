@@ -71,6 +71,7 @@ def test_other():
     test_in(f"{url}/about", "About")
     test_in(f"{url}/api.html", "{dataset}")
     test_in(f"{url}/login", "Sign in with Google")
+    test_in(f"{url}/static-report", "Re-entry Challenges")
     test_in(f"{url}/docs/ai-pipe-guide/unintended-effects", "In the chat node")
     # todo: need to make pipeline visible to anon users
     # test_in(f"{url}/docs/ai-pipe-guide/unintended-effects", "We use your API key")

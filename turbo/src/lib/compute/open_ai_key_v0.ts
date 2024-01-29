@@ -45,6 +45,7 @@ export default class OpenAIKeyNode {
 			return local_key;
 		}
 		this.data.text = 'Invalid key';
+		return '';
 	}
 
 	keyIsValid(key) {
