@@ -57,7 +57,12 @@ def update_readme():
     )
 
     if result.returncode == 0:
-        json_data = json.loads(result.stdout)
+        try:
+            json_data = json.loads(result.stdout)
+        except:
+            print(result.stdout.strip())
+            print("Failed to parse json")
+            return
         markdown_result = convert_to_markdown(json_data)
         update_test_count(json_data['numPassedTests'], json_data['numFailedTests'])
         with open("README.md") as f:

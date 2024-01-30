@@ -10,18 +10,17 @@ let pool = workerpool.pool({ maxWorkers: 50 });
 
 export async function openai(
 	apiKey: string,
-	messages: [],
+	messages: Record<string, string>[],
 	vitest: string,
 	hash: string,
 	mock_data: any,
-	response_format = { type: 'json_object' }
+	response_format: Record<string, string> = { type: 'json_object' }
 ) {
 	// Remember: this function is executed in a worker thread.
 	// It cannot access the DOM or any variables in the main thread.
 
 	const MAX_RETRIES = 5;
-	const BASE_DELAY = 500;
-	const MAX_DELAY = 10000;
+	const TIMEOUT_DURATION = 120000;
 
 	function isPlainObject(value) {
 		if (Object.prototype.toString.call(value) !== '[object Object]') {
@@ -38,57 +37,88 @@ export async function openai(
 	}
 
 	let retryCount = 0;
+
 	while (retryCount <= MAX_RETRIES) {
+		let timeoutId;
+		let didTimeout = false;
 		try {
-			let response;
-			if (vitest == 'true') {
-				if (Math.random() < 0.1) {
-					throw new Error('`HTTP error! status: 500');
-				} else {
-					if (mock_data[hash]) {
-						if (response_format?.type == 'json_object') return JSON.stringify(mock_data[hash]);
-						else return mock_data[hash];
+			const fetchPromise = new Promise((resolve, reject) => {
+				timeoutId = setTimeout(() => {
+					didTimeout = true;
+					reject(new Error('OpenAI request timed out'));
+				}, TIMEOUT_DURATION);
+
+				const proceedWithFetch = async () => {
+					let response;
+					if (vitest == 'true') {
+						if (Math.random() < 0.1) {
+							reject(new Error('`HTTP error! status: 500'));
+						} else {
+							clearTimeout(timeoutId);
+							if (mock_data[hash]) {
+								if (response_format?.type == 'json_object')
+									resolve(JSON.stringify(mock_data[hash]));
+								else resolve(mock_data[hash]);
+							} else {
+								reject(new Error('Mock data is missing'));
+							}
+						}
 					} else {
-						throw new Error('Mock data is missing');
+						const body = {
+							model: 'gpt-4-1106-preview',
+							messages: messages,
+							temperature: 0.1
+						};
+						if (isPlainObject(response_format)) {
+							// @ts-ignore
+							body.response_format = response_format;
+						}
+						console.log(JSON.stringify(body));
+						response = await fetch('https://api.openai.com/v1/chat/completions', {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json',
+								Authorization: `Bearer ${apiKey}`
+							},
+							body: JSON.stringify(body)
+						});
+
+						clearTimeout(timeoutId);
+						if (!response.ok) {
+							const errorText = await response.text();
+							console.error('Error text:', errorText);
+							reject(new Error(`HTTP error! status: ${response.status}`));
+						} else {
+							const contentType = response.headers.get('content-type');
+							if (contentType && contentType.includes('application/json')) {
+								const data = await response.json();
+								let resp = data.choices[0].message.content;
+								if (resp.startsWith('```json')) {
+									const start = resp.indexOf('```json') + 7;
+									const end = resp.lastIndexOf('```');
+									resp = resp.substring(start, end).trim();
+								}
+								resolve(resp);
+							} else {
+								const rawData = await response.text();
+								console.warn('Response received is not in JSON format:', rawData);
+								reject(new Error(`content type error`));
+							}
+						}
 					}
-				}
-			}
-			const body = {
-				model: 'gpt-4-1106-preview',
-				messages: messages,
-				temperature: 0.1
-			};
-			if (isPlainObject(response_format)) {
-				body.response_format = response_format;
-			}
-			// console.log(JSON.stringify(body));
-			response = await fetch('https://api.openai.com/v1/chat/completions', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${apiKey}`
-				},
-				body: JSON.stringify(body)
+				};
+				proceedWithFetch().catch(reject);
 			});
 
-			if (!response.ok) {
-				throw new Error(`HTTP error! status: ${response.status}`);
-			}
-
-			const data = await response.json();
-			let resp = data.choices[0].message.content;
-			if (resp.startsWith('```json')) {
-				const start = resp.indexOf('```json') + 7;
-				const end = resp.lastIndexOf('```');
-				resp = resp.substring(start, end).trim();
-			}
-			return resp;
+			return await fetchPromise;
 		} catch (error) {
-			if (error.message.includes('429') || error.message.includes('500')) {
+			clearTimeout(timeoutId);
+			if (
+				(didTimeout || error.message.includes('429') || error.message.includes('500')) &&
+				retryCount < MAX_RETRIES
+			) {
 				retryCount++;
-				const delay = Math.min(MAX_DELAY, BASE_DELAY * 2 ** retryCount);
-				const jitter = Math.random() * delay * 0.2;
-				await new Promise((resolve) => setTimeout(resolve, delay + jitter));
+				console.log(`Retrying OpenAI request (${retryCount}/${MAX_RETRIES})...`);
 			} else {
 				throw error;
 			}
@@ -113,7 +143,7 @@ export default async function gpt(
 	let arg_prompt = prompt;
 	if (!_.isEmpty(replacements))
 		for (const [key, value] of Object.entries(replacements)) {
-			arg_prompt = arg_prompt.replace(`{${key}}`, value);
+			arg_prompt = arg_prompt.replace(`{${key}}`, value as string);
 		}
 	const messages = [
 		{ role: 'system', content: system_prompt },
@@ -132,6 +162,7 @@ export default async function gpt(
 			mock_responses,
 			response_format
 		]);
+		console.log(result);
 		todo.delete(i);
 		info(`${$__('done_calling_openai')}. ${$__('calls_left')}: ${todo.size}`);
 		return result;
