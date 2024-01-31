@@ -1,9 +1,9 @@
-// import type { Node } from '@xyflow/svelte';
+import _ from 'lodash';
 import { getAuth } from 'firebase/auth';
 import { getStorage, ref as storageRef, deleteObject } from 'firebase/storage';
 import { readFileFromGCS, uploadDataToGCS } from '$lib/utils';
 import { info } from '$components/toast/theme';
-import type { DGNodeInterface, BaseData, GCSBaseData } from '$lib/node_data_types';
+import type { DGNodeInterface, GCSBaseData } from '$lib/node_data_types';
 
 export class DGNode {
 	node: DGNodeInterface;
@@ -22,20 +22,58 @@ export class DGNode {
 			return input_node != null;
 		});
 	}
+
 	copyAssets = async () => {
 		const auth = getAuth();
 		const pathPrefix = `uploads/${auth.currentUser!.uid}/${this.parent.parent.slug}/`;
 		const node_data: GCSBaseData = this.node.data as GCSBaseData;
-		if (node_data.gcs_path && !node_data.gcs_path.includes(pathPrefix)) {
+
+		const copySingleAsset = async (gcsPath) => {
 			try {
-				info(`Copying file ${node_data.gcs_path} to ${pathPrefix}`);
-				const data = await readFileFromGCS(this.node);
-				console.log('data');
-				console.log(data);
-				const fileName = node_data.gcs_path.split('/').pop();
-				await uploadDataToGCS(this.node, data, this.parent.parent.slug, fileName);
+				info(`Copying file ${gcsPath} to ${pathPrefix}`);
+				const data = await readFileFromGCS(this.node, false, gcsPath);
+				const fileName = gcsPath.split('/').pop();
+				const filePath = await uploadDataToGCS(this.node, data, this.parent.parent.slug, fileName);
+				return filePath;
 			} catch (error) {
 				console.error('Error copying file:', error);
+			}
+		};
+
+		if (node_data.gcs_path && !node_data.gcs_path.includes(pathPrefix)) {
+			const filePath = await copySingleAsset(node_data.gcs_path);
+			if (filePath) {
+				this.node.data.gcs_path = filePath;
+			}
+		}
+
+		if (
+			node_data.gcs_paths &&
+			typeof node_data.gcs_paths === 'object' &&
+			!Array.isArray(node_data.gcs_paths)
+		) {
+			console.log(node_data.gcs_paths);
+			for (const key of Object.keys(node_data.gcs_paths)) {
+				const singlePath = node_data.gcs_paths[key];
+				console.log('singlePath', singlePath);
+				if (!singlePath.includes(pathPrefix)) {
+					const newFilePath = await copySingleAsset(singlePath);
+					if (newFilePath) {
+						node_data.gcs_paths[key] = newFilePath;
+					}
+				}
+			}
+		}
+
+		if (node_data.prompts && Array.isArray(node_data.prompts)) {
+			for (const prompt of node_data.prompts) {
+				const singlePath = prompt.gcs_path;
+				if (!singlePath.includes(pathPrefix)) {
+					const newFilePath = await copySingleAsset(singlePath);
+					if (newFilePath) {
+						prompt.gcs_path = newFilePath;
+					}
+				}
 			}
 		}
 	};

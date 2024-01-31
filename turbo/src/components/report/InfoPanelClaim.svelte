@@ -12,15 +12,24 @@
 	let videoSrc: string;
 
 	function buildVideoLink(video, timestamp) {
-		const parts = video.split('/');
-		const videoId = parts[parts.length - 1].split('?')[0];
+		// Define regular expressions for YouTube and Vimeo URLs
+		const youtubeRegex =
+			/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
+		const vimeoRegex = /vimeo\.com\/(\d+)/;
+
 		let embedUrl = '';
-		if (video.includes('vimeo.com')) {
-			embedUrl = `https://player.vimeo.com/video/${videoId}#t=${HHMMSSToSeconds(timestamp)}s`;
-		} else if (video.includes('youtube.com')) {
-			const startTimeInSeconds = HHMMSSToSeconds(timestamp);
+		const startTimeInSeconds = HHMMSSToSeconds(timestamp);
+
+		if (youtubeRegex.test(video)) {
+			// Extract video ID using the regex for YouTube links
+			const videoId = video.match(youtubeRegex)[1];
 			embedUrl = `https://www.youtube.com/embed/${videoId}?start=${startTimeInSeconds}`;
+		} else if (vimeoRegex.test(video)) {
+			// Extract video ID using the regex for Vimeo links
+			const videoId = video.match(vimeoRegex)[1];
+			embedUrl = `https://player.vimeo.com/video/${videoId}#t=${startTimeInSeconds}s`;
 		}
+
 		return embedUrl;
 	}
 
