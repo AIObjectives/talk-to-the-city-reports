@@ -39,6 +39,10 @@ import { download_node } from '$lib/compute/download_v0';
 import { text_to_csv_node } from '$lib/compute/text_to_csv_v0';
 import { multi_cluster_extraction_node } from './compute/multi_cluster_extraction_v0';
 import { summarize_node } from './compute/summarize_v0';
+import { test_node } from './compute/test_v0';
+import { integer_node } from './compute/integer_v0';
+import { adder_node } from './compute/adder_v0';
+import { text_node } from './compute/text_v0';
 
 export let node_register = [
 	open_ai_key_node,
@@ -77,7 +81,11 @@ export let node_register = [
 	download_node,
 	text_to_csv_node,
 	multi_cluster_extraction_node,
-	summarize_node
+	summarize_node,
+	test_node,
+	adder_node,
+	integer_node,
+	text_node
 ];
 
 export async function loadTemplates(): Promise<Record<string, DocumentData>> {

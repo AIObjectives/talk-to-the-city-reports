@@ -18,7 +18,14 @@
 				<span slot="label">{key}</span>
 			</FormField>
 		{:else if typeof data == 'number'}
-			<TextField helperLine$style="width: 100% !important;" bind:value={data} label={key} />
+			<TextField
+				helperLine$style="width: 100% !important;"
+				value={data}
+				label={key}
+				on:change={(x) => {
+					data = parseFloat(x.target.value);
+				}}
+			/>
 		{:else if typeof data == 'string'}
 			<TextField
 				style="width: 100%;"

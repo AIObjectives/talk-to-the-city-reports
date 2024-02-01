@@ -120,6 +120,11 @@ export class DependencyGraph {
 		if (node) return new DGNode(node, this);
 	};
 
+	findImpl(id: string) {
+		const node = get(this.nodes).find((node) => node.id === id);
+		if (node) return nodesRegister.init(node.data.compute_type, node);
+	}
+
 	duplicateSelectedNodes = () => {
 		const selectedNodes = get(this.nodes).filter((node) => node.selected);
 		const oldToNewIdMap = new Map();
@@ -222,7 +227,7 @@ export class DependencyGraph {
 	onConnect = (source: string, target: string, sourceHandle: string, targetHandle: string) => {
 		source = get(this.nodes).find((n) => n.id === source);
 		target = get(this.nodes).find((n) => n.id === target);
-		target.data.input_ids[targetHandle] = source.id;
+		target.data.input_ids[targetHandle] = sourceHandle ? source.id + '|' + sourceHandle : source.id;
 		setTimeout(() => {
 			this.nodes.update(($nodes) => $nodes);
 			for (const node of get(this.nodes)) {

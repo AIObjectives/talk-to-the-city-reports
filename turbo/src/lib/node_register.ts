@@ -78,7 +78,8 @@ class Register {
 				compute_type,
 				icon: this.data[compute_type].data.icon,
 				docs: await this.getDocs(compute_type, locale),
-				inlineDocs: await this.getInlineDocs(compute_type, locale)
+				inlineDocs: await this.getInlineDocs(compute_type, locale),
+				category: this.data[compute_type].data.category
 			});
 		}
 		docs.sort((a, b) => a.compute_type.localeCompare(b.compute_type));

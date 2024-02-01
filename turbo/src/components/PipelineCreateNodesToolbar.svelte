@@ -6,6 +6,7 @@
 	import node_categories from '$lib/node_categories';
 	import _ from 'lodash';
 	import { _ as __ } from 'svelte-i18n';
+	import { user } from '$lib/store';
 
 	let tabs;
 	export let active = { nodes: [] };
@@ -39,12 +40,16 @@
 		clearTimeout(timeoutId);
 	});
 
-	$: tabs = _.keys(node_categories).map((category: string) => {
-		return {
-			label: $__(node_categories[category].label),
-			nodes: node_register.filter((node) => node.data.category === category)
-		};
-	});
+	$: isAdmin = $user?.uid === import.meta.env.VITE_ADMIN;
+
+	$: tabs = _.keys(node_categories)
+		.filter((category) => (!isAdmin ? category != 'wip' : true))
+		.map((category: string) => {
+			return {
+				label: $__(node_categories[category].label),
+				nodes: node_register.filter((node) => node.data.category === category)
+			};
+		});
 </script>
 
 <div class="toolbar">
