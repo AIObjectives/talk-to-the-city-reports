@@ -31,6 +31,10 @@ const categories: CategoriesDictionary = {
 	display: {
 		label: 'display',
 		id: 'display'
+	},
+	wip: {
+		label: 'wip',
+		id: 'wip'
 	}
 };
 

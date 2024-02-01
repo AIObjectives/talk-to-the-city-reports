@@ -3,22 +3,18 @@ import categories from '$lib/node_categories';
 import _ from 'lodash';
 import type { DGNodeInterface, BaseData } from '$lib/node_data_types';
 
-export default class MarkdownNode {
+export default class TextNode {
 	id: string;
 	data: MarkdownData;
 	position: { x: number; y: number };
 	type: string;
 
-	constructor(node_data: MarkdownNodeInterface) {
+	constructor(node_data: TextNodeInterface) {
 		const { id, data, position, type } = node_data;
 		this.id = id;
 		this.data = data;
 		this.position = position;
 		this.type = type;
-	}
-
-	codeWrapper(code: string) {
-		return `\`\`\`\n${code}\n\`\`\``;
 	}
 
 	async compute(
@@ -30,45 +26,47 @@ export default class MarkdownNode {
 		slug: string,
 		Cookies: any
 	): Promise<string> {
+		console.log(inputData);
 		this.data.dirty = false;
 		let inputs: string[] = [];
 		if (!_.isEmpty(inputData)) {
 			_.forEach(_.values(inputData), (val) => {
-				inputs.push(_.isString(val) ? val : this.codeWrapper(JSON.stringify(val, null, 2)));
+				inputs.push(_.isString(val) ? val : JSON.stringify(val, null, 2));
 			});
-			this.data.markdown = inputs.join('\n\n');
+			this.data.text = inputs.join('\n\n');
 		}
-		this.data.output = this.data.markdown;
-		return this.data.markdown;
+		this.data.output = this.data.text;
+		return this.data.text;
 	}
 }
 
 interface MarkdownData extends BaseData {
 	output: object;
-	markdown: string;
+	text: string;
 }
 
-type MarkdownNodeInterface = DGNodeInterface & {
+type TextNodeInterface = DGNodeInterface & {
 	data: MarkdownData;
 };
 
-export let markdown_node_data: MarkdownNodeInterface = {
-	id: 'markdown',
+export let text_node_data: TextNodeInterface = {
+	id: 'text',
 	data: {
-		label: 'markdown',
+		label: 'text',
 		output: '',
-		markdown: '',
+		text: '',
 		dirty: false,
-		compute_type: 'markdown_v0',
-		input_ids: { markdown: '' },
-		category: categories.display.id,
-		icon: 'markdown_v0',
-		show_in_ui: true
+		compute_type: 'text_v0',
+		input_ids: { int: '', st: '' },
+		category: categories.wip.id,
+		icon: 'text_v0',
+		show_in_ui: true,
+		message: ''
 	},
 	position: { x: 0, y: 0 },
-	type: 'markdown_v0'
+	type: 'text_v0'
 };
 
-export let markdown_node = new MarkdownNode(markdown_node_data);
+export let text_node = new TextNode(text_node_data);
 
-nodes.register(MarkdownNode, markdown_node_data);
+nodes.register(TextNode, text_node_data);

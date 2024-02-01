@@ -250,7 +250,6 @@
 			<Handle type="source" position={Position.Right} on:connect={onConnect} />
 		{/if}
 	{/if}
-	<Handle type="source" position={Position.Right} on:connect={onConnect} />
 {/if}
 
 <style>

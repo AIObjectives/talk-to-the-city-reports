@@ -99,7 +99,7 @@ export let pyodide_node_data: PyodideNodeInterface = {
 		output: {},
 		compute_type: 'pyodide_v0',
 		input_ids: { data: '' },
-		category: categories.lang.id,
+		category: categories.wip.id,
 		icon: 'python_v0',
 		show_in_ui: false
 	},

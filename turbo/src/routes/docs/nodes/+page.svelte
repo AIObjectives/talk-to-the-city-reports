@@ -4,19 +4,22 @@
 	import register from '$lib/node_register';
 	import Cookies from 'js-cookie';
 	import { _ as __ } from 'svelte-i18n';
+	import { user } from '$lib/store';
 
-	let docs = [];
-
-	const getDocs = async (locale) => {
-		docs = await register.getAllDocs(locale);
-	};
 	let locale = Cookies.get('locale') || 'en-US';
 
-	$: {
-		locale = Cookies.get('locale') || 'en-US';
-		getDocs(locale);
-		docs = docs;
-	}
+	let docs = [];
+	$: isAdmin = $user?.uid === import.meta.env.VITE_ADMIN;
+
+	$: locale,
+		register
+			.getAllDocs(locale)
+			.then((resolvedDocs) => {
+				docs = resolvedDocs.filter((doc) => (isAdmin ? true : doc?.category !== 'wip'));
+			})
+			.catch((error) => {
+				console.error('Failed to get documents:', error);
+			});
 </script>
 
 <div style="display: flex; justify-content: center;" class="mt-10">

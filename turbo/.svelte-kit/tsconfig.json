@@ -1,67 +1,67 @@
 {
-  "compilerOptions": {
-    "paths": {
-      "$lib": [
-        "../src/lib"
-      ],
-      "$lib/*": [
-        "../src/lib/*"
-      ],
-      "$components": [
-        "../src/components"
-      ],
-      "$components/*": [
-        "../src/components/*"
-      ],
-      "$routes": [
-        "../src/routes"
-      ],
-      "$routes/*": [
-        "../src/routes/*"
-      ],
-      "$test": [
-        "../src/test"
-      ],
-      "$test/*": [
-        "../src/test/*"
-      ]
-    },
-    "rootDirs": [
-      "..",
-      "./types"
-    ],
-    "importsNotUsedAsValues": "error",
-    "isolatedModules": true,
-    "preserveValueImports": true,
-    "lib": [
-      "esnext",
-      "DOM",
-      "DOM.Iterable"
-    ],
-    "moduleResolution": "node",
-    "module": "esnext",
-    "noEmit": true,
-    "target": "esnext",
-    "ignoreDeprecations": "5.0"
-  },
-  "include": [
-    "ambient.d.ts",
-    "./types/**/$types.d.ts",
-    "../vite.config.js",
-    "../vite.config.ts",
-    "../src/**/*.js",
-    "../src/**/*.ts",
-    "../src/**/*.svelte",
-    "../tests/**/*.js",
-    "../tests/**/*.ts",
-    "../tests/**/*.svelte"
-  ],
-  "exclude": [
-    "../node_modules/**",
-    "./[!ambient.d.ts]**",
-    "../src/service-worker.js",
-    "../src/service-worker.ts",
-    "../src/service-worker.d.ts"
-  ],
-  "preserveValueImports": true
+	"compilerOptions": {
+		"baseUrl": "..",
+		"paths": {
+			"$lib": [
+				"src/lib"
+			],
+			"$lib/*": [
+				"src/lib/*"
+			],
+			"$components": [
+				"src/components"
+			],
+			"$components/*": [
+				"src/components/*"
+			],
+			"$routes": [
+				"src/routes"
+			],
+			"$routes/*": [
+				"src/routes/*"
+			],
+			"$test": [
+				"src/test"
+			],
+			"$test/*": [
+				"src/test/*"
+			]
+		},
+		"rootDirs": [
+			"..",
+			"./types"
+		],
+		"importsNotUsedAsValues": "error",
+		"isolatedModules": true,
+		"preserveValueImports": true,
+		"lib": [
+			"esnext",
+			"DOM",
+			"DOM.Iterable"
+		],
+		"moduleResolution": "node",
+		"module": "esnext",
+		"noEmit": true,
+		"target": "esnext",
+		"ignoreDeprecations": "5.0"
+	},
+	"include": [
+		"ambient.d.ts",
+		"./types/**/$types.d.ts",
+		"../vite.config.js",
+		"../vite.config.ts",
+		"../src/**/*.js",
+		"../src/**/*.ts",
+		"../src/**/*.svelte",
+		"../tests/**/*.js",
+		"../tests/**/*.ts",
+		"../tests/**/*.svelte"
+	],
+	"exclude": [
+		"../node_modules/**",
+		"./[!ambient.d.ts]**",
+		"../src/service-worker.js",
+		"../src/service-worker.ts",
+		"../src/service-worker.d.ts"
+	]
 }

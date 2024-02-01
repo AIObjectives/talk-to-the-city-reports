@@ -141,15 +141,23 @@ export class Dataset {
 			get(this.graph.edges)
 		);
 
-		let i = 0;
 		for (let nodeSet of independentNodeSets) {
-			i++;
 			let inputData = {};
 			for (let node of nodeSet) {
 				get(this.graph.edges)
 					.filter((edge) => edge.target === node.id)
 					.forEach((edge) => {
-						inputData[edge.source] = nodeOutputs[edge.source];
+						const outputData = edge.sourceHandle
+							? nodeOutputs[edge.source]?.[edge.sourceHandle]
+							: nodeOutputs[edge.source];
+						if (outputData !== undefined) {
+							if (inputData[node.id] === undefined) {
+								inputData[node.id] = {};
+							}
+							if (edge.sourceHandle)
+								inputData[node.id][edge.source + '|' + edge.sourceHandle] = outputData;
+							else inputData[node.id][edge.source] = outputData;
+						}
 					});
 			}
 
@@ -158,13 +166,9 @@ export class Dataset {
 					shouldSave = shouldSave || node.data.dirty;
 					const node_impl = nodes.init(node.data.compute_type, node);
 
-					const nodeEdges = get(this.graph.edges).filter((edge) => edge.target === node.id);
-					const sources = nodeEdges.map((x) => x.source);
-
 					try {
-						const nodeInputData = _.pick(inputData, sources);
 						const result = await node_impl.compute(
-							nodeInputData,
+							inputData[node.id],
 							context,
 							info,
 							error,
@@ -175,6 +179,7 @@ export class Dataset {
 						this.graph.nodes.update((nodes) => {
 							const nodeToUpdate = nodes.find((n) => n.id === node.id);
 							nodeToUpdate.data.output = result;
+							nodeToUpdate.data.dirty = false;
 							return nodes;
 						});
 						const obj = {
@@ -360,6 +365,8 @@ export class Dataset {
 					);
 					dataset.sanitize();
 					await dataset.graph.conform(false, false);
+					// console.log('nodes', get(dataset.graph.nodes));
+					// console.log('edges', get(dataset.graph.edges));
 					return dataset;
 				}
 			} catch (e) {
