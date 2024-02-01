@@ -1,3 +1,4 @@
+import { getAuth } from 'firebase/auth';
 import { tick } from 'svelte';
 import type { Node, Edge } from '@xyflow/svelte';
 import { DGNode } from '$lib/node';
@@ -6,6 +7,8 @@ import type { Writable } from 'svelte/store';
 import { writable, get } from 'svelte/store';
 import nodesRegister from '$lib/node_register';
 import { getLayoutedElements, elkOptions } from '$lib/elk';
+import { getStorage, ref as storageRef, deleteObject } from 'firebase/storage';
+import { listAll } from 'firebase/storage';
 import _ from 'lodash';
 
 async function onLayout(direction: string, useInitialNodes = false, nodes, edges) {
@@ -154,17 +157,48 @@ export class DependencyGraph {
 		this.edges.update(($edges) => [...$edges, ...newEdges]);
 	};
 
-	listAssets = () => {
-		let assets: string[] = [];
-		get(this.nodes).forEach((node) => {
-			const asset = this.find(node.id).node.data.gcs_path;
-			if (asset) assets.push(asset);
+	listAssets = (dirRef = null) => {
+		const auth = getAuth();
+		const uid = auth.currentUser.uid;
+		const storage = getStorage();
+		const pathPrefix = `uploads/${uid}/${this.parent.slug}/`;
+		if (!dirRef) dirRef = storageRef(storage, pathPrefix);
+		let assets = [];
+		const collectAssets = (dirRef) => {
+			return listAll(dirRef).then((res) => {
+				res.items.forEach((itemRef) => {
+					assets.push(itemRef.fullPath);
+				});
+				const dirPromises = res.prefixes.map((prefixRef) => {
+					return collectAssets(storageRef(storage, prefixRef.fullPath));
+				});
+				return Promise.all(dirPromises);
+			});
+		};
+		return collectAssets(dirRef).then(() => {
+			return assets;
 		});
-		return assets;
 	};
 
 	deleteAssets = () => {
-		get(this.nodes).forEach((node) => this.find(node.id).deleteAssets());
+		const auth = getAuth();
+		const storage = getStorage();
+		const uid = auth.currentUser.uid;
+		const pathPrefix = `uploads/${uid}/${this.parent.slug}/`;
+		const dirRef = storageRef(storage, pathPrefix);
+
+		this.listAssets(dirRef)
+			.then((assetsList) => {
+				console.log(`Deleting ${assetsList.length} assets`);
+				const deletions = assetsList.map((assetPath) => {
+					const itemRef = storageRef(storage, assetPath);
+					return deleteObject(itemRef);
+				});
+				return Promise.all(deletions);
+			})
+			.catch((error) => {
+				console.error('Error deleting assets:', error);
+			});
 	};
 
 	async copyAssets() {

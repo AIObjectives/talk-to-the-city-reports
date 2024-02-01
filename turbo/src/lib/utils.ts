@@ -33,7 +33,7 @@ export async function uploadDataToGCS(
 	data: any,
 	slug: string,
 	fileName: string,
-	type: string
+	type: string = ''
 ): Promise<string> {
 	try {
 		if (!node) {
@@ -63,7 +63,6 @@ export async function uploadDataToGCS(
 
 		await uploadBytes(fileRef, blob);
 
-		node.data.gcs_path = filePath;
 		return filePath;
 	} catch (error: unknown) {
 		console.error('Error uploading file to GCS:', (error as Error).message);
@@ -71,13 +70,14 @@ export async function uploadDataToGCS(
 	}
 }
 
-export async function readFileFromGCS(node: any, isBlob: boolean = false) {
+export async function readFileFromGCS(node: any, isBlob: boolean = false, path: string = '') {
 	try {
-		if (!node || !node.data.gcs_path) {
+		if (!(node && (node.data.gcs_path || path))) {
 			throw new Error('Node or GCS path not provided');
 		}
+		if (!path) path = node.data.gcs_path;
 		const storage = getStorage();
-		const fileRef = storageRef(storage, node.data.gcs_path);
+		const fileRef = storageRef(storage, path);
 		const downloadURL: string = await getDownloadURL(fileRef);
 		const response: Response = await fetch(downloadURL);
 		if (!response.ok) {

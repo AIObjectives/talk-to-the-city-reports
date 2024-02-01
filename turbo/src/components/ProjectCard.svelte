@@ -26,7 +26,7 @@
 	});
 
 	const deleteDataset = async () => {
-		const assets: string[] = dataset.graph.listAssets();
+		const assets: string[] = await dataset.graph.listAssets();
 		if (confirm($__('are_you_sure_delete_dataset') + '\n\n' + assets.join('\n'))) {
 			await dataset.deleteDataset();
 			loadDatasets();

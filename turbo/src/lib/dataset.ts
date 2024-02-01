@@ -172,6 +172,11 @@ export class Dataset {
 							this.slug,
 							Cookies
 						);
+						this.graph.nodes.update((nodes) => {
+							const nodeToUpdate = nodes.find((n) => n.id === node.id);
+							nodeToUpdate.data.output = result;
+							return nodes;
+						});
 						const obj = {
 							id: node.id,
 							output: result
@@ -289,7 +294,7 @@ export class Dataset {
 		this.graph.nodes.update((nodes) => this.sanitizeNodes(nodes));
 	}
 
-	async deleteDataset(): Promise<boolean> {
+	async deleteDataset() {
 		this.graph.deleteAssets();
 		await deleteDoc(doc(datasetCollection, this.id));
 	}

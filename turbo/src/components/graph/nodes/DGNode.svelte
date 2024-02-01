@@ -20,6 +20,7 @@
 	import { useUpdateNodeInternals } from '@xyflow/svelte';
 	import { Dataset } from '$lib/dataset';
 	import Card from '@smui/card';
+	let viewMode = getContext('viewMode');
 
 	const updateNodeInternals = useUpdateNodeInternals();
 
@@ -66,7 +67,7 @@
 			const element = document.getElementById(`input-${id}-${inputId}`);
 			if (element) {
 				const rect = element.getBoundingClientRect();
-				rects[`input-${id}-${inputId}`] = (rect.top - posY) / getZoom();
+				rects[`input-${id}-${inputId}`] = Math.round((rect.top - posY) / getZoom());
 			}
 		});
 		// Currently only one output is supported
@@ -75,7 +76,7 @@
 				const element = document.getElementById(`output-${id}-${outputId}`);
 				if (element) {
 					const rect = element.getBoundingClientRect();
-					rects[`output-${id}-${outputId}`] = (rect.top - posY) / getZoom();
+					rects[`output-${id}-${outputId}`] = Math.round((rect.top - posY) / getZoom());
 				}
 			});
 		}
@@ -221,32 +222,35 @@
 			{/if}
 		</Paper>
 	</div>
-	{#each _.keys(data.input_ids) as inputId}
-		{#if rects[`input-${id}-${inputId}`]}
-			<Handle
-				id={inputId}
-				type="target"
-				position={Position.Left}
-				on:connect={onConnect}
-				style={`top: ${rects[`input-${id}-${inputId}`] + 10}px;`}
-			/>
-		{/if}
-	{/each}
-	{#if data.output_ids}
-		{#each _.keys(data.output_ids) as outputId}
-			{#if rects[`output-${id}-${outputId}`]}
+	{#if !isStandardView}
+		{#each _.keys(data.input_ids) as inputId}
+			{#if rects[`input-${id}-${inputId}`]}
 				<Handle
-					id={outputId}
-					type="source"
-					position={Position.Right}
+					id={inputId}
+					type="target"
+					position={Position.Left}
 					on:connect={onConnect}
-					style={`top: ${rects[`output-${id}-${outputId}`] + 10}px;`}
+					style={`top: ${rects[`input-${id}-${inputId}`] + 10}px;`}
 				/>
 			{/if}
 		{/each}
-	{:else}
-		<Handle type="source" position={Position.Right} on:connect={onConnect} />
+		{#if data.output_ids}
+			{#each _.keys(data.output_ids) as outputId}
+				{#if rects[`output-${id}-${outputId}`]}
+					<Handle
+						id={outputId}
+						type="source"
+						position={Position.Right}
+						on:connect={onConnect}
+						style={`top: ${rects[`output-${id}-${outputId}`] + 10}px;`}
+					/>
+				{/if}
+			{/each}
+		{:else}
+			<Handle type="source" position={Position.Right} on:connect={onConnect} />
+		{/if}
 	{/if}
+	<Handle type="source" position={Position.Right} on:connect={onConnect} />
 {/if}
 
 <style>
