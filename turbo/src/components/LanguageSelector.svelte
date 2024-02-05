@@ -3,11 +3,12 @@
 	import Select, { Option } from '@smui/select';
 	import { locale } from 'svelte-i18n';
 	import Cookies from 'js-cookie';
-
 	import { languages } from '$lib/i18n';
+
+	export let style = '';
 </script>
 
-<div class="lang-container">
+<div class="lang-container" {style}>
 	<Select value={_.includes(_.keys(languages), $locale) ? $locale : 'en-US'} style="width: 70px;">
 		{#each _.keys(languages) as l}
 			<Option
