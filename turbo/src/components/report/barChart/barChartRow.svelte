@@ -1,0 +1,102 @@
+<script lang="ts">
+	import _ from 'lodash';
+	import { hsl } from 'd3-color';
+	import { _ as __ } from 'svelte-i18n';
+	import { ordinalColor, scrollToTopic } from '$lib/reportUtils';
+
+	export let max: number;
+	export let complexHierarchy: Record<string, any>;
+	export let height: number = 30;
+	export let color: string = '' + hsl(ordinalColor(complexHierarchy.data.name));
+
+	let maxAdjustment = 1.2;
+
+	$: width = (complexHierarchy.value / max / maxAdjustment) * (clientWidth / 2) + 100;
+	$: textX = 10;
+	$: textY = height / 2;
+	let clientWidth: number = 1;
+	let clientHeight: number = 1;
+	let hoverColor: string = '#ffcc00';
+	let hovering: boolean = false;
+</script>
+
+<button
+	class="flex-container"
+	style="text-align: left;"
+	bind:clientWidth
+	bind:clientHeight
+	tabindex="0"
+	on:click={() => scrollToTopic(complexHierarchy.data.name)}
+	on:mouseover={() => {
+		hoverColor = ('' + hsl(ordinalColor(complexHierarchy.data.name)))
+			.replace('rgb', 'rgba')
+			.replace(')', ', 0.1)');
+		document.documentElement.style.setProperty('--hover-color', hoverColor);
+		hovering = true;
+	}}
+	on:focus={() => {
+		hoverColor = ('' + hsl(ordinalColor(complexHierarchy.data.name)))
+			.replace('rgb', 'rgba')
+			.replace(')', ', 0.1)');
+		document.documentElement.style.setProperty('--hover-color', hoverColor);
+		hovering = true;
+	}}
+	on:mouseout={() => {
+		document.documentElement.style.removeProperty('--hover-color');
+		hovering = false;
+	}}
+	on:blur={() => {
+		document.documentElement.style.removeProperty('--hover-color');
+		hovering = false;
+	}}
+>
+	<div class="flex-item text-section">
+		<h5>{complexHierarchy.data.name}</h5>
+		<p>{_.truncate(complexHierarchy.data.topicShortDescription, { length: 150 })}</p>
+	</div>
+	<svg class="separator" width="2" height={clientHeight}>
+		<line x1="1" y1="0" x2="1" y2={clientHeight} stroke="#ddd" stroke-width="1" />
+	</svg>
+	<svg height={height + 30} {width} class="flex-item bar-section">
+		<rect {width} {height} fill={color} />
+		<text
+			x={textX}
+			y={textY}
+			xmlns="http://www.w3.org/2000/svg"
+			fill="white"
+			dominant-baseline="middle"
+			text-anchor="left"
+			font-weight="bold">{complexHierarchy.value + ' ' + $__('claims')}</text
+		>
+		{#if hovering}
+			<text x={textX} y={textY + 35} fill="black" dominant-baseline="middle" text-anchor="left"
+				>{$__('click_to_view_topic')}</text
+			>
+		{/if}
+	</svg>
+</button>
+
+<style>
+	.flex-container {
+		display: flex;
+		align-items: stretch;
+		width: 100%;
+		padding-right: 10px;
+	}
+	.flex-item {
+		flex: 1;
+	}
+	.text-section {
+		margin-right: 20px;
+	}
+	.separator {
+		flex: none;
+		margin-right: 0px;
+	}
+	.bar-section {
+		display: block;
+	}
+	.flex-container:hover {
+		background-color: var(--hover-color);
+	}
+</style>

@@ -64,8 +64,14 @@
 				style="max-height: 25px;  overflow: hidden;"
 				minWidth
 			>
-				<Label style="position: relative; top: -12px;">{tab.label}</Label>
+				<Label style="position: relative; top: -12px; color: white;">{tab.label}</Label>
 			</Tab>
 		</TabBar>
 	{/if}
 </div>
+
+<style>
+	.toolbar {
+		background: #2e4387;
+	}
+</style>

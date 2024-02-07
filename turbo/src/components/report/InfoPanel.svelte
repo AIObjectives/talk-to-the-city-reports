@@ -34,20 +34,22 @@
 			>
 		{/if}
 		<div class="scrollable-content" style={scrollHeight ? `height: ${scrollHeight};` : ''}>
-			{#if claims.length > 1}
-				<h4 class="mb-3">
-					{$__('claims')}: {_.join(
+			<h4 class="mb-3">
+				{$__('claim')}
+			</h4>
+			<h5 class="mb-3">{claims[0].claim}</h5>
+			<h5>
+				{#if claims.length == 1}
+					{$__('quote')}
+				{:else}
+					{$__('quotes')}: ({_.join(
 						_.map(claims.length.toString(), (c) => $__(c)),
 						''
-					)}
-				</h4>
-				<h5 class="mb-3">{claims[0].claim}</h5>
-			{/if}
-			{#each claims as claim, i (claim.id)}
-				<InfoPanelClaim {showVideo} {claim} {csv} showClaims={claims.length == 1 && showClaims} />
-				{#if i < claims.length - 1}
-					<hr class="mt-5" />
+					)})
 				{/if}
+			</h5>
+			{#each claims as claim, i (claim.id)}
+				<InfoPanelClaim {showVideo} {claim} {csv} {showClaims} />
 			{/each}
 		</div>
 	</div>

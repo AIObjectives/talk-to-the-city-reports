@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { _ as __ } from 'svelte-i18n';
-	import { onMount } from 'svelte';
+	import { Background, BackgroundVariant } from '@xyflow/svelte';
 	import { nodeTypes } from '$lib/node_types';
 	import { node_register } from '$lib/templates';
 	import { user } from '$lib/store';
@@ -177,8 +177,10 @@
 			zoomOnDoubleClick={false}
 			minZoom={0.001}
 			class="noSelect"
+			style="background: #eeeefa;"
 			fitView
 		>
+			<Background bgColor="#ccc" variant={BackgroundVariant.Dots} />
 			<Controls showLock={false} />
 			<Panel position="top-right">
 				{#if showSaveButton}

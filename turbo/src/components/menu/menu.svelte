@@ -9,6 +9,7 @@
 	import BurgerMenu from '$components/menu/menu_burger.svelte';
 	import ForkDialog from '$components/menu/fork_dialog.svelte';
 	import ToggleView from '$components/menu/ToggleView.svelte';
+	import ToggleChart from '$components/menu/ToggleChart.svelte';
 
 	let showDropdown: boolean = false;
 	let modalShowing: boolean = false;
@@ -48,6 +49,7 @@
 					{#if $user.uid == adminUid}
 						<MenuItem on:click={saveAsTemplateOnClick} label={$__('save_as_template')} />
 					{/if}
+					<ToggleChart />
 				{/if}
 			</div>
 		{/if}

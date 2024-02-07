@@ -1,28 +1,23 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import { Dataset } from '$lib/dataset';
 	import Pipeline from '$components/Pipeline.svelte';
 	import Report from '$components/report/Report.svelte';
 	import Description from '$components/report/Description.svelte';
-	import { onMount } from 'svelte';
+	import { getContext } from 'svelte';
 	import { _ as __ } from 'svelte-i18n';
 	import { globalViewMode } from '$lib/store';
 
+	$: isStandard = $globalViewMode == 'standard';
+
 	let dataset: Dataset | null = null;
 
-	const loadDataset = async (slug: string) => {
-		dataset = await Dataset.loadDataset(slug);
-	};
-
-	onMount(() => {
-		const slug = $page.params.report;
-		if (slug) {
-			loadDataset(slug);
-		}
+	const datasetSub = getContext('dataset');
+	datasetSub.subscribe((value) => {
+		dataset = value;
 	});
 </script>
 
-<main>
+<main id="report-main" class:standard-view={isStandard}>
 	{#if !dataset}
 		<p class="text-center text-lg text-gray-500">{$__('loading')}</p>
 	{:else}
@@ -45,8 +40,17 @@
 </main>
 
 <style>
+	main.standard-view {
+		height: calc(100vh - 150px);
+	}
+
+	main:not(.standard-view) {
+		height: auto;
+	}
+
 	main {
-		flex-grow: 1;
+		overflow-y: auto;
+		overflow-x: hidden;
 	}
 
 	@media (max-width: 768px) {

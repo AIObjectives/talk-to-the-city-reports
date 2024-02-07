@@ -21,12 +21,14 @@
 			open = true;
 		}}
 	>
-		<i>• {claims[0]?.claim}</i>
+		• {claims[0]?.claim}
 		{#if claims.length > 1}
 			<small class="repeated">
-				({$__('repeated')}
-				{_.map(claims.length.toString(), (c) => $__(c)).join('')}
-				{$__('times')})</small
+				<i
+					>({$__('repeated')}
+					{_.map(claims.length.toString(), (c) => $__(c)).join('')}
+					{$__('times')})</i
+				></small
 			>
 		{/if}
 	</span>
@@ -39,8 +41,8 @@
 
 <style>
 	:global(.Popover) {
-		max-width: 300px;
-		max-height: 300px;
+		max-width: 320px;
+		max-height: 400px;
 		overflow-y: auto;
 		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 	}
@@ -48,9 +50,10 @@
 		cursor: pointer;
 	}
 	.claim:hover {
-		color: red;
+		color: #2073e9;
 	}
 	.repeated {
-		background-color: #eeeeff;
+		color: #414141;
+		font-size: 0.8em;
 	}
 </style>

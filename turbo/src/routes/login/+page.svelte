@@ -22,7 +22,7 @@
 </script>
 
 {#if !$user}
-	<button on:click={signInWithGoogle}>{$__('sign_in_with_google')}</button>
+	<button class="mt-10" on:click={signInWithGoogle}>{$__('sign_in_with_google')}</button>
 {/if}
 
 {#if error}

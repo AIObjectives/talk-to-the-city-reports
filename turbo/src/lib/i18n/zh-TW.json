@@ -9,6 +9,7 @@
     "7": "七",
     "8": "八",
     "9": "九",
+    "forked_from": "分支自",
     "home": "首頁",
     "sign_in": "登入",
     "sign_up": "註冊",
@@ -16,6 +17,7 @@
     "about_section_h1": "關於我城對話。",
     "about_section_p": "我們正在打造我城對話，一個聚集讓團體回應可以視覺化的團體的應用程式。",
     "quote": "引用語句",
+    "quotes": "引用語句",
     "interview": "訪談",
     "description": "描述",
     "representative_arguments": "代表性論點",
@@ -218,5 +220,15 @@
     "large_report_v0": "大型報告",
     "webpage_v0": "網頁",
     "num_tokens": "標記數",
-    "num_chunks": "塊數"
+    "num_chunks": "塊數",
+    "click_on_argument_to_see_original_claim": "點擊論點以查看原始主張",
+    "back_to_overview": "返回概覽",
+    "contents": "內容",
+    "overview": "概覽",
+    "clusters": "叢集",
+    "appendix": "附錄",
+    "click_to_view_topic": "點擊查看主題",
+    "bar": "條形",
+    "circle": "圓形",
+    "chart": "圖表"
 }
