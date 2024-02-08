@@ -9,6 +9,7 @@
   "7": "7",
   "8": "8",
   "9": "9",
+  "forked_from": "Forked from",
   "home": "Home",
   "sign_in": "Sign in",
   "sign_up": "Sign up",
@@ -16,6 +17,7 @@
   "about_section_h1": "About Talk to the City Turbo.",
   "about_section_p": "We're busy building Talk to the City, an app that clusters and visualizes community feedback.",
   "quote": "Quote",
+  "quotes": "Quotes",
   "interview": "Interview",
   "description": "Description",
   "representative_arguments": "Representative arguments",
@@ -217,5 +219,15 @@
   "large_report_v0": "Large Report",
   "webpage_v0": "Webpage",
   "num_tokens": "Num Tokens",
-  "num_chunks": "Num Chunks"
+  "num_chunks": "Num Chunks",
+  "click_on_argument_to_see_original_claim": "Click on argument to see original claim",
+  "back_to_overview": "Back to overview",
+  "contents": "Contents",
+  "overview": "Overview",
+  "clusters": "Clusters",
+  "appendix": "Appendix",
+  "click_to_view_topic": "Click to view topic",
+  "bar": "Bar",
+  "circle": "Circle",
+  "chart": "Chart"
 }

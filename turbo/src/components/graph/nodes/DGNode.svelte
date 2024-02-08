@@ -20,7 +20,6 @@
 	import { useUpdateNodeInternals } from '@xyflow/svelte';
 	import { Dataset } from '$lib/dataset';
 	import Card from '@smui/card';
-	let viewMode = getContext('viewMode');
 
 	const updateNodeInternals = useUpdateNodeInternals();
 
@@ -197,7 +196,7 @@
 			{/if}
 			{#if !isStandardView}
 				{#each _.keys(data.input_ids) as inputId, i}
-					<Card style="min-height: 50px; padding: 10px;">
+					<Card style="min-height: 50px; padding: 10px;" variant="outlined">
 						<div
 							id={`input-${id}-${inputId}`}
 							title={`top: ${rects[`input-${id}-${inputId}`] + 10}px;`}
@@ -206,10 +205,9 @@
 						</div>
 					</Card>
 				{/each}
-				<!-- Currently only one output is supported -->
 				{#if data.output_ids}
 					{#each _.keys(data.output_ids) as outputId, i}
-						<Card style="min-height: 50px; padding: 10px;">
+						<Card style="min-height: 50px; padding: 10px;" variant="outlined">
 							<div
 								id={`output-${id}-${outputId}`}
 								title={`top: ${rects[`output-${id}-${outputId}`] + 10}px;`}

@@ -52,14 +52,11 @@
 		<br />
 		<br />
 	{/if}
-	<h5>{$__('quote')}:</h5>
 	<i>"{claim.quote}"</i>
 	<br />
 	<br />
 	{#if claim.interview}
-		<h5>{$__('interview')}:</h5>
-		{claim.interview}
-		<br />
+		<p>{$__('interview')}: {claim.interview}</p>
 	{/if}
 	{#if showVideo && videoSrc}
 		<Player src={videoSrc} />

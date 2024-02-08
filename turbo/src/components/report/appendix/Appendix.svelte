@@ -15,7 +15,7 @@
 	let exclude = ['open_ai_key'];
 </script>
 
-<div class="flex justify-center px-4">
+<div id="appendix" class="flex justify-center px-4">
 	<Card class={_class}>
 		<Content class="text-left">
 			<h3>{$__('appendix_section')}</h3>

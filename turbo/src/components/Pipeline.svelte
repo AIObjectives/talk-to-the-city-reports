@@ -30,7 +30,6 @@
 
 	let viewModeStore = writable(viewMode);
 
-	setContext('dataset', dataset);
 	setContext('viewMode', viewModeStore);
 </script>
 

@@ -33,8 +33,9 @@
 	});
 </script>
 
-<div class="ml-5 mt-2 mb-2"><h5>{$__('representative_arguments')}:</h5></div>
-<div class="ml-10">
+<div class="ml-5 mt-2"><h5>{$__('representative_arguments')}:</h5></div>
+<small class="ml-8 mb-5">{$__('click_on_argument_to_see_original_claim')}</small>
+<div class="ml-10 mt-3">
 	{#each sortedClaims.slice(0, showMoreClaims ? sortedClaims.length : 5) as claim (claim.claim)}
 		<div class="flex items-center" style="color: black">
 			<div class="text-sm">

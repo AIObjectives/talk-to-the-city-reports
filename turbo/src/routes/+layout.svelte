@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import { onAuthStateChanged } from 'firebase/auth';
 	import { user } from '$lib/store';
@@ -14,6 +14,10 @@
 
 	import Header from '$components/Header.svelte';
 	import Footer from '$components/Footer.svelte';
+
+	import { globalViewMode } from '$lib/store';
+
+	$: isStandard = $globalViewMode == 'standard';
 
 	export const generateJWT = (payload, secretKey) => {
 		const header = { alg: 'HS256', typ: 'JWT' };
@@ -41,7 +45,7 @@
 	<SvelteToast />
 	<Header />
 
-	<main>
+	<main style={isStandard ? 'padding-top: 45px;' : ''}>
 		<slot />
 	</main>
 
