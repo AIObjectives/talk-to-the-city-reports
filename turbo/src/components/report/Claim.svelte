@@ -50,7 +50,7 @@
 		cursor: pointer;
 	}
 	.claim:hover {
-		color: #2073e9;
+		color: var(--smui-primary);
 	}
 	.repeated {
 		color: #414141;

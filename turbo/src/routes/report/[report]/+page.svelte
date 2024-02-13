@@ -17,7 +17,7 @@
 	});
 </script>
 
-<main id="report-main" class:standard-view={isStandard}>
+<main id="report-main">
 	{#if !dataset}
 		<p class="text-center text-lg text-gray-500">{$__('loading')}</p>
 	{:else}
@@ -40,14 +40,6 @@
 </main>
 
 <style>
-	main.standard-view {
-		height: calc(100vh - 150px);
-	}
-
-	main:not(.standard-view) {
-		height: auto;
-	}
-
 	main {
 		overflow-y: auto;
 		overflow-x: hidden;

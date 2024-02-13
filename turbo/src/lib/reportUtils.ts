@@ -27,22 +27,15 @@ export function getNodeColor(node: any) {
 }
 
 export function scrollToTopic(topicName) {
-	console.log(topicName);
-	const mainContent = document.getElementById('report-main');
-	if (mainContent) {
-		const targetId = _.kebabCase('report-' + topicName);
-		console.log(targetId);
-		const targetElement = mainContent.querySelector(`#${targetId}`);
-		console.log(targetElement);
-		if (targetElement) {
-			var rect = targetElement.getBoundingClientRect();
-			var scrollTop = mainContent.scrollTop;
-			var absoluteYPos = rect.top + scrollTop - 50;
-			mainContent.scroll({
-				top: absoluteYPos,
-				left: 0,
-				behavior: 'smooth'
-			});
-		}
+	const targetId = _.kebabCase('report-' + topicName);
+	const targetElement = document.querySelector(`#${targetId}`);
+	if (targetElement) {
+		var rect = targetElement.getBoundingClientRect();
+		var absoluteYPos = rect.top + window.pageYOffset - 50;
+		window.scroll({
+			top: absoluteYPos,
+			left: 0,
+			behavior: 'smooth'
+		});
 	}
 }

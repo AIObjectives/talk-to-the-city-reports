@@ -20,17 +20,17 @@
 <div class="right-stack">
 	<Menu {user} />
 	{#if isStandard}
+		<div style="padding-right: 20px;" />
 		{#if !$user}
-			<span class="link"
-				><a href="/login" style="padding-right: 20px; padding-top: 7px;">{$__('sign_in')}</a></span
-			>
+			<span class="link">
+				<a href="/login" style="padding-right: 5px; padding-top: 7px; padding-bottom: 5px;"
+					>{$__('sign_in')}</a
+				>
+			</span>
 		{/if}
-		<LanguageSelector style={'padding-right: 20px; padding-top: 4px;'} />
-		<a
-			style="padding-right: 20px; padding-top: 7px;"
-			href="https://github.com/AIObjectives/talk-to-the-city-reports"
-			target="_blank"
-		>
+		<LanguageSelector />
+		<div style="padding-right: 20px;" />
+		<a href="https://github.com/AIObjectives/talk-to-the-city-reports" target="_blank">
 			<img src={github} alt="GitHub" class="github" />
 		</a>
 	{/if}
@@ -68,7 +68,7 @@
 	.right-stack {
 		position: fixed;
 		right: 0;
-		top: 0;
+		top: 5px;
 		z-index: 11;
 		display: flex;
 		flex-direction: row-reverse;
@@ -98,7 +98,7 @@
 
 	li {
 		position: relative;
-		height: 100%;
+		height: 60%;
 	}
 
 	li[aria-current='page']::before {
@@ -110,7 +110,7 @@
 		top: 0;
 		left: calc(50% - var(--size));
 		border: var(--size) solid transparent;
-		border-top: var(--size) solid var(--color-theme-1);
+		border-top: var(--size) solid var(--smui-primary);
 	}
 
 	.title a {
@@ -141,6 +141,14 @@
 	}
 
 	a:hover {
-		color: var(--color-theme-1);
+		background-color: rgba(var(--smui-surface-rgb), 0.1);
+	}
+
+	.github {
+		position: relative;
+		padding-right: 4px;
+		top: 2px;
+		width: 30px;
+		left: 5px;
 	}
 </style>
