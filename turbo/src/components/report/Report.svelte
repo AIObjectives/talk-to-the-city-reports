@@ -39,6 +39,7 @@
 					}));
 					return {
 						name: subtopic.subtopicName,
+						subtopicShortDescription: subtopic.subtopicShortDescription,
 						...(claims.length > 0 ? { children: claims } : { value: 1 })
 					};
 				})
@@ -142,10 +143,10 @@
 </div>
 
 <!-- Bar Chart -->
-<div class="ml-8 mr-5 mb-7">
+<div class="ml-8 mr-5 mb-7 mt-5">
 	{#if $chartMode == 'bar'}
 		{#if complexHierarchy}
-			<BarChart {complexHierarchy} />
+			<BarChart {complexHierarchy} level="top" />
 		{/if}
 	{/if}
 </div>
@@ -155,12 +156,15 @@
 	{#if report && report.topics}
 		{#each report.topics as topic}
 			{@const topicColor = hsl(ordinalColor(topic.topicName)).brighter(-1)}
-			<div id={'report-' + topic.topicName.replace(/\s/g, '_')} style="scroll-margin-top: 45px" />
+			<div id={_.kebabCase('report-' + topic.topicName)} style="scroll-margin-top: 45px" />
 			<div class="p-4 rounded">
-				<div style="display: flex; justify-content: space-between; align-items: center;">
-					<h3 class="text-2xl font-bold" style="color: {topicColor}">
-						{topic.topicName}
-					</h3>
+				<!-- Topic title -->
+				<div style="display: flex; justify-content: space-between;">
+					<span style="max-width: 740px;">
+						<h3 class="text-2xl font-bold" style="color: {topicColor}">
+							{topic.topicName}
+						</h3>
+					</span>
 					<a
 						href="javascript:void(0)"
 						on:click={() => {
@@ -168,7 +172,12 @@
 						}}><p>{$__('back_to_overview')} <small>↑</small></p></a
 					>
 				</div>
-				<small style="padding-left: 5px; color: {hsl(ordinalColor(topic.topicName)).brighter(-2)}">
+				<!-- Topic stats etc. -->
+				<small
+					style="padding-left: 5px; color: {hsl(ordinalColor(topic.topicName)).brighter(
+						-2
+					)};  max-width: 740px;"
+				>
 					{_.map(topic.subtopics.length.toString(), (c) => $__(c)).join('')}
 					{$__('subtopics')}
 					{_.map(
@@ -181,15 +190,33 @@
 					).join('')}
 					{$__('claims')}
 				</small>
-
+				<!-- Topic description -->
 				{#if topic.topicShortDescription}
-					<h6 class="mt-4 mb-4">{topic.topicShortDescription}</h6>
+					<h6 class="mt-4 mb-4" style="max-width: 740px;">{topic.topicShortDescription}</h6>
 				{/if}
+				<!-- Topic Bar chart (of subtopics) -->
+				<div class="ml-8 mr-5 mb-7 mt-5">
+					{#if $chartMode == 'bar'}
+						{#if complexHierarchy}
+							<BarChart
+								complexHierarchy={complexHierarchy.children.find(
+									(x) => x.data.name === topic.topicName
+								)}
+								color={'' + topicColor.brighter(1)}
+								level="topic"
+							/>
+						{/if}
+					{/if}
+				</div>
 				{#each topic.subtopics as subtopic (subtopic.subtopicName)}
 					<br />
 					<div
+						id={_.kebabCase('report-' + subtopic.subtopicName)}
+						style="scroll-margin-top: 45px"
+					/>
+					<div
 						class="text-lg"
-						style="color: {topicColor}; display: flex; justify-content: space-between; align-items: center;"
+						style="color: {topicColor}; display: flex; justify-content: space-between;"
 					>
 						<h5>{subtopic.subtopicName}</h5>
 					</div>
@@ -198,7 +225,7 @@
 						{$__('claims')}</small
 					>
 					{#if subtopic.subtopicShortDescription}
-						<div class="ml-5 mt-2 mb-2" style="color: black">
+						<div class="ml-5 mt-2 mb-2" style="color: black; max-width: 740px;">
 							<h7>{subtopic.subtopicShortDescription}</h7>
 						</div>
 					{/if}
@@ -245,13 +272,8 @@
 	}
 	.report-container {
 		padding: var(--main-padding);
-		max-width: 50rem;
-		flex: 1;
-		display: flex;
-		flex-direction: column;
 		width: 100%;
-		margin: 0 auto;
-		box-sizing: border-box;
+		margin-left: 0;
 	}
 	.chart-wrapper {
 		/* Flex-grow allows the chart to grow and take up available space */
