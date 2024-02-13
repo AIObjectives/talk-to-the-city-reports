@@ -20,36 +20,57 @@
 	{index + 1}: <span class="mx-3">{$__(node.data.label)}</span>
 	<button
 		on:click={() => {
+			if (openId == node.id && openType == 'code') {
+				co = undefined;
+				openId = '';
+				openType = '';
+				open = false;
+				return;
+			}
 			co = code[node.data.compute_type];
 			openId = node.id;
 			openType = 'code';
 			name = node.data.compute_type + '.ts';
 		}}
 	>
-		<u>{$__('show_code')}</u>
+		<u>{openId == node.id && openType == 'code' ? $__('hide_code') : $__('show_code')}</u>
 	</button>
 	{#if node.data.text}
 		<button
 			on:click={() => {
+				if (openId == node.id && openType == 'text') {
+					co = undefined;
+					openId = '';
+					openType = '';
+					open = false;
+					return;
+				}
 				co = node.data.text;
 				openId = node.id;
-				openType = 'code';
+				openType = 'text';
 				name = node.data.compute_type + '.ts';
 			}}
 		>
-			<u>{$__('show_code')}</u>
+			<u>{openId == node.id && openType == 'text' ? $__('hide_code') : $__('show_code')}</u>
 		</button>
 	{/if}
 	{#if node.data.prompt}
 		<button
 			on:click={() => {
+				if (openId == node.id && openType == 'prompt') {
+					co = undefined;
+					openId = '';
+					openType = '';
+					open = false;
+					return;
+				}
 				co = node.data.prompt;
 				openId = node.id;
 				openType = 'prompt';
 				name = node.id + ' prompt';
 			}}
 		>
-			<u>{$__('show_prompt')}</u>
+			<u>{openId == node.id && openType == 'prompt' ? $__('hide_prompt') : $__('show_prompt')}</u>
 		</button>
 	{/if}
 

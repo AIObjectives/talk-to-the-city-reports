@@ -151,7 +151,7 @@
 	}
 
 	.drawer-container.standard-view {
-		height: calc(100vh - 150px);
+		height: auto;
 	}
 
 	.drawer-container:not(.standard-view) {

@@ -21,14 +21,14 @@ body {
 }
 
 a {
-  color: #ff3e00;
+  color: theme.$primary;
 }
 a:visited {
-  color: #ff3e00;
+  color: darken(theme.$primary, 15%);
 }
 
 .mdc-button {
-  --mdc-theme-primary: #ff3e00;
+  --mdc-theme-primary: theme.$primary;
   --mdc-theme-on-primary: #fff;
 }
 
