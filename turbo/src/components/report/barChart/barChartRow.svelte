@@ -7,13 +7,19 @@
 	export let max: number;
 	export let complexHierarchy: Record<string, any>;
 	export let height: number = 30;
-	export let color: string = '' + hsl(ordinalColor(complexHierarchy.data.name));
+	export let color: string = '';
+	export let level: 'top' | 'topic' = 'top';
 
+	let _color = color || '' + hsl(ordinalColor(complexHierarchy.data.name));
 	let maxAdjustment = 1.2;
 
 	$: width = (complexHierarchy.value / max / maxAdjustment) * (clientWidth / 2) + 100;
 	$: textX = 10;
 	$: textY = height / 2;
+	$: description =
+		level === 'top'
+			? complexHierarchy.data.topicShortDescription
+			: complexHierarchy.data.subtopicShortDescription;
 	let clientWidth: number = 1;
 	let clientHeight: number = 1;
 	let hoverColor: string = '#ffcc00';
@@ -28,16 +34,12 @@
 	tabindex="0"
 	on:click={() => scrollToTopic(complexHierarchy.data.name)}
 	on:mouseover={() => {
-		hoverColor = ('' + hsl(ordinalColor(complexHierarchy.data.name)))
-			.replace('rgb', 'rgba')
-			.replace(')', ', 0.1)');
+		hoverColor = ('' + _color).replace('rgb', 'rgba').replace(')', ', 0.1)');
 		document.documentElement.style.setProperty('--hover-color', hoverColor);
 		hovering = true;
 	}}
 	on:focus={() => {
-		hoverColor = ('' + hsl(ordinalColor(complexHierarchy.data.name)))
-			.replace('rgb', 'rgba')
-			.replace(')', ', 0.1)');
+		hoverColor = ('' + _color).replace('rgb', 'rgba').replace(')', ', 0.1)');
 		document.documentElement.style.setProperty('--hover-color', hoverColor);
 		hovering = true;
 	}}
@@ -52,13 +54,15 @@
 >
 	<div class="flex-item text-section">
 		<h5>{complexHierarchy.data.name}</h5>
-		<p>{_.truncate(complexHierarchy.data.topicShortDescription, { length: 150 })}</p>
+		<p>
+			{_.truncate(description, { length: 150 })}
+		</p>
 	</div>
 	<svg class="separator" width="2" height={clientHeight}>
 		<line x1="1" y1="0" x2="1" y2={clientHeight} stroke="#ddd" stroke-width="1" />
 	</svg>
 	<svg height={height + 30} {width} class="flex-item bar-section">
-		<rect {width} {height} fill={color} />
+		<rect {width} {height} fill={_color} />
 		<text
 			x={textX}
 			y={textY}
@@ -70,7 +74,7 @@
 		>
 		{#if hovering}
 			<text x={textX} y={textY + 35} fill="black" dominant-baseline="middle" text-anchor="left"
-				>{$__('click_to_view_topic')}</text
+				>{$__(level === 'top' ? 'click_to_view_topic' : 'click_to_view_subtopic')}</text
 			>
 		{/if}
 	</svg>

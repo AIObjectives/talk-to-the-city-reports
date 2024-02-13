@@ -1,9 +1,15 @@
 <script lang="ts">
 	import BarChartRow from '$components/report/barChart/barChartRow.svelte';
 	export let complexHierarchy: Record<string, any>;
-	$: max = Math.max(...complexHierarchy.children.map((d: any) => d.value));
+	export let color: string = '';
+	export let level: 'top' | 'topic' = 'top';
+	$: max = complexHierarchy?.children
+		? Math.max(...complexHierarchy.children.map((d: any) => d.value))
+		: 0;
 </script>
 
-{#each complexHierarchy.children as topic}
-	<BarChartRow complexHierarchy={topic} {max} />
-{/each}
+{#if complexHierarchy.children}
+	{#each complexHierarchy.children as topic}
+		<BarChartRow complexHierarchy={topic} {max} {color} {level} />
+	{/each}
+{/if}

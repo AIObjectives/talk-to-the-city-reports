@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { findAncestor } from '$lib/hierarchy';
 import { scaleOrdinal } from 'd3-scale';
 import { hsl } from 'd3-color';
@@ -26,10 +27,13 @@ export function getNodeColor(node: any) {
 }
 
 export function scrollToTopic(topicName) {
+	console.log(topicName);
 	const mainContent = document.getElementById('report-main');
 	if (mainContent) {
-		const targetId = 'report-' + topicName.replace(/\s/g, '_');
+		const targetId = _.kebabCase('report-' + topicName);
+		console.log(targetId);
 		const targetElement = mainContent.querySelector(`#${targetId}`);
+		console.log(targetElement);
 		if (targetElement) {
 			var rect = targetElement.getBoundingClientRect();
 			var scrollTop = mainContent.scrollTop;

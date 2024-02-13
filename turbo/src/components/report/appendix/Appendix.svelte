@@ -10,12 +10,12 @@
 
 	let openId: string = '';
 	let openType: string = '';
-	$: _class = 'w-full my-0 mx-auto ' + (openId != '' ? '' : 'max-w-[800px]');
+	$: _class = 'w-full my-0 mx-auto ';
 	export let dataset: Dataset;
 	let exclude = ['open_ai_key'];
 </script>
 
-<div id="appendix" class="flex justify-center px-4">
+<div id="appendix" class="flex px-4">
 	<Card class={_class}>
 		<Content class="text-left">
 			<h3>{$__('appendix_section')}</h3>

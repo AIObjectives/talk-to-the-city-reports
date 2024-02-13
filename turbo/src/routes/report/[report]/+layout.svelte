@@ -8,6 +8,7 @@
 	import { hsl } from 'd3-color';
 	import { ordinalColor, scrollToTopic } from '$lib/reportUtils';
 	import { _ as __ } from 'svelte-i18n';
+	import _ from 'lodash';
 
 	let dataset: Dataset | null = null;
 	let datasetSub = writable(null);
@@ -30,7 +31,7 @@
 <div class="drawer-container" class:standard-view={isStandard}>
 	{#if showDrawer}
 		<div id="drawerBackground">
-			<div class="custom-drawer">
+			<div class="custom-drawer hide-scrollbar">
 				<button
 					on:click={() => {
 						document.getElementById('description').scrollIntoView({ behavior: 'smooth' });
@@ -82,12 +83,37 @@
 					>
 						<span><Circle color={'' + hsl(ordinalColor(topic.topicName))} /></span>
 						&nbsp;
-						<span
-							>{topic.topicName.length < 20
-								? topic.topicName
-								: topic.topicName.slice(0, 20) + '...'}</span
-						>
+						<span>{_.truncate(topic.topicName, { length: 20 })}</span>
 					</button>
+					{#each topic.subtopics as subtopic}
+						<button
+							class="topic-item ml-4"
+							on:click={() => scrollToTopic(subtopic.subtopicName)}
+							on:mouseover={() => {
+								hoverColor = ('' + hsl(ordinalColor(subtopic.topicName)))
+									.replace('rgb', 'rgba')
+									.replace(')', ', 0.1)');
+								document.documentElement.style.setProperty('--hover-color', hoverColor);
+							}}
+							on:focus={() => {
+								hoverColor = ('' + hsl(ordinalColor(subtopic.topicName)))
+									.replace('rgb', 'rgba')
+									.replace(')', ', 0.1)');
+								document.documentElement.style.setProperty('--hover-color', hoverColor);
+							}}
+							on:mouseout={() => {
+								document.documentElement.style.removeProperty('--hover-color');
+							}}
+							on:blur={() => {
+								document.documentElement.style.removeProperty('--hover-color');
+							}}
+							type="button"
+						>
+							<span><Circle size="8px" color={'' + hsl(ordinalColor(topic.topicName))} /></span>
+							&nbsp;
+							<small>{_.truncate(subtopic.subtopicName, { length: 30 })}</small>
+						</button>
+					{/each}
 				{/each}
 				<br />
 				<button
@@ -95,7 +121,9 @@
 						document.getElementById('appendix').scrollIntoView({ behavior: 'smooth' });
 					}}
 				>
-					<h5 style="padding-left: 10px; padding-top: 10px;">{$__('appendix')}</h5>
+					<h5 style="padding-left: 10px; padding-top: 10px; padding-bottom: 20px;">
+						{$__('appendix')}
+					</h5>
 				</button>
 			</div>
 		</div>
@@ -163,5 +191,13 @@
 
 	.topic-item:hover {
 		background-color: var(--hover-color);
+	}
+	.hide-scrollbar {
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+	}
+
+	.hide-scrollbar::-webkit-scrollbar {
+		display: none;
 	}
 </style>
