@@ -1,5 +1,5 @@
 <script>
-  export let size = "1em";
+  export let size = ".8em";
   export let width = size;
   export let height = size;
   export let color = "currentColor";

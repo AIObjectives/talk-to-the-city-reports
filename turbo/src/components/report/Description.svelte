@@ -23,7 +23,7 @@
 	</div>
 {:else}
 	<div
-		class="flex flex-col px-2 my-4 max-w-full mx-auto pl-8 mb-5 {!showDrawer
+		class="flex flex-col px-2 my-4 max-w-full mx-auto pl-10 mb-5 {!showDrawer
 			? 'lg:max-w-[800px]'
 			: ''}"
 		id="description"
