@@ -27,7 +27,7 @@
 </script>
 
 <button
-	class="flex-container"
+	class="flex-container px-2"
 	style="text-align: left;"
 	bind:clientWidth
 	bind:clientHeight
@@ -52,16 +52,16 @@
 		hovering = false;
 	}}
 >
-	<div class="flex-item text-section">
-		<h5>{complexHierarchy.data.name}</h5>
-		<p>
+	<div class="flex-item text-section py-2">
+		<h4>{complexHierarchy.data.name}</h4>
+		<small>
 			{_.truncate(description, { length: 150 })}
-		</p>
+		</small>
 	</div>
 	<svg class="separator" width="2" height={clientHeight}>
 		<line x1="1" y1="0" x2="1" y2={clientHeight} stroke="#ddd" stroke-width="1" />
 	</svg>
-	<svg height={height + 30} {width} class="flex-item bar-section">
+	<svg height={height + 46} {width} class="flex-item bar-section py-2">
 		<rect {width} {height} fill={_color} />
 		<text
 			x={textX}
@@ -73,7 +73,8 @@
 			font-weight="bold">{complexHierarchy.value + ' ' + $__('claims')}</text
 		>
 		{#if hovering}
-			<text x={textX} y={textY + 35} fill="black" dominant-baseline="middle" text-anchor="left"
+			<text x={textX} y={textY + 35} fill="black" dominant-baseline="middle"
+			text-anchor="left" font-size="small"
 				>{$__(level === 'top' ? 'click_to_view_topic' : 'click_to_view_subtopic')}</text
 			>
 		{/if}
@@ -85,7 +86,6 @@
 		display: flex;
 		align-items: stretch;
 		width: 100%;
-		padding-right: 10px;
 	}
 	.flex-item {
 		flex: 1;

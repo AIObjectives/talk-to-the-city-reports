@@ -143,7 +143,9 @@
 </div>
 
 <!-- Bar Chart -->
-<div class="ml-8 mr-5 mb-7 mt-5">
+<!-- x-margins intentionally smaller than other report sections to keep all
+     text aligned while allowing for extra bar chart row padding on hover -->
+<div class="mx-8 mb-7 mt-5">
 	{#if $chartMode == 'bar'}
 		{#if complexHierarchy}
 			<BarChart {complexHierarchy} level="top" />
@@ -152,34 +154,38 @@
 </div>
 
 <!-- Report -->
-<div class="report-container" id="report-container">
+<div class="report-container mx-10 mt-12" id="report-container">
 	{#if report && report.topics}
 		{#each report.topics as topic}
 			{@const topicColor = hsl(ordinalColor(topic.topicName)).brighter(-1)}
-			<div id={_.kebabCase('report-' + topic.topicName)} style="scroll-margin-top: 45px" />
-			<div class="p-4 rounded">
+			<div id={_.kebabCase('report-' + topic.topicName)} class="mt-12 pt-4"
+			     style="scroll-margin-top: 45px" />
+			<!-- TODO scroll-margin-top above does not seem to affect scroll target;
+			     top padding added to position topic header on scroll -->
+			<div>
 				<!-- Topic title -->
-				<div style="display: flex; justify-content: space-between;">
+				<div class="flex justify-between">
 					<span style="max-width: 740px;">
-						<h3 class="text-2xl font-bold" style="color: {topicColor}">
+						<h2 class="text-2xl font-bold" style="color: {topicColor}">
 							{topic.topicName}
-						</h3>
+						</h2>
 					</span>
 					<a
 						href="javascript:void(0)"
 						on:click={() => {
 							document.getElementById('graph-container').scrollIntoView({ behavior: 'smooth' });
-						}}><p>{$__('back_to_overview')} <small>↑</small></p></a
-					>
+						}}>
+						<p>{$__('back_to_overview')}
+							<small style="vertical-align:text-bottom">↑</small>
+						</p>
+					</a>
 				</div>
 				<!-- Topic stats etc. -->
 				<small
-					style="padding-left: 5px; color: {hsl(ordinalColor(topic.topicName)).brighter(
+					style="padding-left: 2px; color: {hsl(ordinalColor(topic.topicName)).brighter(
 						-2
 					)};  max-width: 740px;"
 				>
-					{_.map(topic.subtopics.length.toString(), (c) => $__(c)).join('')}
-					{$__('subtopics')}
 					{_.map(
 						_.sumBy(
 							topic.subtopics,
@@ -188,14 +194,16 @@
 						).toString(),
 						(c) => $__(c)
 					).join('')}
-					{$__('claims')}
+					{$__('claims in')}
+					{_.map(topic.subtopics.length.toString(), (c) => $__(c)).join('')}
+					{$__('subtopics')}
 				</small>
 				<!-- Topic description -->
 				{#if topic.topicShortDescription}
 					<h6 class="mt-4 mb-4" style="max-width: 740px;">{topic.topicShortDescription}</h6>
 				{/if}
 				<!-- Topic Bar chart (of subtopics) -->
-				<div class="ml-8 mr-5 mb-7 mt-5">
+				<div class="mx-6 mt-5 mb-8">
 					{#if $chartMode == 'bar'}
 						{#if complexHierarchy}
 							<BarChart
@@ -208,24 +216,24 @@
 						{/if}
 					{/if}
 				</div>
+				<!-- Subtopics -->
 				{#each topic.subtopics as subtopic (subtopic.subtopicName)}
-					<br />
 					<div
 						id={_.kebabCase('report-' + subtopic.subtopicName)}
 						style="scroll-margin-top: 45px"
 					/>
 					<div
-						class="text-lg"
+						class="text-lg mt-8"
 						style="color: {topicColor}; display: flex; justify-content: space-between;"
 					>
-						<h5>{subtopic.subtopicName}</h5>
+						<h3>{subtopic.subtopicName}</h3>
 					</div>
-					<small style="padding-left: 5px;">
+					<small style="padding-left: 1px;">
 						{_.map(_.uniqBy(subtopic.claims, 'claim').length.toString(), (c) => $__(c)).join('')}
 						{$__('claims')}</small
 					>
 					{#if subtopic.subtopicShortDescription}
-						<div class="ml-5 mt-2 mb-2" style="color: black; max-width: 740px;">
+						<div class="my-2" style="max-width: 740px;">
 							<h7>{subtopic.subtopicShortDescription}</h7>
 						</div>
 					{/if}
@@ -237,10 +245,8 @@
 						}}
 						showFeedback={!!feedbackNode}
 					/>
-					<br />
 				{/each}
 			</div>
-			<br />
 		{/each}
 	{/if}
 </div>
@@ -270,11 +276,7 @@
 		gap: 16px; /* Optional: Add a gap if needed */
 		transition: all 0.5s ease-in-out; /* Smooth transition for the resizing */
 	}
-	.report-container {
-		padding: var(--main-padding);
-		width: 100%;
-		margin-left: 0;
-	}
+
 	.chart-wrapper {
 		/* Flex-grow allows the chart to grow and take up available space */
 		flex-grow: 1;

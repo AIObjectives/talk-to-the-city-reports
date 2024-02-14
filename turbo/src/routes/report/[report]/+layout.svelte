@@ -31,35 +31,25 @@
 <div class="drawer-container" class:standard-view={isStandard}>
 	{#if showDrawer}
 		<div id="drawerBackground">
-			<div class="custom-drawer hide-scrollbar">
-				<button
-					on:click={() => {
-						document.getElementById('description').scrollIntoView({ behavior: 'smooth' });
-					}}
-				>
-					<h3 style="padding-left: 10px;">{$__('contents')}</h3>
-				</button>
-				<br />
-				<button
+			<div class="custom-drawer mt-4 hide-scrollbar">
+				<button class="mt-2 block"
 					on:click={() => {
 						document.getElementById('graph-container').scrollIntoView({ behavior: 'smooth' });
 					}}
-					><h4 style="padding-left: 10px;">
+					><h5>
 						{$__('overview')}
-					</h4></button
+					</h5></button
 				>
-				<br />
-				<button
+				<button class="mt-2 nav-section"
 					on:click={() => {
 						document.getElementById('report-container').scrollIntoView({ behavior: 'smooth' });
 					}}
 				>
-					<h5 style="padding-left: 10px;">{$__('clusters')}</h5>
+					<h5>{$__('clusters')}</h5>
 				</button>
-				<br />
 				{#each $reportStore?.topics as topic}
 					<button
-						class="topic-item"
+						class="topic-item mt-2 block"
 						on:click={() => scrollToTopic(topic.topicName)}
 						on:mouseover={() => {
 							hoverColor = ('' + hsl(ordinalColor(topic.topicName)))
@@ -87,7 +77,7 @@
 					</button>
 					{#each topic.subtopics as subtopic}
 						<button
-							class="topic-item ml-4"
+							class="topic-item ml-6"
 							on:click={() => scrollToTopic(subtopic.subtopicName)}
 							on:mouseover={() => {
 								hoverColor = ('' + hsl(ordinalColor(subtopic.topicName)))
@@ -109,19 +99,16 @@
 							}}
 							type="button"
 						>
-							<span><Circle size="8px" color={'' + hsl(ordinalColor(topic.topicName))} /></span>
-							&nbsp;
 							<small>{_.truncate(subtopic.subtopicName, { length: 30 })}</small>
 						</button>
 					{/each}
 				{/each}
-				<br />
-				<button
+				<button class="mt-2 block"
 					on:click={() => {
 						document.getElementById('appendix').scrollIntoView({ behavior: 'smooth' });
 					}}
 				>
-					<h5 style="padding-left: 10px; padding-top: 10px; padding-bottom: 20px;">
+					<h5>
 						{$__('appendix')}
 					</h5>
 				</button>
@@ -138,7 +125,7 @@
 
 <style>
 	#drawerBackground {
-		background-color: lightGrey;
+		background-color: #f2f2f2;
 		width: 256px;
 		height: 100%;
 		position: fixed;
@@ -161,10 +148,10 @@
 	.custom-drawer {
 		width: inherit;
 		height: calc(100% - 50px);
-		margin-top: 10px;
-		padding-right: 15px;
+		padding: 0 1.5rem;
 		box-sizing: border-box;
 		overflow-y: auto;
+		color: rgba(0,0,0,.75);
 	}
 
 	.app-content {
@@ -184,7 +171,7 @@
 		display: flex;
 		align-items: center;
 		gap: 2px;
-		padding-left: 20px;
+		padding-left: .5rem;
 		cursor: pointer;
 		width: 100%;
 	}

@@ -33,9 +33,9 @@
 	});
 </script>
 
-<div class="ml-5 mt-2"><h5>{$__('representative_arguments')}:</h5></div>
-<small class="ml-8 mb-5">{$__('click_on_argument_to_see_original_claim')}</small>
-<div class="ml-10 mt-3">
+<div class="mt-4"><h4>{$__('representative_arguments')}</h4></div>
+<small class="mb-5 italic">{$__('click_on_argument_to_see_original_claim')}</small>
+<div class="ml-4 mt-2">
 	{#each sortedClaims.slice(0, showMoreClaims ? sortedClaims.length : 5) as claim (claim.claim)}
 		<div class="flex items-center" style="color: black">
 			<div class="text-sm">
@@ -44,8 +44,15 @@
 		</div>
 	{/each}
 	{#if sortedClaims.length > 5}
-		<button on:click={() => (showMoreClaims = !showMoreClaims)}>
+		<button class="text-sm font-bold"
+		    on:click={() => (showMoreClaims = !showMoreClaims)}>
 			{showMoreClaims ? $__('show_less') : $__('show_more')}
 		</button>
 	{/if}
 </div>
+
+<style>
+	button {
+		color: var(--smui-primary);
+	}
+</style>

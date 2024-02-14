@@ -74,19 +74,22 @@ h1 {
 }
 
 h2 {
-	font-size: 2em !important;
+	font-size: 1.75em !important;
+	font-weight: bold;
 }
 
 h3 {
-	font-size: 1.75em !important;
+	font-size: 1.25em !important;
+	font-weight: bold;
 }
 
 h4 {
-	font-size: 1.5em !important;
+	font-size: 1em !important;
+	font-weight: bold;
 }
 
 h5 {
-	font-size: 1.25em !important;
+	font-size: 1em !important;
 }
 
 h6 {
