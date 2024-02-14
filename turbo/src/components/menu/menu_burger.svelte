@@ -8,7 +8,7 @@
 <button
 	on:click|stopPropagation={() => (showDropdown = !showDropdown)}
 	class="focus:outline-none burger"
-	style="padding-top: 7px"
+	style="padding-top: 4px"
 >
 	<MenuIcon size="30px" color={isStandard ? '#dedede' : '#000000'} />
 </button>
