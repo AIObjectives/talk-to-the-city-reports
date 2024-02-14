@@ -76,13 +76,7 @@
 
 	{#if open}
 		<div style="width: 100%; height: 100%; background-color: #282c34;">
-			<CodeMirror
-				bind:value={co}
-				theme={oneDark}
-				lang={name.includes('.ts') ? javascript() : ''}
-				style="min-width: 100px; min-height: 100px; height: 100%; width: 100%;"
-				options={{ autoresize: true, lineWrapping: true }}
-			/>
+			<CodeMirror bind:value={co} theme={oneDark} lang={name.includes('.ts') ? javascript() : ''} />
 		</div>
 	{/if}
 

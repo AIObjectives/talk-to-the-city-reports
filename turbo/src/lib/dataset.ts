@@ -364,7 +364,7 @@ export class Dataset {
 						doc.projectParent
 					);
 					dataset.sanitize();
-					await dataset.graph.conform(false, false);
+					await dataset.graph.conform(false, false, false);
 					// console.log('nodes', get(dataset.graph.nodes));
 					// console.log('edges', get(dataset.graph.edges));
 					return dataset;

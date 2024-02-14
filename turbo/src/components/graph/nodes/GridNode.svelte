@@ -7,7 +7,7 @@
 
 	export let data: $$Props['data'];
 	export let id: $$Props['id'];
-	export let isStandardView: $$Props['isStandardView'];
+	export let isStandardView: boolean = false;
 </script>
 
 <DGNode {id} {data} {...$$restProps} style="">

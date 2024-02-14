@@ -11,7 +11,7 @@
 
 	export let data: $$Props['data'];
 	export let id: $$Props['id'];
-	export let isStandardView: boolean;
+	export let isStandardView: boolean = false;
 
 	export let showSystemPrompt = false;
 	export let showPromptSuffix = false;
