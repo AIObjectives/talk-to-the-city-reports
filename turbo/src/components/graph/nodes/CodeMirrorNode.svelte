@@ -17,8 +17,5 @@
 		bind:value={data.text}
 		theme={oneDark}
 		lang={_.includes(data.compute_type, 'y') ? python() : javascript()}
-		className="nodrag; nowheel;"
-		style="min-width: 100px; min-height: 100px; height: 100%; width: 100%;"
-		options={{ autoresize: true, lineWrapping: true }}
 	/>
 </DGNode>

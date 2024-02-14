@@ -26,7 +26,6 @@ export default class TextNode {
 		slug: string,
 		Cookies: any
 	): Promise<string> {
-		console.log(inputData);
 		this.data.dirty = false;
 		let inputs: string[] = [];
 		if (!_.isEmpty(inputData)) {

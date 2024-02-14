@@ -1,11 +1,11 @@
 <script lang="ts">
+	import { type NodeProps } from '@xyflow/svelte';
 	import Checkbox from '@smui/checkbox';
 	import FormField from '@smui/form-field';
 	import Tune from '$lib/icons/Tune.svelte';
 	import Paper from '@smui/paper';
 	import { marked } from 'marked';
 	import Help from '$lib/icons/HelpCircle.svelte';
-	import type { BaseData } from '$lib/node_data_types';
 	import { Position, Handle } from '@xyflow/svelte';
 	import Connection from '$lib/icons/Connection.svelte';
 	import { useNodes } from '@xyflow/svelte';
@@ -27,13 +27,34 @@
 	const dataset: Dataset = getContext('dataset');
 	const nodes = useNodes();
 
-	export let data: BaseData;
-	export let id: string;
-	export let selected: boolean = false;
+	type $$Props = NodeProps;
+
+	export let dragHandle: $$Props['dragHandle'] = undefined;
+	dragHandle;
+	export let type: $$Props['type'] = undefined;
+	type;
+	export let selected: $$Props['selected'] = undefined;
+	export let isConnectable: $$Props['isConnectable'] = undefined;
+	isConnectable;
+	export let zIndex: $$Props['zIndex'] = undefined;
+	zIndex;
+	export let width: $$Props['width'] = undefined;
+	width;
+	export let height: $$Props['height'] = undefined;
+	height;
+	export let dragging: $$Props['dragging'];
+	dragging;
+	export let targetPosition: $$Props['targetPosition'] = undefined;
+	targetPosition;
+	export let sourcePosition: $$Props['sourcePosition'] = undefined;
+	sourcePosition;
+	export let xPos = undefined;
+	xPos;
+	export let yPos = undefined;
+	yPos;
+	export let data: $$Props['data'];
+	export let id: $$Props['id'];
 	export let style: string = '';
-	export let type: string = '';
-	export let width: number = 0;
-	export let height: number = 0;
 	export let isStandardView: boolean = false;
 	export let color = '';
 	export let variant = 'raised';

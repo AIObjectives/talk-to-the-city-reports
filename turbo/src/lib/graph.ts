@@ -61,7 +61,7 @@ export class DependencyGraph {
 		this.parent = parent;
 	}
 
-	conform = async (dryRun = true, save = false) => {
+	conform = async (dryRun = true, save = false, doLayout = true) => {
 		let log = '';
 		const nodes = get(this.nodes);
 		for (let i = 0; i < nodes.length; i++) {
@@ -102,7 +102,7 @@ export class DependencyGraph {
 			log += '...............\n';
 		}
 		log += 'Laying out the graph';
-		if (!dryRun) {
+		if (!dryRun && doLayout) {
 			await onLayout('RIGHT', true, this.nodes, this.edges);
 		}
 		if (!dryRun && save) {
