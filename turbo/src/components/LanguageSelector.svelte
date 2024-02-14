@@ -66,7 +66,7 @@
 	}
 
 	.lang-container {
-		padding-right: 10px;
+		padding-right: 16px;
 	}
 
 	.lang-container .select-container {

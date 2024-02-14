@@ -20,7 +20,6 @@
 <div class="right-stack">
 	<Menu {user} />
 	{#if isStandard}
-		<div style="padding-right: 20px;" />
 		{#if !$user}
 			<span class="link">
 				<a href="/login" style="padding-right: 5px; padding-top: 7px; padding-bottom: 5px;"
@@ -29,8 +28,8 @@
 			</span>
 		{/if}
 		<LanguageSelector />
-		<div style="padding-right: 20px;" />
-		<a href="https://github.com/AIObjectives/talk-to-the-city-reports" target="_blank">
+		<a href="https://github.com/AIObjectives/talk-to-the-city-reports"
+		   target="_blank" class="mr-6">
 			<img src={github} alt="GitHub" class="github" />
 		</a>
 	{/if}
@@ -67,7 +66,7 @@
 	}
 	.right-stack {
 		position: fixed;
-		right: 0;
+		right: 16px;
 		top: 5px;
 		z-index: 11;
 		display: flex;
@@ -145,10 +144,6 @@
 	}
 
 	.github {
-		position: relative;
-		padding-right: 4px;
-		top: 2px;
-		width: 30px;
-		left: 5px;
+		width: 26px;
 	}
 </style>
