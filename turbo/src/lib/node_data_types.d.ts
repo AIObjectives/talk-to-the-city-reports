@@ -1,8 +1,17 @@
+import type { Writable } from 'svelte/store';
+
+export interface Log {
+	title: string;
+	detail: string;
+	type: 'success' | 'error' | 'info';
+}
+
 export interface BaseData {
+	processing?: boolean = false;
 	label: string;
 	dirty: boolean;
 	compute_type: string;
-	input_ids: { [key: string]: string };
+	input_ids: { [key: string]: string | object[] };
 	output_ids?: { [key: string]: string };
 	category: string;
 	icon: string;
@@ -10,6 +19,8 @@ export interface BaseData {
 	show_in_ui: boolean;
 	message: string;
 	enable?: boolean;
+	log?: Log[];
+	state?: Writable<any>;
 }
 
 export interface DGEdgeInterface {
@@ -33,6 +44,19 @@ export interface DGNodeInterface<T extends BaseData = BaseData> {
 	};
 	type: string;
 	data: T;
+	zIndex?: number;
+	dragging?: boolean;
+	dragHandle?: boolean;
+	isConnectable?: boolean;
+	type?: string;
+	xPos?: number;
+	yPos?: number;
+	positionAbsolute?: boolean;
+	width?: number;
+	height?: number;
+	selected?: boolean;
+	sourcePosition?: string;
+	targetPosition?: string;
 }
 
 export type GCSBaseData = BaseData & GCSData;

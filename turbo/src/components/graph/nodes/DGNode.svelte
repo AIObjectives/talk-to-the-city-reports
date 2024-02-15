@@ -1,34 +1,38 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+	import { getContext } from 'svelte';
+
 	import { type NodeProps } from '@xyflow/svelte';
+	import { marked } from 'marked';
+	import _ from 'lodash';
+	import { _ as __ } from 'svelte-i18n';
+	import Cookies from 'js-cookie';
+
+	import { pipelineStepsRemaining } from '$lib/store';
+	import register from '$lib/node_register';
+	import { Dataset } from '$lib/dataset';
+
 	import Checkbox from '@smui/checkbox';
 	import FormField from '@smui/form-field';
-	import Tune from '$lib/icons/Tune.svelte';
 	import Paper from '@smui/paper';
-	import { marked } from 'marked';
-	import Help from '$lib/icons/HelpCircle.svelte';
-	import { Position, Handle } from '@xyflow/svelte';
-	import Connection from '$lib/icons/Connection.svelte';
-	import { useNodes } from '@xyflow/svelte';
-	import { _ as __ } from 'svelte-i18n';
-	import register from '$lib/node_register';
-	import Cookies from 'js-cookie';
-	import TuneDGNode from './dgnode/TuneDGNode.svelte';
-	import { getContext } from 'svelte';
-	import { onMount } from 'svelte';
-	import _ from 'lodash';
-	import { useSvelteFlow } from '@xyflow/svelte';
-	import { useUpdateNodeInternals } from '@xyflow/svelte';
-	import { Dataset } from '$lib/dataset';
 	import Card from '@smui/card';
 
-	const updateNodeInternals = useUpdateNodeInternals();
+	import { Position, Handle } from '@xyflow/svelte';
+	import { useNodes } from '@xyflow/svelte';
+	import { useSvelteFlow } from '@xyflow/svelte';
+	import { useUpdateNodeInternals } from '@xyflow/svelte';
 
-	const { flowToScreenPosition, getZoom } = useSvelteFlow();
-	const dataset: Dataset = getContext('dataset');
-	const nodes = useNodes();
+	import Help from '$lib/icons/HelpCircle.svelte';
+	import Tune from '$lib/icons/Tune.svelte';
+	import Circle from '$lib/icons/Circle.svelte';
+	import TuneDGNode from './dgnode/TuneDGNode.svelte';
+	import Logs from '$components/Logs.svelte';
+	import DGNodeBadge from '$components/DGNodeBadge.svelte';
 
 	type $$Props = NodeProps;
 
+	export let position: unknown = undefined;
+	position;
 	export let dragHandle: $$Props['dragHandle'] = undefined;
 	dragHandle;
 	export let type: $$Props['type'] = undefined;
@@ -61,12 +65,26 @@
 	export let _class = '';
 	export let positionAbsolute;
 
+	const updateNodeInternals = useUpdateNodeInternals();
+
+	const { flowToScreenPosition, getZoom } = useSvelteFlow();
+	const dataset: Dataset = getContext('dataset');
+	const nodes = useNodes();
+
+	let dg_node = dataset?.graph.find(id);
+	let show_help = false;
+	let doc;
+	let inlineDoc;
+	let showLogs = false;
+	let tune = false;
+
 	let divHeight = 0;
 	let divWidth = 0;
-
-	$: posY = positionAbsolute?.y ? flowToScreenPosition(positionAbsolute)?.y : 0;
 	let rects = {};
 	let mounted = false;
+	let _style = `position: relative; ${style}; `;
+
+	$: posY = positionAbsolute?.y ? flowToScreenPosition(positionAbsolute)?.y : 0;
 
 	onMount(() => {
 		updateRects();
@@ -117,32 +135,35 @@
 
 	function onConnect(x) {
 		let { source, target, sourceHandle, targetHandle } = x.detail.connection;
-		console.log('onConnect', x.detail);
 		dataset?.graph.onConnect(source, target, sourceHandle, targetHandle);
 	}
 
 	$: variant = isStandardView ? 'raised' : 'outlined';
 	$: show = isStandardView ? data.show_in_ui === undefined || data.show_in_ui === true : true;
-	let dg_node = dataset?.graph.find(id);
-	let show_help = false;
-	let has_all_inputs = true;
-	let doc;
-	let inlineDoc;
-	let tune = false;
 	$: {
 		const locale = Cookies.get('locale') || 'en-US';
 		getDocs(locale);
 		if (dg_node) {
 			$nodes;
 			selected;
-			has_all_inputs = dg_node.hasAllInputs;
 		}
 	}
-	let _style = `position: relative; ${style}; `;
+
+	$: {
+		if (data?.processing == true && isStandardView && $pipelineStepsRemaining > 0) {
+			const el = document.getElementById('dgnode-' + isStandardView + id);
+			el?.scrollIntoView({ behavior: 'smooth' });
+		}
+	}
 </script>
 
 {#if data && show}
-	<div bind:clientHeight={divHeight} bind:clientWidth={divWidth}>
+	<div
+		bind:clientHeight={divHeight}
+		bind:clientWidth={divWidth}
+		id={'dgnode-' + isStandardView + id}
+		style="scroll-margin-top: 70px"
+	>
 		<Paper
 			color={isStandardView ? 'default' : color}
 			variant={isStandardView ? 'raised' : variant}
@@ -167,20 +188,31 @@
 			</div>
 
 			<div class="help-icon-wrapper">
+				{#if data?.log?.length > 0}
+					<button
+						on:click={() => {
+							showLogs = !showLogs;
+						}}
+					>
+						<DGNodeBadge logs={data.log} />
+					</button>
+					&nbsp;&nbsp;
+				{/if}
 				{#if !isStandardView}
 					<button
 						on:click={() => {
 							tune = !tune;
 						}}><Tune color="gray" /></button
 					>&nbsp;&nbsp;
-					{#if !has_all_inputs}
-						<Connection color="#ffaaaa" class="mr-2" />
-					{/if}
 				{/if}
 				{#if doc}
 					<button on:click={() => (show_help = !show_help)}><Help color="gray" /></button>
 				{/if}
+				{#if data.processing}
+					<Circle color="#aaffaa" class="mr-2" />
+				{/if}
 			</div>
+
 			{#if show_help}
 				<Paper class="mb-5" style="min-width: 500px;">
 					<div class="docs">
@@ -188,6 +220,10 @@
 						{@html marked.parse(doc)}
 					</div>
 				</Paper>
+			{/if}
+
+			{#if showLogs}
+				<Logs logs={data.log} />
 			{/if}
 			{#if tune}
 				<TuneDGNode {data} />

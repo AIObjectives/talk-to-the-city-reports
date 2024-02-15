@@ -154,6 +154,7 @@ export default async function gpt(
 	// needed for mocks:
 	// console.log(hash);
 	try {
+		info(`${$__('calling_openai')}. ${$__('calls_left')}: ${todo.size}`, messages);
 		const result = await pool.exec(openai, [
 			apiKey,
 			messages,
@@ -162,13 +163,13 @@ export default async function gpt(
 			mock_responses,
 			response_format
 		]);
+		info(`${$__('called_openai')}. ${$__('calls_left')}: ${todo.size}`, result);
 		console.log(result);
 		todo.delete(i);
-		info(`${$__('done_calling_openai')}. ${$__('calls_left')}: ${todo.size}`);
 		return result;
 	} catch (e) {
 		console.error(e);
-		error(`${$__('error_calling_openai')} ${i + 1}/${total} {error.message}`);
+		error(`${$__('error_calling_openai')} ${i + 1}/${total}`, e);
 		return 'ERROR';
 	}
 }

@@ -1,8 +1,5 @@
 <script lang="ts">
-	import Checkbox from '@smui/checkbox';
-	import FormField from '@smui/form-field';
 	import { useEdges, useNodes } from '@xyflow/svelte';
-	import Select, { Option } from '@smui/select';
 	import { Dataset } from '$lib/dataset';
 	import { _ as __ } from 'svelte-i18n';
 
@@ -21,21 +18,23 @@
 	const node = node_id ? $nodes.find((node) => node.id === node_id) : undefined;
 	const edge = edge_id ? $edges.filter((edge) => edge.id === edge_id) : undefined;
 
-	function getUnregisteredInput() {
-		if (node.data.input_ids) {
-			const input_edges = $edges
-				.filter((edge) => edge.target === node_id)
-				.map((edge) => edge.source);
-			return input_edges;
-		}
-		return [];
-	}
-
 	function deleteNode() {
 		dataset.graph.deleteNode(node_id);
+		onClick();
 	}
+
 	function deleteEdge() {
 		$edges = $edges.filter((edge) => edge.id !== edge_id);
+		const target_node = $nodes.find((node) => node.id === edge[0].target);
+		const input_ids = target_node.data.input_ids;
+		for (const key in input_ids) {
+			if (Array.isArray(input_ids[key])) {
+				input_ids[key] = input_ids[key].filter((val) => val.split('|')[0] !== edge[0].source);
+			} else if (input_ids[key] === edge[0].source) {
+				delete input_ids[key];
+			}
+		}
+		onClick();
 	}
 </script>
 
@@ -56,32 +55,6 @@
 		</small>
 	</p>
 	{#if node}
-		{#each Object.keys(node.data.input_ids) as key}
-			<Select value={node.data.input_ids[key]} label={key}>
-				{#each getUnregisteredInput() as input}
-					<Option
-						value={input}
-						on:click={(x) => {
-							node.data.input_ids[key] = input;
-						}}>{input}</Option
-					>
-				{/each}
-			</Select>
-		{/each}
-		<div>
-			<FormField align="end">
-				<div>
-					<Checkbox
-						checked={node.data.show_in_ui}
-						on:change={(x) => {
-							node.data.show_in_ui = x.target.checked;
-						}}
-					/>
-				</div>
-				<span slot="label">{$__('show_in_standard_view')}</span>
-			</FormField>
-		</div>
-		<hr />
 		<button on:click={deleteNode}>{$__('delete_node')}</button>
 	{/if}
 	{#if edge}

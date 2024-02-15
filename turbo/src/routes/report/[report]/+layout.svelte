@@ -1,14 +1,17 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { Dataset } from '$lib/dataset';
-	import { globalViewMode, reportStore } from '$lib/store';
 	import { onMount, setContext } from 'svelte';
+	import { page } from '$app/stores';
 	import { writable } from 'svelte/store';
-	import Circle from '$lib/icons/Circle.svelte';
-	import { hsl } from 'd3-color';
-	import { ordinalColor, scrollToTopic } from '$lib/reportUtils';
 	import { _ as __ } from 'svelte-i18n';
 	import _ from 'lodash';
+
+	import { hsl } from 'd3-color';
+
+	import { ordinalColor, scrollToTopic } from '$lib/reportUtils';
+	import { Dataset } from '$lib/dataset';
+	import { globalViewMode, reportStore, storeDataset } from '$lib/store';
+
+	import Circle from '$lib/icons/Circle.svelte';
 
 	let dataset: Dataset | null = null;
 	let datasetSub = writable(null);
@@ -19,6 +22,7 @@
 		const slug = $page.params.report;
 		dataset = await Dataset.loadDataset(slug);
 		datasetSub.set(dataset);
+		storeDataset.set(dataset);
 	});
 
 	$: isStandard = $globalViewMode === 'standard';
@@ -32,7 +36,8 @@
 	{#if showDrawer}
 		<div id="drawerBackground">
 			<div class="custom-drawer mt-4 hide-scrollbar">
-				<button class="mt-2 block"
+				<button
+					class="mt-2 block"
 					on:click={() => {
 						document.getElementById('graph-container').scrollIntoView({ behavior: 'smooth' });
 					}}
@@ -40,7 +45,8 @@
 						{$__('overview')}
 					</h5></button
 				>
-				<button class="mt-2 nav-section"
+				<button
+					class="mt-2 nav-section"
 					on:click={() => {
 						document.getElementById('report-container').scrollIntoView({ behavior: 'smooth' });
 					}}
@@ -103,7 +109,8 @@
 						</button>
 					{/each}
 				{/each}
-				<button class="mt-2 block"
+				<button
+					class="mt-2 block"
 					on:click={() => {
 						document.getElementById('appendix').scrollIntoView({ behavior: 'smooth' });
 					}}
@@ -151,7 +158,7 @@
 		padding: 0 1.5rem;
 		box-sizing: border-box;
 		overflow-y: auto;
-		color: rgba(0,0,0,.75);
+		color: rgba(0, 0, 0, 0.75);
 	}
 
 	.app-content {
@@ -171,7 +178,7 @@
 		display: flex;
 		align-items: center;
 		gap: 2px;
-		padding-left: .5rem;
+		padding-left: 0.5rem;
 		cursor: pointer;
 		width: 100%;
 	}

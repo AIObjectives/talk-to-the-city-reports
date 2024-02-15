@@ -1,35 +1,32 @@
 <script lang="ts">
-	import { _ as __ } from 'svelte-i18n';
-	import { Background, BackgroundVariant } from '@xyflow/svelte';
-	import { nodeTypes } from '$lib/node_types';
+	import { getContext } from 'svelte';
+	import { type Writable } from 'svelte/store';
+	import DeepCopy from 'deep-copy';
+
+	import { nodeTypes } from '$lib/node_view_types';
 	import { node_register } from '$lib/templates';
 	import { user } from '$lib/store';
+	import { Dataset } from '$lib/dataset';
+
+	import { _ as __ } from 'svelte-i18n';
+	import { Background, BackgroundVariant } from '@xyflow/svelte';
 	import { useSvelteFlow } from '@xyflow/svelte';
-	import DeepCopy from 'deep-copy';
+	import { Controls, SvelteFlow } from '@xyflow/svelte';
+	import { useNodes } from '@xyflow/svelte';
+	import { Panel } from '@xyflow/svelte';
 	import { getLayoutedElements, elkOptions } from '$lib/elk';
 
-	import { Dataset } from '$lib/dataset';
-	import { Controls, SvelteFlow } from '@xyflow/svelte';
+	import { Tooltip } from 'svelte-ux';
+
 	import ContextMenu from './ContextMenu.svelte';
-	import { DGNode } from '$lib/node';
 	import PipelineCreateNodesToolbar from '$components/PipelineCreateNodesToolbar.svelte';
 	import ContentSaveOutline from '$lib/icons/ContentSaveOutline.svelte';
 	import ContentDuplicate from '$lib/icons/ContentDuplicate.svelte';
 	import RobotOutline from '$lib/icons/RobotOutline.svelte';
-	import { useNodes } from '@xyflow/svelte';
 	import ToolbarNode from './ToolbarNode.svelte';
-	import { Panel } from '@xyflow/svelte';
 	import DownloadImage from '$components/graph/DownloadImage.svelte';
-	import { getContext } from 'svelte';
-	import { Tooltip } from 'svelte-ux';
 	import DotsHorizontal from '$lib/icons/DotsHorizontal.svelte';
 	import DotsVertical from '$lib/icons/DotsVertical.svelte';
-
-	const { fitView } = useSvelteFlow();
-	const n = useNodes();
-	let viewMode = getContext('viewMode');
-	const { screenToFlowPosition } = useSvelteFlow();
-	let resetTimeout;
 
 	export let width = '100%';
 	export let height = '97vh';
@@ -41,7 +38,13 @@
 	export let dataset: Dataset;
 	export let nodes;
 	export let edges;
+
+	const { fitView } = useSvelteFlow();
+	const n = useNodes();
+	let viewMode = getContext('viewMode') as Writable<string>;
+	const { screenToFlowPosition } = useSvelteFlow();
 	let active = { nodes: [] };
+	let resetTimeout;
 
 	viewMode.subscribe((value) => {
 		if (value == 'graph') {
@@ -90,6 +93,8 @@
 			}
 
 			$nodes = [...$nodes, nodeToAdd];
+
+			if ($nodes.length == 1) onLayout('RIGHT');
 		}
 	}
 
@@ -147,11 +152,13 @@
 		<PipelineCreateNodesToolbar bind:resetTimeout bind:active on:click={(x) => addNode(x.detail)} />
 	{/if}
 	<div
+		style:position={$viewMode == 'graph' ? 'relative' : 'absolute'}
+		style:left={$viewMode == 'graph' ? '0' : '-9999px'}
 		style:visibility={$viewMode == 'graph' ? 'visible' : 'hidden'}
 		style:margin={'auto'}
 		style:width
-		style:height={$viewMode == 'graph' ? height : '100%'}
-		class="flow-container noSelect"
+		style:height
+		class="noSelect"
 	>
 		<SvelteFlow
 			{nodes}
@@ -163,12 +170,6 @@
 			on:dragover={onDragOver}
 			on:drop={addNode}
 			deleteKey={''}
-			ondelete={(e) => {
-				for (const node of e.nodes) {
-					const dg_node = new DGNode(node, dataset.graph);
-					dg_node.deleteAssets();
-				}
-			}}
 			elementsSelectable={true}
 			preventScrolling={true}
 			nodesDraggable={true}
@@ -189,7 +190,7 @@
 							<button
 								on:click={async () => {
 									await dataset.updateDataset($user);
-								}}><ContentSaveOutline size={30} /></button
+								}}><ContentSaveOutline size={'30px'} /></button
 							>
 						</Tooltip>
 					</div>
@@ -207,7 +208,7 @@
 										node.data = { ...node.data };
 									}
 								}, 500);
-							}}><RobotOutline size={30} /></button
+							}}><RobotOutline size={'30px'} /></button
 						>
 					</Tooltip>
 				</div>

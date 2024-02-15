@@ -10,6 +10,7 @@ const chartMode: Writable<string> = writable('bar');
 const storeDataset: Writable<Object | null> = writable(null);
 const message: Writable<Object | null> = writable(null);
 const graphNotice: Writable<boolean> = writable(false);
+const pipelineStepsRemaining: Writable<number> = writable(0);
 
 export {
 	user,
@@ -19,5 +20,6 @@ export {
 	graphNotice,
 	globalViewMode,
 	reportStore,
-	chartMode
+	chartMode,
+	pipelineStepsRemaining
 };

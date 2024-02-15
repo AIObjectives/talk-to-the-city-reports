@@ -38,11 +38,7 @@ export default class MergeClusterExtractionNode {
 		text = _.cloneDeep(text);
 
 		if (_.isEmpty(text)) return;
-		if (text.length == 1) {
-			this.data.output = text[0];
-			this.data.dirty = false;
-			return this.data.output;
-		}
+
 		text = {
 			topics: _.uniq(_.flatMap(text, (item) => item.topics))
 		};

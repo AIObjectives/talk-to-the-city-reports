@@ -3,7 +3,7 @@
 	import type { Node, Edge } from '@xyflow/svelte';
 	import { _ as __ } from 'svelte-i18n';
 
-	import { nodeTypes } from '$lib/node_types';
+	import { nodeTypes } from '$lib/node_view_types';
 	import { useNodes, useEdges } from '@xyflow/svelte';
 	import { topologicalSort } from '$lib/utils';
 
@@ -11,7 +11,7 @@
 	const edges: Writable<Edge[]> = useEdges();
 </script>
 
-<div class="centered-container">
+<div class="centered-container" id="pipeline-standard">
 	{#each topologicalSort($nodes, $edges) as node (node.id)}
 		{#if nodeTypes[node.type]}
 			{#if node.data.show_in_ui === undefined || node.data.show_in_ui === true}
@@ -27,6 +27,7 @@
 						type={node.type}
 						xPos={node.xPos}
 						yPos={node.yPos}
+						position={node.position}
 						positionAbsolute={node.positionAbsolute}
 						width={node.width}
 						height={node.height}
@@ -58,9 +59,5 @@
 		box-sizing: border-box; /* Include padding in the width calculation */
 		margin-left: auto; /* Margin auto left and right will center the div */
 		margin-right: auto;
-	}
-	.button {
-		color: #00e;
-		text-decoration: none;
 	}
 </style>

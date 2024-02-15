@@ -26,6 +26,9 @@ export default class GridNode {
 		slug: string,
 		Cookies: any
 	) {
+		if (!inputData) {
+			return;
+		}
 		this.data.dirty = false;
 		const input = inputData[Object.keys(inputData)[0]];
 		this.data.output = input;
@@ -56,7 +59,7 @@ export let grid_node_data: GridNodeInterface = {
 		dirty: false,
 		output: {},
 		compute_type: 'grid_v0',
-		input_ids: { data: '' },
+		input_ids: { data: [] },
 		category: categories.display.id,
 		icon: 'grid_v0',
 		width: 700,

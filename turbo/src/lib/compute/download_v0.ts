@@ -26,8 +26,8 @@ export default class DownloadNode {
 		slug: string,
 		Cookies: any
 	) {
-		this.data.output = _.head(_.values(inputData));
-		this.data.dirty = false;
+		const data = _.head(_.values(inputData));
+		return data;
 	}
 }
 

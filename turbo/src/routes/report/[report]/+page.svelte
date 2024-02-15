@@ -1,17 +1,18 @@
 <script lang="ts">
+	import { getContext } from 'svelte';
+	import { type Writable } from 'svelte/store';
+	import { _ as __ } from 'svelte-i18n';
+
+	import { globalViewMode } from '$lib/store';
 	import { Dataset } from '$lib/dataset';
+
 	import Pipeline from '$components/Pipeline.svelte';
 	import Report from '$components/report/Report.svelte';
 	import Description from '$components/report/Description.svelte';
-	import { getContext } from 'svelte';
-	import { _ as __ } from 'svelte-i18n';
-	import { globalViewMode } from '$lib/store';
-
-	$: isStandard = $globalViewMode == 'standard';
 
 	let dataset: Dataset | null = null;
 
-	const datasetSub = getContext('dataset');
+	const datasetSub = getContext('dataset') as Writable<Dataset | null>;
 	datasetSub.subscribe((value) => {
 		dataset = value;
 	});

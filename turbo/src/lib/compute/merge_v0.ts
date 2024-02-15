@@ -27,10 +27,13 @@ export default class MergeNode {
 		slug: string,
 		Cookies: any
 	) {
+		if (!inputData) {
+			return;
+		}
 		let cluster_extraction =
-			inputData.cluster_extraction || inputData[this.data.input_ids.cluster_extraction];
+			inputData?.cluster_extraction || inputData[this.data.input_ids.cluster_extraction];
 		let argument_extraction =
-			inputData.argument_extraction || inputData[this.data.input_ids.argument_extraction];
+			inputData?.argument_extraction || inputData[this.data.input_ids.argument_extraction];
 
 		if (!cluster_extraction || !argument_extraction || !cluster_extraction.topics) {
 			this.data.dirty = false;
