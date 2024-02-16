@@ -1,28 +1,34 @@
 #!/bin/bash
-. turbo/src/lib/scripts/colors.sh
 
-exec < /dev/tty
+if [ "${TTTC_GIT_HOOKS:-0}" -eq 1 ]; then
+    . turbo/src/lib/scripts/colors.sh
 
-echo -e "${LIGHT_BLUE}Checking typescript (this may be too drastic)...${NC}\n"
-cd turbo
-python3 src/lib/scripts/ts_errors.py --pre-commit-hook
-TS_ERRORS_EXIT_CODE=$?
-if [ $TS_ERRORS_EXIT_CODE -ne 0 ]; then
-    echo "TypeScript errors detected."
-    while true; do
-        read -p "Do you wish to continue? (y/n) " yn
-        case $yn in
-            [Yy]* ) break;;
-            [Nn]* ) exit $TS_ERRORS_EXIT_CODE;;
-            * ) echo "Please answer yes or no.";;
-        esac
-    done
+    exec < /dev/tty
+
+    echo -e "${LIGHT_BLUE}Checking typescript (this may be too drastic)...${NC}\n"
+    cd turbo
+    python3 src/lib/scripts/ts_errors.py --pre-commit-hook
+    TS_ERRORS_EXIT_CODE=$?
+    if [ $TS_ERRORS_EXIT_CODE -ne 0 ]; then
+        echo "TypeScript errors detected."
+        while true; do
+            read -p "Do you wish to continue? (y/n) " yn
+            case $yn in
+                [Yy]* ) break;;
+                [Nn]* ) exit $TS_ERRORS_EXIT_CODE;;
+                * ) echo "Please answer yes or no.";;
+            esac
+        done
+    fi
+    echo -e "${LIGHT_BLUE}Running tests...${NC}\n"
+    npm run test
+    echo -e "\n${LIGHT_BLUE}Running typescript coverage...${NC}\n"
+    npm run ts-coverage
+    # todo: this should be handled more gracefully
+    # since the user may not want to always add package.json and README.md
+    git add package.json README.md
+    cd -
+else
+    echo "TTTC_GIT_HOOKS is not set to 1. Skipping pre-commit hook..."
+    exit 0
 fi
-echo -e "${LIGHT_BLUE}Running tests...${NC}\n"
-npm run test
-echo -e "\n${LIGHT_BLUE}Running typescript coverage...${NC}\n"
-npm run ts-coverage
-# todo: this should be handled more gracefully
-# since the user may not want to always add package.json and README.md
-git add package.json README.md
-cd -
