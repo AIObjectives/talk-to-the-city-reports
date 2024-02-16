@@ -56,7 +56,7 @@ export let text_node_data: TextNodeInterface = {
 		text: '',
 		dirty: false,
 		compute_type: 'text_v0',
-		input_ids: { int: '', st: '' },
+		input_ids: {},
 		category: categories.wip.id,
 		icon: 'text_v0',
 		show_in_ui: true,

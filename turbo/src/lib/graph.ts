@@ -218,6 +218,21 @@ export class DependencyGraph {
 	deleteNode = (id: string) => {
 		const node = this.find(id);
 		node.deleteAssets();
+		const connectedNodes = get(this.edges)
+			.filter((edge) => edge.source === id || edge.target === id)
+			.map((edge) => (edge.source === id ? edge.target : edge.source));
+		connectedNodes.forEach((nodeId) => {
+			const node = this.find(nodeId).node;
+			const inputIds = node.data.input_ids;
+			for (const key in inputIds) {
+				if (_.isArray(inputIds[key])) {
+					inputIds[key] = (inputIds[key] as Array<any>).filter((val) => val.split('|')[0] !== id);
+				} else if (inputIds[key] === id) {
+					delete inputIds[key];
+				}
+			}
+			node.data.input_ids = inputIds;
+		});
 		this.nodes.update(($nodes) => $nodes.filter((node) => node.id !== id));
 		this.edges.update(($edges) =>
 			$edges.filter((edge) => edge.source !== id && edge.target !== id)
@@ -225,9 +240,12 @@ export class DependencyGraph {
 	};
 
 	onConnect = (source: string, target: string, sourceHandle: string, targetHandle: string) => {
-		source = get(this.nodes).find((n) => n.id === source);
-		target = get(this.nodes).find((n) => n.id === target);
-		target.data.input_ids[targetHandle] = sourceHandle ? source.id + '|' + sourceHandle : source.id;
+		const sourceNode = get(this.nodes).find((n) => n.id === source);
+		const targetNode = get(this.nodes).find((n) => n.id === target);
+		const ids = targetNode.data.input_ids;
+		if (_.isArray(ids[targetHandle])) {
+			ids[targetHandle].push(sourceHandle ? sourceNode.id + '|' + sourceHandle : sourceNode.id);
+		} else ids[targetHandle] = sourceHandle ? sourceNode.id + '|' + sourceHandle : sourceNode.id;
 		setTimeout(() => {
 			this.nodes.update(($nodes) => $nodes);
 			for (const node of get(this.nodes)) {

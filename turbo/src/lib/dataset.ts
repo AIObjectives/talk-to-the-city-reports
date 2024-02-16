@@ -1,9 +1,8 @@
-import { tick } from 'svelte';
+import { type User } from 'firebase/auth';
 import { goto } from '$app/navigation';
 import Cookies from 'js-cookie';
 import { get } from 'svelte/store';
 import Deepcopy from 'deep-copy';
-import '$lib/node_types';
 import { saveTemplate } from '$lib/templates';
 import nodes from '$lib/node_register';
 import { topologicalSort } from '$lib/utils';
@@ -22,6 +21,9 @@ import { auth, datasetCollection } from '$lib/firebase';
 import { success, error, info } from '$components/toast/theme';
 import { DependencyGraph } from '$lib/graph';
 import { format, unwrapFunctionStore } from 'svelte-i18n';
+import { pipelineStepsRemaining, globalViewMode } from '$lib/store';
+import { logger } from '$lib/logger';
+
 const $__ = unwrapFunctionStore(format);
 
 export class Dataset {
@@ -75,6 +77,7 @@ export class Dataset {
 		}
 
 		dirtyNodes.forEach((nodeId) => markDownstreamNodesAsDirty(nodeId));
+		return dirtyNodes;
 	}
 
 	refresh() {
@@ -122,8 +125,15 @@ export class Dataset {
 		return independentNodeSets;
 	}
 
+	getDirtyUINodes() {
+		if (get(globalViewMode) === 'standard')
+			return get(this.graph.nodes).filter((node) => node.data.dirty && node.data.show_in_ui);
+		else return get(this.graph.nodes).filter((node) => node.data.dirty);
+	}
+
 	async processNodes(context: string, user: User, save = false, refreshData = null) {
 		this.propagateDirtyState();
+		if (context == 'run') pipelineStepsRemaining.set(this.getDirtyUINodes().length);
 		let nodeOutputs = {};
 		let shouldSave = false;
 
@@ -165,8 +175,18 @@ export class Dataset {
 				(async () => {
 					shouldSave = shouldSave || node.data.dirty;
 					const node_impl = nodes.init(node.data.compute_type, node);
+					const { info, error, success } = logger(node);
 
 					try {
+						if (context == 'run' && node.data.logs?.length > 0) node.data.logs = [];
+						this.graph.nodes.update((nodes) => {
+							const nodeToUpdate = nodes.find((n) => n.id === node.id);
+							nodeToUpdate.data.processing = true;
+							return nodes;
+						});
+						if (node.data.dirty && context == 'run') {
+							pipelineStepsRemaining.set(this.getDirtyUINodes().length);
+						}
 						const result = await node_impl.compute(
 							inputData[node.id],
 							context,
@@ -174,10 +194,12 @@ export class Dataset {
 							error,
 							success,
 							this.slug,
-							Cookies
+							Cookies,
+							this
 						);
 						this.graph.nodes.update((nodes) => {
 							const nodeToUpdate = nodes.find((n) => n.id === node.id);
+							nodeToUpdate.data.processing = false;
 							nodeToUpdate.data.output = result;
 							nodeToUpdate.data.dirty = false;
 							return nodes;
@@ -196,6 +218,14 @@ export class Dataset {
 								' ' +
 								$__('please_view_console_for_more_details')
 						);
+						this.graph.nodes.update((nodes) => {
+							const nodeToUpdate = nodes.find((n) => n.id === node.id);
+							nodeToUpdate.data.processing = false;
+							nodeToUpdate.data.output = undefined;
+							nodeToUpdate.data.dirty = true;
+							nodeToUpdate.data.logs.push(JSON.stringify(e));
+							return nodes;
+						});
 					}
 				})()
 			);
@@ -212,6 +242,7 @@ export class Dataset {
 		}
 
 		if (context == 'run') {
+			pipelineStepsRemaining.set(0);
 			success($__('pipeline_run_complete'));
 			if (save && shouldSave) await this.updateDataset(user);
 		}
@@ -291,6 +322,7 @@ export class Dataset {
 					delete node[key];
 			}
 			node.data.output = {};
+			node.data.log = [];
 			return node;
 		});
 	}

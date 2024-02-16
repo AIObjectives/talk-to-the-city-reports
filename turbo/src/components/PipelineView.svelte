@@ -1,27 +1,26 @@
 <script lang="ts">
-	import { useUpdateNodeInternals } from '@xyflow/svelte';
 	import { tick } from 'svelte';
-	import { setContext } from 'svelte';
-	import Pipe from '$lib/icons/Pipe.svelte';
+	import { setContext, getContext } from 'svelte';
 	import { get } from 'svelte/store';
-	import Tune from '$lib/icons/Tune.svelte';
-	import { user, storeDataset, fitViewStore } from '$lib/store';
-	import PipelineStandard from '$components/PipelineStandard.svelte';
-	import PipelineGraph from '$components/PipelineGraph.svelte';
-	import type { Dataset } from '$lib/dataset';
-	import Button from '@smui/button';
+	import { type Writable } from 'svelte/store';
+
 	import '@xyflow/svelte/dist/style.css';
 	import { useNodes } from '@xyflow/svelte';
 	import { useSvelteFlow } from '@xyflow/svelte';
-	import ToggleNotice from '$components/ToggleNotice.svelte';
-	import GraphNotice from '$components/GraphNotice.svelte';
-	import TemplateSwitcher from '$components/TemplateSwitcher.svelte';
 	import { _ as __ } from 'svelte-i18n';
-	import { getContext } from 'svelte';
-	let viewMode = getContext('viewMode');
-	const { fitView } = useSvelteFlow();
 
-	const n = useNodes();
+	import { user, storeDataset, fitViewStore } from '$lib/store';
+	import type { Dataset } from '$lib/dataset';
+
+	import Pipe from '$lib/icons/Pipe.svelte';
+	import Tune from '$lib/icons/Tune.svelte';
+	import Button from '@smui/button';
+	import ToggleNotice from '$components/ToggleNotice.svelte';
+	import PipelineStandard from '$components/PipelineStandard.svelte';
+	import PipelineGraph from '$components/PipelineGraph.svelte';
+	import GraphNotice from '$components/GraphNotice.svelte';
+	import PipelineNotice from '$components/PipelineNotice.svelte';
+	import TemplateSwitcher from '$components/TemplateSwitcher.svelte';
 
 	export let height = '97vh';
 	export let width = '100%';
@@ -32,13 +31,15 @@
 	export let showScreenshotButton: boolean = false;
 	export let autoSave: boolean = false;
 
+	let viewMode = getContext('viewMode') as Writable<string>;
+	const { fitView } = useSvelteFlow();
+	const n = useNodes();
 	let showPipeline = false;
 	let tune = false;
-
-	setContext('dataset', dataset);
-
 	const nodes = dataset.graph.nodes,
 		edges = dataset.graph.edges;
+
+	setContext('dataset', dataset);
 
 	function refreshData() {
 		// Force refresh of dataset
@@ -55,6 +56,7 @@
 
 	const load = async () => {
 		await dataset.processNodes('load', $user, false, refreshData);
+		await tick();
 		refreshData();
 	};
 
@@ -101,36 +103,24 @@
 		</div>
 	{/if}
 
-	<div style="display: flex; width: 100%;">
-		<div
-			class="graph-div"
-			style="flex-direction: column; width: {$viewMode === 'graph' ? '100%' : '0vw'};"
-		>
-			<PipelineGraph
-				{nodes}
-				{edges}
-				bind:dataset
-				{showNodesToolbar}
-				{showSaveButton}
-				{showCopyButton}
-				{showScreenshotButton}
-				{height}
-				{width}
-				{autoSave}
-			/>
-		</div>
-		{#if $viewMode == 'standard'}
-			<div
-				class="standard-div"
-				style="display: flex; justify-content: center; align-items: center; flex-direction: column; width: {$viewMode ===
-				'standard'
-					? '100%'
-					: '0vw'}"
-			>
-				<PipelineStandard />
-			</div>
-		{/if}
-	</div>
+	<!-- The pipeline graph must be in the DOM even when in standard view -->
+	<!-- it is therefore off-screen when in standard view  -->
+	<PipelineGraph
+		{nodes}
+		{edges}
+		bind:dataset
+		{showNodesToolbar}
+		{showSaveButton}
+		{showCopyButton}
+		{showScreenshotButton}
+		{height}
+		{width}
+		{autoSave}
+	/>
+
+	{#if $viewMode == 'standard'}
+		<PipelineStandard />
+	{/if}
 
 	<div class="pipeline-container">
 		<Button
@@ -152,8 +142,11 @@
 			</Button>
 		{/if}
 	</div>
+	<br />
+	<br />
 {/if}
 
+<PipelineNotice />
 <GraphNotice />
 
 <style>
@@ -172,22 +165,5 @@
 		width: 100%;
 		margin: 0 auto;
 		box-sizing: border-box;
-	}
-
-	.graph-div,
-	.standard-div {
-		box-sizing: border-box; /* Include padding and border in the element's total width */
-	}
-
-	.graph-div {
-		flex: none;
-		overflow: auto;
-		height: 100%;
-	}
-
-	.standard-div {
-		flex: none;
-		overflow: auto;
-		height: 100%;
 	}
 </style>

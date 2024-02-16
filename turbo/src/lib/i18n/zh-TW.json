@@ -131,6 +131,7 @@
     "system_extraction_prompt": "系統提取提示",
     "computing": "計算",
     "calling_openai": "呼叫 OpenAI",
+    "called_openai": "已呼叫 OpenAI",
     "done_computing": "計算完成",
     "done_extracting": "提取完成",
     "seconds": "秒",

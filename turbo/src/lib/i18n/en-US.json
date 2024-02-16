@@ -131,6 +131,7 @@
   "system_extraction_prompt": "System Extraction Prompt",
   "computing": "Computing",
   "calling_openai": "Calling OpenAI",
+  "called_openai": "Called OpenAI",
   "done_computing": "Done Computing",
   "done_extracting": "Done Extracting",
   "seconds": "Seconds",

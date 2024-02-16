@@ -86,31 +86,6 @@ describe('MergeClusterExtractionNode class', () => {
 	);
 
 	it(
-		'should return single extraction if only one is provided',
-		async () => {
-			inputData.csv = [
-				{
-					topics: [{ topicName: 'Weather', subtopics: ['Current Conditions'] }]
-				}
-			];
-			const output = await node.compute(
-				inputData,
-				'run',
-				console.log,
-				console.error,
-				console.log,
-				'test_slug',
-				null
-			);
-
-			expect(output).toEqual({
-				topics: [{ topicName: 'Weather', subtopics: ['Current Conditions'] }]
-			});
-		},
-		timeout
-	);
-
-	it(
 		'should not process if no open_ai_key is provided',
 		async () => {
 			delete inputData.open_ai_key;

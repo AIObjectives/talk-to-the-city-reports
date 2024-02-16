@@ -104,7 +104,7 @@ export let text_to_csv_node_data: TextToCSVInterface = {
 		show_in_ui: true,
 		message: '',
 		output: null,
-		numTokens: '100',
+		numTokens: '1000',
 		entries: [
 			{
 				interview: 'Alice',

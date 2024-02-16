@@ -3,7 +3,7 @@
 	import { onAuthStateChanged } from 'firebase/auth';
 	import { user } from '$lib/store';
 	import { auth } from '$lib/firebase';
-
+	import '$lib/node_types';
 	import { _ as __ } from 'svelte-i18n';
 	import Cookies from 'js-cookie';
 	import { KJUR } from 'jsrsasign';

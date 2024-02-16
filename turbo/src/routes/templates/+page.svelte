@@ -4,7 +4,8 @@
 	import { SvelteFlow, type Node, type Edge } from '@xyflow/svelte';
 	import { loadTemplates } from '$lib/templates';
 	import { Background, BackgroundVariant } from '@xyflow/svelte';
-	import { nodeTypes } from '$lib/node_types';
+	import '$lib/node_types';
+	import { nodeTypes } from '$lib/node_view_types';
 	import { onMount } from 'svelte';
 	// import { useSvelteFlow } from '@xyflow/svelte';
 	// const { fitView } = useSvelteFlow();
