@@ -11,6 +11,8 @@
 	let showMoreClaims = false;
 	let sortedClaims = [];
 	let ids = [];
+	// TODO(colleenm): support data sets that include both text and video claims
+	let hasVideo = csv && 'video' in csv[0];
 
 	const updateClaimsData = () => {
 		if (claims) {
@@ -34,7 +36,16 @@
 </script>
 
 <div class="mt-4"><h4>{$__('representative_arguments')}</h4></div>
-<small class="mb-5 italic">{$__('click_on_argument_to_see_original_claim')}</small>
+<small class="italic block">{$__('click_on_argument_to_see_original_claim')}</small>
+{#if hasVideo}
+	<small class="mb-5 italic block">
+		<svg class="inline-block" xmlns="http://www.w3.org/2000/svg" height="22" 
+				viewBox="0 -960 960 960" width="22" style="vertical-align: bottom;">
+			<path d="m380-300 280-180-280-180v360ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z"/>
+		</svg>
+		{$__('these_claims_include_video_excerpts')}
+	</small>
+{/if}
 <div class="ml-4 mt-2">
 	{#each sortedClaims.slice(0, showMoreClaims ? sortedClaims.length : 5) as claim (claim.claim)}
 		<div class="flex items-center" style="color: black">
