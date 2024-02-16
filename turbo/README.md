@@ -52,10 +52,7 @@ Repo link: [https://github.com/AIObjectives/talk-to-the-city-reports](https://gi
 
 ## Computational Graph
 
-On a technology front, tttc uses a dependency-graph based data and computational model. This allows technical and non-technical users to create AI/ML apps in just a few clicks. You can read more here on [the unintended effects of graph-based ML applications
-](https://tttc-turbo.web.app/docs/ai-pipe-guide/unintended-effects).
-
-This is achieved by having dependency graph "nodes" that are connected by directional edges. The nodes + edges form a pipeline where some nodes provide data, whilst others provide computation steps. Computation simply involves a topological sort (since edges are directed) where the output of nodes are passed into the input of their downstream nodes. On each step the "compute" function for each node is simply invoked with the upstream input data, and so on until all nodes have been computed.
+On a technology front, tttc uses a dependency-graph based data and computational model based on nodes that are connected by directional edges. The nodes + edges form a pipeline where some nodes provide data, whilst others provide computation steps. Computation simply involves a topological sort (since edges are directed) where the output of nodes are passed into the input of their downstream nodes. On each step the "compute" function for each node is simply invoked with the upstream input data, and so on until all nodes have been computed.
 
 Computation has two modes: "run" when the pipeline creator actively runs the pipeline, and "load" which is called when the resulting report page is loaded by a viewer.
 
@@ -174,16 +171,39 @@ Authenticated backend endpoints require the service account file:
 
 - in the console for the project, click on project settings (the cog icon)
 - click on "service accounts"
-- click "generate private key"
+- click on `Manage service account permissions`
+- look for the email address that matches the project id
+    - click actions
+    - click create key
 - save the json private key to turbo/src/lib/service-account-pk.json
+- add the environment variable to your shell: `export GOOGLE_APPLICATION_CREDENTIALS="src/lib/service-account-pk.json"`
+
+### Post fresh install steps
+
+#### DB 'dataset' index
+
+After launching the app, for the first time check your dev console, as it will contain a link for creating an index for datasets.
+
+#### Templates
+
+Talk to the City turbo uses pipeline templates, so end users do not have to construct their own graphs.
+
+You can manage templates via http://localhost:5173/templates or https://tttc-turbo.web.app/templates.
+
+#### Admin UID
+
+The `.env` file contains a `VITE_ADMIN` variable that should be filled in with your user id, which can be acquired from the Firestore database.
 
 ### Using AOI's dev instance
 
 - Contact @brittneygallagher or @lightningorb for credentials files
 - save the provided `.env` in `turbo/`
-- save the provided `service-account-pk.json` in `turbo/src/lib/`
-- `npm install -g firebase-tools`
-- `firebase login`
+- optional steps for deployment:
+    - save the provided `service-account-pk.json` in `turbo/src/lib/`
+    - `npm install -g firebase-tools`
+    - `firebase login`
+
+Disclaimer: by using a shared dev instance, you are aware that the data you shared by nature, and therefore no privacy can be made for the data you choose to upload to the platform. For better privacy, consider setting up your own instance.
 
 ### Deploying to firebase
 

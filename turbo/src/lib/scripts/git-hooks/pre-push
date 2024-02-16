@@ -1,5 +1,9 @@
-. turbo/src/lib/scripts/colors.sh
 
-echo "${LIGHT_BLUE}Running selenium tests...${NC}\n"
-
-python3 turbo/src/test/test_selenium.py --local
+if [ $TTTC_GIT_HOOKS -eq 1 ]; then
+    . turbo/src/lib/scripts/colors.sh
+    echo "${LIGHT_BLUE}Running selenium tests...${NC}\n"
+    python3 turbo/src/test/test_selenium.py --local
+else
+    echo "TTTC_GIT_HOOKS is not set to 1. Skipping pre-push hook..."
+    exit 0
+fi

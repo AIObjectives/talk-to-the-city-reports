@@ -13,6 +13,7 @@
 
 	onMount(async () => {
 		templates = await loadTemplates();
+		templatesLoaded = true;
 	});
 
 	function getRandomElement<T>(array: T[]): T {
@@ -138,6 +139,7 @@
 	let projectDescription = rand;
 	let projectTemplate = 'default';
 	let templates: Record<string, DocumentData> = {};
+	let templatesLoaded: boolean = false;
 
 	function createProjectSlug(str: string): string {
 		return str
@@ -196,7 +198,7 @@
 					<HelperText persistent slot="helper">{$__('report_description')}</HelperText>
 				</TextField>
 			</div>
-			{#if !_.isEmpty(templates)}
+			{#if templatesLoaded}
 				<button class="w-full px-3 pt-5" on:click={createNewProject}>
 					<Button type="submit">{$__('create')}</Button>
 				</button>
