@@ -32,6 +32,12 @@
 	let hoverColor = '#ffcc00';
 </script>
 
+<svelte:head>
+	{#if dataset}
+		<title>{dataset.title}</title>
+	{/if}
+</svelte:head>
+
 <div class="drawer-container" class:standard-view={isStandard}>
 	{#if showDrawer}
 		<div id="drawerBackground">

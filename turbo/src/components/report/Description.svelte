@@ -1,4 +1,5 @@
 <script lang="ts">
+	import HelperText from '@smui/textfield/helper-text';
 	import TextField from '@smui/textfield';
 	import { globalViewMode, reportStore } from '$lib/store';
 	import Pencil from '$lib/icons/PencilOutline.svelte';
@@ -18,7 +19,14 @@
 		class="flex flex-col px-2 my-4 max-w-full pl-8 mx-auto {!showDrawer ? 'lg:max-w-[800px]' : ''}"
 	>
 		<TextField bind:value={dataset.title} label="Title" />
-		<TextField bind:value={dataset.description} label={$__('description')} />
+		<TextField
+			helperLine$style="width: 100% !important;"
+			style="width: 100%; overflow: auto"
+			textarea
+			bind:value={dataset.description}
+		>
+			<HelperText slot="helper">{$__('description')}</HelperText>
+		</TextField>
 		<button on:click={() => (editing = false)}>Done</button>
 	</div>
 {:else}
@@ -37,7 +45,9 @@
 			{/if}
 			{dataset.title}
 		</h1>
-		<p class="text-gray-700">{$__('description')}: {dataset.description}</p>
+		<p class="text-gray-700" style="white-space: pre-line;">
+			{$__('description')}: {dataset.description}
+		</p>
 		{#if dataset.projectParent}
 			<p class="text-gray-500">
 				{$__('forked_from')}:
