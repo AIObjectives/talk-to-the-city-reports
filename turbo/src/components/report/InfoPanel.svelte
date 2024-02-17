@@ -30,7 +30,7 @@
 				style="position: absolute; top: 0px; right: 0px; z-index: 1;"
 				on:click={() => {
 					dispatch('feedback', claims);
-				}}><Exclamation size="15px" /></IconButton
+				}}><Exclamation size="12px" /></IconButton
 			>
 		{/if}
 		<div class="scrollable-content" style={scrollHeight ? `height: ${scrollHeight};` : ''}>

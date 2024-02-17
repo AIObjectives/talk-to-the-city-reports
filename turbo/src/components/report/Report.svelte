@@ -194,7 +194,7 @@
 						).toString(),
 						(c) => $__(c)
 					).join('')}
-					{$__('claims in')}
+					{$__('claims') + ', '}
 					{_.map(topic.subtopics.length.toString(), (c) => $__(c)).join('')}
 					{$__('subtopics')}
 				</small>
