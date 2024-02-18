@@ -38,37 +38,37 @@ import { Dataset } from '$lib/dataset';
  */
 /** @type {import('./$types').RequestHandler} */
 export const GET = authenticated(async ({ url, request }) => {
-	// This endpoint enables admins to conform all datasets,
-	// however bear in mind that datasets auto-conform on load.
-	// keeping this endpoint for now, but it's not really needed.
-	const requestUrl = new URL(request.url);
-	const dryRun = requestUrl.searchParams.get('dryRun') == 'true';
-	let filter: QueryConstraint[] = [];
-	filter.push(orderBy('timestamp', 'desc'));
-	const q = query(datasetCollection, ...filter);
-	const querySnapshot = await getDocs(q);
-	let log = '';
-	log += 'Dry run: ' + dryRun + '\n';
-	let datasets = querySnapshot.docs.map((doc) => {
-		const data = doc.data();
-		return new Dataset(
-			data.title,
-			data.slug,
-			data.owner,
-			data.template,
-			data.description,
-			data.graph,
-			doc.id
-		);
-	});
-	_.forEach(datasets, async (dataset, i) => {
-		if (dataset.owner != import.meta.env.VITE_ADMIN) {
-			return;
-		}
-		log += '-------------------------------------------\n';
-		log += `Owner: ${dataset.owner} - Dataset: ${i} ${dataset.slug}\n`;
-		log += dataset.graph.conform(dryRun, dryRun);
-		log += 'Laying out the graph';
-	});
-	return new Response(log);
+  // This endpoint enables admins to conform all datasets,
+  // however bear in mind that datasets auto-conform on load.
+  // keeping this endpoint for now, but it's not really needed.
+  const requestUrl = new URL(request.url);
+  const dryRun = requestUrl.searchParams.get('dryRun') == 'true';
+  const filter: QueryConstraint[] = [];
+  filter.push(orderBy('timestamp', 'desc'));
+  const q = query(datasetCollection, ...filter);
+  const querySnapshot = await getDocs(q);
+  let log = '';
+  log += 'Dry run: ' + dryRun + '\n';
+  const datasets = querySnapshot.docs.map((doc) => {
+    const data = doc.data();
+    return new Dataset(
+      data.title,
+      data.slug,
+      data.owner,
+      data.template,
+      data.description,
+      data.graph,
+      doc.id
+    );
+  });
+  _.forEach(datasets, async (dataset, i) => {
+    if (dataset.owner != import.meta.env.VITE_ADMIN) {
+      return;
+    }
+    log += '-------------------------------------------\n';
+    log += `Owner: ${dataset.owner} - Dataset: ${i} ${dataset.slug}\n`;
+    log += dataset.graph.conform(dryRun, dryRun);
+    log += 'Laying out the graph';
+  });
+  return new Response(log);
 });

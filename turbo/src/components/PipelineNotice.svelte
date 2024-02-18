@@ -1,27 +1,28 @@
 <script lang="ts">
-	import { pipelineStepsRemaining } from '$lib/store';
-	import { onDestroy } from 'svelte';
+  import { onDestroy } from 'svelte';
+  import { _ as __ } from 'svelte-i18n';
+  import { pipelineStepsRemaining } from '$lib/store';
 
-	import Snackbar, { Label } from '@smui/snackbar';
+  import Snackbar, { Label } from '@smui/snackbar';
 
-	let snackbar;
-	let steps = 0;
+  let snackbar;
+  let steps = 0;
 
-	$: steps > 0 ? snackbar?.open() : snackbar?.close();
+  $: steps > 0 ? snackbar?.open() : snackbar?.close();
 
-	const sub = pipelineStepsRemaining.subscribe((value) => {
-		steps = value;
-	});
+  const sub = pipelineStepsRemaining.subscribe((value) => {
+    steps = value;
+  });
 
-	onDestroy(sub);
+  onDestroy(sub);
 </script>
 
 <Snackbar bind:this={snackbar} timeoutMs={steps > 0 ? -1 : 4000}>
-	<Label>
-		{#if steps > 0}
-			Processing {steps} step{steps > 1 ? 's' : ''}
-		{:else}
-			Processing complete
-		{/if}
-	</Label>
+  <Label>
+    {#if steps > 0}
+      {steps > 1 ? $__('processing_steps') : $__('processing_step')}: {steps}
+    {:else}
+      {$__('processing_complete')}
+    {/if}
+  </Label>
 </Snackbar>

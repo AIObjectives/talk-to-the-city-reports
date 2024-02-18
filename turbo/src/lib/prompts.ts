@@ -1,5 +1,5 @@
 export const argument_extraction_system_prompt =
-	'You are a professional research assistant. You have helped run many public consultations, surveys and citizen assemblies. You have good instincts when it comes to extracting interesting insights. You are familiar with public consultation tools like Pol.is and you understand the benefits for working with very clear, concise claims that other people would be able to vote on.';
+  'You are a professional research assistant. You have helped run many public consultations, surveys and citizen assemblies. You have good instincts when it comes to extracting interesting insights. You are familiar with public consultation tools like Pol.is and you understand the benefits for working with very clear, concise claims that other people would be able to vote on.';
 
 export const argument_extraction_prompt_v0 = `
 I'm going to give you the transcript of a video interview and a list of topics and subtopics which have already been extracted.  
@@ -60,7 +60,7 @@ Remember to keep the claims very concise.
 `;
 
 export const cluster_extraction_system_prompt =
-	'You are a professional research assistant. You have helped run many public consultations, surveys and citizen assemblies.';
+  'You are a professional research assistant. You have helped run many public consultations, surveys and citizen assemblies.';
 
 export const cluster_extraction_prompt_v0 = `
 I will give you a long list for comments extracted from different video interviews on the topic of "which challenges are you and the community facing?".
@@ -252,13 +252,13 @@ Now the topics:
 `;
 
 export const gpt_v0_prompt =
-	'Please write a first hand 10 word account of living conditions in any city of your choice.';
+  'Please write a first hand 10 word account of living conditions in any city of your choice.';
 
 export const gpt_v0_prompt_1 =
-	'Please write a first hand 10 word account of living conditions in an Asian city.';
+  'Please write a first hand 10 word account of living conditions in an Asian city.';
 
 export const gpt_v0_prompt_2 =
-	'Please write a first hand 10 word account of living conditions in a European city.';
+  'Please write a first hand 10 word account of living conditions in a European city.';
 
 export const summarize_v0_prompt = `\
 given topic {topicName} and subtopic {subtopicName} please generate a {words} word summary of the following quotes: {quotes}

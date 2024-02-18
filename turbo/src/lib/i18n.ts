@@ -11,16 +11,16 @@ if (Cookies.get('locale') == 'en') Cookies.set('locale', 'en-US');
 const defaultLocale = Cookies.get('locale') || 'en-US';
 
 export const languages = {
-	'en-US': '🇺🇸',
-	'zh-TW': '🇹🇼'
+  'en-US': '🇺🇸',
+  'zh-TW': '🇹🇼'
 };
 
 register('en-US', () => import(`./i18n/en-US.json`));
 register('zh-TW', () => import(`./i18n/zh-TW.json`));
 
 init({
-	fallbackLocale: defaultLocale,
-	initialLocale: browser ? window.navigator.language : defaultLocale
+  fallbackLocale: defaultLocale,
+  initialLocale: browser ? window.navigator.language : defaultLocale
 });
 
 locale.set(defaultLocale);

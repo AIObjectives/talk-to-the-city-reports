@@ -1,20 +1,20 @@
 <script lang="ts">
-	import { user } from '$lib/store';
-	import Pipeline from '$components/Pipeline.svelte';
-	import { marked } from 'marked';
-	import { Dataset } from '$lib/dataset';
-	import nodesRegister from '$lib/node_register';
-	import githubIssues from './github_issues.py?raw';
+  import { user } from '$lib/store';
+  import Pipeline from '$components/Pipeline.svelte';
+  import { marked } from 'marked';
+  import { Dataset } from '$lib/dataset';
+  import nodesRegister from '$lib/node_register';
+  import githubIssues from './github_issues.py?raw';
 </script>
 
 <img
-	alt="sleeping giant"
-	src="https://talktothecity.s3.amazonaws.com/tttc-turbo/static/images/dp.jpeg"
-	style="width: 100%; max-width: 800px; margin-left: auto; margin-right: auto; margin-top: 20px; margin-bottom: 20px;"
+  alt="sleeping giant"
+  src="https://talktothecity.s3.amazonaws.com/tttc-turbo/static/images/dp.jpeg"
+  style="width: 100%; max-width: 800px; margin-left: auto; margin-right: auto; margin-top: 20px; margin-bottom: 20px;"
 />
 
 <p class="docs marked mx-auto max-w-screen-md">
-	{@html marked(`
+  {@html marked(`
 # The unintended effects of graph-based ML applications
 
 Talk to the City is first and foremost a public deliberations ingestion, analysis and publishing platform.
@@ -26,74 +26,74 @@ Let's begin with a new node: \`webpage_v0\`. It takes in a URL, fetches the webp
 </p>
 
 {#if $user}
-	<Pipeline
-		dataset={new Dataset(
-			'title',
-			'/test',
-			$user?.uid,
-			'template',
-			'description',
-			{
-				nodes: [
-					(() => {
-						const web = nodesRegister.init_new('webpage_v0');
-						web.data.text = 'https://en.wikipedia.org/wiki/Metcalfe%27s_law';
-						return web;
-					})()
-				],
-				edges: [{}]
-			},
-			'id'
-		)}
-		showNodesToolbar={false}
-		height="50vh"
-		width="50%"
-		viewMode="standard"
-		showSaveButton={false}
-	/>
+  <Pipeline
+    dataset={new Dataset(
+      'title',
+      '/test',
+      $user?.uid,
+      'template',
+      'description',
+      {
+        nodes: [
+          (() => {
+            const web = nodesRegister.init_new('webpage_v0');
+            web.data.text = 'https://en.wikipedia.org/wiki/Metcalfe%27s_law';
+            return web;
+          })()
+        ],
+        edges: [{}]
+      },
+      'id'
+    )}
+    showNodesToolbar={false}
+    height="50vh"
+    width="50%"
+    viewMode="standard"
+    showSaveButton={false}
+  />
 {/if}
 
 <p class="docs marked mx-auto max-w-screen-md">
-	{@html marked(`
+  {@html marked(`
 As we can see above, a node on its own isn't really useful. So let's add another node: the \`markdown_v0\` node. This node takes in a string, or a CSV, passes its contents through the [marked](https://marked.js.org/) library, and displays the result as sanitized, rendered HTML.
 `)}
 </p>
 <br />
 
 {#if $user}
-	<Pipeline
-		dataset={new Dataset(
-			'title',
-			'/test',
-			$user?.uid,
-			'template',
-			'description',
-			{
-				nodes: [
-					(() => {
-						const web = nodesRegister.init_new('webpage_v0');
-						web.data.text = "https://en.wikipedia.org/wiki/Metcalfe's_law";
-						return web;
-					})(),
-					(() => {
-						const node = nodesRegister.init_new('markdown_v0');
-						return node;
-					})()
-				],
-				edges: [{ source: 'webpage', target: 'markdown' }]
-			},
-			'id'
-		)}
-		showNodesToolbar={false}
-		height="50vh"
-		width="50%"
-		viewMode="standard"
-		showSaveButton={false}
-	/>
+  <Pipeline
+    dataset={new Dataset(
+      'title',
+      '/test',
+      $user?.uid,
+      'template',
+      'description',
+      {
+        nodes: [
+          (() => {
+            const web = nodesRegister.init_new('webpage_v0');
+            web.data.text = "https://en.wikipedia.org/wiki/Metcalfe's_law";
+            return web;
+          })(),
+          (() => {
+            const node = nodesRegister.init_new('markdown_v0');
+            return node;
+          })()
+        ],
+        edges: [{ source: 'webpage', target: 'markdown' }]
+      },
+      'id'
+    )}
+    showNodesToolbar={false}
+    height="50vh"
+    width="50%"
+    viewMode="standard"
+    showSaveButton={false}
+  />
 {/if}
 
 <p class="docs marked mx-auto max-w-screen-md">
-	{@html marked(`
+  {@html marked(`
 This is quite useful, as *display nodes* like \`markdown_v0\` serve as good sanity checks, to verify our data is indeed correct.
 
 Let's try something a bit more useful this time, by connecting the webpage into a \`count_tokens_v0\` node.
@@ -103,33 +103,33 @@ Let's try something a bit more useful this time, by connecting the webpage into 
 <br />
 
 {#if $user}
-	<Pipeline
-		dataset={new Dataset(
-			'title',
-			'/test',
-			$user?.uid,
-			'template',
-			'description',
-			{
-				nodes: [
-					nodesRegister.init_new('webpage_v0', {
-						text: 'https://en.wikipedia.org/wiki/Metcalfe%27s_law'
-					}),
-					nodesRegister.init_new('count_tokens_v0', { show_in_ui: true })
-				],
-				edges: [{ source: 'webpage', target: 'count_tokens' }]
-			},
-			'id'
-		)}
-		showNodesToolbar={false}
-		height="50vh"
-		width="50%"
-		viewMode="standard"
-	/>
+  <Pipeline
+    dataset={new Dataset(
+      'title',
+      '/test',
+      $user?.uid,
+      'template',
+      'description',
+      {
+        nodes: [
+          nodesRegister.init_new('webpage_v0', {
+            text: 'https://en.wikipedia.org/wiki/Metcalfe%27s_law'
+          }),
+          nodesRegister.init_new('count_tokens_v0', { show_in_ui: true })
+        ],
+        edges: [{ source: 'webpage', target: 'count_tokens' }]
+      },
+      'id'
+    )}
+    showNodesToolbar={false}
+    height="50vh"
+    width="50%"
+    viewMode="standard"
+  />
 {/if}
 
 <p class="docs marked mx-auto max-w-screen-md">
-	{@html marked(`
+  {@html marked(`
 We can now definitively know whether the page fits in a model's context.
 
 At this point however, it is worth contemplating that being able to display the contents of a webpage, or count tokens for a webpage was never explicitely programmed into talk to the city. This may seem like a moot point we are making for the sake of narrative: but it isn't. Our only focus has been public deliberations, and the nodes you are seeing here (except for \`count_tokens_v0\` and \`markdown_v0\`) were only introduced on the same week as we are writing this article.
@@ -149,49 +149,49 @@ What other interesting side effects can we get from connecting nodes? Let's conn
 <br />
 
 {#if $user}
-	<Pipeline
-		dataset={new Dataset(
-			'webchat',
-			'/test',
-			$user?.uid,
-			'template',
-			'description',
-			{
-				nodes: [
-					(() => {
-						const web = nodesRegister.init_new('webpage_v0');
-						web.data.text = 'https://en.wikipedia.org/wiki/Metcalfe%27s_law';
-						return web;
-					})(),
-					(() => {
-						const chat = nodesRegister.init_new('chat_v0');
-						chat.data.input_ids = { open_ai_key: 'open_ai_key', data: 'webpage' };
-						chat.position = { x: -120, y: 300 };
-						return chat;
-					})(),
-					(() => {
-						const key = nodesRegister.init_new('open_ai_key_v0');
-						key.position = { x: -250, y: 0 };
-						return key;
-					})()
-				],
-				edges: [
-					{ source: 'webpage', target: 'chat', id: 'webchat' },
-					{ source: 'open_ai_key', target: 'chat', id: 'keychat' }
-				]
-			},
-			'id'
-		)}
-		showNodesToolbar={false}
-		height="50vh"
-		width="50%"
-		viewMode="standard"
-		showSaveButton={false}
-	/>
+  <Pipeline
+    dataset={new Dataset(
+      'webchat',
+      '/test',
+      $user?.uid,
+      'template',
+      'description',
+      {
+        nodes: [
+          (() => {
+            const web = nodesRegister.init_new('webpage_v0');
+            web.data.text = 'https://en.wikipedia.org/wiki/Metcalfe%27s_law';
+            return web;
+          })(),
+          (() => {
+            const chat = nodesRegister.init_new('chat_v0');
+            chat.data.input_ids = { open_ai_key: 'open_ai_key', data: 'webpage' };
+            chat.position = { x: -120, y: 300 };
+            return chat;
+          })(),
+          (() => {
+            const key = nodesRegister.init_new('open_ai_key_v0');
+            key.position = { x: -250, y: 0 };
+            return key;
+          })()
+        ],
+        edges: [
+          { source: 'webpage', target: 'chat', id: 'webchat' },
+          { source: 'open_ai_key', target: 'chat', id: 'keychat' }
+        ]
+      },
+      'id'
+    )}
+    showNodesToolbar={false}
+    height="50vh"
+    width="50%"
+    viewMode="standard"
+    showSaveButton={false}
+  />
 {/if}
 
 <p class="docs marked mx-auto max-w-screen-md">
-	{@html marked(`
+  {@html marked(`
 Here's a question we asked:
 
 ![tttc-metcalfes-law](https://talktothecity.s3.amazonaws.com/tttc-turbo/static/images/Monosnap-tttc-turbo-2024-01-04-04-31-45.jpeg)
@@ -219,50 +219,50 @@ In the chat node, i invite you to:
 </p>
 
 {#if $user}
-	<Pipeline
-		dataset={new Dataset(
-			'python chat',
-			'/pychat',
-			$user?.uid,
-			'template',
-			'description',
-			{
-				nodes: [
-					(() => {
-						const python = nodesRegister.init_new('python_v0');
-						python.data.text = githubIssues;
-						python.position = { x: 0, y: -1000 };
-						return python;
-					})(),
-					(() => {
-						const chat = nodesRegister.init_new('chat_v0');
-						chat.data.input_ids = { open_ai_key: 'open_ai_key', data: 'python' };
-						chat.position = { x: 0, y: 300 };
-						return chat;
-					})(),
-					(() => {
-						const key = nodesRegister.init_new('open_ai_key_v0');
-						key.position = { x: -250, y: 0 };
-						return key;
-					})()
-				],
-				edges: [
-					{ source: 'python', target: 'chat', id: 'pychat' },
-					{ source: 'open_ai_key', target: 'chat', id: 'keychat' }
-				]
-			},
-			'id'
-		)}
-		showNodesToolbar={false}
-		height="70vh"
-		width="50%"
-		viewMode="standard"
-		showSaveButton={false}
-	/>
+  <Pipeline
+    dataset={new Dataset(
+      'python chat',
+      '/pychat',
+      $user?.uid,
+      'template',
+      'description',
+      {
+        nodes: [
+          (() => {
+            const python = nodesRegister.init_new('python_v0');
+            python.data.text = githubIssues;
+            python.position = { x: 0, y: -1000 };
+            return python;
+          })(),
+          (() => {
+            const chat = nodesRegister.init_new('chat_v0');
+            chat.data.input_ids = { open_ai_key: 'open_ai_key', data: 'python' };
+            chat.position = { x: 0, y: 300 };
+            return chat;
+          })(),
+          (() => {
+            const key = nodesRegister.init_new('open_ai_key_v0');
+            key.position = { x: -250, y: 0 };
+            return key;
+          })()
+        ],
+        edges: [
+          { source: 'python', target: 'chat', id: 'pychat' },
+          { source: 'open_ai_key', target: 'chat', id: 'keychat' }
+        ]
+      },
+      'id'
+    )}
+    showNodesToolbar={false}
+    height="70vh"
+    width="50%"
+    viewMode="standard"
+    showSaveButton={false}
+  />
 {/if}
 
 <p class="docs marked mx-auto max-w-screen-md">
-	{@html marked(`
+  {@html marked(`
 
 Here is what we got:
 
@@ -324,10 +324,10 @@ The ability to build these mini-apps by connecting a handful of nodes in the gra
 </p>
 
 <style>
-	:global(.marked p) {
-		@apply mx-auto max-w-screen-md py-2;
-	}
-	h1 {
-		@apply mx-auto max-w-screen-md py-2;
-	}
+  :global(.marked p) {
+    @apply mx-auto max-w-screen-md py-2;
+  }
+  h1 {
+    @apply mx-auto max-w-screen-md py-2;
+  }
 </style>

@@ -4,24 +4,24 @@ import { authenticated } from '$lib/server_utils';
 import admin from 'firebase-admin';
 
 if (!admin.apps.length) {
-	admin.initializeApp({
-		credential: admin.credential.cert(serviceAccount)
-	});
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+  });
 }
 
 const cache = {};
 
 async function fetchEmailWithCaching(uid) {
-	if (cache[uid]) {
-		return cache[uid].data;
-	}
-	const userRecord = await admin.auth().getUser(uid);
-	const emailData = { email: userRecord.email };
-	cache[uid] = {
-		data: emailData,
-		timestamp: Date.now()
-	};
-	return emailData;
+  if (cache[uid]) {
+    return cache[uid].data;
+  }
+  const userRecord = await admin.auth().getUser(uid);
+  const emailData = { email: userRecord.email };
+  cache[uid] = {
+    data: emailData,
+    timestamp: Date.now()
+  };
+  return emailData;
 }
 
 /**
@@ -58,28 +58,28 @@ async function fetchEmailWithCaching(uid) {
  *       - BearerAuth: []
  */
 export const GET = authenticated(async ({ url, request, user }) => {
-	const uid = new URL(request.url).searchParams.get('uid');
-	if (!uid) {
-		return new Response(JSON.stringify({ error: 'Missing uid' }, null, 2), { status: 400 });
-	}
-	const adminUID = import.meta.env.VITE_ADMIN;
-	if (user !== adminUID) {
-		return new Response(JSON.stringify({ error: 'Unauthorized' }, null, 2), { status: 401 });
-	}
+  const uid = new URL(request.url).searchParams.get('uid');
+  if (!uid) {
+    return new Response(JSON.stringify({ error: 'Missing uid' }, null, 2), { status: 400 });
+  }
+  const adminUID = import.meta.env.VITE_ADMIN;
+  if (user !== adminUID) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }, null, 2), { status: 401 });
+  }
 
-	try {
-		const emailData = await fetchEmailWithCaching(uid);
-		return new Response(JSON.stringify(emailData, null, 2), { status: 200 });
-	} catch (error) {
-		console.error('Error fetching user data:', error);
-		if (error.code === 'auth/user-not-found') {
-			delete cache[uid];
-			return new Response(JSON.stringify({ error: 'User not found' }, null, 2), {
-				status: 404
-			});
-		}
-		return new Response(JSON.stringify({ error: 'Error fetching user data' }, null, 2), {
-			status: 500
-		});
-	}
+  try {
+    const emailData = await fetchEmailWithCaching(uid);
+    return new Response(JSON.stringify(emailData, null, 2), { status: 200 });
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+    if (error.code === 'auth/user-not-found') {
+      delete cache[uid];
+      return new Response(JSON.stringify({ error: 'User not found' }, null, 2), {
+        status: 404
+      });
+    }
+    return new Response(JSON.stringify({ error: 'Error fetching user data' }, null, 2), {
+      status: 500
+    });
+  }
 });

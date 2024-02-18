@@ -7,12 +7,15 @@ import '$lib/templates';
 import '$lib/i18n';
 
 if (typeof global === 'undefined') {
-	window.global = window;
+  window.global = window;
 }
 
 export const load: LayoutLoad = async () => {
-	if (browser) {
-		locale.set(Cookies.get('locale') || get(locale) || navigator.language);
-	}
-	await waitLocale();
+  if (browser) {
+    // This setTimeout is required else the locale is not set properly
+    setTimeout(() => {
+      locale.set(Cookies.get('locale') || get(locale) || navigator.language);
+    }, 500);
+  }
+  await waitLocale();
 };

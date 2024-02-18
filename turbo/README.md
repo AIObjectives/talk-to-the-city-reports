@@ -5,33 +5,29 @@
 [![License](https://img.shields.io/badge/License-GPL3-blue)](#license)
 ![](https://img.shields.io/github/repo-size/AIObjectives/talk-to-the-city-reports)
 
-
 ![Svelte](https://img.shields.io/badge/dynamic/json?color=ff3e00&label=Svelte&query=%24.devDependencies.svelte&url=https%3A%2F%2Fraw.githubusercontent.com%2FAIObjectives%2Ftalk-to-the-city-reports%2Fmain%2Fturbo%2Fpackage.json)
 ![Typescript](https://img.shields.io/badge/dynamic/json?label=Typescript&query=%24.devDependencies.typescript&url=https%3A%2F%2Fraw.githubusercontent.com%2FAIObjectives%2Ftalk-to-the-city-reports%2Fmain%2Fturbo%2Fpackage.json)
-[![Made with Node.js](https://img.shields.io/badge/Node.js->=18-blue?logo=node.js&logoColor=white)](https://nodejs.org "Go to Node.js homepage")
+[![Made with Node.js](https://img.shields.io/badge/Node.js->=18-blue?logo=node.js&logoColor=white)](https://nodejs.org 'Go to Node.js homepage')
 
 ![Vitest Passing](https://img.shields.io/badge/dynamic/json?color=blueviolet&label=Vitest+Passing&query=%24.vitestPass&url=https%3A%2F%2Fraw.githubusercontent.com%2FAIObjectives%2Ftalk-to-the-city-reports%2Fmain%2Fturbo%2Fpackage.json)
 ![Vitest Failing](https://img.shields.io/badge/dynamic/json?color=blueviolet&label=Vitest+Failing&query=%24.vitestFail&url=https%3A%2F%2Fraw.githubusercontent.com%2FAIObjectives%2Ftalk-to-the-city-reports%2Fmain%2Fturbo%2Fpackage.json)
 ![GitHub Issues](https://img.shields.io/github/issues/AIObjectives/talk-to-the-city-reports)
 ![GitHub Pull Requests](https://img.shields.io/github/issues-pr/AIObjectives/talk-to-the-city-reports)
 
-
 ![Typescript Coverage](https://img.shields.io/badge/dynamic/json?color=blueviolet&label=Typescript+Coverage&query=%24.tsCoverage&url=https%3A%2F%2Fraw.githubusercontent.com%2FAIObjectives%2Ftalk-to-the-city-reports%2Fmain%2Fturbo%2Fpackage.json)
-
-
 
 # Talk to the City
 
 Talk to the City is an application that:
 
 - ingests unstructured natural language, e.g:
-    - citizen surveys / public deliberations
-    - newsgroups
-    - forums
-    - discussion archives
+  - citizen surveys / public deliberations
+  - newsgroups
+  - forums
+  - discussion archives
 - uses LLMs to extract and classify:
-    - atomic claims
-    - topics and subtopics
+  - atomic claims
+  - topics and subtopics
 - generates interactive reports
 
 ## Demo
@@ -149,12 +145,12 @@ N.B Firestore rules are still being finalized. Please contact @lightningorb to f
 
 ```json
 [
-	{
-		"origin": ["http://localhost:5173", "https://<optional_deployment_url>"],
-		"method": ["GET", "HEAD", "DELETE"],
-		"responseHeader": ["Content-Type"],
-		"maxAgeSeconds": 3600
-	}
+  {
+    "origin": ["http://localhost:5173", "https://<optional_deployment_url>"],
+    "method": ["GET", "HEAD", "DELETE"],
+    "responseHeader": ["Content-Type"],
+    "maxAgeSeconds": 3600
+  }
 ]
 ```
 
@@ -173,8 +169,8 @@ Authenticated backend endpoints require the service account file:
 - click on "service accounts"
 - click on `Manage service account permissions`
 - look for the email address that matches the project id
-    - click actions
-    - click create key
+  - click actions
+  - click create key
 - save the json private key to turbo/src/lib/service-account-pk.json
 - add the environment variable to your shell: `export GOOGLE_APPLICATION_CREDENTIALS="src/lib/service-account-pk.json"`
 
@@ -199,9 +195,9 @@ The `.env` file contains a `VITE_ADMIN` variable that should be filled in with y
 - Contact @brittneygallagher or @lightningorb for credentials files
 - save the provided `.env` in `turbo/`
 - optional steps for deployment:
-    - save the provided `service-account-pk.json` in `turbo/src/lib/`
-    - `npm install -g firebase-tools`
-    - `firebase login`
+  - save the provided `service-account-pk.json` in `turbo/src/lib/`
+  - `npm install -g firebase-tools`
+  - `firebase login`
 
 Disclaimer: by using a shared dev instance, you are aware that the data you shared by nature, and therefore no privacy can be made for the data you choose to upload to the platform. For better privacy, consider setting up your own instance.
 
@@ -319,380 +315,425 @@ DISPLAY=:99 python src/test/test_selenium.py
 
 ## Test Results
 
-| Metric                | Count |
-|-----------------------|------:|
-| Total Test Suites     | 90 |
-| Passed Test Suites    | 90 |
-| Failed Test Suites    | 0 |
-| Pending Test Suites   | 0 |
-| Total Tests           | 186 |
-| Passed Tests          | 186 |
-| Failed Tests          | 0 |
-| Pending Tests         | 0 |
-| Todo Tests            | 0 |
+| Metric              | Count |
+| ------------------- | ----: |
+| Total Test Suites   |    90 |
+| Passed Test Suites  |    90 |
+| Failed Test Suites  |     0 |
+| Pending Test Suites |     0 |
+| Total Tests         |   186 |
+| Passed Tests        |   186 |
+| Failed Tests        |     0 |
+| Pending Tests       |     0 |
+| Todo Tests          |     0 |
 
 ### `[1]` [InfoPanelClaim.test.ts](./src/test//InfoPanelClaim.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *testing vimeo claim* | **passed** |
-| *testing yt claim* | **passed** |
-| *testing yt link has si* | **passed** |
-| *testing yt link has timestamp* | **passed** |
-| *testing yt link has si and timestamp* | **passed** |
-| *testing no video* | **passed** |
-| *testing no claim throws error* | **passed** |
+
+| Test                                   | Status     | Duration (ms) |
+| -------------------------------------- | ---------- | ------------: |
+| _testing vimeo claim_                  | **passed** |
+| _testing yt claim_                     | **passed** |
+| _testing yt link has si_               | **passed** |
+| _testing yt link has timestamp_        | **passed** |
+| _testing yt link has si and timestamp_ | **passed** |
+| _testing no video_                     | **passed** |
+| _testing no claim throws error_        | **passed** |
 
 ### `[2]` [add_csv_v0.test.ts](./src/test//add_csv_v0.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *should concatenate multiple CSV inputs into a single output array* | **passed** |
-| *should handle empty input arrays* | **passed** |
-| *should handle a single input array* | **passed** |
-| *should set dirty to false after compute* | **passed** |
-| *should return an empty array if no inputs are provided* | **passed** |
-| *should not mutate the input data* | **passed** |
+
+| Test                                                                | Status     | Duration (ms) |
+| ------------------------------------------------------------------- | ---------- | ------------: |
+| _should concatenate multiple CSV inputs into a single output array_ | **passed** |
+| _should handle empty input arrays_                                  | **passed** |
+| _should handle a single input array_                                | **passed** |
+| _should set dirty to false after compute_                           | **passed** |
+| _should return an empty array if no inputs are provided_            | **passed** |
+| _should not mutate the input data_                                  | **passed** |
 
 ### `[3]` [argument_extraction_v0.test.ts](./src/test//argument_extraction_v0.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *extract the given arguments* | **passed** |
-| *should not extract the arguments if no csv* | **passed** |
-| *should not extract the arguments if no open_ai_key and no GCS* | **passed** |
-| *should load from GCS if no open ai key* | **passed** |
-| *should not extract the arguments if no prompt and no system prompt* | **passed** |
-| *test GCS caching* | **passed** |
+
+| Test                                                                 | Status     | Duration (ms) |
+| -------------------------------------------------------------------- | ---------- | ------------: |
+| _extract the given arguments_                                        | **passed** |
+| _should not extract the arguments if no csv_                         | **passed** |
+| _should not extract the arguments if no open_ai_key and no GCS_      | **passed** |
+| _should load from GCS if no open ai key_                             | **passed** |
+| _should not extract the arguments if no prompt and no system prompt_ | **passed** |
+| _test GCS caching_                                                   | **passed** |
 
 ### `[4]` [argument_extraction_v1.test.ts](./src/test//argument_extraction_v1.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *extract the given arguments* | **passed** |
-| *extract the given arguments with missing rows in CSV* | **passed** |
-| *should not extract the arguments if no csv* | **passed** |
-| *should not extract the arguments if no open_ai_key and no GCS* | **passed** |
-| *should load from GCS if no open ai key* | **passed** |
-| *should not extract the arguments if no prompt and no system prompt* | **passed** |
-| *test GCS caching* | **passed** |
+
+| Test                                                                 | Status     | Duration (ms) |
+| -------------------------------------------------------------------- | ---------- | ------------: |
+| _extract the given arguments_                                        | **passed** |
+| _extract the given arguments with missing rows in CSV_               | **passed** |
+| _should not extract the arguments if no csv_                         | **passed** |
+| _should not extract the arguments if no open_ai_key and no GCS_      | **passed** |
+| _should load from GCS if no open ai key_                             | **passed** |
+| _should not extract the arguments if no prompt and no system prompt_ | **passed** |
+| _test GCS caching_                                                   | **passed** |
 
 ### `[5]` [audio.test.ts](./src/test//audio.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *should return the cached output if not dirty and output exists* | **passed** |
-| *should read audio from GCS and update size and mime_type if download is true* | **passed** |
-| *should create an empty audio file if download is false* | **passed** |
-| *should set dirty to false after compute* | **passed** |
-| *should return undefined if gcs_path is not set* | **passed** |
+
+| Test                                                                           | Status     | Duration (ms) |
+| ------------------------------------------------------------------------------ | ---------- | ------------: |
+| _should return the cached output if not dirty and output exists_               | **passed** |
+| _should read audio from GCS and update size and mime_type if download is true_ | **passed** |
+| _should create an empty audio file if download is false_                       | **passed** |
+| _should set dirty to false after compute_                                      | **passed** |
+| _should return undefined if gcs_path is not set_                               | **passed** |
 
 ### `[6]` [chat.test.ts](./src/test//chat.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *compute should set output to messages and dirty to false* | **passed** |
-| *chat should add assistant response to messages* | **passed** |
-| *chat should use initial_messages if only one message is present* | **passed** |
+
+| Test                                                              | Status     | Duration (ms) |
+| ----------------------------------------------------------------- | ---------- | ------------: |
+| _compute should set output to messages and dirty to false_        | **passed** |
+| _chat should add assistant response to messages_                  | **passed** |
+| _chat should use initial_messages if only one message is present_ | **passed** |
 
 ### `[7]` [cluster_extraction_v0.test.ts](./src/test//cluster_extraction_v0.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *extract the cluster* | **passed** |
-| *should not extract the cluster if no csv* | **passed** |
-| *should not extract the cluster if no open_ai_key* | **passed** |
-| *should not extract the cluster if no prompt and no system prompt* | **passed** |
-| *test GCS caching* | **passed** |
+
+| Test                                                               | Status     | Duration (ms) |
+| ------------------------------------------------------------------ | ---------- | ------------: |
+| _extract the cluster_                                              | **passed** |
+| _should not extract the cluster if no csv_                         | **passed** |
+| _should not extract the cluster if no open_ai_key_                 | **passed** |
+| _should not extract the cluster if no prompt and no system prompt_ | **passed** |
+| _test GCS caching_                                                 | **passed** |
 
 ### `[8]` [cluster_extraction_v1.test.ts](./src/test//cluster_extraction_v1.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *extract the cluster* | **passed** |
-| *should not extract the cluster if no csv* | **passed** |
-| *should not extract the cluster if no open_ai_key* | **passed** |
-| *should not extract the cluster if no prompt and no system prompt* | **passed** |
-| *test GCS caching* | **passed** |
+
+| Test                                                               | Status     | Duration (ms) |
+| ------------------------------------------------------------------ | ---------- | ------------: |
+| _extract the cluster_                                              | **passed** |
+| _should not extract the cluster if no csv_                         | **passed** |
+| _should not extract the cluster if no open_ai_key_                 | **passed** |
+| _should not extract the cluster if no prompt and no system prompt_ | **passed** |
+| _test GCS caching_                                                 | **passed** |
 
 ### `[9]` [comment_expander_v0.test.ts](./src/test//comment_expander_v0.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *should concatenate comments until reaching 100 words, then start a new chunk* | **passed** |
-| *should start a new chunk when the interview field changes* | **passed** |
-| *should handle an empty input array* | **passed** |
-| *should not lose the last comment if it does not exceed 100 words* | **passed** |
-| *should correctly handle comments with exactly 100 words* | **passed** |
+
+| Test                                                                           | Status     | Duration (ms) |
+| ------------------------------------------------------------------------------ | ---------- | ------------: |
+| _should concatenate comments until reaching 100 words, then start a new chunk_ | **passed** |
+| _should start a new chunk when the interview field changes_                    | **passed** |
+| _should handle an empty input array_                                           | **passed** |
+| _should not lose the last comment if it does not exceed 100 words_             | **passed** |
+| _should correctly handle comments with exactly 100 words_                      | **passed** |
 
 ### `[10]` [count_tokens.test.ts](./src/test//count_tokens.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *should correctly count tokens in input data* | **passed** |
-| *should not count tokens if input data length matches and node is not dirty* | **passed** |
-| *should count tokens if the input data is a string* | **passed** |
+
+| Test                                                                         | Status     | Duration (ms) |
+| ---------------------------------------------------------------------------- | ---------- | ------------: |
+| _should correctly count tokens in input data_                                | **passed** |
+| _should not count tokens if input data length matches and node is not dirty_ | **passed** |
+| _should count tokens if the input data is a string_                          | **passed** |
 
 ### `[11]` [csv.test.ts](./src/test//csv.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *should process CSV data correctly from GCS* | **passed** |
-| *should handle empty CSV data from GCS* | **passed** |
-| *should handle rows with uneven columns from GCS* | **passed** |
+
+| Test                                              | Status     | Duration (ms) |
+| ------------------------------------------------- | ---------- | ------------: |
+| _should process CSV data correctly from GCS_      | **passed** |
+| _should handle empty CSV data from GCS_           | **passed** |
+| _should handle rows with uneven columns from GCS_ | **passed** |
 
 ### `[12]` [dataset.test.ts](./src/test//dataset.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *Find by compute type* | **passed** |
-| *Simple pipeline run test* | **passed** |
-| *Markdown to chat test* | **passed** |
-| *Full pipeline run test* | **passed** |
+
+| Test                       | Status     | Duration (ms) |
+| -------------------------- | ---------- | ------------: |
+| _Find by compute type_     | **passed** |
+| _Simple pipeline run test_ | **passed** |
+| _Markdown to chat test_    | **passed** |
+| _Full pipeline run test_   | **passed** |
 
 ### `[13]` [edit_csv.test.ts](./src/test//edit_csv.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *generates new columns* | **passed** |
-| *deletes columns* | **passed** |
-| *renames columns* | **passed** |
-| *returns undefined if input is undefined* | **passed** |
-| *handles multiple operations* | **passed** |
-| *does not modify input if no operations are specified* | **passed** |
-| *does not crash if input is empty* | **passed** |
+
+| Test                                                   | Status     | Duration (ms) |
+| ------------------------------------------------------ | ---------- | ------------: |
+| _generates new columns_                                | **passed** |
+| _deletes columns_                                      | **passed** |
+| _renames columns_                                      | **passed** |
+| _returns undefined if input is undefined_              | **passed** |
+| _handles multiple operations_                          | **passed** |
+| _does not modify input if no operations are specified_ | **passed** |
+| _does not crash if input is empty_                     | **passed** |
 
 ### `[14]` [filter_csv_v0.test.ts](./src/test//filter_csv_v0.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *should filter CSV data inclusively based on provided filters* | **passed** |
-| *should filter CSV data exclusively based on provided filters* | **passed** |
-| *should return all data if no filters are set* | **passed** |
-| *should handle multiple filters correctly* | **passed** |
-| *should set dirty to false after compute* | **passed** |
-| *should not mutate the input data* | **passed** |
+
+| Test                                                           | Status     | Duration (ms) |
+| -------------------------------------------------------------- | ---------- | ------------: |
+| _should filter CSV data inclusively based on provided filters_ | **passed** |
+| _should filter CSV data exclusively based on provided filters_ | **passed** |
+| _should return all data if no filters are set_                 | **passed** |
+| _should handle multiple filters correctly_                     | **passed** |
+| _should set dirty to false after compute_                      | **passed** |
+| _should not mutate the input data_                             | **passed** |
 
 ### `[15]` [gpt_v0.test.ts](./src/test//gpt_v0.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *general prompt* | **passed** |
-| *json prompt* | **passed** |
-| *json prompt with text* | **passed** |
+
+| Test                    | Status     | Duration (ms) |
+| ----------------------- | ---------- | ------------: |
+| _general prompt_        | **passed** |
+| _json prompt_           | **passed** |
+| _json prompt with text_ | **passed** |
 
 ### `[16]` [grid.test.ts](./src/test//grid.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *sets the output of the node to the input data* | **passed** |
+
+| Test                                            | Status     | Duration (ms) |
+| ----------------------------------------------- | ---------- | ------------: |
+| _sets the output of the node to the input data_ | **passed** |
 
 ### `[17]` [jq_v0.test.ts](./src/test//jq_v0.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *should process data correctly with JQ filter* | **passed** |
-| *should handle invalid JQ filter* | **passed** |
+
+| Test                                           | Status     | Duration (ms) |
+| ---------------------------------------------- | ---------- | ------------: |
+| _should process data correctly with JQ filter_ | **passed** |
+| _should handle invalid JQ filter_              | **passed** |
 
 ### `[18]` [jq_v1.test.ts](./src/test//jq_v1.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *should process data correctly with JQ filter* | **passed** |
-| *should handle invalid JQ filter* | **passed** |
-| *should return an empty array when no matches found* | **passed** |
-| *should process data correctly with a complex JQ filter* | **passed** |
-| *should return undefined if the input is null or undefined* | **passed** |
+
+| Test                                                        | Status     | Duration (ms) |
+| ----------------------------------------------------------- | ---------- | ------------: |
+| _should process data correctly with JQ filter_              | **passed** |
+| _should handle invalid JQ filter_                           | **passed** |
+| _should return an empty array when no matches found_        | **passed** |
+| _should process data correctly with a complex JQ filter_    | **passed** |
+| _should return undefined if the input is null or undefined_ | **passed** |
 
 ### `[19]` [json.test.ts](./src/test//json.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *should process JSON data correctly from GCS* | **passed** |
-| *should handle invalid JSON data from GCS* | **passed** |
-| *should update dirty state correctly* | **passed** |
+
+| Test                                          | Status     | Duration (ms) |
+| --------------------------------------------- | ---------- | ------------: |
+| _should process JSON data correctly from GCS_ | **passed** |
+| _should handle invalid JSON data from GCS_    | **passed** |
+| _should update dirty state correctly_         | **passed** |
 
 ### `[20]` [jsonata.test.ts](./src/test//jsonata.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *evaluates JSONata expressions* | **passed** |
-| *returns undefined if no expression is provided* | **passed** |
-| *catches errors when evaluating expressions* | **passed** |
+
+| Test                                             | Status     | Duration (ms) |
+| ------------------------------------------------ | ---------- | ------------: |
+| _evaluates JSONata expressions_                  | **passed** |
+| _returns undefined if no expression is provided_ | **passed** |
+| _catches errors when evaluating expressions_     | **passed** |
 
 ### `[21]` [limit_csv.test.ts](./src/test//limit_csv.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *should let all data pass through if number is left blank* | **passed** |
-| *should limit the number of rows correctly, for an object* | **passed** |
-| *should return all rows if limit is greater than number of rows* | **passed** |
-| *should return an empty array if input is empty* | **passed** |
-| *should not mutate the input node* | **passed** |
+
+| Test                                                             | Status     | Duration (ms) |
+| ---------------------------------------------------------------- | ---------- | ------------: |
+| _should let all data pass through if number is left blank_       | **passed** |
+| _should limit the number of rows correctly, for an object_       | **passed** |
+| _should return all rows if limit is greater than number of rows_ | **passed** |
+| _should return an empty array if input is empty_                 | **passed** |
+| _should not mutate the input node_                               | **passed** |
 
 ### `[22]` [markdown.test.ts](./src/test//markdown.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *should set markdown data if input is a string* | **passed** |
-| *should combine multiple string inputs with separation* | **passed** |
-| *should wrap non-string inputs within code block* | **passed** |
-| *should handle an empty input object* | **passed** |
-| *should preserve the order of inputs when combining* | **passed** |
-| *should stringify and wrap arrays in code blocks* | **passed** |
-| *should throw an error if input data contains circular references* | **passed** |
+
+| Test                                                               | Status     | Duration (ms) |
+| ------------------------------------------------------------------ | ---------- | ------------: |
+| _should set markdown data if input is a string_                    | **passed** |
+| _should combine multiple string inputs with separation_            | **passed** |
+| _should wrap non-string inputs within code block_                  | **passed** |
+| _should handle an empty input object_                              | **passed** |
+| _should preserve the order of inputs when combining_               | **passed** |
+| _should stringify and wrap arrays in code blocks_                  | **passed** |
+| _should throw an error if input data contains circular references_ | **passed** |
 
 ### `[23]` [merge.test.ts](./src/test//merge.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *merges cluster_extraction and argument_extraction data* | **passed** |
-| *does not merge if cluster_extraction data is missing* | **passed** |
-| *does not merge if argument_extraction data is missing* | **passed** |
-| *does not merge if cluster_extraction data has no topics* | **passed** |
-| *sets node data output to the merged data and dirty to false after merge* | **passed** |
+
+| Test                                                                      | Status     | Duration (ms) |
+| ------------------------------------------------------------------------- | ---------- | ------------: |
+| _merges cluster_extraction and argument_extraction data_                  | **passed** |
+| _does not merge if cluster_extraction data is missing_                    | **passed** |
+| _does not merge if argument_extraction data is missing_                   | **passed** |
+| _does not merge if cluster_extraction data has no topics_                 | **passed** |
+| _sets node data output to the merged data and dirty to false after merge_ | **passed** |
 
 ### `[24]` [merge_cluster_extraction.test.ts](./src/test//merge_cluster_extraction.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *merges cluster extraction data* | **passed** |
-| *does not merge if cluster extractions are missing* | **passed** |
-| *uses cached data if available and not dirty* | **passed** |
-| *does not merge if no open_ai_key is provided* | **passed** |
+
+| Test                                                | Status     | Duration (ms) |
+| --------------------------------------------------- | ---------- | ------------: |
+| _merges cluster extraction data_                    | **passed** |
+| _does not merge if cluster extractions are missing_ | **passed** |
+| _uses cached data if available and not dirty_       | **passed** |
+| _does not merge if no open_ai_key is provided_      | **passed** |
 
 ### `[25]` [merge_cluster_extraction_v1.test.ts](./src/test//merge_cluster_extraction_v1.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *should merge cluster extractions into a single output* | **passed** |
-| *should handle empty input data* | **passed** |
-| *should return single extraction if only one is provided* | **passed** |
-| *should not process if no open_ai_key is provided* | **passed** |
+
+| Test                                                      | Status     | Duration (ms) |
+| --------------------------------------------------------- | ---------- | ------------: |
+| _should merge cluster extractions into a single output_   | **passed** |
+| _should handle empty input data_                          | **passed** |
+| _should return single extraction if only one is provided_ | **passed** |
+| _should not process if no open_ai_key is provided_        | **passed** |
 
 ### `[26]` [multi_cluster_extraction_v0.test.ts](./src/test//multi_cluster_extraction_v0.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *should split CSV into chunks and process each chunk* | **passed** |
-| *should handle empty CSV input* | **passed** |
-| *should not process if no open_ai_key is provided* | **passed** |
+
+| Test                                                  | Status     | Duration (ms) |
+| ----------------------------------------------------- | ---------- | ------------: |
+| _should split CSV into chunks and process each chunk_ | **passed** |
+| _should handle empty CSV input_                       | **passed** |
+| _should not process if no open_ai_key is provided_    | **passed** |
 
 ### `[27]` [multi_gpt_v0.test.ts](./src/test//multi_gpt_v0.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *should process multiple prompts* | **passed** |
-| *should process multiple differing prompts* | **passed** |
-| *should join outputs if join_output is true* | **passed** |
-| *should not process if no open_ai_key is provided* | **passed** |
+
+| Test                                               | Status     | Duration (ms) |
+| -------------------------------------------------- | ---------- | ------------: |
+| _should process multiple prompts_                  | **passed** |
+| _should process multiple differing prompts_        | **passed** |
+| _should join outputs if join_output is true_       | **passed** |
+| _should not process if no open_ai_key is provided_ | **passed** |
 
 ### `[28]` [open_ai_key.test.ts](./src/test//open_ai_key.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *should set the key in cookies if the UI key is valid* | **passed** |
-| *if ui key is set but invalid use local key* | **passed** |
-| *should set the node text to "Invalid key" if the UI key is not valid and there is no local key* | **passed** |
-| *should not mutate the node if the UI key and local key are both valid* | **passed** |
+
+| Test                                                                                             | Status     | Duration (ms) |
+| ------------------------------------------------------------------------------------------------ | ---------- | ------------: |
+| _should set the key in cookies if the UI key is valid_                                           | **passed** |
+| _if ui key is set but invalid use local key_                                                     | **passed** |
+| _should set the node text to "Invalid key" if the UI key is not valid and there is no local key_ | **passed** |
+| _should not mutate the node if the UI key and local key are both valid_                          | **passed** |
 
 ### `[29]` [participant_filter.test.ts](./src/test//participant_filter.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *filters participants based on the provided name* | **passed** |
-| *removes subtopics with no claims after filtering* | **passed** |
-| *removes topics with no subtopics after filtering* | **passed** |
-| *returns undefined if input data does not contain topics* | **passed** |
-| *does not filter claims if interview key is missing* | **passed** |
+
+| Test                                                      | Status     | Duration (ms) |
+| --------------------------------------------------------- | ---------- | ------------: |
+| _filters participants based on the provided name_         | **passed** |
+| _removes subtopics with no claims after filtering_        | **passed** |
+| _removes topics with no subtopics after filtering_        | **passed** |
+| _returns undefined if input data does not contain topics_ | **passed** |
+| _does not filter claims if interview key is missing_      | **passed** |
 
 ### `[30]` [pyodide.test.ts](./src/test//pyodide.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *should execute python script and return outputData* | **passed** |
-| *should be able to pass input to outputData* | **passed** |
-| *test passing in complex data from jsonapi* | **passed** |
+
+| Test                                                 | Status     | Duration (ms) |
+| ---------------------------------------------------- | ---------- | ------------: |
+| _should execute python script and return outputData_ | **passed** |
+| _should be able to pass input to outputData_         | **passed** |
+| _test passing in complex data from jsonapi_          | **passed** |
 
 ### `[31]` [python.integration.test.ts](./src/test//python.integration.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *should execute python script and return outputData* | **passed** |
-| *should be able to pass input to outputData* | **passed** |
-| *should be able to make get requests to jsonapi* | **passed** |
+
+| Test                                                 | Status     | Duration (ms) |
+| ---------------------------------------------------- | ---------- | ------------: |
+| _should execute python script and return outputData_ | **passed** |
+| _should be able to pass input to outputData_         | **passed** |
+| _should be able to make get requests to jsonapi_     | **passed** |
 
 ### `[32]` [python.test.ts](./src/test//python.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *should execute python script and return output* | **passed** |
-| *should handle fetch errors gracefully* | **passed** |
-| *should handle invalid JSON response* | **passed** |
-| *should handle non-string JSON response* | **passed** |
-| *should update node data output with the response* | **passed** |
+
+| Test                                               | Status     | Duration (ms) |
+| -------------------------------------------------- | ---------- | ------------: |
+| _should execute python script and return output_   | **passed** |
+| _should handle fetch errors gracefully_            | **passed** |
+| _should handle invalid JSON response_              | **passed** |
+| _should handle non-string JSON response_           | **passed** |
+| _should update node data output with the response_ | **passed** |
 
 ### `[33]` [register.test.ts](./src/test//register.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *test node registeration* | **passed** |
-| *Load all nodes* | **passed** |
+
+| Test                      | Status     | Duration (ms) |
+| ------------------------- | ---------- | ------------: |
+| _test node registeration_ | **passed** |
+| _Load all nodes_          | **passed** |
 
 ### `[34]` [report.test.ts](./src/test//report.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *should set the output of the node to the input data* | **passed** |
-| *should handle empty input data* | **passed** |
-| *should not mutate the input node* | **passed** |
+
+| Test                                                  | Status     | Duration (ms) |
+| ----------------------------------------------------- | ---------- | ------------: |
+| _should set the output of the node to the input data_ | **passed** |
+| _should handle empty input data_                      | **passed** |
+| _should not mutate the input node_                    | **passed** |
 
 ### `[35]` [report_v1.test.ts](./src/test//report_v1.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *sets the output of the node to the input data* | **passed** |
-| *uploads data to GCS on run* | **passed** |
-| *reads data from GCS on load if gcs_path is set and input data is empty* | **passed** |
-| *clears gcs_path if readFileFromGCS throws an error* | **passed** |
-| *sets message if merge and csv data are present* | **passed** |
-| *sets message to empty string if merge or csv data are missing* | **passed** |
-| *does not mutate the input node* | **passed** |
+
+| Test                                                                     | Status     | Duration (ms) |
+| ------------------------------------------------------------------------ | ---------- | ------------: |
+| _sets the output of the node to the input data_                          | **passed** |
+| _uploads data to GCS on run_                                             | **passed** |
+| _reads data from GCS on load if gcs_path is set and input data is empty_ | **passed** |
+| _clears gcs_path if readFileFromGCS throws an error_                     | **passed** |
+| _sets message if merge and csv data are present_                         | **passed** |
+| _sets message to empty string if merge or csv data are missing_          | **passed** |
+| _does not mutate the input node_                                         | **passed** |
 
 ### `[36]` [score_argument_relevance.test.ts](./src/test//score_argument_relevance.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *scores the relevance of arguments* | **passed** |
-| *uses cached data if available and not dirty* | **passed** |
-| *does not score if argument_extraction data is missing* | **passed** |
-| *does not score if open_ai_key is missing* | **passed** |
-| *does not score if prompts are missing* | **passed** |
+
+| Test                                                    | Status     | Duration (ms) |
+| ------------------------------------------------------- | ---------- | ------------: |
+| _scores the relevance of arguments_                     | **passed** |
+| _uses cached data if available and not dirty_           | **passed** |
+| _does not score if argument_extraction data is missing_ | **passed** |
+| _does not score if open_ai_key is missing_              | **passed** |
+| _does not score if prompts are missing_                 | **passed** |
 
 ### `[37]` [simple_pipeline.test.ts](./src/test//simple_pipeline.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *should process CSV data correctly from GCS* | **passed** |
+
+| Test                                         | Status     | Duration (ms) |
+| -------------------------------------------- | ---------- | ------------: |
+| _should process CSV data correctly from GCS_ | **passed** |
 
 ### `[38]` [stringify.test.ts](./src/test//stringify.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *should correctly stringify input data* | **passed** |
-| *should return input if it cannot be stringified* | **passed** |
-| *should handle different types of input* | **passed** |
-| *should not mutate the input node* | **passed** |
+
+| Test                                              | Status     | Duration (ms) |
+| ------------------------------------------------- | ---------- | ------------: |
+| _should correctly stringify input data_           | **passed** |
+| _should return input if it cannot be stringified_ | **passed** |
+| _should handle different types of input_          | **passed** |
+| _should not mutate the input node_                | **passed** |
 
 ### `[39]` [summarize_v0.test.ts](./src/test//summarize_v0.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *should generate summaries for topics and subtopics* | **passed** |
-| *should load summaries from GCS if data length matches* | **passed** |
+
+| Test                                                    | Status     | Duration (ms) |
+| ------------------------------------------------------- | ---------- | ------------: |
+| _should generate summaries for topics and subtopics_    | **passed** |
+| _should load summaries from GCS if data length matches_ | **passed** |
 
 ### `[40]` [text_to_csv_v0.test.ts](./src/test//text_to_csv_v0.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *should convert a single text input to CSV format* | **passed** |
-| *should convert multiple text inputs to CSV format* | **passed** |
-| *should handle empty text input* | **passed** |
-| *should split text into chunks if it exceeds the number of tokens* | **passed** |
+
+| Test                                                               | Status     | Duration (ms) |
+| ------------------------------------------------------------------ | ---------- | ------------: |
+| _should convert a single text input to CSV format_                 | **passed** |
+| _should convert multiple text inputs to CSV format_                | **passed** |
+| _should handle empty text input_                                   | **passed** |
+| _should split text into chunks if it exceeds the number of tokens_ | **passed** |
 
 ### `[41]` [translate.test.ts](./src/test//translate.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *translates the input data* | **passed** |
-| *uses cached translations when available* | **passed** |
+
+| Test                                      | Status     | Duration (ms) |
+| ----------------------------------------- | ---------- | ------------: |
+| _translates the input data_               | **passed** |
+| _uses cached translations when available_ | **passed** |
 
 ### `[42]` [unique_v0.test.ts](./src/test//unique_v0.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *should return unique values based on the specified property* | **passed** |
-| *should return an empty array if input is empty* | **passed** |
-| *should return undefined if no property is specified* | **passed** |
-| *should set dirty to false after compute* | **passed** |
-| *should not mutate the input data* | **passed** |
+
+| Test                                                          | Status     | Duration (ms) |
+| ------------------------------------------------------------- | ---------- | ------------: |
+| _should return unique values based on the specified property_ | **passed** |
+| _should return an empty array if input is empty_              | **passed** |
+| _should return undefined if no property is specified_         | **passed** |
+| _should set dirty to false after compute_                     | **passed** |
+| _should not mutate the input data_                            | **passed** |
 
 ### `[43]` [utils.test.ts](./src/test//utils.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *Test secondsToHHMMSS* | **passed** |
-| *Test secondsToHHMMSS with string* | **passed** |
-| *Test HHMMSSToSeconds* | **passed** |
+
+| Test                               | Status     | Duration (ms) |
+| ---------------------------------- | ---------- | ------------: |
+| _Test secondsToHHMMSS_             | **passed** |
+| _Test secondsToHHMMSS with string_ | **passed** |
+| _Test HHMMSSToSeconds_             | **passed** |
 
 ### `[44]` [whisper.test.ts](./src/test//whisper.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *should load from cache if data is not dirty and gcs_path is set* | **passed** |
-| *should load from GCS if data is not dirty, gcs_path is set, and output is empty and audio size matches* | **passed** |
-| *should transcribe audio and upload to GCS if data is dirty* | **passed** |
-| *should return undefined and set message if open_ai_key is missing* | **passed** |
-| *should convert transcription to internal format if response_format is custom* | **passed** |
+
+| Test                                                                                                     | Status     | Duration (ms) |
+| -------------------------------------------------------------------------------------------------------- | ---------- | ------------: |
+| _should load from cache if data is not dirty and gcs_path is set_                                        | **passed** |
+| _should load from GCS if data is not dirty, gcs_path is set, and output is empty and audio size matches_ | **passed** |
+| _should transcribe audio and upload to GCS if data is dirty_                                             | **passed** |
+| _should return undefined and set message if open_ai_key is missing_                                      | **passed** |
+| _should convert transcription to internal format if response_format is custom_                           | **passed** |
 
 ### `[45]` [workerpool.test.ts](./src/test//workerpool.test.ts)
-| Test | Status | Duration (ms) |
-|---|---|---:|
-| *should execute function in workerpool* | **passed** |
-| *should execute delayed function in workerpool* | **passed** |
+
+| Test                                            | Status     | Duration (ms) |
+| ----------------------------------------------- | ---------- | ------------: |
+| _should execute function in workerpool_         | **passed** |
+| _should execute delayed function in workerpool_ | **passed** |

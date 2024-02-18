@@ -1,62 +1,62 @@
 import type { Writable } from 'svelte/store';
 
 export interface Log {
-	title: string;
-	detail: string;
-	type: 'success' | 'error' | 'info';
+  title: string;
+  detail: string;
+  type: 'success' | 'error' | 'info';
 }
 
 export interface BaseData {
-	processing?: boolean = false;
-	label: string;
-	dirty: boolean;
-	compute_type: string;
-	input_ids: { [key: string]: string | object[] };
-	output_ids?: { [key: string]: string };
-	category: string;
-	icon: string;
-	output?: any;
-	show_in_ui: boolean;
-	message: string;
-	enable?: boolean;
-	log?: Log[];
-	state?: Writable<any>;
+  processing?: boolean = false;
+  label: string;
+  dirty: boolean;
+  compute_type: string;
+  input_ids: { [key: string]: string | object[] };
+  output_ids?: { [key: string]: string };
+  category: string;
+  icon: string;
+  output?: any;
+  show_in_ui: boolean;
+  message: string;
+  enable?: boolean;
+  log?: Log[];
+  state?: Writable<any>;
 }
 
 export interface DGEdgeInterface {
-	id: string;
-	source: string;
-	selected: boolean;
-	target: string;
+  id: string;
+  source: string;
+  selected: boolean;
+  target: string;
 }
 
 export interface GCSData {
-	filename: string;
-	size_kb: number;
-	gcs_path: string;
+  filename: string;
+  size_kb: number;
+  gcs_path: string;
 }
 
 export interface DGNodeInterface<T extends BaseData = BaseData> {
-	id: string;
-	position: {
-		x: number;
-		y: number;
-	};
-	type: string;
-	data: T;
-	zIndex?: number;
-	dragging?: boolean;
-	dragHandle?: boolean;
-	isConnectable?: boolean;
-	type?: string;
-	xPos?: number;
-	yPos?: number;
-	positionAbsolute?: boolean;
-	width?: number;
-	height?: number;
-	selected?: boolean;
-	sourcePosition?: string;
-	targetPosition?: string;
+  id: string;
+  position: {
+    x: number;
+    y: number;
+  };
+  type: string;
+  data: T;
+  zIndex?: number;
+  dragging?: boolean;
+  dragHandle?: boolean;
+  isConnectable?: boolean;
+  type?: string;
+  xPos?: number;
+  yPos?: number;
+  positionAbsolute?: boolean;
+  width?: number;
+  height?: number;
+  selected?: boolean;
+  sourcePosition?: string;
+  targetPosition?: string;
 }
 
 export type GCSBaseData = BaseData & GCSData;

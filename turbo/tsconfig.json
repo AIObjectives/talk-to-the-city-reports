@@ -1,30 +1,30 @@
 {
-	"extends": "./.svelte-kit/tsconfig.json",
-	"compilerOptions": {
-		"paths": {
-			"$lib/*": ["src/lib/*"],
-			"$components/*": ["src/components/*"],
-			"$routes/*": ["src/routes/*"],
-			"$test/*": ["src/test/*"]
-		},
-		"importsNotUsedAsValues": "preserve",
-		"allowJs": true,
-		"checkJs": true,
-		"esModuleInterop": true,
-		"forceConsistentCasingInFileNames": true,
-		"resolveJsonModule": true,
-		"skipLibCheck": true,
-		"sourceMap": true,
-		"strict": false,
-		"types": ["jest"]
-	},
-	"include": ["src/**/*.d.ts", "src/**/*.js", "src/**/*.ts", "src/**/*.svelte"],
-	"exclude": ["node_modules", "src/lib/pyodide", "src/lib/jq.js"],
-	"ts-node": {
-		"transpileOnly": true,
-		"require": ["tsconfig-paths/register"],
-		"compilerOptions": {
-			"module": "commonjs"
-		}
-	}
+  "extends": "./.svelte-kit/tsconfig.json",
+  "compilerOptions": {
+    "paths": {
+      "$lib/*": ["src/lib/*"],
+      "$components/*": ["src/components/*"],
+      "$routes/*": ["src/routes/*"],
+      "$test/*": ["src/test/*"]
+    },
+    "importsNotUsedAsValues": "preserve",
+    "allowJs": true,
+    "checkJs": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": false,
+    "types": ["jest"]
+  },
+  "include": ["src/**/*.d.ts", "src/**/*.js", "src/**/*.ts", "src/**/*.svelte"],
+  "exclude": ["node_modules", "src/lib/pyodide", "src/lib/jq.js"],
+  "ts-node": {
+    "transpileOnly": true,
+    "require": ["tsconfig-paths/register"],
+    "compilerOptions": {
+      "module": "commonjs"
+    }
+  }
 }

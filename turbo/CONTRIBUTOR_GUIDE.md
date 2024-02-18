@@ -10,6 +10,10 @@ Your fork has the same URL as ours, but with your username e.g:
 
 https://github.com/[your-username]/talk-to-the-city-reports.git
 
+## Editor settings
+
+You should open the `/turbo` directory directly in your Editor, so it properly picks up all the configuration files for formatting, testing etc.
+
 ## Feature branches
 
 The workflow thus far has been to work in feature branches, and merging those branches into main via PRs. We may switch to working from a 'dev' branch. But for now, it's either main or a feature branch.
@@ -35,14 +39,10 @@ You should commit your reworks as [fixup commits](https://robots.thoughtbot.com/
 ## VSCode Extensions
 
 - [svelte](https://marketplace.visualstudio.com/items?itemName=1YiB.svelte-bundle) - Bundle of svelte extensions for better development.
-
-- [Svelte Auto Import](https://marketplace.visualstudio.com/items?itemName=pivaszbs.svelte-autoimport) - Automatically finds, parses and provides code actions and code completion for all available imports. Works with Typescript and TSX.
-
-- [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+- [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) - Prettier extension used for formatting Typescript files.
 
 Nice to have:
 
 - [ChatGPT - Genie AI](https://marketplace.visualstudio.com/items?itemName=genieai.chatgpt-vscode) (in case you don't have co-pilot. It is not as context-aware, but can be used with your OpenAI key).
-
 - [Black Formatter](https://marketplace.visualstudio.com/items?itemName=ms-python.black-formatter) - the few Python scripts we have are formatted with Black.
 - [Hide Gitignored](https://marketplace.visualstudio.com/items?itemName=npxms.hide-gitignored)
