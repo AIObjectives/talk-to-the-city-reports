@@ -3,16 +3,16 @@ import { vitePreprocess } from '@sveltejs/kit/vite';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-	preprocess: vitePreprocess(),
-	kit: {
-        adapter: adapter(),
-        alias: {
-            $lib: 'src/lib',
-            $components: 'src/components',
-            $routes: 'src/routes',
-            $test: 'src/test',
-        }    
-	}
+  preprocess: vitePreprocess(),
+  kit: {
+    adapter: adapter(),
+    alias: {
+      $lib: 'src/lib',
+      $components: 'src/components',
+      $routes: 'src/routes',
+      $test: 'src/test'
+    }
+  }
 };
 
 export default config;

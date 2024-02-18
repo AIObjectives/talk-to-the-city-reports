@@ -13,13 +13,13 @@ const graphNotice: Writable<boolean> = writable(false);
 const pipelineStepsRemaining: Writable<number> = writable(0);
 
 export {
-	user,
-	storeDataset,
-	message,
-	fitViewStore,
-	graphNotice,
-	globalViewMode,
-	reportStore,
-	chartMode,
-	pipelineStepsRemaining
+  user,
+  storeDataset,
+  message,
+  fitViewStore,
+  graphNotice,
+  globalViewMode,
+  reportStore,
+  chartMode,
+  pipelineStepsRemaining
 };

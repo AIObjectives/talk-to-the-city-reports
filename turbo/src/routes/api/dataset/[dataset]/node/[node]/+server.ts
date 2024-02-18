@@ -36,16 +36,16 @@ import { authenticated } from '$lib/server_utils';
  */
 /** @type {import('./$types').RequestHandler} */
 export const GET = authenticated(async ({ url, request }) => {
-	try {
-		const urlParts = url.pathname.split('/');
-		const slug = urlParts[urlParts.length - 3];
-		const id = urlParts[urlParts.length - 1];
-		console.log(slug, id);
-		const dataset = await Dataset.loadDataset(slug);
-		await dataset?.processNodes('load');
-		const doc = dataset?.getNodeById(id);
-		return new Response(JSON.stringify(doc, null, 2), {});
-	} catch (error) {
-		return new Response(error.message || 'Internal server error', { status: 500 });
-	}
+  try {
+    const urlParts = url.pathname.split('/');
+    const slug = urlParts[urlParts.length - 3];
+    const id = urlParts[urlParts.length - 1];
+    console.log(slug, id);
+    const dataset = await Dataset.loadDataset(slug);
+    await dataset?.processNodes('load');
+    const doc = dataset?.getNodeById(id);
+    return new Response(JSON.stringify(doc, null, 2), {});
+  } catch (error) {
+    return new Response(error.message || 'Internal server error', { status: 500 });
+  }
 });

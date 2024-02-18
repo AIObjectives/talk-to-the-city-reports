@@ -1,6 +1,9 @@
 #!/bin/bash
 
-if [ "${TTTC_GIT_HOOKS:-0}" -eq 1 ]; then
+if [ -z "${TTTC_GIT_HOOKS}" ]; then
+    echo "TTTC_GIT_HOOKS is not set. Skipping pre-push hook..."
+    exit 0
+elif [ "${TTTC_GIT_HOOKS:-0}" -eq 1 ]; then
     . turbo/src/lib/scripts/colors.sh
 
     exec < /dev/tty

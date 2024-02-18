@@ -1,24 +1,24 @@
 {
-    "topics": [
+  "topics": [
+    {
+      "topicName": "Piano players",
+      "topicShortDescription": "Discussion piano players.",
+      "subtopics": [
         {
-            "topicName": "Piano players",
-            "topicShortDescription": "Discussion piano players.",
-            "subtopics": [
-                {
-                    "subtopicName": "Classical Piano players",
-                    "subtopicShortDescription": "Discusses classical piano players, and their role in the formation of modern music."
-                }
-            ]
-        },
-        {
-            "topicName": "Weather Patterns",
-            "topicShortDescription": "Discusses the trends and changes in weather over time.",
-            "subtopics": [
-                {
-                    "subtopicName": "Rain Duration",
-                    "subtopicShortDescription": "Concerns about the length of time the rain is expected to last."
-                }
-            ]
+          "subtopicName": "Classical Piano players",
+          "subtopicShortDescription": "Discusses classical piano players, and their role in the formation of modern music."
         }
-    ]
+      ]
+    },
+    {
+      "topicName": "Weather Patterns",
+      "topicShortDescription": "Discusses the trends and changes in weather over time.",
+      "subtopics": [
+        {
+          "subtopicName": "Rain Duration",
+          "subtopicShortDescription": "Concerns about the length of time the rain is expected to last."
+        }
+      ]
+    }
+  ]
 }

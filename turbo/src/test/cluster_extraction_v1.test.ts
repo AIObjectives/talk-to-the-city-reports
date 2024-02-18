@@ -1,4 +1,6 @@
-import ClusterExtractionNode, { cluster_extraction_node_data_v1 } from '$lib/compute/cluster_extraction_v1';
+import ClusterExtractionNode, {
+  cluster_extraction_node_data_v1
+} from '$lib/compute/cluster_extraction_v1';
 import deepCopy from 'deep-copy';
 import { describe, it, vi, beforeEach } from 'vitest';
 import { expect } from 'vitest';
@@ -18,7 +20,7 @@ vi.mock('$lib/utils', () => ({
 describe('ClusterExtractionNode class', () => {
   let node;
   let inputData;
-  let timeout = 60000;
+  const timeout = 60000;
 
   beforeEach(() => {
     node = new ClusterExtractionNode(deepCopy(cluster_extraction_node_data_v1));

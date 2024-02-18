@@ -234,5 +234,10 @@
   "bar": "Bar",
   "circle": "Circle",
   "chart": "Chart",
-  "these_claims_include_video_excerpts": "These claims include video excerpts"
+  "these_claims_include_video_excerpts": "These claims include video excerpts",
+  "title": "Title",
+  "processing_step": "Processing Step",
+  "processing_steps": "Processing Steps",
+  "processing_complete": "Processing Complete",
+  "logs": "Logs"
 }

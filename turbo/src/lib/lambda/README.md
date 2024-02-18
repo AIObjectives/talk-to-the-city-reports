@@ -14,7 +14,7 @@ The Docker image uses the `amazonlinux` image, ensuring all dependencies, includ
 
 ## Anatomy
 
-The lambda uses a FastAPI post, and the [mangum](https://mangum.io/) library. 
+The lambda uses a FastAPI post, and the [mangum](https://mangum.io/) library.
 
 ## Deploying a new lambda
 

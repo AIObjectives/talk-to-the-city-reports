@@ -33,6 +33,9 @@ jobs:
       - name: Run tests
         run: cd turbo && npm run test
 
+      - name: Run linting
+        run: cd turbo && npm run lint
+
   buildAPI:
     needs: test
     runs-on: ubuntu-latest

@@ -1,5 +1,7 @@
-
-if [ $TTTC_GIT_HOOKS -eq 1 ]; then
+if [ -z "${TTTC_GIT_HOOKS}" ]; then
+    echo "TTTC_GIT_HOOKS is not set. Skipping pre-push hook..."
+    exit 0
+elif [ "${TTTC_GIT_HOOKS}" -eq 1 ]; then
     . turbo/src/lib/scripts/colors.sh
     echo "${LIGHT_BLUE}Running selenium tests...${NC}\n"
     python3 turbo/src/test/test_selenium.py --local

@@ -13,7 +13,6 @@
 @use '@smui/paper/mixins' as paper;
 @use '@material/theme/theme-color';
 
-
 html,
 body {
   background-color: theme.$surface;
@@ -31,7 +30,6 @@ a:visited {
   --mdc-theme-primary: theme.$primary;
   --mdc-theme-on-primary: #fff;
 }
-
 
 $custom-color: #76a99d;
 

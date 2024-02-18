@@ -4,17 +4,17 @@
   "duration": 2.77,
   "text": "This is an audio sample.",
   "segments": [
-	{
-	  "id": 0,
-	  "seek": 0,
-	  "start": 0,
-	  "end": 2,
-	  "text": "This is an audio sample.",
-	  "tokens": [50364, 639, 307, 364, 6278, 6889, 13, 50464],
-	  "temperature": 0,
-	  "avg_logprob": -0.4578398068745931,
-	  "compression_ratio": 0.8,
-	  "no_speech_prob": 0.059010058641433716
-	}
+    {
+      "id": 0,
+      "seek": 0,
+      "start": 0,
+      "end": 2,
+      "text": "This is an audio sample.",
+      "tokens": [50364, 639, 307, 364, 6278, 6889, 13, 50464],
+      "temperature": 0,
+      "avg_logprob": -0.4578398068745931,
+      "compression_ratio": 0.8,
+      "no_speech_prob": 0.059010058641433716
+    }
   ]
 }

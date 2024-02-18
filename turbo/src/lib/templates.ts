@@ -44,72 +44,72 @@ import { integer_node } from './compute/integer_v0';
 import { adder_node } from './compute/adder_v0';
 import { text_node } from './compute/text_v0';
 
-export let node_register = [
-	open_ai_key_node,
-	csv_node,
-	json_node,
-	edit_csv_node,
-	cluster_extraction_node_v1,
-	argument_extraction_node_v1,
-	merge_node,
-	participant_filter_node,
-	report_node_v0,
-	report_node_v1,
-	limit_csv_node,
-	translate_node,
-	jsonata_node,
-	jq_v1_node,
-	grid_node,
-	count_tokens_node,
-	merge_cluster_extraction_node_v1,
-	markdown_node,
-	stringify_node,
-	score_argument_relevance_node,
-	gpt_node,
-	multi_gpt_node,
-	feedback_node,
-	python_node,
-	pyodide_node,
-	chat_node,
-	webpage_node,
-	whisper_node,
-	add_csv_node,
-	audio_node,
-	filter_csv_node,
-	unique_node,
-	comment_expander_node,
-	download_node,
-	text_to_csv_node,
-	multi_cluster_extraction_node,
-	summarize_node,
-	test_node,
-	adder_node,
-	integer_node,
-	text_node
+export const node_register = [
+  open_ai_key_node,
+  csv_node,
+  json_node,
+  edit_csv_node,
+  cluster_extraction_node_v1,
+  argument_extraction_node_v1,
+  merge_node,
+  participant_filter_node,
+  report_node_v0,
+  report_node_v1,
+  limit_csv_node,
+  translate_node,
+  jsonata_node,
+  jq_v1_node,
+  grid_node,
+  count_tokens_node,
+  merge_cluster_extraction_node_v1,
+  markdown_node,
+  stringify_node,
+  score_argument_relevance_node,
+  gpt_node,
+  multi_gpt_node,
+  feedback_node,
+  python_node,
+  pyodide_node,
+  chat_node,
+  webpage_node,
+  whisper_node,
+  add_csv_node,
+  audio_node,
+  filter_csv_node,
+  unique_node,
+  comment_expander_node,
+  download_node,
+  text_to_csv_node,
+  multi_cluster_extraction_node,
+  summarize_node,
+  test_node,
+  adder_node,
+  integer_node,
+  text_node
 ];
 
 export async function loadTemplates(): Promise<Record<string, DocumentData>> {
-	const q = query(templatesCollection);
-	const querySnapshot = await getDocs(q);
+  const q = query(templatesCollection);
+  const querySnapshot = await getDocs(q);
 
-	let templates: Record<string, DocumentData> = {};
-	querySnapshot.docs.forEach((doc) => {
-		templates[doc.id] = doc.data();
-	});
+  const templates: Record<string, DocumentData> = {};
+  querySnapshot.docs.forEach((doc) => {
+    templates[doc.id] = doc.data();
+  });
 
-	return templates;
+  return templates;
 }
 
 export async function saveTemplate(name: string, data: any) {
-	for (const node of data.nodes) {
-		node.data.output = {};
-	}
-	console.log(data);
-	try {
-		const docRef = doc(templatesCollection, name);
-		await setDoc(docRef, data);
-		console.log(`Template '${name}' successfully updated.`);
-	} catch (error) {
-		console.error('Error updating template:', error);
-	}
+  for (const node of data.nodes) {
+    node.data.output = {};
+  }
+  console.log(data);
+  try {
+    const docRef = doc(templatesCollection, name);
+    await setDoc(docRef, data);
+    console.log(`Template '${name}' successfully updated.`);
+  } catch (error) {
+    console.error('Error updating template:', error);
+  }
 }

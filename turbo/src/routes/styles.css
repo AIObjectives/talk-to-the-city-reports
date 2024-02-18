@@ -1,39 +1,39 @@
 html {
-	scroll-behavior: smooth;
+  scroll-behavior: smooth;
 }
 
 :root {
-    --smui-primary: #5d6ee1;
-    --smui-secondary: #676778;
-    --smui-surface: #ffffff;
-	--smui-surface-rgb: 255, 255, 255;
-    --smui-background: #ffffff;
-    --smui-error: #b00020;
-    --smui-on-primary: #ffffff;
-    --smui-custom-color: #76a99d;
-	--font-body: 'Quattrocento Sans', Arial, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-		Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-	--font-heading: 'Quattrocento Sans', sans-serif;
-	--color-text: rgba(0, 0, 0, 0.7);
-	--column-width: 42rem;
-	--column-margin-top: 4rem;
-	font-family: var(--font-body);
-	color: var(--color-text);
-	--background-color-default: transparent !important;
-	--attribution-background-color-default: transparent !important;
+  --smui-primary: #5d6ee1;
+  --smui-secondary: #676778;
+  --smui-surface: #ffffff;
+  --smui-surface-rgb: 255, 255, 255;
+  --smui-background: #ffffff;
+  --smui-error: #b00020;
+  --smui-on-primary: #ffffff;
+  --smui-custom-color: #76a99d;
+  --font-body: 'Quattrocento Sans', Arial, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  --font-heading: 'Quattrocento Sans', sans-serif;
+  --color-text: rgba(0, 0, 0, 0.7);
+  --column-width: 42rem;
+  --column-margin-top: 4rem;
+  font-family: var(--font-body);
+  color: var(--color-text);
+  --background-color-default: transparent !important;
+  --attribution-background-color-default: transparent !important;
 }
 
 .svelte-flow {
-	--background-pattern-lines-color-default: #dedede !important;
+  --background-pattern-lines-color-default: #dedede !important;
 }
 
 .svelte-flow__attribution {
-	display: none;
+  display: none;
 }
 
 body {
-	min-height: 100vh;
-	margin: 0;
+  min-height: 100vh;
+  margin: 0;
 }
 
 h1,
@@ -42,257 +42,257 @@ h3,
 h4,
 h5,
 h6 {
-	font-family: var(--font-heading) !important;
+  font-family: var(--font-heading) !important;
 }
 
 p {
-	line-height: 1.5;
+  line-height: 1.5;
 }
 
 a {
-    color: var(--smui-primary);
-    text-decoration: none;
+  color: var(--smui-primary);
+  text-decoration: none;
 }
 
 a:visited {
-    color: var(--smui-secondary);
+  color: var(--smui-secondary);
 }
 
 a:hover {
-	text-decoration: underline;
+  text-decoration: underline;
 }
 
 h1 {
-	text-align: center;
+  text-align: center;
 }
 
 h1 {
-	font-size: 2.5em !important;
+  font-size: 2.5em !important;
 }
 
 h2 {
-	font-size: 1.75em !important;
-	font-weight: bold;
+  font-size: 1.75em !important;
+  font-weight: bold;
 }
 
 h3 {
-	font-size: 1.25em !important;
-	font-weight: bold;
+  font-size: 1.25em !important;
+  font-weight: bold;
 }
 
 h4 {
-	font-size: 1em !important;
-	font-weight: bold;
+  font-size: 1em !important;
+  font-weight: bold;
 }
 
 h5 {
-	font-size: 1em !important;
+  font-size: 1em !important;
 }
 
 h6 {
-	font-size: 1em !important;
+  font-size: 1em !important;
 }
 
 pre {
-	font-size: 16px;
-	font-family: var(--font-body);
-	background-color: rgba(255, 255, 255, 0.45);
-	border-radius: 3px;
-	box-shadow: 2px 2px 6px rgb(255 255 255 / 25%);
-	padding: 0.5em;
-	overflow-x: auto;
-	color: var(--color-text);
+  font-size: 16px;
+  font-family: var(--font-body);
+  background-color: rgba(255, 255, 255, 0.45);
+  border-radius: 3px;
+  box-shadow: 2px 2px 6px rgb(255 255 255 / 25%);
+  padding: 0.5em;
+  overflow-x: auto;
+  color: var(--color-text);
 }
 
 .text-column {
-	display: flex;
-	max-width: 48rem;
-	flex: 0.6;
-	flex-direction: column;
-	justify-content: center;
-	margin: 0 auto;
+  display: flex;
+  max-width: 48rem;
+  flex: 0.6;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0 auto;
 }
 
 input,
 button {
-	font-size: inherit;
-	font-family: inherit;
+  font-size: inherit;
+  font-family: inherit;
 }
 
 button:focus:not(:focus-visible) {
-	outline: none;
+  outline: none;
 }
 
 .mdc-button {
-    --mdc-theme-primary: var(--smui-primary);
-    --mdc-theme-on-primary: var(--smui-on-primary);
+  --mdc-theme-primary: var(--smui-primary);
+  --mdc-theme-on-primary: var(--smui-on-primary);
 }
 
 @media (min-width: 720px) {
-	h1 {
-		font-size: 2.4rem;
-	}
+  h1 {
+    font-size: 2.4rem;
+  }
 }
 
 .visually-hidden {
-	border: 0;
-	clip: rect(0 0 0 0);
-	height: auto;
-	margin: 0;
-	overflow: hidden;
-	padding: 0;
-	position: absolute;
-	width: 1px;
-	white-space: nowrap;
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: auto;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+  white-space: nowrap;
 }
 
 .mdc-menu {
-	background-color: #fff;
+  background-color: #fff;
 }
 
 .dg-node {
-	opacity: 1 !important;
-	overflow-x: auto;
+  opacity: 1 !important;
+  overflow-x: auto;
 }
 
 .svelte-flow__node {
-	background-color: #fff;
+  background-color: #fff;
 }
 
 .svelte-flow {
 }
 
 .selected-dg-node {
-	opacity: 1 !important;
-	border: 1px solid #aaaaff !important;
+  opacity: 1 !important;
+  border: 1px solid #aaaaff !important;
 }
 
 .docs img {
-	border-style: solid;
-	border-width: 1px;
-	border-color: #888;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #888;
 }
 
 .docs p {
-	margin-top: 1em;
-	margin-bottom: 1em;
-	color: #333;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  color: #333;
 }
 
 .docs code {
-	line-height: 0.5;
-	background-color: #ffeeee;
-	padding-top: 0em;
-	padding-bottom: 0em;
-	border-radius: 3px;
-	font-size: 0.9em;
+  line-height: 0.5;
+  background-color: #ffeeee;
+  padding-top: 0em;
+  padding-bottom: 0em;
+  border-radius: 3px;
+  font-size: 0.9em;
 }
 .docs pre code {
-	background-color: transparent;
-	white-space: pre-wrap;
+  background-color: transparent;
+  white-space: pre-wrap;
 }
 .docs pre {
-	background-color: #f0f0f9;
-	color: #555;
-	padding: 1em;
-	border-radius: 3px;
+  background-color: #f0f0f9;
+  color: #555;
+  padding: 1em;
+  border-radius: 3px;
 }
 .docs h1 {
-	font-size: 2em;
-	margin-top: 1em;
-	margin-bottom: 0.5em;
-	line-height: 1.5em;
-	color: #333;
+  font-size: 2em;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  line-height: 1.5em;
+  color: #333;
 }
 .docs h2 {
-	font-size: 1.5em;
-	margin-top: 1em;
-	margin-bottom: 0.5em;
-	color: #333;
+  font-size: 1.5em;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  color: #333;
 }
 .docs h3 {
-	font-size: 1.2em;
-	margin-top: 1em;
-	margin-bottom: 0.5em;
-	color: #333;
+  font-size: 1.2em;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  color: #333;
 }
 .docs ul,
 .docs ol {
-	margin-top: 0em;
-	margin-bottom: 0em;
-	margin-left: 1.6em;
-	color: #333;
+  margin-top: 0em;
+  margin-bottom: 0em;
+  margin-left: 1.6em;
+  color: #333;
 }
 .docs ul {
-	list-style-type: disc;
+  list-style-type: disc;
 }
 .docs ol {
-	list-style-type: decimal;
+  list-style-type: decimal;
 }
 .docs li {
-	margin-top: 0.1em;
-	margin-bottom: 0.1em;
-	margin-left: 1em;
+  margin-top: 0.1em;
+  margin-bottom: 0.1em;
+  margin-left: 1em;
 }
 
 .mdc-dialog__surface {
-	z-index: 100000;
-	background-color: #fff !important;
+  z-index: 100000;
+  background-color: #fff !important;
 }
 
 .svelte-flow__pane {
 }
 
 .exec-buttons-top {
-	background-color: #f8f8f8;
-	border: solid;
-	border-width: 1px;
-	border-bottom-width: 0.5px;
-	border-radius: 2%;
-	border-color: #ddd;
-	padding: 4px;
-	margin: 0px;
+  background-color: #f8f8f8;
+  border: solid;
+  border-width: 1px;
+  border-bottom-width: 0.5px;
+  border-radius: 2%;
+  border-color: #ddd;
+  padding: 4px;
+  margin: 0px;
 }
 .exec-buttons {
-	background-color: #f8f8f8;
-	border: solid;
-	border-top-width: 1px;
-	border-radius: 2%;
-	border-color: #ddd;
-	padding: 4px;
-	margin: 0px;
+  background-color: #f8f8f8;
+  border: solid;
+  border-top-width: 1px;
+  border-radius: 2%;
+  border-color: #ddd;
+  padding: 4px;
+  margin: 0px;
 }
 .exec-buttons-bottom {
-	background-color: #f8f8f8;
-	border: solid;
-	border-top-width: 0.5px;
-	border-width: 1px;
-	border-radius: 2%;
-	border-color: #ddd;
-	padding: 4px;
-	margin: 0px;
+  background-color: #f8f8f8;
+  border: solid;
+  border-top-width: 0.5px;
+  border-width: 1px;
+  border-radius: 2%;
+  border-color: #ddd;
+  padding: 4px;
+  margin: 0px;
 }
 
 .api-docs a {
-	color: var(--smui-primary) !important;
-	text-decoration: none;
+  color: var(--smui-primary) !important;
+  text-decoration: none;
 }
 
 .docs a {
-	color: var(--smui-primary) !important;
-	text-decoration: none;
+  color: var(--smui-primary) !important;
+  text-decoration: none;
 }
 
 .api-docs code {
-	color: #333;
-	font-size: 0.8em;
-	line-height: 0.5;
-	background-color: #fffcfc;
-	padding-top: 0em;
-	padding-bottom: 0em;
-	border-radius: 3px;
+  color: #333;
+  font-size: 0.8em;
+  line-height: 0.5;
+  background-color: #fffcfc;
+  padding-top: 0em;
+  padding-bottom: 0em;
+  border-radius: 3px;
 }
 
 .mdc-menu .mdc-deprecated-list {
-	background: white;
+  background: white;
 }
