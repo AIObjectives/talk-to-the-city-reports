@@ -8,9 +8,9 @@ import Cookies from 'js-cookie';
 // not ISO 639-1
 if (Cookies.get('locale') == 'en') Cookies.set('locale', 'en-US');
 
-const defaultLocale = Cookies.get('locale') || 'en-US';
+export const defaultLocale = Cookies.get('locale') || 'en-US';
 
-export const languages = {
+export const flags = {
   'en-US': '🇺🇸',
   'zh-TW': '🇹🇼'
 };

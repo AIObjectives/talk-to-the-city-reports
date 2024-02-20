@@ -48,7 +48,7 @@
     <p class="text-gray-700" style="white-space: pre-line;">
       {$__('description')}: {dataset.description}
     </p>
-    {#if dataset.projectParent}
+    {#if $user && dataset.projectParent}
       <p class="text-gray-500">
         {$__('forked_from')}:
         <a href="/report/{dataset.projectParent}" class="text-gray-500 hover:text-gray-700">

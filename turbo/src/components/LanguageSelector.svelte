@@ -1,19 +1,18 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
-  import { languages } from '$lib/i18n';
+  import { flags, defaultLocale } from '$lib/i18n';
   import { locale } from 'svelte-i18n';
   import Cookies from 'js-cookie';
   import { browser } from '$app/environment';
   import MenuDown from '$lib/icons/MenuDown.svelte';
 
   let isOpen = false;
-  let selectedLanguage = '';
+  $: selectedFlag = flags[$locale] || flags[defaultLocale];
   let dropdown: HTMLElement;
 
   function changeLanguage(lang: string) {
     locale.set(lang);
     Cookies.set('locale', lang);
-    selectedLanguage = languages[lang];
     isOpen = false;
   }
 
@@ -24,8 +23,6 @@
   }
 
   onMount(() => {
-    selectedLanguage = languages[$locale];
-
     if (browser) {
       window.addEventListener('click', handleClickOutside);
     }
@@ -41,15 +38,15 @@
 <div class="lang-container" bind:this={dropdown}>
   <div class="select-container">
     <button class="select-button" on:click={() => (isOpen = !isOpen)}>
-      <span class="flag">{selectedLanguage}</span>
+      <span class="flag">{selectedFlag}</span>
       <MenuDown color="white" />
     </button>
     {#if isOpen}
       <ul class="select-dropdown">
-        {#each Object.keys(languages) as lang}
+        {#each Object.keys(flags) as lang}
           <li>
             <button class="dropdown-item" on:click={() => changeLanguage(lang)}>
-              {languages[lang]}
+              {flags[lang]}
             </button>
           </li>
         {/each}

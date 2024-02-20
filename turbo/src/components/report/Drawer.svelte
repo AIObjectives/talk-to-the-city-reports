@@ -118,7 +118,7 @@
   #drawerBackground {
     background-color: #f2f2f2;
     width: 256px;
-    height: 100%;
+    height: 120%;
     position: fixed;
     z-index: 1;
     overflow-y: auto;

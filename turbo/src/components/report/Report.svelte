@@ -211,7 +211,7 @@
           <h6 class="mt-4 mb-4" style="max-width: 740px;">{topic.topicShortDescription}</h6>
         {/if}
         <!-- Topic Bar chart (of subtopics) -->
-        <div class="mx-6 mt-5 mb-8">
+        <div class={'mt-5 mb-8 ' + ($isMobile ? '' : 'mx-6')}>
           {#if $chartMode == 'bar'}
             {#if complexHierarchy}
               <BarChart
