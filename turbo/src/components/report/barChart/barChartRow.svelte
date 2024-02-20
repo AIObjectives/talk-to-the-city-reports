@@ -3,6 +3,7 @@
   import { hsl } from 'd3-color';
   import { _ as __ } from 'svelte-i18n';
   import { ordinalColor, scrollToTopic } from '$lib/reportUtils';
+  import { isMobile } from '$lib/store';
 
   export let max: number;
   export let complexHierarchy: Record<string, any>;
@@ -11,10 +12,10 @@
   export let level: 'top' | 'topic' = 'top';
 
   let _color = color || '' + hsl(ordinalColor(complexHierarchy.data.name));
-  let maxAdjustment = 1.2;
 
-  $: width = (complexHierarchy.value / max / maxAdjustment) * (clientWidth / 2) + 100;
-  $: textX = 10;
+  $: width = (complexHierarchy.value / max) * (clientWidth / 2);
+  $: textColor = width < 80 ? 'gray' : 'white';
+  $: textX = width < 80 ? width + 5 : 10;
   $: textY = height / 2;
   $: description =
     level === 'top'
@@ -27,7 +28,7 @@
 </script>
 
 <button
-  class="flex-container px-2"
+  class={'flex-container ' + (isMobile ? 'px-1' : 'px-2')}
   style="text-align: left;"
   bind:clientWidth
   bind:clientHeight
@@ -67,7 +68,7 @@
       x={textX}
       y={textY}
       xmlns="http://www.w3.org/2000/svg"
-      fill="white"
+      fill={textColor}
       dominant-baseline="middle"
       text-anchor="left"
       font-weight="bold">{complexHierarchy.value + ' ' + $__('claims')}</text

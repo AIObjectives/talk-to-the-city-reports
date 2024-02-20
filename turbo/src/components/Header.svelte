@@ -5,20 +5,21 @@
   import _ from 'lodash';
 
   import '$lib/i18n';
-  import { user } from '$lib/store';
+  import { user, isMobile, openLeftDrawer } from '$lib/store';
   import { globalViewMode } from '$lib/store';
   import github from '$lib/images/github.svg';
 
-  import Menu from '$components/menu/menu.svelte';
+  import LeftBurger from '$components/LeftBurger.svelte';
+  import RightMenu from '$components/rightMenu/menu.svelte';
   import LanguageSelector from '$components/LanguageSelector.svelte';
 
   $: isReport = $page?.route?.id?.startsWith('/report/[report]');
   $: isStandard = $globalViewMode == 'standard';
-  $: showMenu = (isReport && isStandard) || !isReport;
+  $: showHeader = (isReport && isStandard) || !isReport;
 </script>
 
 <div class="right-stack">
-  <Menu {user} />
+  <RightMenu {user} />
   {#if isStandard}
     {#if !$user}
       <span class="link">
@@ -28,23 +29,45 @@
       </span>
     {/if}
     <LanguageSelector />
-    <a href="https://github.com/AIObjectives/talk-to-the-city-reports" target="_blank" class="mr-6">
-      <img src={github} alt="GitHub" class="github" />
-    </a>
+    {#if !$isMobile}
+      <a
+        href="https://github.com/AIObjectives/talk-to-the-city-reports"
+        target="_blank"
+        class="mr-6"
+      >
+        <img src={github} alt="GitHub" class="github" />
+      </a>
+    {/if}
   {/if}
 </div>
 
-{#if showMenu}
+{#if showHeader}
   <header>
-    <div class="corner title"><a href="/">Talk to the City</a></div>
-    <nav class="link">
+    <LeftBurger />
+    {#if $openLeftDrawer}
+      <nav class="link mobile-nav">
+        <ul>
+          <li aria-current={$page.url.pathname === '/' ? 'page' : undefined}>
+            <a href="/">{$__('home')} </a>
+          </li>
+          <li aria-current={$page.url.pathname === '/about' ? 'page' : undefined}>
+            <a href="/about">{$__('about')}</a>
+          </li>
+        </ul>
+      </nav>
+    {:else}
+      <div class="corner title"><a href="/">Talk to the City</a></div>
+    {/if}
+    <nav class="link nav">
       <ul>
-        <li aria-current={$page.url.pathname === '/' ? 'page' : undefined}>
-          <a href="/">{$__('home')} </a>
-        </li>
-        <li aria-current={$page.url.pathname === '/about' ? 'page' : undefined}>
-          <a href="/about">{$__('about')}</a>
-        </li>
+        {#if !$isMobile}
+          <li aria-current={$page.url.pathname === '/' ? 'page' : undefined}>
+            <a href="/">{$__('home')} </a>
+          </li>
+          <li aria-current={$page.url.pathname === '/about' ? 'page' : undefined}>
+            <a href="/about">{$__('about')}</a>
+          </li>
+        {/if}
       </ul>
     </nav>
     <div class="corner" />
@@ -77,8 +100,14 @@
     left: 5px;
   }
 
-  nav {
+  .nav {
     padding-left: 5rem;
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .mobile-nav {
+    padding-left: 2rem;
     display: flex;
     justify-content: flex-start;
   }

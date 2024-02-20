@@ -4,7 +4,7 @@
 
   import { chartMode } from '$lib/store';
 
-  import MenuItem from '$components/menu/menu_item.svelte';
+  import MenuItem from '$components/rightMenu/menu_item.svelte';
 
   let modes = ['bar', 'circle'];
   let i = modes.indexOf($chartMode);

@@ -8,6 +8,7 @@
   import Cookies from 'js-cookie';
   import { KJUR } from 'jsrsasign';
   import { SvelteToast } from '@zerodevx/svelte-toast';
+  import { isMobile } from '$lib/store';
 
   import '/src/app.css';
   import './styles.css';
@@ -17,6 +18,8 @@
 
   import { globalViewMode } from '$lib/store';
 
+  let innerWidth: number;
+  $: $isMobile = innerWidth < 768;
   $: isStandard = $globalViewMode == 'standard';
 
   export const generateJWT = (payload, secretKey) => {
@@ -40,6 +43,8 @@
     });
   });
 </script>
+
+<svelte:window bind:innerWidth />
 
 <div class="app">
   <SvelteToast />

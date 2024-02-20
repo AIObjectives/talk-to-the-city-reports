@@ -5,7 +5,7 @@
   import { fitViewStore } from '$lib/store';
   import { globalViewMode } from '$lib/store';
 
-  import MenuItem from '$components/menu/menu_item.svelte';
+  import MenuItem from '$components/rightMenu/menu_item.svelte';
 
   let modes = ['standard', 'graph'];
   let i = modes.indexOf($globalViewMode);
