@@ -1,22 +1,25 @@
 <script lang="ts">
-  import _ from 'lodash';
   import { get } from 'svelte/store';
-  import { hierarchy } from 'd3-hierarchy';
+
+  import _ from 'lodash';
   import { _ as __ } from 'svelte-i18n';
   import { hsl } from 'd3-color';
-  import { getNodeColor, ordinalColor } from '$lib/reportUtils';
   import { sortFunc } from 'svelte-ux';
+  import { hierarchy } from 'd3-hierarchy';
+
+  import { reportStore, isMobile, chartMode } from '$lib/store';
+
+  import { Dataset } from '$lib/dataset';
+  import type { FeedbackNodeInterface } from '$lib/compute/feedback_v0';
+  import type { CSVNodeInterface } from '$lib/compute/csv_v0';
+  import { getNodeColor, ordinalColor } from '$lib/reportUtils';
+
   import BubbleChart from '$components/report/Chart.svelte';
   import Claims from '$components/report/Claims.svelte';
   import Tooltip from '$components/report/Tooltip.svelte';
   import InfoPanel from '$components/report/InfoPanel.svelte';
   import FeedbackDialog from './FeedbackDialog.svelte';
-  import type { FeedbackNodeInterface } from '$lib/compute/feedback_v0';
-  import type { CSVNodeInterface } from '$lib/compute/csv_v0';
-  import { Dataset } from '$lib/dataset';
   import Appendix from '$components/report/appendix/Appendix.svelte';
-  import { reportStore } from '$lib/store';
-  import { chartMode } from '$lib/store';
   import BarChart from '$components/report/barChart/barChart.svelte';
 
   export let dataset: Dataset;
@@ -145,7 +148,7 @@
 <!-- Bar Chart -->
 <!-- x-margins intentionally smaller than other report sections to keep all
      text aligned while allowing for extra bar chart row padding on hover -->
-<div class="mx-8 mb-7 mt-5">
+<div class={($isMobile ? 'mx-4' : 'mx-8') + ' mb-7 mt-5'}>
   {#if $chartMode == 'bar'}
     {#if complexHierarchy}
       <BarChart {complexHierarchy} level="top" />
@@ -154,7 +157,7 @@
 </div>
 
 <!-- Report -->
-<div class="report-container mx-10 mt-12" id="report-container">
+<div class={($isMobile ? 'mx-5' : 'mx-10') + ' report-container mt-12'} id="report-container">
   {#if report && report.topics}
     {#each report.topics as topic}
       {@const topicColor = hsl(ordinalColor(topic.topicName)).brighter(-1)}
@@ -276,30 +279,25 @@
     margin: 0 auto;
     box-sizing: border-box;
     display: grid;
-    /* Use the reactive gridTemplateColumns variable */
     grid-template-columns: var(--grid-template-columns);
-    gap: 16px; /* Optional: Add a gap if needed */
-    transition: all 0.5s ease-in-out; /* Smooth transition for the resizing */
+    gap: 16px;
+    transition: all 0.5s ease-in-out;
   }
 
   .chart-wrapper {
-    /* Flex-grow allows the chart to grow and take up available space */
     flex-grow: 1;
     height: 400px;
-    border-radius: 8px; /* Optional rounded corners */
+    border-radius: 8px;
     overflow: hidden;
     transition: all 0.5s ease-in-out;
   }
 
   .info-panel {
-    /* The InfoPanel takes up one grid column with a fixed width when visible */
     width: 400px;
     transition: all 0.5s ease-in-out;
-    /* Set to only take space when it's actually displayed */
     display: none;
   }
 
-  /* Only display the info panel when showInfoPanel is true */
   .info-active .info-panel {
     display: block;
   }

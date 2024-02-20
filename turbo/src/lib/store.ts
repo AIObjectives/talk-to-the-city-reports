@@ -11,6 +11,8 @@ const storeDataset: Writable<Object | null> = writable(null);
 const message: Writable<Object | null> = writable(null);
 const graphNotice: Writable<boolean> = writable(false);
 const pipelineStepsRemaining: Writable<number> = writable(0);
+const isMobile: Writable<boolean> = writable(false);
+const openLeftDrawer: Writable<boolean> = writable(false);
 
 export {
   user,
@@ -21,5 +23,7 @@ export {
   globalViewMode,
   reportStore,
   chartMode,
-  pipelineStepsRemaining
+  pipelineStepsRemaining,
+  isMobile,
+  openLeftDrawer
 };

@@ -5,11 +5,11 @@
   import { storeDataset } from '$lib/store';
   import { Dataset } from '$lib/dataset';
 
-  import MenuItem from '$components/menu/menu_item.svelte';
-  import BurgerMenu from '$components/menu/menu_burger.svelte';
-  import ForkDialog from '$components/menu/fork_dialog.svelte';
-  import ToggleView from '$components/menu/ToggleView.svelte';
-  import ToggleChart from '$components/menu/ToggleChart.svelte';
+  import MenuItem from '$components/rightMenu/menu_item.svelte';
+  import MenuVerticalDots from '$components/rightMenu/MenuVerticalDots.svelte';
+  import ForkDialog from '$components/rightMenu/fork_dialog.svelte';
+  import ToggleView from '$components/rightMenu/ToggleView.svelte';
+  import ToggleChart from '$components/rightMenu/ToggleChart.svelte';
 
   let showDropdown: boolean = false;
   let modalShowing: boolean = false;
@@ -30,7 +30,7 @@
 
 {#if $user && $user.uid}
   {#if anyPath}
-    <BurgerMenu bind:showDropdown />
+    <MenuVerticalDots bind:showDropdown />
     {#if showDropdown}
       <div
         class="menu-items-container border border-gray-800 absolute right-4 top-12 flex flex-col bg-gray-200 text-gray-900 py-2 rounded shadow-lg z-10"
