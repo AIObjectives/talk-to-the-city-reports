@@ -91,6 +91,9 @@ export default class ClusterExtractionNode {
         todo
       );
       clearInterval(interval);
+      console.log('THE RESULT IS');
+      console.log(result);
+      console.log('==============');
       this.data.output = JSON.parse(result);
       await uploadJSONToGCS(this, this.data.output, slug);
       this.data.dirty = false;
