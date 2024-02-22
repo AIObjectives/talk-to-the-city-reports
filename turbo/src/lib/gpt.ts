@@ -87,7 +87,7 @@ export async function openai(
             if (!response.ok) {
               const errorText = await response.text();
               console.error('Error text:', errorText);
-              reject(new Error(`HTTP error! status: ${response.status}`));
+              reject(new Error(`HTTP error! status: ${response.status} with text: ${errorText}`));
             } else {
               const contentType = response.headers.get('content-type');
               if (contentType && contentType.includes('application/json')) {

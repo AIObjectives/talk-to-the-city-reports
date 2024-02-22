@@ -216,14 +216,15 @@ export class Dataset {
                 ' ' +
                 node.id +
                 ' ' +
-                $__('please_view_console_for_more_details')
+                $__('please_view_console_for_more_details'),
+              e
             );
             this.graph.nodes.update((nodes) => {
               const nodeToUpdate = nodes.find((n) => n.id === node.id);
               nodeToUpdate.data.processing = false;
               nodeToUpdate.data.output = undefined;
               nodeToUpdate.data.dirty = true;
-              nodeToUpdate.data.logs.push(JSON.stringify(e));
+              if (!_.isEmpty(e)) nodeToUpdate.data.log.push(JSON.stringify(e));
               return nodes;
             });
           }

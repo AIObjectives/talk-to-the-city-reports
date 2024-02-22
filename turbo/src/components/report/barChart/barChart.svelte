@@ -2,6 +2,7 @@
   import { onMount, onDestroy } from 'svelte';
   import { tick } from 'svelte';
   import BarChartRow from '$components/report/barChart/barChartRow.svelte';
+  import { browser } from '$app/environment';
 
   export let complexHierarchy: Record<string, any>;
   export let color: string = '';
@@ -21,12 +22,12 @@
   }
 
   onMount(async () => {
-    window.addEventListener('resize', handleResize);
+    if (browser) window.addEventListener('resize', handleResize);
     await handleResize();
   });
 
   onDestroy(() => {
-    window.removeEventListener('resize', handleResize);
+    if (browser) window.removeEventListener('resize', handleResize);
   });
 </script>
 
