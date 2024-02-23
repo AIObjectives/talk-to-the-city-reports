@@ -36,6 +36,7 @@
   const n = useNodes();
   let showPipeline = false;
   let tune = false;
+  let standardHasNodes = false;
   const nodes = dataset.graph.nodes,
     edges = dataset.graph.edges;
 
@@ -102,26 +103,28 @@
       {/if}
     </div>
   {/if}
+{/if}
 
-  <!-- The pipeline graph must be in the DOM even when in standard view -->
-  <!-- it is therefore off-screen when in standard view  -->
-  <PipelineGraph
-    {nodes}
-    {edges}
-    bind:dataset
-    {showNodesToolbar}
-    {showSaveButton}
-    {showCopyButton}
-    {showScreenshotButton}
-    {height}
-    {width}
-    {autoSave}
-  />
+<!-- The pipeline graph must be in the DOM even when in standard view -->
+<!-- it is therefore off-screen when in standard view  -->
+<PipelineGraph
+  {nodes}
+  {edges}
+  bind:dataset
+  {showNodesToolbar}
+  {showSaveButton}
+  {showCopyButton}
+  {showScreenshotButton}
+  {height}
+  {width}
+  {autoSave}
+/>
 
-  {#if $viewMode == 'standard'}
-    <PipelineStandard />
-  {/if}
+{#if $viewMode == 'standard'}
+  <PipelineStandard {dataset} {showPipeline} bind:standardHasNodes />
+{/if}
 
+{#if standardHasNodes}
   <div class="pipeline-container">
     <Button
       on:click={async () => {
@@ -142,9 +145,9 @@
       </Button>
     {/if}
   </div>
-  <br />
-  <br />
 {/if}
+<br />
+<br />
 
 <PipelineNotice />
 <GraphNotice />

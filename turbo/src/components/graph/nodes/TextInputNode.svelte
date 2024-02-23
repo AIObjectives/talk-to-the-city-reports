@@ -24,7 +24,7 @@
       input$rows={6}
       on:input={(evt) => {
         data.text = evt.target?.value;
-        data.dirty = true;
+        if (!data.prevent_dirty) data.dirty = true;
       }}
       value={text ? text : ''}
     />
@@ -36,7 +36,7 @@
       type="text"
       on:input={(evt) => {
         data.text = evt.target?.value;
-        data.dirty = true;
+        if (!data.prevent_dirty) data.dirty = true;
       }}
       value={text ? text : ''}
     />

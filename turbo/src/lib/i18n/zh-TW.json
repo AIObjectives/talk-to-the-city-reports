@@ -240,5 +240,7 @@
   "processing_step": "處理步驟",
   "processing_steps": "處理步驟",
   "processing_complete": "處理完成",
-  "logs": "日誌"
+  "logs": "日誌",
+  "show_to_anon": "顯示給匿名用戶",
+  "sign_out": "登出"
 }
