@@ -198,7 +198,7 @@
           </button>
           &nbsp;&nbsp;
         {/if}
-        {#if !isStandardView}
+        {#if !isStandardView || data?.show_settings_in_standard_view}
           <button
             on:click={() => {
               tune = !tune;
@@ -226,7 +226,7 @@
         <Logs logs={data.log} />
       {/if}
       {#if tune}
-        <TuneDGNode {data} />
+        <TuneDGNode bind:data />
       {/if}
       {#if isStandardView && inlineDoc}
         <div class="text-sm text-gray-900 my-5">{@html marked.parse(inlineDoc)}</div>

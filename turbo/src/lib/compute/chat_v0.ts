@@ -1,11 +1,9 @@
-import { get } from 'svelte/store';
 import nodes from '$lib/node_register';
-import { getEncoding } from 'js-tiktoken';
 import categories from '$lib/node_categories';
-import { chat_system_prompt } from '$lib/prompts';
 import mock_responses from '$lib/mock_data/gpt_responses';
 import { openai } from '$lib/gpt';
 import CryptoJS from 'crypto-js';
+import type { DGNodeInterface, BaseData } from '$lib/node_data_types';
 import _ from 'lodash';
 import { format, unwrapFunctionStore } from 'svelte-i18n';
 
@@ -13,7 +11,7 @@ const $__ = unwrapFunctionStore(format);
 
 export default class ChatNode {
   id: string;
-  data: StringifyData;
+  data: ChatNodeData;
   position: { x: number; y: number };
   type: string;
 
@@ -39,124 +37,142 @@ export default class ChatNode {
     return this.data.output;
   }
 
-  createContext(data) {
-    let context = '';
-    let num_tokens = 0;
-    const encoding = getEncoding('cl100k_base');
-
-    if (_.isString(data)) {
-      const tokens = encoding.encode(data);
-      tokens.slice(0, 50000).forEach((token) => {
-        context += encoding.decode([token]);
-      });
-      return context;
-    }
-
-    for (let i = 0; i < _.keys(data?.topics).length; i++) {
-      const topic = data?.topics[i];
-      for (let j = 0; j < _.keys(topic?.subtopics).length; j++) {
-        const subtopic = topic?.subtopics[j];
-        for (let k = 0; k < _.keys(subtopic?.claims).length; k++) {
-          const claim = subtopic?.claims[k];
-          let text = '';
-          text += '\n';
-          text += `Interview: ${claim?.interview}\n`;
-          text += `Topic: ${claim?.topicName}\n`;
-          text += `Subtopic: ${claim?.subtopicName}\n`;
-          text += `Claim: ${claim?.claim}\n`;
-          text += '\n';
-          context += text;
-          num_tokens += encoding.encode(text).length;
-          if (num_tokens > 50000) break;
-        }
-        if (num_tokens > 50000) break;
+  getTools(dataset) {
+    let tools = [];
+    (this.data.input_ids.tools as []).forEach((tool: string) => {
+      tool = tool.split('|')[0];
+      const node = dataset.graph.findImpl(tool);
+      if (node) {
+        tools = tools.concat(node.tools());
       }
-      if (num_tokens > 50000) break;
-    }
-
-    return context;
+    });
+    return tools;
   }
 
-  insertSystemPrompt(messages, context) {
-    if (messages.length === 1) {
-      console.log(context);
-      const M = _.cloneDeep(this.data.initial_messages);
-      M[0].content = M[0].content.replace('{text}', context);
-      M.push(messages[0]);
-      this.data.messages = M;
+  async executeFunction(func, dataset) {
+    for (let tool of this.data.input_ids.tools) {
+      tool = tool.split('|')[0];
+      const node = dataset.graph.findImpl(tool);
+      if (node) {
+        const name = func.function.name;
+        let args = JSON.parse(func.function.arguments);
+        if (!Array.isArray(args)) {
+          args = Object.values(args);
+        }
+        args.push(dataset);
+        if (typeof node[name] === 'function') {
+          return await node[name].apply(node, args);
+        }
+      }
     }
+  }
+
+  getSystemPrompt(dataset) {
+    const node = dataset.graph.findImpl(this.data.input_ids.system_prompt);
+    if (node) {
+      return node.data.output || node.data.text;
+    }
+    return '';
+  }
+
+  getKey(dataset) {
+    const keyNode = dataset.graph.find(this.data.input_ids.open_ai_key);
+    let apiKey = keyNode?.node?.data.output;
+    return apiKey;
   }
 
   async chat(messages, dataset, key) {
     this.data.messages = _.cloneDeep(messages);
-    this.data.message = null;
+    if (this.data.messages.length == 1 && this.getSystemPrompt(dataset)) {
+      this.data.messages.unshift({ role: 'system', content: this.getSystemPrompt(dataset) });
+    }
     const keyNode = dataset.graph.find(this.data.input_ids.open_ai_key);
     let apiKey = keyNode.node.data.output;
     if (key) apiKey = key;
     if (!apiKey) {
       this.data.message = $__('invalid_key');
-      return;
+      return this.data.messages;
     }
-    const data = dataset.graph.find(this.data.input_ids.data);
-    if (!data) {
-      this.data.message = $__('missing_input_data');
-      return;
-    }
-    const context = this.createContext(data.node.data.output);
-    if (!context) {
-      console.log('missing context');
-      this.data.message = $__('missing_input_data');
-      return;
-    }
-    this.insertSystemPrompt(messages, context);
     const hash = CryptoJS.SHA256(JSON.stringify(this.data.messages)).toString();
+    const tools = this.getTools(dataset);
     const response = await openai(
       apiKey,
-      this.data.messages,
+      this.data.messages.map((m) => ({ role: m.role, content: m.content })),
       import.meta.env.VITEST,
       hash,
       mock_responses,
-      null
+      null,
+      tools
     );
-    this.data.messages.push({ role: 'assistant', content: response });
-    console.log(response);
-    return this.data.messages;
+    if (_.isArray(response)) {
+      for (let i = 0; i < response.length; i++) {
+        const resp = response[i];
+        if (resp.type == 'function') {
+          this.data.messages.push({
+            role: 'assistant',
+            content: JSON.stringify(resp, null, 2),
+            type: 'function_call',
+            hide: false
+          });
+          const fresp = await this.executeFunction(resp, dataset);
+          console.log('function resp', fresp);
+          this.data.messages.push({
+            role: 'user',
+            type: 'function_response',
+            content: JSON.stringify(fresp, null, 2),
+            hide: false
+          });
+        }
+      }
+      await this.chat(this.data.messages, dataset, apiKey);
+      return this.data.messages;
+    } else {
+      this.data.messages.push({ role: 'assistant', content: response, hide: false });
+      console.log(response);
+      return this.data.messages;
+    }
   }
 
   reset() {
     this.data.messages = [];
     this.data.dirty = true;
-    console.log('reset');
-    console.log(this.data.messages);
   }
 }
 
-interface StringifyData extends BaseData {
+interface ChatNodeData extends BaseData {
   output: object;
+  messages: object[];
+  text_to_speech: boolean;
+  speech_to_text: boolean;
+  show_function_calls: boolean;
 }
 
 type ChatNodeInterface = DGNodeInterface & {
-  data: StringifyData;
+  data: ChatNodeData;
 };
 
-export const chat_node_data: ChatNodeInterface = {
+export let chat_node_data: ChatNodeInterface = {
   id: 'chat',
   data: {
     label: 'chat',
     dirty: false,
-    initial_messages: [{ role: 'system', content: chat_system_prompt }],
     messages: [],
     output: {},
     compute_type: 'chat_v0',
-    input_ids: { open_ai_key: '', data: '' },
+    input_ids: { open_ai_key: '', system_prompt: '', embeddings: '', tools: [] },
     category: categories.ml.id,
     icon: 'chat_v0',
-    show_in_ui: true
+    show_in_ui: true,
+    message: '',
+    text_to_speech: false,
+    speech_to_text: false,
+    show_function_calls: false,
+    show_settings_in_standard_view: true
   },
   position: { x: 0, y: 0 },
   type: 'chat_v0'
 };
 
-export const chat_node = new ChatNode(chat_node_data);
+export let chat_node = new ChatNode(chat_node_data);
 
 nodes.register(ChatNode, chat_node);

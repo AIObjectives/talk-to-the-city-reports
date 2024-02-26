@@ -55,6 +55,7 @@ export default class OpenAIKeyNode {
 
 interface OpenAIKeyData extends BaseData {
   text: string;
+  prevent_dirty: boolean;
 }
 
 type OpenAIKeyNodeInterface = DGNodeInterface & {
@@ -72,7 +73,8 @@ export const open_ai_key_node_data: OpenAIKeyNodeInterface = {
     category: categories.ml.id,
     icon: 'open_ai_key_v0',
     show_in_ui: true,
-    message: ''
+    message: '',
+    prevent_dirty: true
   },
   position: { x: 0, y: 0 },
   type: 'text_input_v0'
