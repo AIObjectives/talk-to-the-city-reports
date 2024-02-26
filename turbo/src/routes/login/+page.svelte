@@ -12,8 +12,7 @@
       const provider = new GoogleAuthProvider();
       provider.addScope('profile');
       provider.addScope('email');
-      const result = await signInWithPopup(auth, provider);
-      const credential = GoogleAuthProvider.credentialFromResult(result);
+      await signInWithPopup(auth, provider);
       await goto('/');
     } catch (e) {
       error = e;

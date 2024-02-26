@@ -2,6 +2,8 @@
   import { page } from '$app/stores';
   import { _ as __ } from 'svelte-i18n';
 
+  import { signOut } from 'firebase/auth';
+  import { auth } from '$lib/firebase';
   import { storeDataset } from '$lib/store';
   import { Dataset } from '$lib/dataset';
 
@@ -48,6 +50,14 @@
           />
           {#if $user.uid == adminUid}
             <MenuItem on:click={saveAsTemplateOnClick} label={$__('save_as_template')} />
+          {/if}
+          {#if $user.uid}
+            <MenuItem
+              on:click={async () => {
+                await signOut(auth);
+              }}
+              label={$__('sign_out')}
+            />
           {/if}
           <ToggleChart />
         {/if}

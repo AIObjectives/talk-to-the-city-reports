@@ -17,6 +17,7 @@ export interface BaseData {
   icon: string;
   output?: any;
   show_in_ui: boolean;
+  show_to_anon: boolean = false;
   message: string;
   enable?: boolean;
   log?: Log[];

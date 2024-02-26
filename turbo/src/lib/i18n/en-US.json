@@ -239,5 +239,7 @@
   "processing_step": "Processing Step",
   "processing_steps": "Processing Steps",
   "processing_complete": "Processing Complete",
-  "logs": "Logs"
+  "logs": "Logs",
+  "show_to_anon": "Show to Anon",
+  "sign_out": "Sign Out"
 }

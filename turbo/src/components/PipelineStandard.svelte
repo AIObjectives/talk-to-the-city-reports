@@ -2,19 +2,34 @@
   import type { Writable } from 'svelte/store';
   import type { Node, Edge } from '@xyflow/svelte';
   import { _ as __ } from 'svelte-i18n';
+  import { user } from '$lib/store';
+  import type { Dataset } from '$lib/dataset';
 
   import { nodeTypes } from '$lib/node_view_types';
   import { useNodes, useEdges } from '@xyflow/svelte';
   import { topologicalSort } from '$lib/utils';
 
+  export let dataset: Dataset;
+  export let showPipeline: boolean = false;
+  export let standardHasNodes: boolean = false;
+
   const nodes: Writable<Node[]> = useNodes();
   const edges: Writable<Edge[]> = useEdges();
+
+  let sorted = [];
+
+  $: {
+    sorted = topologicalSort($nodes, $edges);
+    standardHasNodes = sorted.length > 0;
+  }
 </script>
 
 <div class="centered-container" id="pipeline-standard">
-  {#each topologicalSort($nodes, $edges) as node (node.id)}
+  {#each sorted as node (node.id)}
+    {@const show_in_ui = node.data.show_in_ui === undefined || node.data.show_in_ui === true}
+    {@const show_to_anon = node.data.show_to_anon === true}
     {#if nodeTypes[node.type]}
-      {#if node.data.show_in_ui === undefined || node.data.show_in_ui === true}
+      {#if showPipeline || (dataset && dataset?.owner == $user?.uid && show_in_ui) || (show_to_anon && !$user?.uid)}
         <div class="p-4">
           <svelte:component
             this={nodeTypes[node.type]}
@@ -45,19 +60,18 @@
 <style>
   .centered-container {
     display: flex;
-    flex-direction: column; /* Stack elements vertically */
-    align-items: center; /* Center children horizontally */
-    width: 100%; /* Take full width of the parent container */
-    /* `justify-content: flex-start;` to prevent stretch if children are smaller than the max width */
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
     justify-content: flex-start;
   }
 
   .p-4 {
     padding: 1rem;
-    width: 100%; /* Stretch to the full width of the container */
-    max-width: 800px; /* Set the maximum width for child elements */
-    box-sizing: border-box; /* Include padding in the width calculation */
-    margin-left: auto; /* Margin auto left and right will center the div */
+    width: 100%;
+    max-width: 800px;
+    box-sizing: border-box;
+    margin-left: auto;
     margin-right: auto;
   }
 </style>
