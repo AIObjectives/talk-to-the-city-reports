@@ -136,7 +136,7 @@
 
   .custom-drawer {
     width: inherit;
-    height: calc(100% - 50px);
+    height: calc(100vh - 60px);
     padding: 0 1.5rem;
     box-sizing: border-box;
     overflow-y: auto;

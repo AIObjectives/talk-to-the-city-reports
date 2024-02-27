@@ -25,11 +25,7 @@
       const show_in_ui = node.data.show_in_ui === undefined || node.data.show_in_ui === true;
       const show_to_anon = node.data.show_to_anon === true;
       if (nodeTypes[node.type])
-        if (
-          showPipeline ||
-          (dataset?.owner == $user?.uid && show_in_ui) ||
-          (show_to_anon && !$user?.uid)
-        )
+        if (showPipeline || (dataset?.owner == $user?.uid && show_in_ui) || show_to_anon)
           filtered.push(node);
     }
     standardHasNodes = filtered.length > 0;

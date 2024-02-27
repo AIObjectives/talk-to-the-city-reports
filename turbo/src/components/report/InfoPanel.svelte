@@ -59,6 +59,7 @@
   .outer-div {
     position: relative;
     padding: 10px;
+    z-index: 10000;
   }
 
   .scrollable-content {
