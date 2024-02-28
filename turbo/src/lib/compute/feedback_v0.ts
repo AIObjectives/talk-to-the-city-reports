@@ -88,6 +88,20 @@ export default class FeedbackNode {
       }
     });
   }
+
+  async copyFeedbackToNewSlug(sourceSlug: string, targetSlug: string) {
+    const q = query(collection(db, 'feedback'), where('slug', '==', sourceSlug));
+    const querySnapshot = await getDocs(q);
+
+    const copies = querySnapshot.docs.map(async (d) => {
+      const data = d.data();
+      data.slug = targetSlug;
+      console.log('data', data);
+      const res = await addDoc(collection(db, 'feedback'), data);
+      console.log(res);
+    });
+    await Promise.all(copies);
+  }
 }
 
 export type FeedbackNodeInterface = DGNodeInterface & {

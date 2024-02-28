@@ -7,7 +7,10 @@ import type { Writable } from 'svelte/store';
 import { writable, get } from 'svelte/store';
 import nodesRegister from '$lib/node_register';
 import { getLayoutedElements, elkOptions } from '$lib/elk';
+import { db } from '$lib/firebase';
 import { getStorage, ref as storageRef, deleteObject } from 'firebase/storage';
+import { collection, getDocs, query, where, deleteDoc, doc } from 'firebase/firestore/lite';
+import { feedbackCollection } from '$lib/firebase';
 import { listAll } from 'firebase/storage';
 import _ from 'lodash';
 
@@ -185,7 +188,7 @@ export class DependencyGraph {
     });
   };
 
-  deleteAssets = () => {
+  deleteAssets = async () => {
     const auth = getAuth();
     const storage = getStorage();
     const uid = auth.currentUser.uid;
@@ -204,11 +207,16 @@ export class DependencyGraph {
       .catch((error) => {
         console.error('Error deleting assets:', error);
       });
+    const q = query(collection(db, 'feedback'), where('slug', '==', this.parent.slug));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach(async (d) => {
+      await deleteDoc(doc(feedbackCollection, d.id));
+    });
   };
 
-  async copyAssets() {
+  async copyAssets(sourceSlug: string, targetSlug: string) {
     const copyOperations = get(this.nodes).map(async (node) => {
-      await this.find(node.id).copyAssets();
+      await this.find(node.id).copyAssets(sourceSlug, targetSlug);
     });
     await Promise.all(copyOperations);
     await tick();
