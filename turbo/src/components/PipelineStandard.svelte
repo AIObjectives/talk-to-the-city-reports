@@ -16,44 +16,50 @@
   const nodes: Writable<Node[]> = useNodes();
   const edges: Writable<Edge[]> = useEdges();
 
-  let sorted = [];
+  let filtered = [];
 
   $: {
-    sorted = topologicalSort($nodes, $edges);
-    standardHasNodes = sorted.length > 0;
+    let sorted = topologicalSort($nodes, $edges);
+    filtered = [];
+    for (const node of sorted) {
+      const show_in_ui = node.data.show_in_ui === undefined || node.data.show_in_ui === true;
+      const show_to_anon = node.data.show_to_anon === true;
+      if (nodeTypes[node.type])
+        if (
+          showPipeline ||
+          (dataset?.owner == $user?.uid && show_in_ui) ||
+          (show_to_anon && !$user?.uid)
+        )
+          filtered.push(node);
+    }
+    standardHasNodes = filtered.length > 0;
   }
 </script>
 
 <div class="centered-container" id="pipeline-standard">
-  {#each sorted as node (node.id)}
-    {@const show_in_ui = node.data.show_in_ui === undefined || node.data.show_in_ui === true}
-    {@const show_to_anon = node.data.show_to_anon === true}
-    {#if nodeTypes[node.type]}
-      {#if showPipeline || (dataset && dataset?.owner == $user?.uid && show_in_ui) || (show_to_anon && !$user?.uid)}
-        <div class="p-4">
-          <svelte:component
-            this={nodeTypes[node.type]}
-            data={node.data}
-            id={node.id}
-            zIndex={node.zIndex}
-            dragging={node.dragging}
-            dragHandle={node.dragHandle}
-            isConnectable={node.isConnectable}
-            type={node.type}
-            xPos={node.xPos}
-            yPos={node.yPos}
-            position={node.position}
-            positionAbsolute={node.positionAbsolute}
-            width={node.width}
-            height={node.height}
-            selected={node.selected}
-            sourcePosition={node.sourcePosition}
-            targetPosition={node.targetPosition}
-            isStandardView={true}
-          />
-        </div>
-      {/if}
-    {/if}
+  {#each filtered as node (node.id)}
+    <div class="p-4">
+      <svelte:component
+        this={nodeTypes[node.type]}
+        data={node.data}
+        id={node.id}
+        zIndex={node.zIndex}
+        dragging={node.dragging}
+        dragHandle={node.dragHandle}
+        isConnectable={node.isConnectable}
+        type={node.type}
+        xPos={node.xPos}
+        yPos={node.yPos}
+        position={node.position}
+        positionAbsolute={node.positionAbsolute}
+        width={node.width}
+        height={node.height}
+        selected={node.selected}
+        sourcePosition={node.sourcePosition}
+        targetPosition={node.targetPosition}
+        isStandardView={true}
+      />
+    </div>
   {/each}
 </div>
 
