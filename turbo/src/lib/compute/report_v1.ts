@@ -34,6 +34,24 @@ export default class ReportNode {
     }
   }
 
+  sortData(data) {
+    if (!data) return data;
+    data.topics.forEach((topic) => {
+      topic.subtopics.forEach((subtopic) => {
+        subtopic.claims = subtopic.claims.sort((a, b) => a.id.localeCompare(b.id));
+      });
+    });
+    data.topics.forEach((topic) => {
+      topic.subtopics = topic.subtopics.sort((a, b) => b.claims.length - a.claims.length);
+    });
+    data.topics = data.topics.sort((a, b) => {
+      const totalClaimsA = a.subtopics.reduce((acc, subtopic) => acc + subtopic.claims.length, 0);
+      const totalClaimsB = b.subtopics.reduce((acc, subtopic) => acc + subtopic.claims.length, 0);
+      return totalClaimsB - totalClaimsA;
+    });
+    return data;
+  }
+
   async compute(
     inputData: Record<string, any>,
     context: string,
@@ -50,7 +68,7 @@ export default class ReportNode {
         if (typeof doc === 'string') {
           doc = JSON.parse(doc);
         }
-        this.data.output.merge = doc.merge;
+        this.data.output.merge = this.sortData(doc.merge);
         this.setMessage(true);
         return this.data.output;
       } catch (e) {
@@ -69,7 +87,9 @@ export default class ReportNode {
       }
     }
     const output_ids = this.data.output_ids;
-    this.data.output[output_ids.merge] = _.cloneDeep(inputData[this.data.input_ids.merge]);
+    this.data.output[output_ids.merge] = this.sortData(
+      _.cloneDeep(inputData[this.data.input_ids.merge])
+    );
     this.data.output[output_ids.csv] = _.cloneDeep(inputData[this.data.input_ids.csv]);
     this.setMessage(false);
     return this.data.output;
@@ -100,7 +120,8 @@ export const report_node_data: ReportNodeInterface = {
     message: '',
     filename: '',
     size_kb: 0,
-    gcs_path: ''
+    gcs_path: '',
+    show_to_anon: false
   },
   position: { x: 0, y: 0 },
   type: 'default_v0'

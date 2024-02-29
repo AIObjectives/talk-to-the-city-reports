@@ -4,7 +4,6 @@
   import _ from 'lodash';
   import { _ as __ } from 'svelte-i18n';
   import { hsl } from 'd3-color';
-  import { sortFunc } from 'svelte-ux';
   import { hierarchy } from 'd3-hierarchy';
 
   import { reportStore, isMobile, chartMode } from '$lib/store';
@@ -85,9 +84,7 @@
       ) as FeedbackNodeInterface;
       if (!_.isEmpty(report)) {
         let transformedData = transformData(report);
-        complexHierarchy = hierarchy(transformedData)
-          .sum((d: any) => d.value)
-          .sort(sortFunc('value', 'desc'));
+        complexHierarchy = hierarchy(transformedData).sum((d: any) => d.value);
       }
     }
   }
