@@ -8,6 +8,8 @@
   export let showFeedback: boolean = false;
   export let csv: any;
   export let claims: any;
+  export let hasVideo = false;
+  let popoverClass = hasVideo ? 'popover-video' : 'popover-no-video';
 
   let open = false;
 </script>
@@ -33,14 +35,20 @@
     {/if}
   </span>
   {#if open}
-    <Popover bind:open padding={10} class="z-1">
+    <Popover bind:open padding={10} class="z-1 {popoverClass}">
       <InfoPanel {csv} {claims} showClaims={false} showVideo={true} on:feedback {showFeedback} />
     </Popover>
   {/if}
 {/if}
 
 <style>
-  :global(.Popover) {
+  :global(.popover-video) {
+    max-width: 400px;
+    max-height: 500px;
+    overflow-y: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+  :global(.popover-no-video) {
     max-width: 320px;
     max-height: 400px;
     overflow-y: auto;

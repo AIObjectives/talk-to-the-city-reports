@@ -79,7 +79,13 @@
   {#each sortedClaims.slice(0, showMoreClaims ? sortedClaims.length : 5) as claim (claim.claim)}
     <div class="flex items-center" style="color: black">
       <div class="text-sm">
-        <Claim {csv} claims={_.groupBy(claims, 'claim')[claim.claim]} on:feedback {showFeedback} />
+        <Claim
+          {hasVideo}
+          {csv}
+          claims={_.groupBy(claims, 'claim')[claim.claim]}
+          on:feedback
+          {showFeedback}
+        />
       </div>
     </div>
   {/each}
