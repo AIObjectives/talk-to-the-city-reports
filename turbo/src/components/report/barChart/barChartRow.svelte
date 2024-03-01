@@ -81,6 +81,7 @@
         dominant-baseline="middle"
         text-anchor="left"
         font-size="small"
+        style="pointer-events: none;"
         >{$__(level === 'top' ? 'click_to_view_topic' : 'click_to_view_subtopic')}</text
       >
     {/if}
