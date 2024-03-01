@@ -15,6 +15,24 @@ export default class ReportNode {
     this.type = type;
   }
 
+  sortData(data) {
+    if (!data) return data;
+    data.topics?.forEach((topic) => {
+      topic.subtopics?.forEach((subtopic) => {
+        subtopic.claims = subtopic.claims.sort((a, b) => a.id.localeCompare(b.id));
+      });
+    });
+    data.topics?.forEach((topic) => {
+      topic.subtopics = topic.subtopics?.sort((a, b) => b.claims.length - a.claims.length);
+    });
+    data.topics = data.topics?.sort((a, b) => {
+      const totalClaimsA = a.subtopics.reduce((acc, subtopic) => acc + subtopic.claims.length, 0);
+      const totalClaimsB = b.subtopics.reduce((acc, subtopic) => acc + subtopic.claims.length, 0);
+      return totalClaimsB - totalClaimsA;
+    });
+    return data;
+  }
+
   async compute(
     inputData: object,
     context: string,
@@ -26,7 +44,7 @@ export default class ReportNode {
   ) {
     this.data.dirty = false;
     const input = inputData[Object.keys(inputData)[0]];
-    this.data.output = input;
+    this.data.output = this.sortData(input);
     return input;
   }
 }
