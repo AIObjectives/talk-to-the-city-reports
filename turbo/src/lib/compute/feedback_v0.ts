@@ -9,10 +9,6 @@ import { collection, getDocs, query, where, addDoc } from 'firebase/firestore/li
 
 const $__ = unwrapFunctionStore(format);
 
-interface FeedbackData extends BaseData {
-  comments: { [claimId: string]: string[] };
-}
-
 export default class FeedbackNode {
   id: string;
   data: FeedbackData;
@@ -104,6 +100,11 @@ export default class FeedbackNode {
   }
 }
 
+interface FeedbackData extends BaseData {
+  comments: { [claimId: string]: string[] };
+  enable_input: boolean;
+}
+
 export type FeedbackNodeInterface = DGNodeInterface & {
   data: FeedbackData;
 };
@@ -119,8 +120,10 @@ export const feedback_node_data: FeedbackNodeInterface = {
     category: categories.input.id,
     icon: 'feedback_v0',
     show_in_ui: false,
+    show_to_anon: false,
     comments: {},
-    message: ''
+    message: '',
+    enable_input: true
   },
   position: { x: 0, y: 0 },
   type: 'feedback_v0'

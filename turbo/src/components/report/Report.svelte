@@ -133,7 +133,7 @@
       <div class="info-panel">
         <InfoPanel
           scrollHeight={'400px'}
-          showFeedback={!!feedbackNode}
+          showFeedback={feedbackNode?.data.enable_input}
           {clickEvent}
           {csv}
           on:feedback={(e) => {
@@ -251,7 +251,7 @@
             on:feedback={(e) => {
               feedbackEvent = e.detail;
             }}
-            showFeedback={!!feedbackNode}
+            showFeedback={feedbackNode?.data.enable_input}
           />
         {/each}
       </div>
