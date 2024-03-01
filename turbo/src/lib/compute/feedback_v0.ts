@@ -9,10 +9,6 @@ import { collection, getDocs, query, where, addDoc } from 'firebase/firestore/li
 
 const $__ = unwrapFunctionStore(format);
 
-interface FeedbackData extends BaseData {
-  comments: { [claimId: string]: string[] };
-}
-
 export default class FeedbackNode {
   id: string;
   data: FeedbackData;
@@ -88,6 +84,25 @@ export default class FeedbackNode {
       }
     });
   }
+
+  async copyFeedbackToNewSlug(sourceSlug: string, targetSlug: string) {
+    const q = query(collection(db, 'feedback'), where('slug', '==', sourceSlug));
+    const querySnapshot = await getDocs(q);
+
+    const copies = querySnapshot.docs.map(async (d) => {
+      const data = d.data();
+      data.slug = targetSlug;
+      console.log('data', data);
+      const res = await addDoc(collection(db, 'feedback'), data);
+      console.log(res);
+    });
+    await Promise.all(copies);
+  }
+}
+
+interface FeedbackData extends BaseData {
+  comments: { [claimId: string]: string[] };
+  enable_input: boolean;
 }
 
 export type FeedbackNodeInterface = DGNodeInterface & {
@@ -105,8 +120,10 @@ export const feedback_node_data: FeedbackNodeInterface = {
     category: categories.input.id,
     icon: 'feedback_v0',
     show_in_ui: false,
+    show_to_anon: false,
     comments: {},
-    message: ''
+    message: '',
+    enable_input: true
   },
   position: { x: 0, y: 0 },
   type: 'feedback_v0'

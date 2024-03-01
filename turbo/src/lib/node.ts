@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { getAuth } from 'firebase/auth';
+import nodesRegister from '$lib/node_register';
 import { getStorage, ref as storageRef, deleteObject } from 'firebase/storage';
 import { readFileFromGCS, uploadDataToGCS } from '$lib/utils';
 import { info } from '$components/toast/theme';
@@ -23,7 +24,12 @@ export class DGNode {
     });
   }
 
-  copyAssets = async () => {
+  copyAssets = async (sourceSlug: string, targetSlug: string) => {
+    if (this.node.data.compute_type == 'feedback_v0') {
+      const node = nodesRegister.init(this.node.data.compute_type, this.node);
+      await node.copyFeedbackToNewSlug(sourceSlug, targetSlug);
+    }
+
     const auth = getAuth();
     const pathPrefix = `uploads/${auth.currentUser!.uid}/${this.parent.parent.slug}/`;
     const node_data: GCSBaseData = this.node.data as GCSBaseData;
@@ -52,10 +58,8 @@ export class DGNode {
       typeof node_data.gcs_paths === 'object' &&
       !Array.isArray(node_data.gcs_paths)
     ) {
-      console.log(node_data.gcs_paths);
       for (const key of Object.keys(node_data.gcs_paths)) {
         const singlePath = node_data.gcs_paths[key];
-        console.log('singlePath', singlePath);
         if (!singlePath.includes(pathPrefix)) {
           const newFilePath = await copySingleAsset(singlePath);
           if (newFilePath) {

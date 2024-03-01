@@ -301,7 +301,7 @@ export class Dataset {
 
       await dataset.sanitize();
       info($__('copying_assets'));
-      await dataset.graph.copyAssets();
+      await dataset.graph.copyAssets(this.slug, slug);
       info($__('saving_dataset_with_new_asset_paths'));
       await dataset.addDatasetToFirebase();
       success($__('dataset_forked'));
@@ -312,6 +312,7 @@ export class Dataset {
       return true;
     } catch (err) {
       error($__('error_forking_dataset'));
+      console.error(err);
       return false;
     }
   }
@@ -333,7 +334,7 @@ export class Dataset {
   }
 
   async deleteDataset() {
-    this.graph.deleteAssets();
+    await this.graph.deleteAssets();
     await deleteDoc(doc(datasetCollection, this.id));
   }
 

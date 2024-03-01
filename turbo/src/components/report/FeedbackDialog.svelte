@@ -81,7 +81,8 @@
   bind:open
   aria-labelledby="simple-title"
   aria-describedby="simple-content"
-  class="z-2"
+  style="z-index: 1000000"
+  class="z-2 feedback-dialog"
 >
   <Title id="simple-title" class="mb-8">{$__('feedback')}</Title>
 
@@ -181,3 +182,9 @@
     </Button>
   </Actions>
 </Dialog>
+
+<style>
+  .feedback-dialog {
+    z-index: 1000000;
+  }
+</style>
