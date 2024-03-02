@@ -1,7 +1,5 @@
 <script lang="ts">
-  import OpenAI from 'openai';
   import { type NodeProps } from '@xyflow/svelte';
-  import TextField from '@smui/textfield';
   import Button from '@smui/button';
   import DGNode from './DGNode.svelte';
   import _ from 'lodash';

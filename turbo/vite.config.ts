@@ -5,7 +5,7 @@ import path from 'path';
 const config = {
   plugins: [sveltekit()],
   server: {
-    // host: '0.0.0.0', // uncomment for local mobile testing
+    host: '0.0.0.0', // uncomment for local mobile testing
     hmr: {
       overlay: false
     }

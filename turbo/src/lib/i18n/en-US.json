@@ -101,6 +101,7 @@
   "open_ai_key": "OpenAI Key",
   "pinecone_key": "Pinecone Key",
   "missing_open_ai_key": "Missing OpenAI Key",
+  "pinecone_key": "Pinecone Key",
   "participant_filter": "Participant Filter",
   "report": "Report",
   "score_argument_relevance": "Score Argument Relevance",
@@ -262,5 +263,16 @@
   "text_to_speech": "Text to Speech",
   "speech_to_text": "Speech to Text",
   "dirty": "Dirty",
-  "show_function_calls": "Show Function Calls"
+  "show_function_calls": "Show Function Calls",
+  "keys": "Keys",
+  "this_page_enables_you_to_manage_your_api_keys": "This page enables you to manage your API keys",
+  "profile": "Profile",
+  "keys_updated": "Keys Updated",
+  "keys_added": "Keys Added",
+  "type": "Type",
+  "organization_name": "Organization Name",
+  "share_keys_with_domain": "Share keys with domain (chat only)",
+  "domain": "Domain",
+  "individual": "Individual",
+  "organization": "Organization"
 }
