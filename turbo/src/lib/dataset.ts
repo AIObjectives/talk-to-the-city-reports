@@ -317,6 +317,15 @@ export class Dataset {
     }
   }
 
+  clearLogs() {
+    this.graph.nodes.update((nodes) => {
+      nodes.forEach((node) => {
+        node.data.log = [];
+      });
+      return nodes;
+    });
+  }
+
   sanitizeNodes(nodes) {
     return nodes.map((node) => {
       for (const key in node) {

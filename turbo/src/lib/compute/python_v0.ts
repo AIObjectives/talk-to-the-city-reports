@@ -1,3 +1,4 @@
+import type { DGNodeInterface, BaseData } from '$lib/node_data_types';
 import nodes from '$lib/node_register';
 import categories from '$lib/node_categories';
 import _ from 'lodash';
@@ -11,13 +12,6 @@ outputData = None
 {script}
 
 `;
-
-interface BaseData {}
-
-interface PythonData extends BaseData {
-  script: string;
-  output: object;
-}
 
 const dev = 'http://localhost:8000/';
 const prod = import.meta.env.VITE_PYTHON_LAMBDA_URL;
@@ -46,14 +40,15 @@ export default class PythonNodeV0 {
     slug: string,
     Cookies: any
   ) {
-    const data = {};
-    _.keys(this.data.input_ids).forEach((k) => {
-      const id = this.data.input_ids[k];
+    const data = [];
+    _.keys(this.data.input_ids.inputs).forEach((k) => {
+      const id = this.data.input_ids.inputs[k];
       if (id) {
-        data[k] = inputData[id];
+        data.push(inputData[id]);
       }
     });
     let script = scriptTemplate.replace('{inputData}', JSON.stringify(data));
+    console.log(script);
     script = script.replace('{script}', this.data.text);
     try {
       const response = await fetch(url, {
@@ -86,8 +81,14 @@ export default class PythonNodeV0 {
   }
 }
 
+interface PythonData extends BaseData {
+  script: string;
+  output: object;
+  text: string;
+}
+
 type PythonNodeInterface = DGNodeInterface & {
-  text: PythonData;
+  data: PythonData;
 };
 
 export const python_node_data: PythonNodeInterface = {
@@ -97,10 +98,14 @@ export const python_node_data: PythonNodeInterface = {
     text: '',
     output: {},
     compute_type: 'python_v0',
-    input_ids: { input_0: '', input_1: '', input_3: '' },
+    input_ids: { inputs: [] },
     category: categories.lang.id,
     icon: 'python_v0',
-    show_in_ui: false
+    show_in_ui: false,
+    show_to_anon: false,
+    dirty: false,
+    message: '',
+    script: ''
   },
   position: { x: 0, y: 0 },
   type: 'python_v0'
