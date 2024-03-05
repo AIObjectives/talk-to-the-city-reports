@@ -28,6 +28,7 @@ const storage = getStorage(app);
 const datasetCollection = collection(db, 'datasets');
 const feedbackCollection = collection(db, 'feedback');
 const templatesCollection = collection(db, 'templates');
+const keysCollection = collection(db, 'keys');
 const userDoc = (userId) => doc(db, 'users', userId);
 const datasetDoc = (datasetId) => doc(db, 'datasets', datasetId);
 
@@ -39,5 +40,6 @@ export {
   datasetDoc,
   templatesCollection,
   feedbackCollection,
+  keysCollection,
   storage
 };

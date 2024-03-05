@@ -99,6 +99,7 @@
   "merge_cluster_extraction": "合併叢集提取",
   "merge": "合併",
   "open_ai_key": "OpenAI 金鑰",
+  "pinecone_key": "Pinecone 金鑰",
   "participant_filter": "參與者過濾",
   "report": "報告",
   "score_argument_relevance": "評分論點相關性",
@@ -245,5 +246,16 @@
   "sign_out": "登出",
   "loaded_embeddings_from_gcs": "已從 GCS 載入嵌入向量",
   "consider_disabling_gcs_for_this_node": "請考慮停用",
-  "computed_embeddings": "已計算嵌入向量"
+  "computed_embeddings": "已計算嵌入向量",
+  "keys": "金鑰",
+  "this_page_enables_you_to_manage_your_api_keys": "此頁面使您能夠管理您的 API 金鑰",
+  "profile": "個人資料",
+  "keys_updated": "金鑰已更新",
+  "keys_added": "金鑰已添加",
+  "type": "類型",
+  "organization_name": "組織名稱",
+  "share_keys_with_domain": "與網域共享金鑰（僅限聊天）",
+  "domain": "網域",
+  "individual": "個人",
+  "organization": "組織"
 }

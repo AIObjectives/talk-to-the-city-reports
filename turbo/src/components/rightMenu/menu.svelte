@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { goto } from '$app/navigation';
   import { page } from '$app/stores';
   import { _ as __ } from 'svelte-i18n';
 
@@ -41,7 +42,12 @@
         {#if reportPath}
           <ToggleView />
           <hr />
-
+          <MenuItem
+            on:click={(e) => {
+              goto('/profile');
+            }}
+            label={$__('profile')}
+          />
           <MenuItem
             on:click={(e) => {
               modalShowing = true;

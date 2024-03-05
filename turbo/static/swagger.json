@@ -19,6 +19,61 @@
     }
   ],
   "paths": {
+    "/api/authenticated-proxy/openai/v1/chat/completions": {
+      "post": {
+        "operationId": "openAIAuthenticatedProxy",
+        "summary": "Enables users to make calls to OpenAI's API using server-side credentials.",
+        "description": "This endpoint acts as a proxy, forwarding all body and header data to OpenAI's API.",
+        "parameters": [
+          {
+            "name": "ownerUid",
+            "in": "query",
+            "required": true,
+            "description": "UID of the dataset owner",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OpenAI response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized request."
+          },
+          "404": {
+            "description": "User not found."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
     "/api/dataset/{dataset}": {
       "get": {
         "operationId": "getDataset",
@@ -217,6 +272,55 @@
           },
           "401": {
             "description": "Unauthorized request"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/tmp": {
+      "get": {
+        "operationId": "userEmail",
+        "summary": "Gets the email for a user id",
+        "description": null,
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "query",
+            "required": true,
+            "description": "UID for the user",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Got email address",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized request"
+          },
+          "404": {
+            "description": "User not found"
           },
           "500": {
             "description": "Internal server error"
