@@ -7,7 +7,7 @@ export interface Log {
 }
 
 export interface BaseData {
-  processing?: boolean = false;
+  processing?: boolean;
   label: string;
   dirty: boolean;
   compute_type: string;
@@ -17,7 +17,8 @@ export interface BaseData {
   icon: string;
   output?: any;
   show_in_ui: boolean;
-  show_to_anon: boolean = false;
+  show_to_anon?: boolean;
+  show_settings_in_standard_view?: boolean;
   message: string;
   enable?: boolean;
   log?: Log[];
@@ -35,6 +36,7 @@ export interface GCSData {
   filename: string;
   size_kb: number;
   gcs_path: string;
+  save_to_gcs?: boolean;
 }
 
 export interface DGNodeInterface<T extends BaseData = BaseData> {

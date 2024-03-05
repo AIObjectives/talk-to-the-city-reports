@@ -61,5 +61,6 @@ export const nodeTypes = {
   multi_cluster_extraction_v0: MultiClusterExtractionNode,
   argument_extraction_v1: ArgumentExtractionNode,
   summarize_v0: PromptNode,
-  text_v0: TextInputNode
+  text_v0: TextInputNode,
+  gpt_embeddings_v0: DefaultNode
 };

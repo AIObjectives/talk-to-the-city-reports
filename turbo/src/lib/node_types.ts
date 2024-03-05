@@ -16,6 +16,7 @@ import '$lib/compute/download_v0.ts';
 import '$lib/compute/edit_csv_v0.ts';
 import '$lib/compute/feedback_v0.ts';
 import '$lib/compute/filter_csv_v0.ts';
+import '$lib/compute/gpt_embeddings_v0.ts';
 import '$lib/compute/gpt_v0.ts';
 import '$lib/compute/grid_v0.ts';
 import '$lib/compute/integer_v0.ts';
@@ -64,6 +65,7 @@ import download_v0 from '$lib/compute/.plaintext/download_v0.txt?raw';
 import edit_csv_v0 from '$lib/compute/.plaintext/edit_csv_v0.txt?raw';
 import feedback_v0 from '$lib/compute/.plaintext/feedback_v0.txt?raw';
 import filter_csv_v0 from '$lib/compute/.plaintext/filter_csv_v0.txt?raw';
+import gpt_embeddings_v0 from '$lib/compute/.plaintext/gpt_embeddings_v0.txt?raw';
 import gpt_v0 from '$lib/compute/.plaintext/gpt_v0.txt?raw';
 import grid_v0 from '$lib/compute/.plaintext/grid_v0.txt?raw';
 import integer_v0 from '$lib/compute/.plaintext/integer_v0.txt?raw';
@@ -113,6 +115,7 @@ export const code = {
   edit_csv_v0,
   feedback_v0,
   filter_csv_v0,
+  gpt_embeddings_v0,
   gpt_v0,
   grid_v0,
   integer_v0,
