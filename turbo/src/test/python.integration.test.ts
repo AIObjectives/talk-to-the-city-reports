@@ -18,8 +18,8 @@ describe('PythonNodeV0 integration', () => {
   it('should be able to pass input to outputData', async () => {
     if (import.meta.env.VITE_PYTHON_LAMBDA_SECRET) {
       const node = new PythonNodeV0(deepCopy(python_node_data));
-      node.data.text = 'outputData = inputData["input_0"]';
-      node.data.input_ids['input_0'] = 'some_node';
+      node.data.text = 'outputData = inputData[0]';
+      node.data.input_ids.inputs.push('some_node');
       const output = await node.compute(
         { some_node: 123 },
         'run',

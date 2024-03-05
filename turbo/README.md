@@ -317,12 +317,12 @@ DISPLAY=:99 python src/test/test_selenium.py
 
 | Metric              | Count |
 | ------------------- | ----: |
-| Total Test Suites   |    90 |
-| Passed Test Suites  |    90 |
+| Total Test Suites   |    94 |
+| Passed Test Suites  |    94 |
 | Failed Test Suites  |     0 |
 | Pending Test Suites |     0 |
-| Total Tests         |   186 |
-| Passed Tests        |   186 |
+| Total Tests         |   193 |
+| Passed Tests        |   193 |
 | Failed Tests        |     0 |
 | Pending Tests       |     0 |
 | Todo Tests          |     0 |
@@ -469,7 +469,16 @@ DISPLAY=:99 python src/test/test_selenium.py
 | _should set dirty to false after compute_                      | **passed** |
 | _should not mutate the input data_                             | **passed** |
 
-### `[15]` [gpt_v0.test.ts](./src/test//gpt_v0.test.ts)
+### `[15]` [gpt_embeddings_v0.test.ts](./src/test//gpt_embeddings_v0.test.ts)
+
+| Test                                                                             | Status     | Duration (ms) |
+| -------------------------------------------------------------------------------- | ---------- | ------------: |
+| _should compute embeddings for input data_                                       | **passed** |
+| _should not compute embeddings if no open_ai_key is provided_                    | **passed** |
+| _should load embeddings from GCS if data length matches and save_to_gcs is true_ | **passed** |
+| _should handle no data input_                                                    | **passed** |
+
+### `[16]` [gpt_v0.test.ts](./src/test//gpt_v0.test.ts)
 
 | Test                    | Status     | Duration (ms) |
 | ----------------------- | ---------- | ------------: |
@@ -477,20 +486,20 @@ DISPLAY=:99 python src/test/test_selenium.py
 | _json prompt_           | **passed** |
 | _json prompt with text_ | **passed** |
 
-### `[16]` [grid.test.ts](./src/test//grid.test.ts)
+### `[17]` [grid.test.ts](./src/test//grid.test.ts)
 
 | Test                                            | Status     | Duration (ms) |
 | ----------------------------------------------- | ---------- | ------------: |
 | _sets the output of the node to the input data_ | **passed** |
 
-### `[17]` [jq_v0.test.ts](./src/test//jq_v0.test.ts)
+### `[18]` [jq_v0.test.ts](./src/test//jq_v0.test.ts)
 
 | Test                                           | Status     | Duration (ms) |
 | ---------------------------------------------- | ---------- | ------------: |
 | _should process data correctly with JQ filter_ | **passed** |
 | _should handle invalid JQ filter_              | **passed** |
 
-### `[18]` [jq_v1.test.ts](./src/test//jq_v1.test.ts)
+### `[19]` [jq_v1.test.ts](./src/test//jq_v1.test.ts)
 
 | Test                                                        | Status     | Duration (ms) |
 | ----------------------------------------------------------- | ---------- | ------------: |
@@ -500,7 +509,7 @@ DISPLAY=:99 python src/test/test_selenium.py
 | _should process data correctly with a complex JQ filter_    | **passed** |
 | _should return undefined if the input is null or undefined_ | **passed** |
 
-### `[19]` [json.test.ts](./src/test//json.test.ts)
+### `[20]` [json.test.ts](./src/test//json.test.ts)
 
 | Test                                          | Status     | Duration (ms) |
 | --------------------------------------------- | ---------- | ------------: |
@@ -508,7 +517,7 @@ DISPLAY=:99 python src/test/test_selenium.py
 | _should handle invalid JSON data from GCS_    | **passed** |
 | _should update dirty state correctly_         | **passed** |
 
-### `[20]` [jsonata.test.ts](./src/test//jsonata.test.ts)
+### `[21]` [jsonata.test.ts](./src/test//jsonata.test.ts)
 
 | Test                                             | Status     | Duration (ms) |
 | ------------------------------------------------ | ---------- | ------------: |
@@ -516,7 +525,7 @@ DISPLAY=:99 python src/test/test_selenium.py
 | _returns undefined if no expression is provided_ | **passed** |
 | _catches errors when evaluating expressions_     | **passed** |
 
-### `[21]` [limit_csv.test.ts](./src/test//limit_csv.test.ts)
+### `[22]` [limit_csv.test.ts](./src/test//limit_csv.test.ts)
 
 | Test                                                             | Status     | Duration (ms) |
 | ---------------------------------------------------------------- | ---------- | ------------: |
@@ -526,7 +535,7 @@ DISPLAY=:99 python src/test/test_selenium.py
 | _should return an empty array if input is empty_                 | **passed** |
 | _should not mutate the input node_                               | **passed** |
 
-### `[22]` [markdown.test.ts](./src/test//markdown.test.ts)
+### `[23]` [markdown.test.ts](./src/test//markdown.test.ts)
 
 | Test                                                               | Status     | Duration (ms) |
 | ------------------------------------------------------------------ | ---------- | ------------: |
@@ -538,7 +547,7 @@ DISPLAY=:99 python src/test/test_selenium.py
 | _should stringify and wrap arrays in code blocks_                  | **passed** |
 | _should throw an error if input data contains circular references_ | **passed** |
 
-### `[23]` [merge.test.ts](./src/test//merge.test.ts)
+### `[24]` [merge.test.ts](./src/test//merge.test.ts)
 
 | Test                                                                      | Status     | Duration (ms) |
 | ------------------------------------------------------------------------- | ---------- | ------------: |
@@ -548,7 +557,7 @@ DISPLAY=:99 python src/test/test_selenium.py
 | _does not merge if cluster_extraction data has no topics_                 | **passed** |
 | _sets node data output to the merged data and dirty to false after merge_ | **passed** |
 
-### `[24]` [merge_cluster_extraction.test.ts](./src/test//merge_cluster_extraction.test.ts)
+### `[25]` [merge_cluster_extraction.test.ts](./src/test//merge_cluster_extraction.test.ts)
 
 | Test                                                | Status     | Duration (ms) |
 | --------------------------------------------------- | ---------- | ------------: |
@@ -557,16 +566,15 @@ DISPLAY=:99 python src/test/test_selenium.py
 | _uses cached data if available and not dirty_       | **passed** |
 | _does not merge if no open_ai_key is provided_      | **passed** |
 
-### `[25]` [merge_cluster_extraction_v1.test.ts](./src/test//merge_cluster_extraction_v1.test.ts)
+### `[26]` [merge_cluster_extraction_v1.test.ts](./src/test//merge_cluster_extraction_v1.test.ts)
 
-| Test                                                      | Status     | Duration (ms) |
-| --------------------------------------------------------- | ---------- | ------------: |
-| _should merge cluster extractions into a single output_   | **passed** |
-| _should handle empty input data_                          | **passed** |
-| _should return single extraction if only one is provided_ | **passed** |
-| _should not process if no open_ai_key is provided_        | **passed** |
+| Test                                                    | Status     | Duration (ms) |
+| ------------------------------------------------------- | ---------- | ------------: |
+| _should merge cluster extractions into a single output_ | **passed** |
+| _should handle empty input data_                        | **passed** |
+| _should not process if no open_ai_key is provided_      | **passed** |
 
-### `[26]` [multi_cluster_extraction_v0.test.ts](./src/test//multi_cluster_extraction_v0.test.ts)
+### `[27]` [multi_cluster_extraction_v0.test.ts](./src/test//multi_cluster_extraction_v0.test.ts)
 
 | Test                                                  | Status     | Duration (ms) |
 | ----------------------------------------------------- | ---------- | ------------: |
@@ -574,7 +582,7 @@ DISPLAY=:99 python src/test/test_selenium.py
 | _should handle empty CSV input_                       | **passed** |
 | _should not process if no open_ai_key is provided_    | **passed** |
 
-### `[27]` [multi_gpt_v0.test.ts](./src/test//multi_gpt_v0.test.ts)
+### `[28]` [multi_gpt_v0.test.ts](./src/test//multi_gpt_v0.test.ts)
 
 | Test                                               | Status     | Duration (ms) |
 | -------------------------------------------------- | ---------- | ------------: |
@@ -583,7 +591,7 @@ DISPLAY=:99 python src/test/test_selenium.py
 | _should join outputs if join_output is true_       | **passed** |
 | _should not process if no open_ai_key is provided_ | **passed** |
 
-### `[28]` [open_ai_key.test.ts](./src/test//open_ai_key.test.ts)
+### `[29]` [open_ai_key.test.ts](./src/test//open_ai_key.test.ts)
 
 | Test                                                                                             | Status     | Duration (ms) |
 | ------------------------------------------------------------------------------------------------ | ---------- | ------------: |
@@ -592,7 +600,7 @@ DISPLAY=:99 python src/test/test_selenium.py
 | _should set the node text to "Invalid key" if the UI key is not valid and there is no local key_ | **passed** |
 | _should not mutate the node if the UI key and local key are both valid_                          | **passed** |
 
-### `[29]` [participant_filter.test.ts](./src/test//participant_filter.test.ts)
+### `[30]` [participant_filter.test.ts](./src/test//participant_filter.test.ts)
 
 | Test                                                      | Status     | Duration (ms) |
 | --------------------------------------------------------- | ---------- | ------------: |
@@ -602,7 +610,7 @@ DISPLAY=:99 python src/test/test_selenium.py
 | _returns undefined if input data does not contain topics_ | **passed** |
 | _does not filter claims if interview key is missing_      | **passed** |
 
-### `[30]` [pyodide.test.ts](./src/test//pyodide.test.ts)
+### `[31]` [pyodide.test.ts](./src/test//pyodide.test.ts)
 
 | Test                                                 | Status     | Duration (ms) |
 | ---------------------------------------------------- | ---------- | ------------: |
@@ -610,7 +618,7 @@ DISPLAY=:99 python src/test/test_selenium.py
 | _should be able to pass input to outputData_         | **passed** |
 | _test passing in complex data from jsonapi_          | **passed** |
 
-### `[31]` [python.integration.test.ts](./src/test//python.integration.test.ts)
+### `[32]` [python.integration.test.ts](./src/test//python.integration.test.ts)
 
 | Test                                                 | Status     | Duration (ms) |
 | ---------------------------------------------------- | ---------- | ------------: |
@@ -618,7 +626,7 @@ DISPLAY=:99 python src/test/test_selenium.py
 | _should be able to pass input to outputData_         | **passed** |
 | _should be able to make get requests to jsonapi_     | **passed** |
 
-### `[32]` [python.test.ts](./src/test//python.test.ts)
+### `[33]` [python.test.ts](./src/test//python.test.ts)
 
 | Test                                               | Status     | Duration (ms) |
 | -------------------------------------------------- | ---------- | ------------: |
@@ -628,14 +636,14 @@ DISPLAY=:99 python src/test/test_selenium.py
 | _should handle non-string JSON response_           | **passed** |
 | _should update node data output with the response_ | **passed** |
 
-### `[33]` [register.test.ts](./src/test//register.test.ts)
+### `[34]` [register.test.ts](./src/test//register.test.ts)
 
 | Test                      | Status     | Duration (ms) |
 | ------------------------- | ---------- | ------------: |
 | _test node registeration_ | **passed** |
 | _Load all nodes_          | **passed** |
 
-### `[34]` [report.test.ts](./src/test//report.test.ts)
+### `[35]` [report.test.ts](./src/test//report.test.ts)
 
 | Test                                                  | Status     | Duration (ms) |
 | ----------------------------------------------------- | ---------- | ------------: |
@@ -643,7 +651,7 @@ DISPLAY=:99 python src/test/test_selenium.py
 | _should handle empty input data_                      | **passed** |
 | _should not mutate the input node_                    | **passed** |
 
-### `[35]` [report_v1.test.ts](./src/test//report_v1.test.ts)
+### `[36]` [report_v1.test.ts](./src/test//report_v1.test.ts)
 
 | Test                                                                     | Status     | Duration (ms) |
 | ------------------------------------------------------------------------ | ---------- | ------------: |
@@ -655,7 +663,7 @@ DISPLAY=:99 python src/test/test_selenium.py
 | _sets message to empty string if merge or csv data are missing_          | **passed** |
 | _does not mutate the input node_                                         | **passed** |
 
-### `[36]` [score_argument_relevance.test.ts](./src/test//score_argument_relevance.test.ts)
+### `[37]` [score_argument_relevance.test.ts](./src/test//score_argument_relevance.test.ts)
 
 | Test                                                    | Status     | Duration (ms) |
 | ------------------------------------------------------- | ---------- | ------------: |
@@ -665,13 +673,13 @@ DISPLAY=:99 python src/test/test_selenium.py
 | _does not score if open_ai_key is missing_              | **passed** |
 | _does not score if prompts are missing_                 | **passed** |
 
-### `[37]` [simple_pipeline.test.ts](./src/test//simple_pipeline.test.ts)
+### `[38]` [simple_pipeline.test.ts](./src/test//simple_pipeline.test.ts)
 
 | Test                                         | Status     | Duration (ms) |
 | -------------------------------------------- | ---------- | ------------: |
 | _should process CSV data correctly from GCS_ | **passed** |
 
-### `[38]` [stringify.test.ts](./src/test//stringify.test.ts)
+### `[39]` [stringify.test.ts](./src/test//stringify.test.ts)
 
 | Test                                              | Status     | Duration (ms) |
 | ------------------------------------------------- | ---------- | ------------: |
@@ -680,14 +688,23 @@ DISPLAY=:99 python src/test/test_selenium.py
 | _should handle different types of input_          | **passed** |
 | _should not mutate the input node_                | **passed** |
 
-### `[39]` [summarize_v0.test.ts](./src/test//summarize_v0.test.ts)
+### `[40]` [summarize_v0.test.ts](./src/test//summarize_v0.test.ts)
 
 | Test                                                    | Status     | Duration (ms) |
 | ------------------------------------------------------- | ---------- | ------------: |
 | _should generate summaries for topics and subtopics_    | **passed** |
 | _should load summaries from GCS if data length matches_ | **passed** |
 
-### `[40]` [text_to_csv_v0.test.ts](./src/test//text_to_csv_v0.test.ts)
+### `[41]` [test.test.ts](./src/test//test.test.ts)
+
+| Test                                   | Status     | Duration (ms) |
+| -------------------------------------- | ---------- | ------------: |
+| _integer node_                         | **passed** |
+| _adder node_                           | **passed** |
+| _dataset run adder_                    | **passed** |
+| _dataset run multi input multi output_ | **passed** |
+
+### `[42]` [text_to_csv_v0.test.ts](./src/test//text_to_csv_v0.test.ts)
 
 | Test                                                               | Status     | Duration (ms) |
 | ------------------------------------------------------------------ | ---------- | ------------: |
@@ -696,14 +713,14 @@ DISPLAY=:99 python src/test/test_selenium.py
 | _should handle empty text input_                                   | **passed** |
 | _should split text into chunks if it exceeds the number of tokens_ | **passed** |
 
-### `[41]` [translate.test.ts](./src/test//translate.test.ts)
+### `[43]` [translate.test.ts](./src/test//translate.test.ts)
 
 | Test                                      | Status     | Duration (ms) |
 | ----------------------------------------- | ---------- | ------------: |
 | _translates the input data_               | **passed** |
 | _uses cached translations when available_ | **passed** |
 
-### `[42]` [unique_v0.test.ts](./src/test//unique_v0.test.ts)
+### `[44]` [unique_v0.test.ts](./src/test//unique_v0.test.ts)
 
 | Test                                                          | Status     | Duration (ms) |
 | ------------------------------------------------------------- | ---------- | ------------: |
@@ -713,7 +730,7 @@ DISPLAY=:99 python src/test/test_selenium.py
 | _should set dirty to false after compute_                     | **passed** |
 | _should not mutate the input data_                            | **passed** |
 
-### `[43]` [utils.test.ts](./src/test//utils.test.ts)
+### `[45]` [utils.test.ts](./src/test//utils.test.ts)
 
 | Test                               | Status     | Duration (ms) |
 | ---------------------------------- | ---------- | ------------: |
@@ -721,7 +738,7 @@ DISPLAY=:99 python src/test/test_selenium.py
 | _Test secondsToHHMMSS with string_ | **passed** |
 | _Test HHMMSSToSeconds_             | **passed** |
 
-### `[44]` [whisper.test.ts](./src/test//whisper.test.ts)
+### `[46]` [whisper.test.ts](./src/test//whisper.test.ts)
 
 | Test                                                                                                     | Status     | Duration (ms) |
 | -------------------------------------------------------------------------------------------------------- | ---------- | ------------: |
@@ -731,7 +748,7 @@ DISPLAY=:99 python src/test/test_selenium.py
 | _should return undefined and set message if open_ai_key is missing_                                      | **passed** |
 | _should convert transcription to internal format if response_format is custom_                           | **passed** |
 
-### `[45]` [workerpool.test.ts](./src/test//workerpool.test.ts)
+### `[47]` [workerpool.test.ts](./src/test//workerpool.test.ts)
 
 | Test                                            | Status     | Duration (ms) |
 | ----------------------------------------------- | ---------- | ------------: |

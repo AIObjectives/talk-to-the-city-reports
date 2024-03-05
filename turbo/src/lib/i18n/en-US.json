@@ -241,5 +241,8 @@
   "processing_complete": "Processing Complete",
   "logs": "Logs",
   "show_to_anon": "Show to Anon",
-  "sign_out": "Sign Out"
+  "sign_out": "Sign Out",
+  "loaded_embeddings_from_gcs": "Loaded Embeddings from GCS",
+  "consider_disabling_gcs_for_this_node": "Consider disabling GCS for this node",
+  "computed_embeddings": "Computed Embeddings"
 }

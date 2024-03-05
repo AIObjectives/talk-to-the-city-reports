@@ -242,5 +242,8 @@
   "processing_complete": "處理完成",
   "logs": "日誌",
   "show_to_anon": "顯示給匿名用戶",
-  "sign_out": "登出"
+  "sign_out": "登出",
+  "loaded_embeddings_from_gcs": "已從 GCS 載入嵌入向量",
+  "consider_disabling_gcs_for_this_node": "請考慮停用",
+  "computed_embeddings": "已計算嵌入向量"
 }

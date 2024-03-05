@@ -2,12 +2,12 @@ import subprocess, os, json, re, pathlib
 
 
 def update_test_count(test_pass, test_fail):
-    with open('package.json') as f:
+    with open("package.json") as f:
         package_json = json.load(f)
-        package_json['vitestPass'] = test_pass
-        package_json['vitestFail'] = test_fail
-    with open('package.json', 'w') as f:
-        json.dump(package_json, f, indent='\t')
+        package_json["vitestPass"] = test_pass
+        package_json["vitestFail"] = test_fail
+    with open("package.json", "w") as f:
+        json.dump(package_json, f, indent="\t")
 
 
 def convert_to_markdown(json_data):
@@ -35,9 +35,7 @@ def convert_to_markdown(json_data):
         detail_heading = f"### `[{index}]` [{short_filename}](./src/test/{filename})"
         test_table_header = "| Test | Status | Duration (ms) |\n|---|---|---:|\n"
         test_table_body = "\n".join(
-            "| *{}* | **{}** |".format(
-                test["title"], test["status"]
-            )
+            "| *{}* | **{}** |".format(test["title"], test["status"])
             for test in suite["assertionResults"]
         )
         details.append(f"{detail_heading}\n{test_table_header}{test_table_body}")
@@ -58,22 +56,22 @@ def update_readme():
 
     if result.returncode == 0:
         try:
-            json_data = json.loads(result.stdout)
+            json_start_index = result.stdout.find("{")
+            json_data_str = result.stdout[json_start_index:]
+            json_data = json.loads(json_data_str)
         except:
             print(result.stdout.strip())
             print("Failed to parse json")
             return
         markdown_result = convert_to_markdown(json_data)
-        update_test_count(json_data['numPassedTests'], json_data['numFailedTests'])
+        update_test_count(json_data["numPassedTests"], json_data["numFailedTests"])
         with open("README.md") as f:
             content = f.read()
         test_results_header_regex = re.compile(
             r"(\n\#{2}\s*Test\s+Results\b.*?\n)", re.IGNORECASE
         )
         match = test_results_header_regex.search(content)
-        if (
-            match
-        ):
+        if match:
             start_index = match.start()
             end_index = re.search(
                 r"\n(\#{2}\s)", content[start_index + len(match.group(1)) :]
@@ -85,15 +83,11 @@ def update_readme():
             )
             new_content = (
                 content[:start_index]
-                + match.group(
-                    1
-                ).rstrip()
+                + match.group(1).rstrip()
                 + "\n\n"
                 + markdown_result.strip()
                 + "\n"
-                + content[
-                    end_index:
-                ]
+                + content[end_index:]
             )
         else:
             new_content = (
