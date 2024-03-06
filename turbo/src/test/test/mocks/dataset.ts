@@ -20,6 +20,9 @@ import ArgumentExtractionNode, {
 } from '$lib/compute/argument_extraction_v1';
 import MergeNode, { merge_node_data } from '$lib/compute/merge_v0';
 import ChatNode, { chat_node_data } from '$lib/compute/chat_v0';
+import GPTEmbeddingsNode, { gpt_embeddings_node_data } from '$lib/compute/gpt_embeddings_v0';
+import PineconeNode, { pinecone_node_data } from '$lib/compute/pinecone_v0';
+import PineconeKeyNode, { pinecone_key_node_data } from '$lib/compute/pinecone_key_v0';
 import MarkdownNode, { markdown_node_data } from '$lib/compute/markdown_v0';
 
 // dataset
@@ -82,6 +85,26 @@ export function get_chat(data = 'merge') {
   return node;
 }
 
+export function get_gpt_embeddings(data = 'argument_extraction') {
+  const node = new GPTEmbeddingsNode(deepCopy(gpt_embeddings_node_data));
+  node.data.input_ids.open_ai_key = 'open_ai_key';
+  node.data.input_ids.data = data;
+  return node;
+}
+
+export function get_pinecone_key() {
+  const node = new PineconeKeyNode(deepCopy(pinecone_key_node_data));
+  node.data.text = 'sk-' + 'a'.repeat(48);
+  return node;
+}
+
+export function get_pinecone() {
+  const node = new PineconeNode(deepCopy(pinecone_node_data));
+  node.data.input_ids.pinecone_api_key = 'pinecone_key';
+  node.data.input_ids.embeddings = 'gpt_embeddings';
+  return node;
+}
+
 export function get_markdown() {
   const node = new MarkdownNode(deepCopy(markdown_node_data));
   node.position = { x: -119, y: 250 };
@@ -95,9 +118,12 @@ export function get_graph() {
   const key = get_open_ai_key();
   const cs = get_cluster_extraction();
   const as = get_argument_extraction();
+  const gptemb = get_gpt_embeddings();
+  const pck = get_pinecone_key();
+  const pc = get_pinecone();
   const merge = get_merge();
   const chat = get_chat();
-  const nodes = [csv, jq, key, cs, as, merge, chat];
+  const nodes = [csv, jq, key, cs, as, merge, chat, pck, pc, gptemb];
   const edges = [
     {
       source: csv_node_data.id,
@@ -138,6 +164,14 @@ export function get_graph() {
     {
       source: open_ai_key_node_data.id,
       target: chat_node_data.id
+    },
+    {
+      source: pinecone_key_node_data.id,
+      target: pinecone_node_data.id
+    },
+    {
+      source: gpt_embeddings_node_data.id,
+      target: pinecone_node_data.id
     }
   ];
   return { nodes: nodes, edges: edges };

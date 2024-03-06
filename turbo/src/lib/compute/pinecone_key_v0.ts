@@ -51,7 +51,7 @@ type PineconeKeyNodeInterface = DGNodeInterface & {
 };
 
 export const pinecone_key_node_data: PineconeKeyNodeInterface = {
-  id: '',
+  id: 'pinecone_key',
   data: {
     label: 'pinecone_key',
     text: '',

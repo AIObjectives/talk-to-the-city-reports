@@ -1,3 +1,4 @@
+import PineconeNode from '$components/graph/nodes/PineconeNode.svelte';
 import NumberInputNode from '$components/graph/nodes/NumberInputNode.svelte';
 import TextInputNode from '$components/graph/nodes/TextInputNode.svelte';
 import PromptNode from '$components/graph/nodes/PromptNode.svelte';
@@ -62,5 +63,6 @@ export const nodeTypes = {
   argument_extraction_v1: ArgumentExtractionNode,
   summarize_v0: PromptNode,
   text_v0: TextInputNode,
+  pinecone_v0: PineconeNode,
   gpt_embeddings_v0: DefaultNode
 };
