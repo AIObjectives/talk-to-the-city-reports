@@ -35,6 +35,7 @@ import '$lib/compute/multi_gpt_v0.ts';
 import '$lib/compute/open_ai_key_v0.ts';
 import '$lib/compute/participant_filter_v0.ts';
 import '$lib/compute/pinecone_key_v0.ts';
+import '$lib/compute/pinecone_v0.ts';
 import '$lib/compute/pyodide_v0.ts';
 import '$lib/compute/python_v0.ts';
 import '$lib/compute/report_v0.ts';
@@ -85,6 +86,7 @@ import multi_gpt_v0 from '$lib/compute/.plaintext/multi_gpt_v0.txt?raw';
 import open_ai_key_v0 from '$lib/compute/.plaintext/open_ai_key_v0.txt?raw';
 import participant_filter_v0 from '$lib/compute/.plaintext/participant_filter_v0.txt?raw';
 import pinecone_key_v0 from '$lib/compute/.plaintext/pinecone_key_v0.txt?raw';
+import pinecone_v0 from '$lib/compute/.plaintext/pinecone_v0.txt?raw';
 import pyodide_v0 from '$lib/compute/.plaintext/pyodide_v0.txt?raw';
 import python_v0 from '$lib/compute/.plaintext/python_v0.txt?raw';
 import report_v0 from '$lib/compute/.plaintext/report_v0.txt?raw';
@@ -136,6 +138,7 @@ export const code = {
   open_ai_key_v0,
   participant_filter_v0,
   pinecone_key_v0,
+  pinecone_v0,
   pyodide_v0,
   python_v0,
   report_v0,
