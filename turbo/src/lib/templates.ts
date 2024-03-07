@@ -46,6 +46,7 @@ import { text_node } from './compute/text_v0';
 import { pinecone_node } from './compute/pinecone_v0';
 import { gpt_embeddings_node } from './compute/gpt_embeddings_v0';
 import { pinecone_key_node } from './compute/pinecone_key_v0';
+import { secret_node } from './compute/secret_v0';
 
 export const node_register = [
   gpt_embeddings_node,
@@ -91,7 +92,8 @@ export const node_register = [
   adder_node,
   integer_node,
   text_node,
-  pinecone_key_node
+  pinecone_key_node,
+  secret_node
 ];
 
 export async function loadTemplates(): Promise<Record<string, DocumentData>> {

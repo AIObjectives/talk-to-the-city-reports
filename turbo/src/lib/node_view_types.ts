@@ -11,7 +11,7 @@ import GridNode from '$components/graph/nodes/GridNode.svelte';
 import MarkdownNode from '$components/graph/nodes/MarkdownNode.svelte';
 import DefaultNode from '$components/graph/nodes/DefaultNode.svelte';
 import CodeMirrorNode from '$components/graph/nodes/CodeMirrorNode.svelte';
-import ChatNode from '$components/graph/nodes/ChatNode.svelte';
+import ChatNode from '$components/graph/nodes/chat/ChatNode.svelte';
 import WhisperNode from '$components/graph/nodes/WhisperNode.svelte';
 import FilterCSVNode from '$components/graph/nodes/FilterCSVNode.svelte';
 import MergeClusterExtractionNode from '$components/graph/nodes/MergeClusterExtractionNode.svelte';

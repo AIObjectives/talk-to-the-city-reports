@@ -100,6 +100,7 @@
   "merge": "Merge",
   "open_ai_key": "OpenAI Key",
   "pinecone_key": "Pinecone Key",
+  "missing_open_ai_key": "Missing OpenAI Key",
   "participant_filter": "Participant Filter",
   "report": "Report",
   "score_argument_relevance": "Score Argument Relevance",
@@ -256,5 +257,10 @@
   "share_keys_with_domain": "Share keys with domain (chat only)",
   "domain": "Domain",
   "individual": "Individual",
-  "organization": "Organization"
+  "organization": "Organization",
+  "computing_embedding": "Computing Embedding",
+  "text_to_speech": "Text to Speech",
+  "speech_to_text": "Speech to Text",
+  "dirty": "Dirty",
+  "show_function_calls": "Show Function Calls"
 }

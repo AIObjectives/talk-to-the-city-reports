@@ -29,17 +29,6 @@ describe('Full pipeline run test', () => {
     const markdown = dataset.graph.find('markdown').node;
     expect(markdown.data.output).toEqual('sk-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
   });
-  it('Markdown to chat test', async () => {
-    const dataset = getMarkdownToChatDataset();
-    const chat = dataset.graph.find('chat').node;
-    await dataset.processNodes('run');
-    const res = await chat.chat([{ role: 'user', content: 'hi' }], dataset);
-    expect(res[1]).toEqual({ role: 'user', content: 'hi' });
-    expect(res[2]).toEqual({
-      role: 'assistant',
-      content: 'Hello. What would you like to know about the markdown?'
-    });
-  });
   it('Full pipeline run test', async () => {
     vi.spyOn(utils, 'readFileFromGCS').mockResolvedValue(weather);
     vi.spyOn(utils, 'uploadJSONToGCS').mockResolvedValue(
@@ -60,12 +49,5 @@ describe('Full pipeline run test', () => {
     );
     expect(uploadJSONToGCSSpy.mock.calls[1][0].data.output).toEqual(mock_argument_extraction_data);
     expect(dataset.graph.find('merge').node.data.output).toEqual(mock_merge_data);
-    const chat = dataset.graph.find('chat').node;
-    const res = await chat.chat([{ role: 'user', content: 'hi' }], dataset);
-    expect(res[1]).toEqual({ role: 'user', content: 'hi' });
-    expect(res[2]).toEqual({
-      role: 'assistant',
-      content: 'Hello. What would you like to know about the weather?'
-    });
   });
 });

@@ -14,7 +14,8 @@ export async function openai(
   vitest: string,
   hash: string,
   mock_data: any,
-  response_format: Record<string, string> = { type: 'json_object' }
+  response_format: Record<string, string> = { type: 'json_object' },
+  tools: any = null
 ) {
   // Remember: this function is executed in a worker thread.
   // It cannot access the DOM or any variables in the main thread.
@@ -69,6 +70,10 @@ export async function openai(
               messages: messages,
               temperature: 0.1
             };
+            if (Array.isArray(tools) && tools.length > 0) {
+              // @ts-ignore
+              body.tools = tools;
+            }
             if (isPlainObject(response_format)) {
               // @ts-ignore
               body.response_format = response_format;
@@ -92,8 +97,13 @@ export async function openai(
               const contentType = response.headers.get('content-type');
               if (contentType && contentType.includes('application/json')) {
                 const data = await response.json();
-                let resp = data.choices[0].message.content;
-                if (resp.startsWith('```json')) {
+                const mes = data.choices[0].message;
+                if (mes.tool_calls) {
+                  resolve(mes.tool_calls);
+                  return;
+                }
+                let resp = mes.content;
+                if (resp?.startsWith('```json')) {
                   const start = resp.indexOf('```json') + 7;
                   const end = resp.lastIndexOf('```');
                   resp = resp.substring(start, end).trim();

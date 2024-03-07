@@ -63,6 +63,10 @@ export default class GPTEmbeddingsNode {
       );
     }
 
+    if (!this.data.dirty && this.data.length == data.length && !_.isEmpty(this.data.output)) {
+      return this.data.output;
+    }
+
     if (
       !this.data.dirty &&
       this.data.length == data.length &&

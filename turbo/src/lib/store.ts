@@ -13,6 +13,7 @@ const graphNotice: Writable<boolean> = writable(false);
 const pipelineStepsRemaining: Writable<number> = writable(0);
 const isMobile: Writable<boolean> = writable(false);
 const openLeftDrawer: Writable<boolean> = writable(false);
+const messages: Writable<[]> = writable([]);
 
 export {
   user,
@@ -25,5 +26,6 @@ export {
   chartMode,
   pipelineStepsRemaining,
   isMobile,
-  openLeftDrawer
+  openLeftDrawer,
+  messages
 };
