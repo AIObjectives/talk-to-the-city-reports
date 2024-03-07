@@ -40,7 +40,7 @@
           if (Array.isArray(input_ids[key])) {
             input_ids[key] = input_ids[key].filter((val) => val.split('|')[0] !== edge[0].source);
           } else if (input_ids[key] === edge[0].source) {
-            delete input_ids[key];
+            input_ids[key] = '';
           }
         }
       }

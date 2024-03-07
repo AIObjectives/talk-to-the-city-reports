@@ -34,20 +34,7 @@ export default class PineconeNode {
     }
   }
 
-  async deleteIndex(dataset) {
-    this.requireIndexName();
-    this.data.length = 0;
-    this.data.dirty = true;
-    try {
-      this.initPinecone(dataset);
-      await this.pc.deleteIndex(this.data.index_name);
-    } catch (e) {
-      console.log('Error deleting index', e);
-    }
-  }
-
   async upsert(embeddings, info) {
-    this.requireIndexName();
     let index;
     try {
       index = await this.pc.describeIndex(this.data.index_name);
@@ -65,10 +52,15 @@ export default class PineconeNode {
       });
     }
     index = this.pc.index(this.data.index_name);
+    try {
+      await index.namespace(`${this.data.namespace}_claims`).deleteAll();
+    } catch (e) {
+      console.log('Tried to delete all but there was nothing to delete');
+    }
     for (let embedding of embeddings) {
       // remove non-ascii characters from embedding.id
       embedding.id = embedding.id.replace(/[^\x00-\x7F]/g, '');
-      await index.namespace('comments').upsert([embedding]);
+      await index.namespace(`${this.data.namespace}_claims`).upsert([embedding]);
       info('Embeddings upserted');
     }
   }
@@ -79,7 +71,7 @@ export default class PineconeNode {
     const embeddingsNode = dataset.graph.findImpl(this.data.input_ids.embeddings.split('|')[0]);
     const embedding = await embeddingsNode.createEmbeddings(term, dataset);
     const index = this.pc.index(this.data.index_name);
-    const response = await index.namespace('comments').query({
+    const response = await index.namespace(`${this.data.namespace}_claims`).query({
       topK: topK,
       vector: embedding.data[0].embedding,
       includeValues: true
@@ -121,21 +113,21 @@ export default class PineconeNode {
     Cookies: any,
     dataset: any
   ) {
-    let embeddings = inputData.embeddings || inputData[this.data.input_ids.embeddings];
-    let api_key = inputData.pinecone_api_key || inputData[this.data.input_ids.pinecone_api_key];
+    let embeddings = inputData.embeddings || inputData[this.data.input_ids.embeddings as string];
+    let api_key =
+      inputData.pinecone_api_key || inputData[this.data.input_ids.pinecone_api_key as string];
     if (api_key) this.initPinecone(dataset);
     if (context == 'run' && embeddings?.length != this.data.length) {
       if (!api_key) {
         error('No Pinecone API key input');
         return;
       }
-      this.data.index_name = _.kebabCase(slug);
+      this.data.namespace = _.kebabCase(slug);
       if (embeddings) {
         await this.upsert(embeddings, info);
         this.data.length = embeddings.length;
       }
     }
-    console.log(await this.pc.listIndexes());
     if (api_key) return { indexes: await this.pc.listIndexes(), tools: this.tools() };
   }
 }
@@ -144,6 +136,7 @@ interface PineconeNodeData extends BaseData {
   output: any;
   length: number;
   index_name: string;
+  namespace: string;
 }
 
 type PineconeNodeInterface = DGNodeInterface & {
@@ -158,13 +151,14 @@ export let pinecone_node_data: PineconeNodeInterface = {
     output: {},
     compute_type: 'pinecone_v0',
     input_ids: { embeddings: '', pinecone_api_key: '' },
-    output_ids: { indexes: '', tools: '' },
+    output_ids: { tools: '' },
     category: categories.ml.id,
     icon: 'pinecone_v0',
     show_in_ui: true,
     message: '',
     length: 0,
-    index_name: ''
+    index_name: 'tttc',
+    namespace: ''
   },
   position: { x: 0, y: 0 },
   type: 'pinecone_v0'

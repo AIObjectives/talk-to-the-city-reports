@@ -1,6 +1,5 @@
 <script lang="ts">
   import { type NodeProps } from '@xyflow/svelte';
-  import Button from '@smui/button';
   import DGNode from './DGNode.svelte';
   import _ from 'lodash';
   import { _ as __ } from 'svelte-i18n';
@@ -18,16 +17,5 @@
 </script>
 
 <DGNode {data} {id} {...$$restProps}>
-  <br />
-  <Button
-    on:click={async () => {
-      node.deleteIndex(dataset);
-      dataset.graph.nodes.update((nodes) => {
-        const nodeToUpdate = nodes.find((n) => n.id === id);
-        return nodes;
-      });
-    }}>{$__('delete_index')}</Button
-  >
-
   <br />
 </DGNode>
