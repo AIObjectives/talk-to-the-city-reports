@@ -28,7 +28,14 @@ export default class PineconeNode {
     });
   }
 
+  requireIndexName() {
+    if (!this.data.index_name) {
+      throw new Error('Index name not set');
+    }
+  }
+
   async deleteIndex(dataset) {
+    this.requireIndexName();
     this.data.length = 0;
     this.data.dirty = true;
     try {
@@ -40,6 +47,7 @@ export default class PineconeNode {
   }
 
   async upsert(embeddings, info) {
+    this.requireIndexName();
     let index;
     try {
       index = await this.pc.describeIndex(this.data.index_name);
@@ -67,6 +75,7 @@ export default class PineconeNode {
 
   async query_pinecone(term, topK, dataset: Dataset) {
     this.initPinecone(dataset);
+    this.requireIndexName();
     const embeddingsNode = dataset.graph.findImpl(this.data.input_ids.embeddings.split('|')[0]);
     const embedding = await embeddingsNode.createEmbeddings(term, dataset);
     const index = this.pc.index(this.data.index_name);

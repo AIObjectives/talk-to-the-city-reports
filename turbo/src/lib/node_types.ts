@@ -41,6 +41,7 @@ import '$lib/compute/python_v0.ts';
 import '$lib/compute/report_v0.ts';
 import '$lib/compute/report_v1.ts';
 import '$lib/compute/score_argument_relevance_v0.ts';
+import '$lib/compute/secret_v0.ts';
 import '$lib/compute/stringify_v0.ts';
 import '$lib/compute/summarize_v0.ts';
 import '$lib/compute/test_v0.ts';
@@ -92,6 +93,7 @@ import python_v0 from '$lib/compute/.plaintext/python_v0.txt?raw';
 import report_v0 from '$lib/compute/.plaintext/report_v0.txt?raw';
 import report_v1 from '$lib/compute/.plaintext/report_v1.txt?raw';
 import score_argument_relevance_v0 from '$lib/compute/.plaintext/score_argument_relevance_v0.txt?raw';
+import secret_v0 from '$lib/compute/.plaintext/secret_v0.txt?raw';
 import stringify_v0 from '$lib/compute/.plaintext/stringify_v0.txt?raw';
 import summarize_v0 from '$lib/compute/.plaintext/summarize_v0.txt?raw';
 import test_v0 from '$lib/compute/.plaintext/test_v0.txt?raw';
@@ -144,6 +146,7 @@ export const code = {
   report_v0,
   report_v1,
   score_argument_relevance_v0,
+  secret_v0,
   stringify_v0,
   summarize_v0,
   test_v0,

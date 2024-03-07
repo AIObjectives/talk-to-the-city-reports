@@ -333,6 +333,7 @@ export class Dataset {
           delete node[key];
       }
       node.data.output = {};
+      if (node.data.cache) node.data.cache = {};
       node.data.log = [];
       return node;
     });

@@ -100,6 +100,7 @@
   "merge": "合併",
   "open_ai_key": "OpenAI 金鑰",
   "pinecone_key": "Pinecone 金鑰",
+  "missing_open_ai_key": "缺少 OpenAI 金鑰",
   "participant_filter": "參與者過濾",
   "report": "報告",
   "score_argument_relevance": "評分論點相關性",
@@ -258,4 +259,5 @@
   "domain": "網域",
   "individual": "個人",
   "organization": "組織"
+  "computing_embedding": "計算嵌入"
 }

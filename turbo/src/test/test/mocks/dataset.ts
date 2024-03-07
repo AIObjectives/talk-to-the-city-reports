@@ -115,15 +115,15 @@ export function get_markdown() {
 export function get_graph() {
   const csv = get_csv();
   const jq = get_jq();
-  const key = get_open_ai_key();
-  const cs = get_cluster_extraction();
-  const as = get_argument_extraction();
+  const oaikey = get_open_ai_key();
+  const ce = get_cluster_extraction();
+  const ae = get_argument_extraction();
   const gptemb = get_gpt_embeddings();
   const pck = get_pinecone_key();
   const pc = get_pinecone();
   const merge = get_merge();
   const chat = get_chat();
-  const nodes = [csv, jq, key, cs, as, merge, chat, pck, pc, gptemb];
+  const nodes = [csv, jq, oaikey, ce, ae, merge, chat, pck, pc, gptemb];
   const edges = [
     {
       source: csv_node_data.id,
