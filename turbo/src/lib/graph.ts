@@ -236,7 +236,7 @@ export class DependencyGraph {
         if (_.isArray(inputIds[key])) {
           inputIds[key] = (inputIds[key] as Array<any>).filter((val) => val.split('|')[0] !== id);
         } else if (inputIds[key] === id) {
-          delete inputIds[key];
+          inputIds[key] = '';
         }
       }
       node.data.input_ids = inputIds;

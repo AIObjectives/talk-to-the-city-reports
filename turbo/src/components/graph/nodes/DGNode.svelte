@@ -101,22 +101,26 @@
 
   function updateRects() {
     rects = {};
-    _.keys(data.input_ids).forEach((inputId) => {
-      const element = document.getElementById(`input-${id}-${inputId}`);
-      if (element) {
-        const rect = element.getBoundingClientRect();
-        rects[`input-${id}-${inputId}`] = Math.round((rect.top - posY) / getZoom());
-      }
-    });
-    // Currently only one output is supported
-    if (data.output_ids) {
-      _.keys(data.output_ids).forEach((outputId) => {
-        const element = document.getElementById(`output-${id}-${outputId}`);
+    _.keys(data.input_ids)
+      .sort()
+      .forEach((inputId) => {
+        const element = document.getElementById(`input-${id}-${inputId}`);
         if (element) {
           const rect = element.getBoundingClientRect();
-          rects[`output-${id}-${outputId}`] = Math.round((rect.top - posY) / getZoom());
+          rects[`input-${id}-${inputId}`] = Math.round((rect.top - posY) / getZoom());
         }
       });
+    // Currently only one output is supported
+    if (data.output_ids) {
+      _.keys(data.output_ids)
+        .sort()
+        .forEach((outputId) => {
+          const element = document.getElementById(`output-${id}-${outputId}`);
+          if (element) {
+            const rect = element.getBoundingClientRect();
+            rects[`output-${id}-${outputId}`] = Math.round((rect.top - posY) / getZoom());
+          }
+        });
     }
   }
 
@@ -252,7 +256,7 @@
         </FormField>
       {/if}
       {#if !isStandardView}
-        {#each _.keys(data.input_ids) as inputId, i}
+        {#each _.keys(data.input_ids).sort() as inputId}
           <Card style="min-height: 50px; padding: 10px;" variant="outlined">
             <div
               id={`input-${id}-${inputId}`}
@@ -263,7 +267,7 @@
           </Card>
         {/each}
         {#if data.output_ids}
-          {#each _.keys(data.output_ids) as outputId, i}
+          {#each _.keys(data.output_ids).sort() as outputId, i}
             <Card style="min-height: 50px; padding: 10px;" variant="outlined">
               <div
                 id={`output-${id}-${outputId}`}
@@ -278,7 +282,7 @@
     </Paper>
   </div>
   {#if !isStandardView}
-    {#each _.keys(data.input_ids) as inputId}
+    {#each _.keys(data.input_ids).sort() as inputId}
       {#if rects[`input-${id}-${inputId}`]}
         <Handle
           id={inputId}
@@ -290,7 +294,7 @@
       {/if}
     {/each}
     {#if data.output_ids}
-      {#each _.keys(data.output_ids) as outputId}
+      {#each _.keys(data.output_ids).sort() as outputId}
         {#if rects[`output-${id}-${outputId}`]}
           <Handle
             id={outputId}

@@ -258,6 +258,6 @@
   "share_keys_with_domain": "與網域共享金鑰（僅限聊天）",
   "domain": "網域",
   "individual": "個人",
-  "organization": "組織"
+  "organization": "組織",
   "computing_embedding": "計算嵌入"
 }
