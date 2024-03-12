@@ -1,6 +1,5 @@
 <script lang="ts">
-  import { writable, get } from 'svelte/store';
-  import { tick } from 'svelte';
+  import { get } from 'svelte/store';
   import { getContext } from 'svelte';
 
   import _ from 'lodash';
@@ -16,11 +15,8 @@
   import nodes from '$lib/node_register';
   import DGNode from '$components/graph/nodes/DGNode.svelte';
   import TrashCan from '$lib/icons/TrashCan.svelte';
-  import MenuIcon from '$lib/icons/Menu.svelte';
   import ChatBubble from './ChatBubble.svelte';
   import ChatInput from './ChatInput.svelte';
-  import ChatMenu from './ChatMenu.svelte';
-  import Button, { Label } from '@smui/button';
 
   type $$Props = NodeProps;
 

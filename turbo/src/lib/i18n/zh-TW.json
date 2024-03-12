@@ -262,5 +262,13 @@
   "organization": "組織",
   "computing_embedding": "計算嵌入",
   "input_language": "輸入語言",
-  "target_languages": "目標語言"
+  "target_languages": "目標語言",
+  "enable_forking": "啟用分支",
+  "forking_disabled": "分支已停用",
+  "Whisper": "耳語",
+  "text_to_speech": "文字轉語音",
+  "speech_to_text": "語音轉文字",
+  "dirty": "骯髒",
+  "show_function_calls": "顯示函數呼叫",
+  "chat_is_restricted_to_dataset_owner": "聊天僅限於數據集擁有者"
 }

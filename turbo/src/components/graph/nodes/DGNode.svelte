@@ -230,7 +230,7 @@
         <Logs logs={data.log} />
       {/if}
       {#if tune}
-        <TuneDGNode bind:data />
+        <TuneDGNode bind:data {dataset} />
       {/if}
       {#if isStandardView && inlineDoc}
         <div class="text-sm text-gray-900 my-5">{@html marked.parse(inlineDoc)}</div>

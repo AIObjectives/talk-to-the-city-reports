@@ -37,6 +37,7 @@ export class Dataset {
   graph: DependencyGraph;
   id?: string;
   projectParent?: string;
+  enableForking: boolean = true;
 
   constructor(
     projectTitle: string,
@@ -46,7 +47,8 @@ export class Dataset {
     projectDescription: string,
     graph: any,
     id?: string,
-    projectParent?: string
+    projectParent?: string,
+    enableForking: boolean = true
   ) {
     this.title = projectTitle;
     this.slug = projectSlug;
@@ -57,6 +59,7 @@ export class Dataset {
     this.graph = new DependencyGraph(graph?.nodes, graph?.edges, this);
     this.id = id;
     this.projectParent = projectParent;
+    this.enableForking = enableForking;
   }
 
   propagateDirtyState() {
@@ -295,6 +298,10 @@ export class Dataset {
   }
 
   async fork(slug: string): Promise<boolean> {
+    if (!this.enableForking) {
+      error($__('forking_disabled'));
+      return false;
+    }
     try {
       info($__('forking_dataset'));
       let copy = Deepcopy(this.datasetToDoc());

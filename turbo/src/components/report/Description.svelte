@@ -1,4 +1,6 @@
 <script lang="ts">
+  import Checkbox from '@smui/checkbox';
+  import FormField from '@smui/form-field';
   import HelperText from '@smui/textfield/helper-text';
   import TextField from '@smui/textfield';
   import { globalViewMode, reportStore } from '$lib/store';
@@ -27,6 +29,18 @@
     >
       <HelperText slot="helper">{$__('description')}</HelperText>
     </TextField>
+    <FormField>
+      <div>
+        <Checkbox
+          checked={dataset.enableForking}
+          on:change={(x) => {
+            // @ts-ignore
+            dataset.enableForking = x.target.checked;
+          }}
+        />
+      </div>
+      <span slot="label">{$__('enable_forking')}</span>
+    </FormField>
     <button on:click={() => (editing = false)}>{$__('done')}</button>
   </div>
 {:else}
