@@ -2,7 +2,7 @@
   "name": "tttc-turbo",
   "version": "0.0.1",
   "tsCoverage": "82%",
-  "vitestPass": 200,
+  "vitestPass": 202,
   "vitestFail": 0,
   "engines": {
     "node": "18"
@@ -76,6 +76,7 @@
     "@google-cloud/storage": "^7.6.0",
     "@jq-tools/jq": "^0.0.10",
     "@mozilla/readability": "^0.5.0",
+    "@pinecone-database/pinecone": "^2.0.1",
     "@smui/button": "^7.0.0-beta.15",
     "@smui/card": "^7.0.0-beta.15",
     "@smui/checkbox": "^7.0.0-beta.15",
@@ -98,7 +99,6 @@
     "@vitest/ui": "^0.34.6",
     "@xyflow/svelte": "^0.0.28",
     "@zerodevx/svelte-toast": "^0.9.5",
-    "@pinecone-database/pinecone": "^2.0.1",
     "ag-grid-community": "^30.2.1",
     "ag-grid-svelte": "^0.3.0",
     "crypto-js": "^4.2.0",
@@ -115,6 +115,7 @@
     "js-cookie": "^3.0.5",
     "js-tiktoken": "^1.0.8",
     "jsonata": "^2.0.3",
+    "jsonpath": "^1.1.1",
     "jsonwebtoken": "^9.0.2",
     "jsrsasign": "^10.9.0",
     "layerchart": "^0.25.1",

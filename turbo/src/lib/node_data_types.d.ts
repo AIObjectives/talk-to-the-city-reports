@@ -12,7 +12,7 @@ export interface BaseData {
   dirty: boolean;
   compute_type: string;
   input_ids: { [key: string]: string | object[] };
-  output_ids?: { [key: string]: string };
+  output_ids?: { [key: string]: string | object[] };
   category: string;
   icon: string;
   output?: any;

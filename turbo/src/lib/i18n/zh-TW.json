@@ -115,6 +115,7 @@
   "primary_extraction_prompt": "主要提取提示",
   "columns_to_translate": "需翻譯的欄位",
   "target_language": "目標語言",
+  "add_target_language": "添加目標語言",
   "add_key": "添加金鑰",
   "remove": "移除",
   "generate_columns": "建立欄位",
@@ -259,5 +260,7 @@
   "domain": "網域",
   "individual": "個人",
   "organization": "組織",
-  "computing_embedding": "計算嵌入"
+  "computing_embedding": "計算嵌入",
+  "input_language": "輸入語言",
+  "target_languages": "目標語言"
 }

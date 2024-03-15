@@ -4,6 +4,8 @@ import _ from 'lodash';
 import { readFileFromGCS, uploadJSONToGCS } from '$lib/utils';
 import { format, unwrapFunctionStore } from 'svelte-i18n';
 import type { DGNodeInterface, GCSBaseData } from '$lib/node_data_types';
+import { locale } from 'svelte-i18n';
+import { get } from 'svelte/store';
 
 const $__ = unwrapFunctionStore(format);
 
@@ -21,11 +23,11 @@ export default class ReportNode {
     this.type = type;
   }
 
-  setMessage(fromGCS = false) {
-    if (this.data.output.merge?.topics.length > 0 && this.data.output.csv?.length > 0) {
+  setMessage(fromGCS = false, data = null) {
+    if (data.merge?.topics.length > 0 && data.csv?.length > 0) {
       this.data.message = `
-		${$__(`clusters`)}: ${this.data.output.merge?.topics.length}<br/>
-		${$__(`csv`)}: ${this.data.output.csv?.length}`;
+		${$__(`clusters`)}: ${data.merge?.topics.length}<br/>
+		${$__(`csv`)}: ${data.csv?.length}`;
       if (fromGCS) {
         this.data.message = this.data.message + `<br/>${$__(`loaded_from_gcs`)}`;
       }
@@ -61,44 +63,75 @@ export default class ReportNode {
     slug: string,
     Cookies: any
   ) {
-    this.data.dirty = false;
+    const translations = inputData[this.data.input_ids.translations as string];
+    const merge = inputData[this.data.input_ids.merge as string];
+    const csv = inputData[this.data.input_ids.csv as string];
+
+    const loc = get(locale);
+
     if (context == 'load' && this.data.gcs_path && _.isEmpty(inputData)) {
       try {
         let doc: any = await readFileFromGCS(this);
         if (typeof doc === 'string') {
           doc = JSON.parse(doc);
         }
-        this.data.output.merge = this.sortData(doc.merge);
-        this.setMessage(true);
-        return this.data.output;
+
+        if (doc.merge) {
+          const sorted = this.sortData(doc.merge);
+          this.setMessage(true, sorted);
+          return { merge: sorted };
+        } else if (doc.translations) {
+          const langs = Object.keys(doc.translations);
+          if (langs.includes(loc)) {
+            this.data.language = loc;
+          } else {
+            this.data.language = langs[0];
+          }
+          const sorted = this.sortData(doc.translations[this.data.language]);
+          this.setMessage(true, sorted);
+          return { merge: sorted };
+        }
       } catch (e) {
         this.data.gcs_path = '';
         console.error(e);
       }
     }
-    if (context == 'run') {
+    if (context == 'run' && (!_.isEmpty(merge) || !_.isEmpty(translations))) {
       try {
-        const doc = {
-          merge: inputData[this.data.input_ids.merge]
-        };
-        await uploadJSONToGCS(this, doc, slug);
+        await uploadJSONToGCS(this, { merge: merge, translations: translations }, slug);
       } catch (e) {
         console.error(e);
       }
     }
+    if (_.isEmpty(merge) && _.isEmpty(translations)) return { merge: null, csv: null };
     const output_ids = this.data.output_ids;
-    this.data.output[output_ids.merge] = this.sortData(
-      _.cloneDeep(inputData[this.data.input_ids.merge])
-    );
-    this.data.output[output_ids.csv] = _.cloneDeep(inputData[this.data.input_ids.csv]);
-    this.setMessage(false);
-    return this.data.output;
+    if (!_.isEmpty(translations)) {
+      const langs = Object.keys(translations);
+      if (langs.includes(loc)) {
+        this.data.language = loc;
+      }
+      const translation = translations[this.data.language];
+      const output = {
+        [output_ids.merge]: this.sortData(_.cloneDeep(translation ? translation : merge)),
+        [output_ids.csv]: _.cloneDeep(csv)
+      };
+      this.setMessage(false, output);
+      return output;
+    } else if (!_.isEmpty(merge)) {
+      const output = {
+        [output_ids.merge]: this.sortData(_.cloneDeep(merge)),
+        [output_ids.csv]: _.cloneDeep(csv)
+      };
+      this.setMessage(false, output);
+      return output;
+    }
   }
 }
 
 interface ReportData extends GCSBaseData {
   output: Record<string, any>;
   output_ids: Record<string, string>;
+  language: string;
 }
 
 type ReportNodeInterface = DGNodeInterface & {
@@ -112,7 +145,7 @@ export const report_node_data: ReportNodeInterface = {
     output: {},
     dirty: false,
     compute_type: 'report_v1',
-    input_ids: { merge: '', csv: '' },
+    input_ids: { merge: '', csv: '', translations: '' },
     output_ids: { merge: 'merge', csv: 'csv' },
     category: categories.display.id,
     icon: 'report_v0',
@@ -121,7 +154,8 @@ export const report_node_data: ReportNodeInterface = {
     filename: '',
     size_kb: 0,
     gcs_path: '',
-    show_to_anon: false
+    show_to_anon: false,
+    language: 'en-US'
   },
   position: { x: 0, y: 0 },
   type: 'default_v0'

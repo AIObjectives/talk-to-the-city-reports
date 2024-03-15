@@ -1,3 +1,4 @@
+src/test/.svelte-kit/
 src/routes/tmp
 src/lib/pkg/
 sum

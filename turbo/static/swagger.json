@@ -284,55 +284,6 @@
         ]
       }
     },
-    "/api/tmp": {
-      "get": {
-        "operationId": "userEmail",
-        "summary": "Gets the email for a user id",
-        "description": null,
-        "parameters": [
-          {
-            "name": "uid",
-            "in": "query",
-            "required": true,
-            "description": "UID for the user",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Got email address",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "email": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized request"
-          },
-          "404": {
-            "description": "User not found"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        },
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ]
-      }
-    },
     "/api/users/info/email": {
       "get": {
         "operationId": "userEmail",

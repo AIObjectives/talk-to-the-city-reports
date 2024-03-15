@@ -14,6 +14,7 @@ const pipelineStepsRemaining: Writable<number> = writable(0);
 const isMobile: Writable<boolean> = writable(false);
 const openLeftDrawer: Writable<boolean> = writable(false);
 const messages: Writable<[]> = writable([]);
+const refreshStore: Writable<number> = writable(0);
 
 export {
   user,
@@ -27,5 +28,6 @@ export {
   pipelineStepsRemaining,
   isMobile,
   openLeftDrawer,
-  messages
+  messages,
+  refreshStore
 };

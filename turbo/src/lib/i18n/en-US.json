@@ -115,6 +115,7 @@
   "primary_extraction_prompt": "Primary Extraction Prompt",
   "columns_to_translate": "Columns to Translate",
   "target_language": "Target Language",
+  "add_target_language": "Add Target Language",
   "add_key": "Add Key",
   "remove": "Remove",
   "generate_columns": "Generate Columns",
@@ -262,5 +263,7 @@
   "text_to_speech": "Text to Speech",
   "speech_to_text": "Speech to Text",
   "dirty": "Dirty",
-  "show_function_calls": "Show Function Calls"
+  "show_function_calls": "Show Function Calls",
+  "input_language": "Input Language",
+  "target_languages": "Target Languages"
 }

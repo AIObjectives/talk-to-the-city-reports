@@ -142,3 +142,22 @@ export function HHMMSSToSeconds(hhmmss: string): number {
   const [hours, minutes, seconds] = hhmmss.split(':').map(Number);
   return hours * 3600 + minutes * 60 + seconds;
 }
+
+export function quickChecksum(obj) {
+  let count = 0;
+
+  function countEntries(entity) {
+    if (entity && typeof entity === 'object' && !Array.isArray(entity)) {
+      count++; // Count the object itself
+      Object.keys(entity).forEach((key) => countEntries(entity[key]));
+    } else if (Array.isArray(entity)) {
+      count += entity.length;
+      entity.forEach((item) => countEntries(item));
+    } else {
+      count++;
+    }
+  }
+
+  countEntries(obj);
+  return count;
+}

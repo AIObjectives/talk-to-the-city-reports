@@ -1,6 +1,7 @@
 import CryptoJS from 'crypto-js';
 import sample from '$lib/mock_data/speech_to_text/sample.json';
 import responses from '$lib/mock_data/gpt_responses';
+import _ from 'lodash';
 
 type Message = {
   role: 'system' | 'user';
@@ -99,7 +100,11 @@ export default class OpenAI {
     const hash = CryptoJS.SHA256(JSON.stringify(messages)).toString();
     let resp = '{}';
     if (responses[hash]) {
-      resp = JSON.stringify(responses[hash]);
+      resp = _.isString(responses[hash]) ? responses[hash] : JSON.stringify(responses[hash]);
+    } else {
+      console.error(`The following was not present in mock responses:`);
+      console.error(`Hash: ${hash}`);
+      console.error(`Content ${JSON.stringify(messages)}`);
     }
     const mockResponse: CompletionResponse = {
       choices: [{ message: { content: resp } }]

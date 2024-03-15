@@ -9,7 +9,7 @@
   import { useSvelteFlow } from '@xyflow/svelte';
   import { _ as __ } from 'svelte-i18n';
 
-  import { user, storeDataset, fitViewStore } from '$lib/store';
+  import { user, storeDataset, fitViewStore, refreshStore } from '$lib/store';
   import type { Dataset } from '$lib/dataset';
 
   import Pipe from '$lib/icons/Pipe.svelte';
@@ -63,6 +63,10 @@
 
   $: load();
   $: $storeDataset = dataset;
+
+  refreshStore.subscribe(async () => {
+    refreshData();
+  });
 
   $: {
     $fitViewStore;
