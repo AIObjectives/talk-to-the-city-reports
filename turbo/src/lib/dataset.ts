@@ -1,3 +1,4 @@
+import { refreshStore } from '$lib/store';
 import { type User } from 'firebase/auth';
 import { goto } from '$app/navigation';
 import Cookies from 'js-cookie';
@@ -83,6 +84,7 @@ export class Dataset {
   refresh() {
     this.graph.nodes.update((node) => node);
     this.graph.nodes = this.graph.nodes;
+    refreshStore.set(Math.random());
   }
 
   independentSets(sortedNodes, edges) {
@@ -142,7 +144,21 @@ export class Dataset {
     const report_v1 = this.graph.findByComputeType('report_v1');
     if (!_.isEmpty(report_v1) && refreshData) {
       const report_v1_impl = nodes.init('report_v1', report_v1[0].node);
-      await report_v1_impl.compute({}, context, info, error, success, this.slug, Cookies);
+      const result = await report_v1_impl.compute(
+        {},
+        context,
+        info,
+        error,
+        success,
+        this.slug,
+        Cookies
+      );
+      this.graph.nodes.update((nodes) => {
+        const nodeToUpdate = nodes.find((n) => n.id === report_v1_impl.id);
+        nodeToUpdate.data.output = result;
+        nodeToUpdate.data.dirty = false;
+        return nodes;
+      });
       if (refreshData) refreshData();
     }
 
@@ -238,9 +254,8 @@ export class Dataset {
           nodeOutputs[result.id] = result.output;
         }
       }
-
-      await this.refresh();
     }
+    await this.refresh();
 
     if (context == 'run') {
       pipelineStepsRemaining.set(0);

@@ -12,14 +12,9 @@ vi.mock('$lib/utils', () => ({
 
 describe('ReportNode class', () => {
   let node;
-  let inputData;
 
   beforeEach(() => {
     node = new ReportNode(deepCopy(report_node_data));
-    inputData = {
-      merge: mergeData,
-      csv: csvData
-    };
     node.data.input_ids.merge = 'merge';
     node.data.input_ids.csv = 'csv';
     vi.clearAllMocks();
@@ -27,7 +22,29 @@ describe('ReportNode class', () => {
 
   it('sets the output of the node to the input data', async () => {
     const result = await node.compute(
-      inputData,
+      {
+        merge: mergeData,
+        csv: csvData
+      },
+      'run',
+      vi.fn(),
+      vi.fn(),
+      vi.fn(),
+      'test_slug',
+      vi.fn()
+    );
+    expect(result.merge).toEqual(mergeData);
+    expect(result.csv).toEqual(csvData);
+  });
+
+  it('handles translation', async () => {
+    node.data.input_ids.merge = '';
+    node.data.input_ids.translations = 'translations';
+    const result = await node.compute(
+      {
+        translations: { 'en-US': mergeData },
+        csv: csvData
+      },
       'run',
       vi.fn(),
       vi.fn(),
@@ -40,7 +57,18 @@ describe('ReportNode class', () => {
   });
 
   it('uploads data to GCS on run', async () => {
-    await node.compute(inputData, 'run', vi.fn(), vi.fn(), vi.fn(), 'test_slug', vi.fn());
+    await node.compute(
+      {
+        merge: mergeData,
+        csv: csvData
+      },
+      'run',
+      vi.fn(),
+      vi.fn(),
+      vi.fn(),
+      'test_slug',
+      vi.fn()
+    );
     expect(uploadJSONToGCS).toHaveBeenCalledWith(node, { merge: mergeData }, 'test_slug');
   });
 
@@ -60,7 +88,18 @@ describe('ReportNode class', () => {
   });
 
   it('sets message if merge and csv data are present', async () => {
-    await node.compute(inputData, 'run', vi.fn(), vi.fn(), vi.fn(), 'test_slug', vi.fn());
+    await node.compute(
+      {
+        merge: mergeData,
+        csv: csvData
+      },
+      'run',
+      vi.fn(),
+      vi.fn(),
+      vi.fn(),
+      'test_slug',
+      vi.fn()
+    );
     expect(node.data.message).toContain(`clusters: ${mergeData.topics.length}`);
     expect(node.data.message).toContain(`csv: ${csvData.length}`);
   });
@@ -80,7 +119,18 @@ describe('ReportNode class', () => {
 
   it('does not mutate the input node', async () => {
     const originalNodeData = deepCopy(report_node_data);
-    await node.compute(inputData, 'run', vi.fn(), vi.fn(), vi.fn(), 'test_slug', vi.fn());
+    await node.compute(
+      {
+        merge: mergeData,
+        csv: csvData
+      },
+      'run',
+      vi.fn(),
+      vi.fn(),
+      vi.fn(),
+      'test_slug',
+      vi.fn()
+    );
     expect(node.id).toEqual(originalNodeData.id);
     expect(node.type).toEqual(originalNodeData.type);
     expect(node.position).toEqual(originalNodeData.position);

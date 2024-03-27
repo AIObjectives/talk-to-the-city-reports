@@ -1,4 +1,28 @@
-The translate node translates CSV columns using GPT4, to the target language. Multiple columns can be specified.
+The translate node translates JSON documents to multiple target languages, and takes the following settings:
+
+## Input attributes:
+
+- input_language
+
+The language of the JSON document being passed in.
+
+- target_languages
+
+The languages the document is translated to.
+
+- language_selector
+
+The language used as output for the `translation` output attribute.
+
+## Output attributes:
+
+- translation
+
+This attribute will either output the language as defined by the `language_selector` input attribute, or the first language found in the `translations` object (if no `language_selector` was specified).
+
+- translations
+
+This attribute ouputs all languages in an object (the language codes as keys, and translation objects as values).
 
 ## Storage
 

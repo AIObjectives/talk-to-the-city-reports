@@ -321,8 +321,8 @@ DISPLAY=:99 python src/test/test_selenium.py
 | Passed Test Suites  |   100 |
 | Failed Test Suites  |     0 |
 | Pending Test Suites |     0 |
-| Total Tests         |   200 |
-| Passed Tests        |   200 |
+| Total Tests         |   202 |
+| Passed Tests        |   202 |
 | Failed Tests        |     0 |
 | Pending Tests       |     0 |
 | Todo Tests          |     0 |
@@ -670,6 +670,7 @@ DISPLAY=:99 python src/test/test_selenium.py
 | Test                                                                     | Status     | Duration (ms) |
 | ------------------------------------------------------------------------ | ---------- | ------------: |
 | _sets the output of the node to the input data_                          | **passed** |
+| _handles translation_                                                    | **passed** |
 | _uploads data to GCS on run_                                             | **passed** |
 | _reads data from GCS on load if gcs_path is set and input data is empty_ | **passed** |
 | _clears gcs_path if readFileFromGCS throws an error_                     | **passed** |
@@ -735,12 +736,13 @@ DISPLAY=:99 python src/test/test_selenium.py
 | _should handle empty text input_                                   | **passed** |
 | _should split text into chunks if it exceeds the number of tokens_ | **passed** |
 
-### `[46]` [translate.test.ts](./src/test//translate.test.ts)
+### `[46]` [translate_v0.test.ts](./src/test//translate_v0.test.ts)
 
-| Test                                      | Status     | Duration (ms) |
-| ----------------------------------------- | ---------- | ------------: |
-| _translates the input data_               | **passed** |
-| _uses cached translations when available_ | **passed** |
+| Test                                                  | Status     | Duration (ms) |
+| ----------------------------------------------------- | ---------- | ------------: |
+| _translates the input data_                           | **passed** |
+| _loads translations from GCS if data has not changed_ | **passed** |
+| _does not translate if required inputs are missing_   | **passed** |
 
 ### `[47]` [unique_v0.test.ts](./src/test//unique_v0.test.ts)
 

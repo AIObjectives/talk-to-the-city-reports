@@ -1,3 +1,25 @@
-The report_v1 node simply makes the extraction data available to the rest of the user interface.
+The report_v1 node simply makes the extraction data available to the rest of the user interface. Please note that the merged / translation data is cached to GCS, and this node is loaded first, to optimize loading speeds of the reports.
 
-It takes two inputs: the merged report data, and the original csv data. It was created for more complex reports which may have more than one CSV node, or reports where the data is being read via a JSON node. In these cases, the original data needs to be made explicit via a connection, warranting the use of the report_v1 node.
+## Input attributes:
+
+- csv
+
+This input attribute takes the original CSV data used to generate the report.
+
+- merge
+
+The merged data, i.e containing the topics, subtopics and claims.
+
+- translations
+
+An object with locales as keys, and the translated merged data as values.
+
+## Output attributes:
+
+- csv
+
+The original CSV data used to generate the report.
+
+- merge
+
+The merged data, i.e containing the topics, subtopics and claims.

@@ -1,8 +1,33 @@
+import gpt from '$lib/gpt';
+import _ from 'lodash';
+import jsonpath from 'jsonpath';
 import nodes from '$lib/node_register';
-import { readFileFromGCS, uploadJSONToGCS } from '$lib/utils';
+import { readFileFromGCS, uploadJSONToGCS, quickChecksum } from '$lib/utils';
 import type { DGNodeInterface, GCSBaseData } from '$lib/node_data_types';
 
 import categories from '$lib/node_categories';
+
+function defaultdict(factory) {
+  const dict = new Proxy(
+    {},
+    {
+      get: function (target, key) {
+        let value = target[key];
+        if (typeof value === 'undefined') {
+          value = factory();
+          target[key] = value;
+        }
+        return value;
+      }
+    }
+  );
+
+  return dict;
+}
+
+function sizeofDefaultDict(defaultdict) {
+  return Object.keys(defaultdict).length;
+}
 
 export default class TranslateNode {
   id: string;
@@ -18,6 +43,80 @@ export default class TranslateNode {
     this.type = type;
   }
 
+  async translate(target_languages, data, keys, open_ai_key, info, error, success) {
+    const translations = {};
+    translations[this.data.input_language] = _.cloneDeep(data);
+
+    const todo = defaultdict(() => []);
+
+    for (const language of target_languages) {
+      translations[language] = _.cloneDeep(data);
+      for (const key of keys) {
+        const valuesByJsonPath = jsonpath.query(translations[language], key);
+        for (const [index, valueToTranslate] of valuesByJsonPath.entries()) {
+          if (valueToTranslate !== null) {
+            todo[JSON.stringify([language, valueToTranslate])].push({
+              key,
+              index,
+              translation: ''
+            });
+          }
+        }
+      }
+    }
+
+    for (const t in todo) {
+      console.log(t);
+      const keys = _.uniq(todo[t].map((x) => x.key));
+      console.log(keys);
+    }
+
+    const num = sizeofDefaultDict(todo);
+    const numTodo = new Set(_.range(0, num));
+
+    async function delay(milliseconds) {
+      return new Promise((resolve) => setTimeout(resolve, milliseconds));
+    }
+
+    const output = [];
+    let i = 0;
+    for (const t in todo) {
+      i += 1;
+      const [language, valueToTranslate] = JSON.parse(t);
+      const promise = (async () => {
+        await delay(100 * i);
+        const res = await gpt(
+          open_ai_key,
+          {
+            text: valueToTranslate,
+            language: language
+          },
+          this.data.prompt,
+          this.data.system_prompt,
+          info,
+          error,
+          success,
+          i,
+          num,
+          numTodo,
+          null
+        );
+        const keys = _.uniq(todo[t].map((x) => x.key));
+        for (const key of keys)
+          jsonpath.apply(translations[language], key, (value, path) => {
+            if (_.isEqual(value, valueToTranslate)) {
+              return res;
+            }
+            return value;
+          });
+      })();
+      output.push(promise);
+    }
+
+    await Promise.all(output);
+    return translations;
+  }
+
   async compute(
     inputData: Record<string, any>,
     context: string,
@@ -26,82 +125,60 @@ export default class TranslateNode {
     success: (arg: string) => void,
     slug: string,
     Cookies: any
-  ) {
-    const open_ai_key = inputData.open_ai_key || inputData[this.data.input_ids.open_ai_key];
-    const data = inputData.data || inputData[this.data.input_ids.data];
-    const target_language = this.data.target_language;
+  ): Promise<Record<string, any>> {
+    const open_ai_key =
+      inputData.open_ai_key || inputData[this.data.input_ids.open_ai_key as string];
+    const data = inputData.data || inputData[this.data.input_ids.data as string];
+    const target_languages = this.data.target_languages;
     const keys = this.data.keys;
+    const languageSelector = this.data.language_selector;
 
-    console.log(data, target_language, keys);
-
-    if (!data || !target_language || !keys) {
-      this.data.dirty = false;
+    if (_.isEmpty(data) || _.isEmpty(target_languages) || _.isEmpty(keys)) {
       return;
     }
 
-    if (this.data.gcs_path) {
-      let storedData = await readFileFromGCS(this);
-      if (typeof storedData === 'string') storedData = JSON.parse(storedData);
-      storedData = storedData.slice(0, data.length);
-      this.data.output = storedData;
-    }
+    const length = quickChecksum(data);
+    const length_changed = length !== this.data.length;
 
-    if (!this.data.dirty && this.data.output && this.data.output.length >= data.length) {
-      return this.data.output.map((translatedItem: any, index: number) => {
-        return { ...data[index], ...translatedItem };
-      });
+    if (context == 'load' && !this.data.dirty && this.data.gcs_path && !length_changed) {
+      let storedData: any = await readFileFromGCS(this);
+      if (typeof storedData === 'string') storedData = JSON.parse(storedData);
+      return {
+        translations: storedData,
+        translation: storedData[languageSelector] || _.head(_.values(storedData))
+      };
     }
 
     if (context == 'run') {
-      const translateHandler = async (text: string) => {
-        const vitest = import.meta.env.VITEST == 'true';
-        const openai = (await import(vitest ? '$lib/mock_open_ai' : 'openai')).default;
-        info('Translating: ' + text);
-        const OpenAI = new openai({ apiKey: open_ai_key, dangerouslyAllowBrowser: true });
-        try {
-          const response = await OpenAI.chat.completions.create({
-            messages: [
-              {
-                role: 'system',
-                content: 'Translate the following text to ' + target_language + '.'
-              },
-              { role: 'user', content: text }
-            ],
-            model: 'gpt-4',
-            temperature: 0.1
-          });
-          return response.choices[0].message.content;
-        } catch (error) {
-          console.error('Error translating text: ', error);
-          return null;
-        }
+      const translations = await this.translate(
+        target_languages,
+        data,
+        keys,
+        open_ai_key,
+        info,
+        error,
+        success
+      );
+      await uploadJSONToGCS(this, translations, slug);
+      this.data.length = length;
+      return {
+        translations,
+        translation: translations[languageSelector] || translations[target_languages[0]]
       };
-
-      const translations = [];
-
-      for (let i = 0; i < data.length; i++) {
-        const translationItem: Record<string, any> = {};
-        for (const key of keys) {
-          translationItem[key] = await translateHandler(data[i][key]);
-        }
-        translations.push(translationItem);
-      }
-
-      this.data.dirty = false;
-      this.data.output = translations;
-      await uploadJSONToGCS(this, translations, this.id + '/translate');
-
-      return translations.map((translatedItem, index) => {
-        return { ...data[index], ...translatedItem };
-      });
     }
   }
 }
 
 interface TranslateData extends GCSBaseData {
-  target_language: string;
+  target_languages: string[];
   gcs_path: string;
   keys: string[];
+  language_selector: string;
+  input_language: string;
+  cache: Record<string, any>;
+  system_prompt: string;
+  prompt: string;
+  length: number;
 }
 
 type TranslateNodeInterface = DGNodeInterface<GCSBaseData> & {
@@ -112,18 +189,35 @@ export const translate_node_data: TranslateNodeInterface = {
   id: 'translate',
   data: {
     label: 'translate',
-    target_language: 'English',
-    keys: [],
+    target_languages: ['zh-TW'],
+    keys: [
+      '$.topics[*].topicName',
+      '$.topics[*].topicShortDescription',
+      '$.topics[*].subtopics[*].subtopicName',
+      '$.topics[*].subtopics[*].subtopicShortDescription',
+      '$.topics[*].subtopics[*].claims[*].claim',
+      '$.topics[*].subtopics[*].claims[*].quote',
+      '$.topics[*].subtopics[*].claims[*].topicName',
+      '$.topics[*].subtopics[*].claims[*].subtopicName'
+    ],
     dirty: false,
     gcs_path: '',
     compute_type: 'translate_v0',
     input_ids: { open_ai_key: '', data: '' },
+    output_ids: { translation: '', translations: [] },
     category: categories.ml.id,
     icon: 'translate_v0',
     message: '',
-    show_in_ui: true,
+    show_in_ui: false,
     filename: '',
-    size_kb: 0
+    size_kb: 0,
+    language_selector: 'en-US',
+    input_language: 'en-US',
+    cache: {},
+    system_prompt:
+      'You are a professional translator. You respond with the correct translation and nothing else.',
+    prompt: 'Translate the following text to {language}.\n\n{text}',
+    length: 0
   },
   position: { x: 0, y: 0 },
   type: 'translate_v0'

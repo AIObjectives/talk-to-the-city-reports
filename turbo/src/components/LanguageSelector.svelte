@@ -1,19 +1,35 @@
 <script lang="ts">
+  import { tick } from 'svelte';
   import { onMount, onDestroy } from 'svelte';
   import { flags, defaultLocale } from '$lib/i18n';
   import { locale } from 'svelte-i18n';
   import Cookies from 'js-cookie';
   import { browser } from '$app/environment';
   import MenuDown from '$lib/icons/MenuDown.svelte';
+  import { storeDataset, refreshStore } from '$lib/store';
 
   let isOpen = false;
   $: selectedFlag = flags[$locale] || flags[defaultLocale];
   let dropdown: HTMLElement;
 
-  function changeLanguage(lang: string) {
+  async function changeLanguage(lang: string) {
     locale.set(lang);
     Cookies.set('locale', lang);
     isOpen = false;
+    if (!$storeDataset) {
+      return;
+    }
+    $storeDataset.graph.nodes.update((nodes) => {
+      const nodesToUpdate = nodes.filter((n) => n.data.compute_type === 'report_v1');
+      for (const node of nodesToUpdate) {
+        node.data.language = lang;
+      }
+      return nodes;
+    });
+    await tick();
+    await $storeDataset.processNodes('load', null, false, () => {
+      $refreshStore += 1;
+    });
   }
 
   function handleClickOutside(event: MouseEvent) {
@@ -45,7 +61,7 @@
       <ul class="select-dropdown">
         {#each Object.keys(flags) as lang}
           <li>
-            <button class="dropdown-item" on:click={() => changeLanguage(lang)}>
+            <button class="dropdown-item" on:click={async () => await changeLanguage(lang)}>
               {flags[lang]}
             </button>
           </li>

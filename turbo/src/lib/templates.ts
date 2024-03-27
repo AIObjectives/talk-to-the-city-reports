@@ -11,7 +11,6 @@ import { edit_csv_node } from './compute/edit_csv_v0';
 import { cluster_extraction_node_v1 } from './compute/cluster_extraction_v1';
 import { merge_cluster_extraction_node_v1 } from './compute/merge_cluster_extraction_v1';
 import { argument_extraction_node_v1 } from './compute/argument_extraction_v1';
-import { report_node_v0 } from './compute/report_v0';
 import { report_node_v1 } from './compute/report_v1';
 import { participant_filter_node } from './compute/participant_filter_v0';
 import { merge_node } from './compute/merge_v0';
@@ -59,7 +58,6 @@ export const node_register = [
   argument_extraction_node_v1,
   merge_node,
   participant_filter_node,
-  report_node_v0,
   report_node_v1,
   limit_csv_node,
   translate_node,
