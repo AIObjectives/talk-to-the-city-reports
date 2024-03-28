@@ -62,23 +62,27 @@ describe('TranslateNode class', () => {
     node.data.gcs_path = 'gs://test_bucket/test_path';
     node.data.length = 123; // Same as the checksum returned by quickChecksum
 
-    const result = await node.compute(
-      inputData,
-      'load',
-      vi.fn(),
-      vi.fn(),
-      vi.fn(),
-      'test_slug',
-      vi.fn(),
-      dataset
-    );
+    const modes = ['run', 'load'];
 
-    const { translation, translations } = result;
-    expect(translation).toEqual({ key: 'translated response' });
-    expect(translations).toEqual({
-      'en-US': { key: 'value' },
-      'fr-FR': { key: 'translated response' }
-    });
+    for (const mode of modes) {
+      const result = await node.compute(
+        inputData,
+        mode,
+        vi.fn(),
+        vi.fn(),
+        vi.fn(),
+        'test_slug',
+        vi.fn(),
+        dataset
+      );
+
+      const { translation, translations } = result;
+      expect(translation).toEqual({ key: 'translated response' });
+      expect(translations).toEqual({
+        'en-US': { key: 'value' },
+        'fr-FR': { key: 'translated response' }
+      });
+    }
   });
 
   it('does not translate if required inputs are missing', async () => {

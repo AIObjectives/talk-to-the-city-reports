@@ -17,10 +17,11 @@
   import TrashCan from '$lib/icons/TrashCan.svelte';
   import ChatBubble from './ChatBubble.svelte';
   import ChatInput from './ChatInput.svelte';
+  import type { Dataset } from '$lib/dataset';
 
   type $$Props = NodeProps;
 
-  const dataset = getContext('dataset');
+  const dataset: Dataset = getContext('dataset') as Dataset;
   let messageInput = '';
   let node: any;
   let node_impl: any;
@@ -29,11 +30,13 @@
   let display = [];
 
   $: {
-    node = get(dataset.graph.nodes).find((x) => x.id === id);
-    node_impl = nodes.init(data.compute_type, node);
-    key = node_impl.getKey(dataset);
-    noSystem = _.filter($messages, (x) => x.role !== 'system');
-    display = _.takeRight(noSystem, data.show_function_calls ? 12 : 6);
+    if (dataset) {
+      node = get(dataset.graph.nodes).find((x) => x.id === id);
+      node_impl = nodes.init(data.compute_type, node);
+      key = node_impl.getKey(dataset);
+      noSystem = _.filter($messages, (x) => x.role !== 'system');
+      display = _.takeRight(noSystem, data.show_function_calls ? 12 : 6);
+    }
   }
 
   export let data: $$Props['data'];

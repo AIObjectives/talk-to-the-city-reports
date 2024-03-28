@@ -65,12 +65,6 @@ export default class TranslateNode {
       }
     }
 
-    for (const t in todo) {
-      console.log(t);
-      const keys = _.uniq(todo[t].map((x) => x.key));
-      console.log(keys);
-    }
-
     const num = sizeofDefaultDict(todo);
     const numTodo = new Set(_.range(0, num));
 
@@ -131,7 +125,6 @@ export default class TranslateNode {
     const data = inputData.data || inputData[this.data.input_ids.data as string];
     const target_languages = this.data.target_languages;
     const keys = this.data.keys;
-    const languageSelector = this.data.language_selector;
 
     if (_.isEmpty(data) || _.isEmpty(target_languages) || _.isEmpty(keys)) {
       return;
@@ -140,12 +133,14 @@ export default class TranslateNode {
     const length = quickChecksum(data);
     const length_changed = length !== this.data.length;
 
-    if (context == 'load' && !this.data.dirty && this.data.gcs_path && !length_changed) {
+    const languageSelector = this.data.language_selector;
+
+    if (!this.data.dirty && this.data.gcs_path && !length_changed) {
       let storedData: any = await readFileFromGCS(this);
       if (typeof storedData === 'string') storedData = JSON.parse(storedData);
       return {
         translations: storedData,
-        translation: storedData[languageSelector] || _.head(_.values(storedData))
+        translation: storedData[languageSelector] || storedData[this.data.input_language]
       };
     }
 
@@ -163,7 +158,7 @@ export default class TranslateNode {
       this.data.length = length;
       return {
         translations,
-        translation: translations[languageSelector] || translations[target_languages[0]]
+        translation: translations[languageSelector] || translations[this.data.input_language]
       };
     }
   }
@@ -179,6 +174,7 @@ interface TranslateData extends GCSBaseData {
   system_prompt: string;
   prompt: string;
   length: number;
+  locale_is_selector: boolean;
 }
 
 type TranslateNodeInterface = DGNodeInterface<GCSBaseData> & {
@@ -217,7 +213,8 @@ export const translate_node_data: TranslateNodeInterface = {
     system_prompt:
       'You are a professional translator. You respond with the correct translation and nothing else.',
     prompt: 'Translate the following text to {language}.\n\n{text}',
-    length: 0
+    length: 0,
+    locale_is_selector: true
   },
   position: { x: 0, y: 0 },
   type: 'translate_v0'
