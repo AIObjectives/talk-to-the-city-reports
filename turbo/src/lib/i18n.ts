@@ -12,11 +12,13 @@ export const defaultLocale = Cookies.get('locale') || 'en-US';
 
 export const flags = {
   'en-US': '🇺🇸',
-  'zh-TW': '🇹🇼'
+  'zh-TW': '🇹🇼',
+  'ja-JP': '🇯🇵'
 };
 
 register('en-US', () => import(`./i18n/en-US.json`));
 register('zh-TW', () => import(`./i18n/zh-TW.json`));
+register('ja-JP', () => import(`./i18n/ja-JP.json`));
 
 init({
   fallbackLocale: defaultLocale,
