@@ -7,6 +7,7 @@
   import { browser } from '$app/environment';
   import MenuDown from '$lib/icons/MenuDown.svelte';
   import { storeDataset, refreshStore } from '$lib/store';
+  import type { Dataset } from '$lib/dataset';
 
   let isOpen = false;
   $: selectedFlag = flags[$locale] || flags[defaultLocale];
@@ -19,15 +20,19 @@
     if (!$storeDataset) {
       return;
     }
-    $storeDataset.graph.nodes.update((nodes) => {
-      const nodesToUpdate = nodes.filter((n) => n.data.compute_type === 'report_v1');
-      for (const node of nodesToUpdate) {
+    ($storeDataset as Dataset).graph.nodes.update((nodes) => {
+      for (const node of nodes.filter((n) => n.data.compute_type === 'report_v1')) {
         node.data.language = lang;
+      }
+      for (const node of nodes.filter((n) => n.data.compute_type === 'translate_v0')) {
+        if (node.data.locale_is_selector) {
+          node.data.language_selector = lang;
+        }
       }
       return nodes;
     });
     await tick();
-    await $storeDataset.processNodes('load', null, false, () => {
+    await ($storeDataset as Dataset).processNodes('load', null, false, () => {
       $refreshStore += 1;
     });
   }
