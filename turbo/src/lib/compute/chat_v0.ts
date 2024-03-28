@@ -1,3 +1,4 @@
+import { get } from 'svelte/store';
 import { getEncoding } from 'js-tiktoken';
 import nodes from '$lib/node_register';
 import categories from '$lib/node_categories';
@@ -7,6 +8,7 @@ import CryptoJS from 'crypto-js';
 import type { DGNodeInterface, BaseData } from '$lib/node_data_types';
 import _ from 'lodash';
 import { format, unwrapFunctionStore } from 'svelte-i18n';
+import { user } from '$lib/store';
 
 const $__ = unwrapFunctionStore(format);
 
@@ -138,6 +140,12 @@ export default class ChatNode {
   }
 
   async chat(messages, dataset, key) {
+    if (this.data.restrict_to_owner && get(user)?.uid != dataset.owner) {
+      this.data.message = $__('chat_is_restricted_to_dataset_owner');
+      return this.data.messages;
+    } else {
+      this.data.message = '';
+    }
     this.data.messages = _.cloneDeep(messages);
     if (this.data.messages.length == 1 && this.getSystemPrompt(dataset)) {
       this.data.messages.unshift({ role: 'system', content: this.getSystemPrompt(dataset) });
@@ -204,6 +212,7 @@ interface ChatNodeData extends BaseData {
   show_function_calls: boolean;
   system_prompt: string;
   max_context_injection_size: number;
+  restrict_to_owner: boolean;
 }
 
 type ChatNodeInterface = DGNodeInterface & {
@@ -229,7 +238,8 @@ export let chat_node_data: ChatNodeInterface = {
     show_settings_in_standard_view: true,
     system_prompt: '',
     cache: { data: '' },
-    max_context_injection_size: 50000
+    max_context_injection_size: 50000,
+    restrict_to_owner: false
   },
   position: { x: 0, y: 0 },
   type: 'chat_v0'

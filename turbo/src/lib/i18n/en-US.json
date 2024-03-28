@@ -263,7 +263,10 @@
   "text_to_speech": "Text to Speech",
   "speech_to_text": "Speech to Text",
   "dirty": "Dirty",
-  "show_function_calls": "Show Function Calls",
   "input_language": "Input Language",
-  "target_languages": "Target Languages"
+  "target_languages": "Target Languages",
+  "show_function_calls": "Show Function Calls",
+  "enable_forking": "Enable Forking",
+  "forking_disabled": "Forking Disabled",
+  "chat_is_restricted_to_dataset_owner": "Chat is restricted to dataset owner"
 }

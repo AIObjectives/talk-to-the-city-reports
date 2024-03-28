@@ -4,9 +4,13 @@
   import TextField from '@smui/textfield';
   import _ from 'lodash';
   import { _ as __ } from 'svelte-i18n';
+  import { get } from 'svelte/store';
+  import { user } from '$lib/store';
+  import type { Dataset } from '$lib/dataset';
 
   export let key: string;
   export let data: any;
+  export let dataset: Dataset;
 
   let hideKeys = [
     'icon',
@@ -20,7 +24,8 @@
     'message',
     'show_settings_in_standard_view'
   ];
-  let hide = _.includes(hideKeys, key);
+  $: restricted = key === 'restrict_to_owner' && get(user)?.uid !== dataset.owner;
+  $: hide = _.includes(hideKeys, key) || restricted;
 </script>
 
 {#if !hide}
