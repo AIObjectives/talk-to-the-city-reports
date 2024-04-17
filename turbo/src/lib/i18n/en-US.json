@@ -268,5 +268,8 @@
   "show_function_calls": "Show Function Calls",
   "enable_forking": "Enable Forking",
   "forking_disabled": "Forking Disabled",
-  "chat_is_restricted_to_dataset_owner": "Chat is restricted to dataset owner"
+  "chat_is_restricted_to_dataset_owner": "Chat is restricted to dataset owner",
+  "report_is_private": "Report is private",
+  "private": "Private",
+  "public": "Public"
 }
