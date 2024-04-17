@@ -269,5 +269,8 @@
   "target_languages": "対象言語",
   "enable_forking": "フォーキングを有効にする",
   "forking_disabled": "フォーキング無効",
-  "chat_is_restricted_to_dataset_owner": "チャットはデータセットの所有者に制限されています。"
+  "chat_is_restricted_to_dataset_owner": "チャットはデータセットの所有者に制限されています。",
+  "report_is_private": "レポートは非公開です",
+  "private": "プライベート",
+  "public": "公共"
 }
