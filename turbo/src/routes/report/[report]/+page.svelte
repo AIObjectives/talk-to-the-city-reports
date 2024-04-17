@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { user } from '$lib/store';
   import { getContext } from 'svelte';
   import { type Writable } from 'svelte/store';
   import { _ as __ } from 'svelte-i18n';
@@ -21,6 +22,8 @@
 <main id="report-main">
   {#if !dataset}
     <p class="text-center text-lg text-gray-500">{$__('loading')}</p>
+  {:else if dataset?.isPrivate && dataset?.owner !== $user?.uid}
+    <p class="text-center text-lg text-gray-500">{$__('report_is_private')}</p>
   {:else}
     {#if $globalViewMode == 'standard'}
       <Description bind:dataset />
