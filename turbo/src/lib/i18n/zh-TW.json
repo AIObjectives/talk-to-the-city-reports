@@ -270,5 +270,8 @@
   "speech_to_text": "語音轉文字",
   "dirty": "骯髒",
   "show_function_calls": "顯示函數呼叫",
-  "chat_is_restricted_to_dataset_owner": "聊天僅限於數據集擁有者"
+  "chat_is_restricted_to_dataset_owner": "聊天僅限於數據集擁有者",
+  "report_is_private": "報告是私有的",
+  "private": "私有",
+  "public": "公共"
 }
