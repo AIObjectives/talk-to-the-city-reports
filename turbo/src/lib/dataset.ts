@@ -38,6 +38,7 @@ export class Dataset {
   id?: string;
   projectParent?: string;
   enableForking: boolean = true;
+  isPrivate: boolean = false;
 
   constructor(
     projectTitle: string,
@@ -48,7 +49,8 @@ export class Dataset {
     graph: any,
     id?: string,
     projectParent?: string,
-    enableForking: boolean = true
+    enableForking: boolean = true,
+    isPrivate: boolean = false
   ) {
     this.title = projectTitle;
     this.slug = projectSlug;
@@ -60,6 +62,7 @@ export class Dataset {
     this.id = id;
     this.projectParent = projectParent;
     this.enableForking = enableForking;
+    this.isPrivate = isPrivate;
   }
 
   propagateDirtyState() {
@@ -392,7 +395,9 @@ export class Dataset {
       doc.description,
       doc.graph,
       id,
-      doc.projectParent
+      doc.projectParent,
+      doc.enableForking,
+      doc.isPrivate
     );
   }
 
@@ -405,7 +410,9 @@ export class Dataset {
       timestamp: this.timestamp,
       description: this.description,
       graph: { nodes: get(this.graph.nodes), edges: get(this.graph.edges) },
-      projectParent: this.projectParent
+      projectParent: this.projectParent,
+      enableForking: this.enableForking,
+      isPrivate: this.isPrivate
     };
   }
 
@@ -427,12 +434,14 @@ export class Dataset {
             doc.description,
             doc.graph,
             id,
-            doc.projectParent
+            doc.projectParent,
+            doc.enableForking,
+            doc.isPrivate
           );
           dataset.sanitize();
           await dataset.graph.conform(false, false, false);
-          // console.log('nodes', get(dataset.graph.nodes));
-          // console.log('edges', get(dataset.graph.edges));
+          console.log('nodes', get(dataset.graph.nodes));
+          console.log('edges', get(dataset.graph.edges));
           return dataset;
         }
       } catch (e) {
@@ -464,7 +473,9 @@ export class Dataset {
         timestamp: serverTimestamp(),
         description: this.description,
         graph: { nodes: get(this.graph.nodes), edges: get(this.graph.edges) },
-        projectParent: this.projectParent
+        projectParent: this.projectParent,
+        enableForking: this.enableForking,
+        isPrivate: this.isPrivate
       });
 
       this.id = docs.id;

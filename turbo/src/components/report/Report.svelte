@@ -222,7 +222,7 @@
           {/if}
         </div>
         <!-- Subtopics -->
-        {#each topic.subtopics as subtopic (subtopic.subtopicName)}
+        {#each topic.subtopics as subtopic (subtopic.subtopicName + subtopic.claims.length)}
           <div
             id={_.kebabCase('report-' + subtopic.subtopicName)}
             style="scroll-margin-top: 45px"
