@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Switch from '@smui/switch';
   import Checkbox from '@smui/checkbox';
   import FormField from '@smui/form-field';
   import HelperText from '@smui/textfield/helper-text';
@@ -10,6 +11,9 @@
 
   export let dataset;
   let editing = false;
+  let isPublic = !dataset.isPrivate;
+
+  $: dataset.isPrivate = !isPublic;
 
   $: isStandard = $globalViewMode === 'standard';
   $: showDrawer = isStandard && $reportStore?.topics?.length > 0;
@@ -41,6 +45,12 @@
       </div>
       <span slot="label">{$__('enable_forking')}</span>
     </FormField>
+    <div class='w-full px-3 py-5'>
+      <FormField>
+        <Switch bind:checked={isPublic} />
+        <span slot="label">{$__(isPublic ? 'public' : 'private')}</span>
+      </FormField>
+    </div>
     <button on:click={() => (editing = false)}>{$__('done')}</button>
   </div>
 {:else}

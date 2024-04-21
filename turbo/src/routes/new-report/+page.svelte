@@ -1,4 +1,6 @@
 <script lang="ts">
+  import FormField from '@smui/form-field';
+  import Switch from '@smui/switch';
   import Button from '@smui/button';
   import HelperText from '@smui/textfield/helper-text';
   import { type DocumentData } from 'firebase/firestore';
@@ -140,6 +142,7 @@
   let projectTemplate = 'default';
   let templates: Record<string, DocumentData> = {};
   let templatesLoaded: boolean = false;
+  let isPublic: boolean = true;
 
   function createProjectSlug(str: string): string {
     return str
@@ -161,7 +164,9 @@
       projectDescription,
       graph,
       '',
-      ''
+      '',
+      true,
+      !isPublic
     );
 
     const successFlag = await newDataset.addDatasetToFirebase();
@@ -191,7 +196,7 @@
       <div class="w-full px-3 py-5">
         <TextField style="width: 100%;" bind:value={projectSlug} label={$__('report_url_path')}>
           <HelperText persistent slot="helper"
-            >https://tttc-turbo.web.app/report/{projectSlug}</HelperText
+            >https://talktothecity.org/report/{projectSlug}</HelperText
           >
         </TextField>
       </div>
@@ -200,11 +205,17 @@
           <HelperText persistent slot="helper">{$__('report_description')}</HelperText>
         </TextField>
       </div>
+      <div class='w-full px-3 py-5'>
+        <FormField>
+          <Switch bind:checked={isPublic} />
+          <span slot="label">{$__(isPublic ? 'public' : 'private')}</span>
+        </FormField>
+      </div>
+    </div>
       {#if templatesLoaded}
         <button class="w-full px-3 pt-5" on:click={createNewProject}>
           <Button type="submit">{$__('create')}</Button>
         </button>
       {/if}
     </div>
-  </div>
 </div>
