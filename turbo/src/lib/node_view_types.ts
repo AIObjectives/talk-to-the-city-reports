@@ -3,6 +3,7 @@ import NumberInputNode from '$components/graph/nodes/NumberInputNode.svelte';
 import TextInputNode from '$components/graph/nodes/TextInputNode.svelte';
 import PromptNode from '$components/graph/nodes/PromptNode.svelte';
 import AudioNode from '$components/graph/nodes/AudioNode.svelte';
+import MultiAudioNode from '$components/graph/nodes/MultiAudioNode.svelte';
 import CSVNode from '$components/graph/nodes/CSVNode.svelte';
 import JSONNode from '$components/graph/nodes/JSONNode.svelte';
 import TranslateNode from '$components/graph/nodes/TranslateNode.svelte';
@@ -13,6 +14,7 @@ import DefaultNode from '$components/graph/nodes/DefaultNode.svelte';
 import CodeMirrorNode from '$components/graph/nodes/CodeMirrorNode.svelte';
 import ChatNode from '$components/graph/nodes/chat/ChatNode.svelte';
 import WhisperNode from '$components/graph/nodes/WhisperNode.svelte';
+import MultiWhisperNode from '$components/graph/nodes/MultiWhisperNode.svelte';
 import FilterCSVNode from '$components/graph/nodes/FilterCSVNode.svelte';
 import MergeClusterExtractionNode from '$components/graph/nodes/MergeClusterExtractionNode.svelte';
 import DownloadNode from '$components/graph/nodes/DownloadNode.svelte';
@@ -50,7 +52,10 @@ export const nodeTypes = {
   chat_v0: ChatNode,
   webpage_v0: TextInputNode,
   whisper_v0: WhisperNode,
+  whisper_v1: WhisperNode,
+  multi_whisper_v0: MultiWhisperNode,
   audio_v0: AudioNode,
+  multi_audio_v0: MultiAudioNode,
   add_csv_v0: DefaultNode,
   filter_csv_v0: FilterCSVNode,
   unique_v0: TextInputNode,

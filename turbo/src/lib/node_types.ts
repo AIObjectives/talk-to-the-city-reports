@@ -30,8 +30,10 @@ import '$lib/compute/markdown_v0.ts';
 import '$lib/compute/merge_cluster_extraction_v0.ts';
 import '$lib/compute/merge_cluster_extraction_v1.ts';
 import '$lib/compute/merge_v0.ts';
+import '$lib/compute/multi_audio_v0.ts';
 import '$lib/compute/multi_cluster_extraction_v0.ts';
 import '$lib/compute/multi_gpt_v0.ts';
+import '$lib/compute/multi_whisper_v0.ts';
 import '$lib/compute/open_ai_key_v0.ts';
 import '$lib/compute/participant_filter_v0.ts';
 import '$lib/compute/pinecone_key_v0.ts';
@@ -51,6 +53,7 @@ import '$lib/compute/translate_v0.ts';
 import '$lib/compute/unique_v0.ts';
 import '$lib/compute/webpage_v0.ts';
 import '$lib/compute/whisper_v0.ts';
+import '$lib/compute/whisper_v1.ts';
 
 import add_csv_v0 from '$lib/compute/.plaintext/add_csv_v0.txt?raw';
 import adder_v0 from '$lib/compute/.plaintext/adder_v0.txt?raw';
@@ -82,8 +85,10 @@ import markdown_v0 from '$lib/compute/.plaintext/markdown_v0.txt?raw';
 import merge_cluster_extraction_v0 from '$lib/compute/.plaintext/merge_cluster_extraction_v0.txt?raw';
 import merge_cluster_extraction_v1 from '$lib/compute/.plaintext/merge_cluster_extraction_v1.txt?raw';
 import merge_v0 from '$lib/compute/.plaintext/merge_v0.txt?raw';
+import multi_audio_v0 from '$lib/compute/.plaintext/multi_audio_v0.txt?raw';
 import multi_cluster_extraction_v0 from '$lib/compute/.plaintext/multi_cluster_extraction_v0.txt?raw';
 import multi_gpt_v0 from '$lib/compute/.plaintext/multi_gpt_v0.txt?raw';
+import multi_whisper_v0 from '$lib/compute/.plaintext/multi_whisper_v0.txt?raw';
 import open_ai_key_v0 from '$lib/compute/.plaintext/open_ai_key_v0.txt?raw';
 import participant_filter_v0 from '$lib/compute/.plaintext/participant_filter_v0.txt?raw';
 import pinecone_key_v0 from '$lib/compute/.plaintext/pinecone_key_v0.txt?raw';
@@ -103,6 +108,7 @@ import translate_v0 from '$lib/compute/.plaintext/translate_v0.txt?raw';
 import unique_v0 from '$lib/compute/.plaintext/unique_v0.txt?raw';
 import webpage_v0 from '$lib/compute/.plaintext/webpage_v0.txt?raw';
 import whisper_v0 from '$lib/compute/.plaintext/whisper_v0.txt?raw';
+import whisper_v1 from '$lib/compute/.plaintext/whisper_v1.txt?raw';
 
 export const code = {
   add_csv_v0,
@@ -135,8 +141,10 @@ export const code = {
   merge_cluster_extraction_v0,
   merge_cluster_extraction_v1,
   merge_v0,
+  multi_audio_v0,
   multi_cluster_extraction_v0,
   multi_gpt_v0,
+  multi_whisper_v0,
   open_ai_key_v0,
   participant_filter_v0,
   pinecone_key_v0,
@@ -155,5 +163,6 @@ export const code = {
   translate_v0,
   unique_v0,
   webpage_v0,
-  whisper_v0
+  whisper_v0,
+  whisper_v1
 };

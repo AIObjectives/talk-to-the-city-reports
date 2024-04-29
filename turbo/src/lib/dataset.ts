@@ -440,8 +440,8 @@ export class Dataset {
           );
           dataset.sanitize();
           await dataset.graph.conform(false, false, false);
-          console.log('nodes', get(dataset.graph.nodes));
-          console.log('edges', get(dataset.graph.edges));
+          // console.log('nodes', get(dataset.graph.nodes));
+          // console.log('edges', get(dataset.graph.edges));
           return dataset;
         }
       } catch (e) {

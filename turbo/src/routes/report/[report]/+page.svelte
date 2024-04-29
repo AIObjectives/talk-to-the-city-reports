@@ -17,12 +17,14 @@
   datasetSub.subscribe((value) => {
     dataset = value;
   });
+  $: isAdmin = $user?.uid === import.meta.env.VITE_ADMIN;
+  $: isOwner = dataset?.owner === $user?.uid;
 </script>
 
 <main id="report-main">
   {#if !dataset}
     <p class="text-center text-lg text-gray-500">{$__('loading')}</p>
-  {:else if dataset?.isPrivate && dataset?.owner !== $user?.uid}
+  {:else if dataset?.isPrivate && !(isAdmin || isOwner)}
     <p class="text-center text-lg text-gray-500">{$__('report_is_private')}</p>
   {:else}
     {#if $globalViewMode == 'standard'}

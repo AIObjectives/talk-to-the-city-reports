@@ -205,17 +205,17 @@
           <HelperText persistent slot="helper">{$__('report_description')}</HelperText>
         </TextField>
       </div>
-      <div class='w-full px-3 py-5'>
+      <div class="w-full px-3 py-5">
         <FormField>
           <Switch bind:checked={isPublic} />
           <span slot="label">{$__(isPublic ? 'public' : 'private')}</span>
         </FormField>
       </div>
     </div>
-      {#if templatesLoaded}
-        <button class="w-full px-3 pt-5" on:click={createNewProject}>
-          <Button type="submit">{$__('create')}</Button>
-        </button>
-      {/if}
-    </div>
+    {#if templatesLoaded}
+      <button class="w-full px-3 pt-5" on:click={createNewProject}>
+        <Button type="submit">{$__('create')}</Button>
+      </button>
+    {/if}
+  </div>
 </div>

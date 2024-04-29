@@ -28,8 +28,10 @@ import { python_node } from './compute/python_v0';
 import { pyodide_node } from './compute/pyodide_v0';
 import { chat_node } from './compute/chat_v0';
 import { webpage_node } from '$lib/compute/webpage_v0';
-import { whisper_node } from '$lib/compute/whisper_v0';
+import { whisper_node } from '$lib/compute/whisper_v1';
+import { multi_whisper_node } from '$lib/compute/multi_whisper_v0';
 import { audio_node } from '$lib/compute/audio_v0';
+import { multi_audio_node } from '$lib/compute/multi_audio_v0';
 import { add_csv_node } from '$lib/compute/add_csv_v0';
 import { filter_csv_node } from '$lib/compute/filter_csv_v0';
 import { unique_node } from '$lib/compute/unique_v0';
@@ -77,8 +79,10 @@ export const node_register = [
   chat_node,
   webpage_node,
   whisper_node,
+  multi_whisper_node,
   add_csv_node,
   audio_node,
+  multi_audio_node,
   filter_csv_node,
   unique_node,
   comment_expander_node,

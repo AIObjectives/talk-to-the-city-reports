@@ -2,7 +2,7 @@
   "name": "tttc-turbo",
   "version": "0.0.1",
   "tsCoverage": "82%",
-  "vitestPass": 202,
+  "vitestPass": 215,
   "vitestFail": 0,
   "engines": {
     "node": "18"
