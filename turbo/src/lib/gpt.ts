@@ -21,7 +21,7 @@ export async function openai(
   // It cannot access the DOM or any variables in the main thread.
 
   const MAX_RETRIES = 5;
-  const TIMEOUT_DURATION = 120000;
+  const TIMEOUT_DURATION = 5 * 60 * 1000;
 
   function isPlainObject(value) {
     if (Object.prototype.toString.call(value) !== '[object Object]') {

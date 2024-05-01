@@ -45,7 +45,7 @@
       </div>
       <span slot="label">{$__('enable_forking')}</span>
     </FormField>
-    <div class='w-full px-3 py-5'>
+    <div class="w-full px-3 py-5">
       <FormField>
         <Switch bind:checked={isPublic} />
         <span slot="label">{$__(isPublic ? 'public' : 'private')}</span>

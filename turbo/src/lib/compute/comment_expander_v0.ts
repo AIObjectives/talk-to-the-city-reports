@@ -36,6 +36,9 @@ export default class CommentExpanderNode {
       results: Record<string, any>[] = [];
 
     _.forEach(out, (row) => {
+      if (!row || !row['comment-body']) {
+        return;
+      }
       const words = row['comment-body'].split(/\s+/);
       if (words.length > limit) {
         row['comment-body'] = words.slice(0, limit).join(' ');
