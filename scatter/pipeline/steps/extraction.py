@@ -47,8 +47,13 @@ def extract_arguments(input, prompt, model, retries=3):
     llm = ChatOpenAI(model_name=model, temperature=0.0)
     response = llm(messages=messages(prompt, input)).content.strip()
     try:
-        parsed = [a.strip() for a in json.loads(response)]
-        return parsed
+        obj = json.loads(response)
+        # LLM sometimes returns valid JSON string
+        if isinstance(obj, str):
+            obj = [obj]
+        items = [a.strip() for a in obj]
+        items = filter(None, items)  # omit empty strings
+        return items
     except json.decoder.JSONDecodeError as e:
         print("JSON error:", e)
         print("Input was:", input)
