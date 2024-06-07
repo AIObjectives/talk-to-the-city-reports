@@ -126,4 +126,4 @@ def translate_batch(batch, lang_prompt, model, retries=3):
             print("Retrying batch...")
             return translate_batch(batch, lang_prompt, model, retries - 1)
         else:
-            raise e
+            return batch
