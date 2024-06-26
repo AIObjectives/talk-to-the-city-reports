@@ -1,1 +1,1 @@
-merge_cluster_extraction_v0ノードは、複数のcluster_extractionノードをマージするためにLLMを使用します。
+merge_cluster_extraction_v0 ノードは、複数の cluster_extraction ノードをマージするために LLM を使用します。
