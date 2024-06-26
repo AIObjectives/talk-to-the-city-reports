@@ -1,0 +1,1 @@
+マージノードは、cluster_extraction_v0ノードとargument_extraction_v0ノードの結果をマージします。

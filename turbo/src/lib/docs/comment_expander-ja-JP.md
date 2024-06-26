@@ -1,0 +1,1 @@
+`comment_expander` ノードは `comment-body` 行を最大100語までの長い行に伸ばします。これは、通常1行に1文を出力するWhisperで作成されたCSVを処理する際に便利です。
