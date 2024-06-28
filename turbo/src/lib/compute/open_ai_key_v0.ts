@@ -49,7 +49,7 @@ export default class OpenAIKeyNode {
   }
 
   keyIsValid(key) {
-    return key && key.length == 51 && key.slice(0, 3) == 'sk-';
+    return key && key.slice(0, 3) == 'sk-';
   }
 }
 
