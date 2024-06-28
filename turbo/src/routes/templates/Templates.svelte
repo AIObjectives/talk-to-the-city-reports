@@ -28,7 +28,7 @@
   });
 
   $: {
-    if (templates) {
+    if (_.keys(templates)?.length) {
       let template = templates[$selectedTemplate];
       if (template) {
         // update nodes
