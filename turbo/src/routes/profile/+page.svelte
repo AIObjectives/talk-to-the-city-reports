@@ -39,7 +39,7 @@
   };
 
   const schema = z.object({
-    openAIAPIKey: z.string().regex(/^sk-/, 'OpenAI API key must start with sk-'),
+    openAIAPIKey: z.string().regex(/^sk-.+$/, 'OpenAI API key must start with sk- and include additional characters'),
     pineconeAPIKey: z.string().length(36, 'Pinecone API key must be 36 characters'),
     type: z.enum(['individual', 'organization']),
     organizationName: z.string().optional(),
