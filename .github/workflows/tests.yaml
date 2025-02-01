@@ -2,7 +2,7 @@ name: tests
 
 on:
   schedule:
-    - cron: "0 * * * *"
+    - cron: "0 0 * * *"
   push:
     branches: ["*"]
   pull_request:
@@ -40,6 +40,7 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    if: false
 
     steps:
       - uses: actions/checkout@v2
