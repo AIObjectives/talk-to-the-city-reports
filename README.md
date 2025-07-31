@@ -1,5 +1,12 @@
 # Talk to the City
 
+**Active development of Talk to the City now occurs at [tttc-light-js](https://github.com/AIObjectives/tttc-light-js/)**
+This repository will soon be made read-only and archived.
+
+
+
+---
+
 This repo is now a merged monorepo containing:
 
 ## Talk to the City Turbo
