@@ -231,7 +231,7 @@ def update_progress(config, incr=None, total=None):
     if total is not None:
         update_status(config, {
             'current_job_progress': 0,
-            'current_jop_tasks': total
+            'current_job_tasks': total
         })
     elif incr is not None:
         update_status(config, {
@@ -256,7 +256,7 @@ def run_step(step, func, config):
     # update status after running...
     update_status(config, {
         'current_job_progress': None,
-        'current_jop_tasks': None,
+        'current_job_tasks': None,
         'completed_jobs': config.get('completed_jobs', []) + [{
             'step': step,
             'completed': datetime.now().isoformat(),
