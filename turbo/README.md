@@ -278,6 +278,7 @@ This is the "Argument Extraction" and "Cluster Extraction" etc. nodes, essential
 
 `src/lib/i18n/en.json`  
 `src/lib/zh-TW.json`
+`src/lib/ja-JP.json`
 
 Since we use internationalization, UI strings use:
 

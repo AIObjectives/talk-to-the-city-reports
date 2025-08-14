@@ -3,7 +3,7 @@ import { join } from 'path';
 import _ from 'lodash';
 console.log('checking lang files');
 
-const languages = ['en-US', 'zh-TW'];
+const languages = ['en-US', 'zh-TW', 'ja-JP'];
 const langDir = '$lib/i18n';
 
 const langFiles = languages.map((lang) => {

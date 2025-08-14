@@ -9,10 +9,12 @@
   import { python } from '@codemirror/lang-python';
   import helpen from './help-en-US.txt?raw';
   import helpzh from './help-zh-TW.txt?raw';
+  import helpja from './help-ja-JP.txt?raw';
 
   const helps = {
     'en-US': helpen,
-    'zh-TW': helpzh
+    'zh-TW': helpzh,
+    'ja-JP': helpja
   };
 
   $: help = helps[$locale || 'en-US'] || helps['en-US'];

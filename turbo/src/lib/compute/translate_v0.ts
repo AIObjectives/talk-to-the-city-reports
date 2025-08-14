@@ -185,7 +185,7 @@ export const translate_node_data: TranslateNodeInterface = {
   id: 'translate',
   data: {
     label: 'translate',
-    target_languages: ['zh-TW'],
+    target_languages: ['zh-TW', 'ja-JP'],
     keys: [
       '$.topics[*].topicName',
       '$.topics[*].topicShortDescription',
